@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Core", "Mages.Core\Mages.Core.csproj", "{B0698A2A-BFE9-4568-9055-82302F325452}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Core.Tests", "Mages.Core.Tests\Mages.Core.Tests.csproj", "{72E0C8E6-8853-4919-8280-F792B647031F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Repl", "Mages.Repl\Mages.Repl.csproj", "{027A32F7-4411-4083-AA01-0550EEA0E5A3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B0698A2A-BFE9-4568-9055-82302F325452}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0698A2A-BFE9-4568-9055-82302F325452}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0698A2A-BFE9-4568-9055-82302F325452}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0698A2A-BFE9-4568-9055-82302F325452}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72E0C8E6-8853-4919-8280-F792B647031F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72E0C8E6-8853-4919-8280-F792B647031F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72E0C8E6-8853-4919-8280-F792B647031F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72E0C8E6-8853-4919-8280-F792B647031F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{027A32F7-4411-4083-AA01-0550EEA0E5A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{027A32F7-4411-4083-AA01-0550EEA0E5A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{027A32F7-4411-4083-AA01-0550EEA0E5A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{027A32F7-4411-4083-AA01-0550EEA0E5A3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
