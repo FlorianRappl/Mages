@@ -6,10 +6,10 @@
     {
         private readonly TokenType _type;
         private readonly String _identifier;
-        private readonly ITextPosition _start;
-        private readonly ITextPosition _end;
+        private readonly TextPosition _start;
+        private readonly TextPosition _end;
 
-        public IdentToken(TokenType type, String identifier, ITextPosition start, ITextPosition end)
+        public IdentToken(TokenType type, String identifier, TextPosition start, TextPosition end)
         {
             _type = type;
             _identifier = identifier;
@@ -27,12 +27,12 @@
             get { return _identifier; }
         }
 
-        public ITextPosition Start
+        public TextPosition Start
         {
             get { return _start; }
         }
 
-        public ITextPosition End
+        public TextPosition End
         {
             get { return _end; }
         }

@@ -20,11 +20,11 @@
         /// <summary>
         /// Gets the start position of the token.
         /// </summary>
-        ITextPosition Start { get; }
+        TextPosition Start { get; }
 
         /// <summary>
         /// Gets the end position of the token.
         /// </summary>
-        ITextPosition End { get; }
+        TextPosition End { get; }
     }
 }

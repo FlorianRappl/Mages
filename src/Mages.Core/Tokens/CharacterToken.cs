@@ -6,9 +6,9 @@
     {
         private readonly TokenType _type;
         private readonly Int32 _character;
-        private readonly ITextPosition _position;
+        private readonly TextPosition _position;
 
-        public CharacterToken(TokenType type, Int32 character, ITextPosition position)
+        public CharacterToken(TokenType type, Int32 character, TextPosition position)
         {
             _type = type;
             _character = character;
@@ -25,12 +25,12 @@
             get { return Char.ConvertFromUtf32(_character); }
         }
 
-        public ITextPosition Start
+        public TextPosition Start
         {
             get { return _position; }
         }
 
-        public ITextPosition End
+        public TextPosition End
         {
             get { return _position; }
         }

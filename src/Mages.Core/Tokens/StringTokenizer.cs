@@ -34,7 +34,7 @@
         struct StringState
         {
             private readonly IScanner _scanner;
-            private readonly ITextPosition _start;
+            private readonly TextPosition _start;
 
             private StringBuilder _buffer;
             private List<ParseError> _errors;

@@ -16,7 +16,7 @@
 
         #region ctor
 
-        public ObjectExpression(IDictionary<String, IExpression> values, ITextPosition start, ITextPosition end)
+        public ObjectExpression(IDictionary<String, IExpression> values, TextPosition start, TextPosition end)
             : base(start, end)
         {
             _values = values;

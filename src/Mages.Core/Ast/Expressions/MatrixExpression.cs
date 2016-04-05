@@ -10,7 +10,7 @@
 
         #region ctor
 
-        public MatrixExpression(IExpression[][] values, ITextPosition start, ITextPosition end)
+        public MatrixExpression(IExpression[][] values, TextPosition start, TextPosition end)
             : base(start, end)
         {
             _values = values;

@@ -2,16 +2,16 @@
 {
     static class ExpressionExtensions
     {
-        public static ITextPosition GetStart(this IExpression[] expressions)
+        public static TextPosition GetStart(this IExpression[] expressions)
         {
             var length = expressions.Length;
-            return length > 0 ? expressions[0].Start : default(ITextPosition);
+            return length > 0 ? expressions[0].Start : default(TextPosition);
         }
 
-        public static ITextPosition GetEnd(this IExpression[] expressions)
+        public static TextPosition GetEnd(this IExpression[] expressions)
         {
             var length = expressions.Length;
-            return length > 0 ? expressions[length - 1].End : default(ITextPosition);
+            return length > 0 ? expressions[length - 1].End : default(TextPosition);
         }
 
         public static void Validate(this IExpression[] expressions, IValidationContext context)

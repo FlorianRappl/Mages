@@ -4,14 +4,14 @@
     {
         #region Fields
 
-        private readonly ITextPosition _start;
-        private readonly ITextPosition _end;
+        private readonly TextPosition _start;
+        private readonly TextPosition _end;
 
         #endregion
 
         #region ctor
 
-        public BaseExpression(ITextPosition start, ITextPosition end)
+        public BaseExpression(TextPosition start, TextPosition end)
         {
             _start = start;
             _end = end;
@@ -21,12 +21,12 @@
 
         #region Properties
 
-        public ITextPosition Start
+        public TextPosition Start
         {
             get { return _start; }
         }
 
-        public ITextPosition End
+        public TextPosition End
         {
             get { return _end; }
         }

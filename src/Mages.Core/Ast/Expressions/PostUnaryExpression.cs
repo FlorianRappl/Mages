@@ -13,7 +13,7 @@
 
         #region ctor
 
-        public PostUnaryExpression(IExpression value, ITextPosition end)
+        public PostUnaryExpression(IExpression value, TextPosition end)
             : base(value.Start, end)
         {
             _value = value;
@@ -51,7 +51,7 @@
 
         public sealed class Factorial : PostUnaryExpression
         {
-            public Factorial(IExpression expression, ITextPosition end)
+            public Factorial(IExpression expression, TextPosition end)
                 : base(expression, end)
             {
             }
@@ -59,7 +59,7 @@
 
         public sealed class Transpose : PostUnaryExpression
         {
-            public Transpose(IExpression expression, ITextPosition end)
+            public Transpose(IExpression expression, TextPosition end)
                 : base(expression, end)
             {
             }
@@ -67,7 +67,7 @@
 
         public sealed class Adjungate : PostUnaryExpression
         {
-            public Adjungate(IExpression expression, ITextPosition end)
+            public Adjungate(IExpression expression, TextPosition end)
                 : base(expression, end)
             {
             }
@@ -75,7 +75,7 @@
 
         public sealed class Increment : PostUnaryExpression
         {
-            public Increment(IExpression expression, ITextPosition end)
+            public Increment(IExpression expression, TextPosition end)
                 : base(expression, end)
             {
             }
@@ -96,7 +96,7 @@
 
         public sealed class Decrement : PostUnaryExpression
         {
-            public Decrement(IExpression expression, ITextPosition end)
+            public Decrement(IExpression expression, TextPosition end)
                 : base(expression, end)
             {
             }

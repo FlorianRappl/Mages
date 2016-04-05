@@ -32,7 +32,7 @@
 
         #region Helpers
 
-        private static IToken ScanLine(IScanner scanner, ITextPosition start)
+        private static IToken ScanLine(IScanner scanner, TextPosition start)
         {
             var sb = StringBuilderPool.Pull();
 
@@ -44,7 +44,7 @@
             return new CommentToken(TokenType.LineComment, sb.Stringify(), start, scanner.Position);
         }
 
-        private static IToken ScanBlock(IScanner scanner, ITextPosition start)
+        private static IToken ScanBlock(IScanner scanner, TextPosition start)
         {
             var sb = StringBuilderPool.Pull();
 

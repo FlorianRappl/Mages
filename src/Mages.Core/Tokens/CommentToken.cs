@@ -6,10 +6,10 @@
     {
         private readonly TokenType _type;
         private readonly String _comment;
-        private readonly ITextPosition _start;
-        private readonly ITextPosition _end;
+        private readonly TextPosition _start;
+        private readonly TextPosition _end;
 
-        public CommentToken(TokenType type, String comment, ITextPosition start, ITextPosition end)
+        public CommentToken(TokenType type, String comment, TextPosition start, TextPosition end)
         {
             _type = type;
             _comment = comment;
@@ -27,12 +27,12 @@
             get { return _comment; }
         }
 
-        public ITextPosition Start
+        public TextPosition Start
         {
             get { return _start; }
         }
 
-        public ITextPosition End
+        public TextPosition End
         {
             get { return _end; }
         }

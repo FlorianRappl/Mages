@@ -13,7 +13,7 @@
 
         #region ctor
 
-        public ArgumentsExpression(IExpression[] expressions, ITextPosition start, ITextPosition end)
+        public ArgumentsExpression(IExpression[] expressions, TextPosition start, TextPosition end)
             : base(start, end)
         {
             _expressions = expressions;

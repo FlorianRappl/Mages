@@ -6,7 +6,7 @@
     {
         #region ctor
 
-        public ComputingExpression(ITextPosition start, ITextPosition end)
+        public ComputingExpression(TextPosition start, TextPosition end)
             : base(start, end)
         {
         }

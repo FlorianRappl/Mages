@@ -65,7 +65,7 @@
     <Compile Include="ParseError.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="ErrorCode.cs" />
-    <Compile Include="ITextPosition.cs" />
+    <Compile Include="TextPosition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\BaseScanner.cs" />
     <Compile Include="Source\CharacterTable.cs" />

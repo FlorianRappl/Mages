@@ -10,12 +10,12 @@
         /// <summary>
         /// Gets the start position of the expression.
         /// </summary>
-        ITextPosition Start { get; }
+        TextPosition Start { get; }
 
         /// <summary>
         /// Gets the end position of the expression.
         /// </summary>
-        ITextPosition End { get; }
+        TextPosition End { get; }
 
         /// <summary>
         /// Gets if the expression can be used as a value container.

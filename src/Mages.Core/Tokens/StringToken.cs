@@ -8,10 +8,10 @@ namespace Mages.Core.Tokens
     sealed class StringToken : IToken
     {
         private readonly String _content;
-        private readonly ITextPosition _start;
-        private readonly ITextPosition _end;
+        private readonly TextPosition _start;
+        private readonly TextPosition _end;
 
-        public StringToken(String content, ITextPosition start, ITextPosition end)
+        public StringToken(String content, TextPosition start, TextPosition end)
         {
             _content = content;
             _start = start;
@@ -28,12 +28,12 @@ namespace Mages.Core.Tokens
             get { return _content; }
         }
 
-        public ITextPosition Start
+        public TextPosition Start
         {
             get { return _start; }
         }
 
-        public ITextPosition End
+        public TextPosition End
         {
             get { return _end; }
         }

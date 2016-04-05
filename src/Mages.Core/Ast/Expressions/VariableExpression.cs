@@ -16,7 +16,7 @@
 
         #region ctor
 
-        public VariableExpression(String name, AbstractScope scope, ITextPosition start, ITextPosition end)
+        public VariableExpression(String name, AbstractScope scope, TextPosition start, TextPosition end)
             : base(start, end)
         {
             _name = name;

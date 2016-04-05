@@ -7,7 +7,7 @@
     {
         #region ctor
 
-        public EmptyExpression(ITextPosition position)
+        public EmptyExpression(TextPosition position)
             : base(position, position)
         {
         }

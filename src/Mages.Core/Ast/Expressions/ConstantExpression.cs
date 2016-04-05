@@ -12,7 +12,7 @@
 
         #region ctor
 
-        public ConstantExpression(Object value, ITextPosition start, ITextPosition end)
+        public ConstantExpression(Object value, TextPosition start, TextPosition end)
             : base(start, end)
         {
             _value = value;

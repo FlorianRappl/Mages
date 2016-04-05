@@ -22,7 +22,7 @@
         {
             _source = new StringReader(source);
             _previous = CharacterTable.NullPtr;
-            _current = Read();
+            _current = CharacterTable.NullPtr;
         }
 
         #endregion

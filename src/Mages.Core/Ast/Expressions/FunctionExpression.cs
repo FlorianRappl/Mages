@@ -14,7 +14,7 @@
 
         #region ctor
 
-        public FunctionExpression(AbstractScope scope, VariableExpression[] parameters, ITextPosition start, ITextPosition end)
+        public FunctionExpression(AbstractScope scope, VariableExpression[] parameters, TextPosition start, TextPosition end)
             : base(start, end)
         {
             _scope = scope;

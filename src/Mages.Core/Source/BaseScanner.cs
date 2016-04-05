@@ -21,8 +21,8 @@
         public BaseScanner()
         {
             _columns = new Stack<Int32>();
-            _column = 1;
             _row = 1;
+            _column = 0;
             _position = 0;
         }
 
@@ -30,9 +30,9 @@
 
         #region Properties
 
-        public ITextPosition Position
+        public TextPosition Position
         {
-            get { return default(ITextPosition); }
+            get { return new TextPosition(_row, _column, _position); }
         }
 
         #endregion

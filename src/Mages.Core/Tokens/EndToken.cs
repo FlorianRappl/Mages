@@ -4,9 +4,9 @@
 
     sealed class EndToken : IToken
     {
-        private readonly ITextPosition _position;
+        private readonly TextPosition _position;
 
-        public EndToken(ITextPosition position)
+        public EndToken(TextPosition position)
         {
             _position = position;
         }
@@ -21,12 +21,12 @@
             get { return String.Empty; }
         }
 
-        public ITextPosition Start
+        public TextPosition Start
         {
             get { return _position; }
         }
 
-        public ITextPosition End
+        public TextPosition End
         {
             get { return _position; }
         }

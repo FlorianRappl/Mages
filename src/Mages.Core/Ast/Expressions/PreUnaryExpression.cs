@@ -13,7 +13,7 @@
 
         #region ctor
 
-        public PreUnaryExpression(ITextPosition start, IExpression value)
+        public PreUnaryExpression(TextPosition start, IExpression value)
             : base(start, value.End)
         {
             _value = value;
@@ -51,7 +51,7 @@
 
         public class Not : PreUnaryExpression
         {
-            public Not(ITextPosition start, IExpression value)
+            public Not(TextPosition start, IExpression value)
                 : base(start, value)
             {
             }
@@ -59,7 +59,7 @@
 
         public class Minus : PreUnaryExpression
         {
-            public Minus(ITextPosition start, IExpression value)
+            public Minus(TextPosition start, IExpression value)
                 : base(start, value)
             {
             }
@@ -67,7 +67,7 @@
 
         public class Plus : PreUnaryExpression
         {
-            public Plus(ITextPosition start, IExpression value)
+            public Plus(TextPosition start, IExpression value)
                 : base(start, value)
             {
             }
@@ -75,7 +75,7 @@
 
         public class Increment : PreUnaryExpression
         {
-            public Increment(ITextPosition start, IExpression value)
+            public Increment(TextPosition start, IExpression value)
                 : base(start, value)
             {
             }
@@ -96,7 +96,7 @@
 
         public class Decrement : PreUnaryExpression
         {
-            public Decrement(ITextPosition start, IExpression value)
+            public Decrement(TextPosition start, IExpression value)
                 : base(start, value)
             {
             }

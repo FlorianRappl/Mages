@@ -8,7 +8,7 @@
         #region Fields
 
         private readonly ErrorCode _code;
-        private readonly ITextPosition _position;
+        private readonly TextPosition _position;
 
         #endregion
 
@@ -19,7 +19,7 @@
         /// </summary>
         /// <param name="code">The code of the error.</param>
         /// <param name="position">The position of the error.</param>
-        public ParseError(ErrorCode code, ITextPosition position)
+        public ParseError(ErrorCode code, TextPosition position)
         {
             _code = code;
             _position = position;
@@ -32,7 +32,7 @@
         /// <summary>
         /// Gets the position of the error.
         /// </summary>
-        public ITextPosition Position
+        public TextPosition Position
         {
             get { return _position; }
         }

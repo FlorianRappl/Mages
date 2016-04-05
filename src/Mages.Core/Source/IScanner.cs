@@ -15,7 +15,7 @@
         /// <summary>
         /// Gets the current position in the source code.
         /// </summary>
-        ITextPosition Position { get; }
+        TextPosition Position { get; }
 
         /// <summary>
         /// Tries to move to the next position.

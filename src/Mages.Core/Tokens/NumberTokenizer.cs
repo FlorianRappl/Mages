@@ -43,7 +43,7 @@
         struct NumberState
         {
             private readonly IScanner _scanner;
-            private readonly ITextPosition _start;
+            private readonly TextPosition _start;
 
             private List<ParseError> _errors;
             private Int32 _value;

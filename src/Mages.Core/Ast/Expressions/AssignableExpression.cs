@@ -6,7 +6,7 @@
     {
         #region ctor
 
-        public AssignableExpression(ITextPosition start, ITextPosition end)
+        public AssignableExpression(TextPosition start, TextPosition end)
             : base(start, end)
         {
         }
