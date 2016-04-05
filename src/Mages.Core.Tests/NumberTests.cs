@@ -123,12 +123,14 @@
             Assert.IsTrue(scanner.MoveNext());
             var number = new NumberTokenizer();
             var one = number.Next(scanner);
-            var dotmul = number.Next(scanner);
+            var dot = number.Next(scanner);
+            var mul = number.Next(scanner);
             var eight = number.Next(scanner);
             Assert.IsInstanceOf<NumberToken>(one);
             Assert.AreEqual(1, ((NumberToken)one).Value);
             Assert.IsInstanceOf<NumberToken>(eight);
-            Assert.AreEqual(TokenType.Multiply, dotmul.Type);
+            Assert.AreEqual(TokenType.Dot, dot.Type);
+            Assert.AreEqual(TokenType.Multiply, mul.Type);
             Assert.AreEqual(8, ((NumberToken)eight).Value);
         }
     }
