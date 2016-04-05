@@ -70,9 +70,22 @@
     <Compile Include="Source\BaseScanner.cs" />
     <Compile Include="Source\CharacterTable.cs" />
     <Compile Include="Source\IScanner.cs" />
+    <Compile Include="Source\Specification.cs" />
     <Compile Include="Source\StringScanner.cs" />
+    <Compile Include="StringBuilderPool.cs" />
+    <Compile Include="Tokens\CharacterToken.cs" />
+    <Compile Include="Tokens\CommentToken.cs" />
+    <Compile Include="Tokens\CommentTokenizer.cs" />
+    <Compile Include="Tokens\EndToken.cs" />
+    <Compile Include="Tokens\IdentToken.cs" />
     <Compile Include="Tokens\IToken.cs" />
     <Compile Include="Tokens\ITokenizer.cs" />
+    <Compile Include="Tokens\GeneralTokenizer.cs" />
+    <Compile Include="Tokens\NumberToken.cs" />
+    <Compile Include="Tokens\NumberTokenizer.cs" />
+    <Compile Include="Tokens\OperatorToken.cs" />
+    <Compile Include="Tokens\StringToken.cs" />
+    <Compile Include="Tokens\StringTokenizer.cs" />
     <Compile Include="Tokens\TokenType.cs" />
   </ItemGroup>
   <ItemGroup>
