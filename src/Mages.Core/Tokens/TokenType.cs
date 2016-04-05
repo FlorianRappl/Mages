@@ -41,7 +41,7 @@
         Negate = 33,
         Condition = 34,
         Transpose = 35,
-        Trivia = 36,
+        Space = 36,
         Assignment = 37,
         Lambda = 38,
         LineComment = 39,

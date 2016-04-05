@@ -16,6 +16,11 @@
             _end = end;
         }
 
+        public Double Value 
+        {
+            get { return _value; }
+        }
+
         public TokenType Type
         {
             get { return TokenType.Number; }

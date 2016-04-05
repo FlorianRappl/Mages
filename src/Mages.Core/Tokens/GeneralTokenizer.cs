@@ -34,7 +34,7 @@
 
                 if (current.IsWhiteSpaceCharacter())
                 {
-                    return new CharacterToken(TokenType.Trivia, current, scanner.Position);
+                    return new CharacterToken(TokenType.Space, current, scanner.Position);
                 }
                 else if (current.IsNameStart())
                 {
