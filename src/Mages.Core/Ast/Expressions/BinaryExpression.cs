@@ -3,7 +3,7 @@
     /// <summary>
     /// The base class for all binary expressions.
     /// </summary>
-    abstract class BinaryExpression : ComputingExpression
+    abstract class BinaryExpression : ComputingExpression, IExpression
     {
         #region Fields
 
