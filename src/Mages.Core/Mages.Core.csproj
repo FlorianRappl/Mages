@@ -40,6 +40,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Ast\AbstractScope.cs" />
+    <Compile Include="Ast\AbstractScopeStack.cs" />
+    <Compile Include="Ast\ExpressionCreators.cs" />
+    <Compile Include="Ast\ExpressionParser.cs" />
     <Compile Include="Ast\Expressions\ArgumentsExpression.cs" />
     <Compile Include="Ast\Expressions\AssignableExpression.cs" />
     <Compile Include="Ast\Expressions\AssignmentExpression.cs" />
@@ -52,9 +55,11 @@
     <Compile Include="Ast\Expressions\EmptyExpression.cs" />
     <Compile Include="Ast\Expressions\ExpressionExtensions.cs" />
     <Compile Include="Ast\Expressions\FunctionExpression.cs" />
+    <Compile Include="Ast\Expressions\IdentifierExpression.cs" />
     <Compile Include="Ast\Expressions\MatrixExpression.cs" />
     <Compile Include="Ast\Expressions\MemberExpression.cs" />
     <Compile Include="Ast\Expressions\ObjectExpression.cs" />
+    <Compile Include="Ast\Expressions\ParameterExpression.cs" />
     <Compile Include="Ast\Expressions\PostUnaryExpression.cs" />
     <Compile Include="Ast\Expressions\PreUnaryExpression.cs" />
     <Compile Include="Ast\Expressions\RangeExpression.cs" />
@@ -62,6 +67,7 @@
     <Compile Include="Ast\IExpression.cs" />
     <Compile Include="Ast\IParser.cs" />
     <Compile Include="Ast\IValidationContext.cs" />
+    <Compile Include="ITextRange.cs" />
     <Compile Include="ParseError.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="ErrorCode.cs" />
@@ -86,6 +92,7 @@
     <Compile Include="Tokens\OperatorToken.cs" />
     <Compile Include="Tokens\StringToken.cs" />
     <Compile Include="Tokens\StringTokenizer.cs" />
+    <Compile Include="Tokens\TokenExtensions.cs" />
     <Compile Include="Tokens\TokenType.cs" />
   </ItemGroup>
   <ItemGroup>

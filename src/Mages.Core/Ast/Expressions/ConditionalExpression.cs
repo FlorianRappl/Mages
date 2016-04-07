@@ -5,7 +5,7 @@
     /// <summary>
     /// Represents a conditional expression.
     /// </summary>
-    sealed class ConditionalExpression : ComputingExpression
+    sealed class ConditionalExpression : ComputingExpression, IExpression
     {
         #region Fields
 
