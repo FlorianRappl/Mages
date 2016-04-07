@@ -8,17 +8,19 @@
         #region Fields
 
         private readonly AbstractScope _scope;
-        private readonly VariableExpression[] _parameters;
+        private readonly ParameterExpression _parameters;
+        private readonly IExpression _body;
 
         #endregion
 
         #region ctor
 
-        public FunctionExpression(AbstractScope scope, VariableExpression[] parameters, TextPosition start, TextPosition end)
-            : base(start, end)
+        public FunctionExpression(AbstractScope scope, ParameterExpression parameters, IExpression body)
+            : base(parameters.Start, parameters.End)
         {
             _scope = scope;
             _parameters = parameters;
+            _body = body;
         }
 
         #endregion
@@ -30,9 +32,14 @@
             get { return _scope; }
         }
 
-        public VariableExpression[] Parameters
+        public ParameterExpression Parameters
         {
             get { return _parameters; }
+        }
+
+        public IExpression Body
+        {
+            get { return _body; }
         }
 
         #endregion
@@ -41,6 +48,8 @@
 
         public void Validate(IValidationContext context)
         {
+            _parameters.Validate(context);
+            _body.Validate(context);
         }
 
         #endregion

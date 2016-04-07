@@ -2,6 +2,9 @@
 {
     using System;
 
+    /// <summary>
+    /// Represents a constant (predefined value) expression.
+    /// </summary>
     sealed class ConstantExpression : ComputingExpression, IExpression
     {
         #region Fields

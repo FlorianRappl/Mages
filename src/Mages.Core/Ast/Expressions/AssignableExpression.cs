@@ -2,6 +2,9 @@
 {
     using System;
 
+    /// <summary>
+    /// Represents an expression that can be assigned.
+    /// </summary>
     abstract class AssignableExpression : BaseExpression
     {
         #region ctor

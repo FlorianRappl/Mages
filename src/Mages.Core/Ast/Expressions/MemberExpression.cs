@@ -1,17 +1,20 @@
 ﻿namespace Mages.Core.Ast.Expressions
 {
+    /// <summary>
+    /// Represents a member expression.
+    /// </summary>
     sealed class MemberExpression : AssignableExpression, IExpression
     {
         #region Fields
 
         private readonly IExpression _obj;
-        private readonly VariableExpression _member;
+        private readonly IdentifierExpression _member;
 
         #endregion
 
         #region ctor
 
-        public MemberExpression(IExpression obj, VariableExpression member)
+        public MemberExpression(IExpression obj, IdentifierExpression member)
             : base(obj.Start, member.End)
         {
             _obj = obj;
@@ -27,7 +30,7 @@
             get { return _obj; }
         }
 
-        public VariableExpression Member
+        public IdentifierExpression Member
         {
             get { return _member; }
         }

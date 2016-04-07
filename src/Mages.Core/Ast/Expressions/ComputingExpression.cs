@@ -2,6 +2,9 @@
 {
     using System;
 
+    /// <summary>
+    /// Represents a computed expression (not-assignable).
+    /// </summary>
     abstract class ComputingExpression : BaseExpression
     {
         #region ctor

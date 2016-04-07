@@ -1,5 +1,8 @@
 ﻿namespace Mages.Core.Ast.Expressions
 {
+    /// <summary>
+    /// Represents a matrix expression.
+    /// </summary>
     sealed class MatrixExpression : ComputingExpression, IExpression
     {
         #region Fields

@@ -2,6 +2,9 @@
 {
     using System;
 
+    /// <summary>
+    /// Represents a conditional expression.
+    /// </summary>
     sealed class ConditionalExpression : ComputingExpression
     {
         #region Fields

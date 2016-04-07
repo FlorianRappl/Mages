@@ -3,24 +3,22 @@
     using System;
 
     /// <summary>
-    /// Represents the access of a variable.
+    /// Represents a generalized identifier, which is not a variable.
     /// </summary>
-    sealed class VariableExpression : AssignableExpression, IExpression
+    sealed class IdentifierExpression : ComputingExpression, IExpression
     {
         #region Fields
 
         private readonly String _name;
-        private readonly AbstractScope _scope;
 
         #endregion
 
         #region ctor
 
-        public VariableExpression(String name, AbstractScope scope, TextPosition start, TextPosition end)
+        public IdentifierExpression(String name, TextPosition start, TextPosition end)
             : base(start, end)
         {
             _name = name;
-            _scope = scope;
         }
 
         #endregion
@@ -30,11 +28,6 @@
         public String Name
         {
             get { return _name; }
-        }
-
-        public AbstractScope Scope
-        {
-            get { return _scope; }
         }
 
         #endregion

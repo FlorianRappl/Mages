@@ -1,5 +1,8 @@
 ﻿namespace Mages.Core.Ast.Expressions
 {
+    /// <summary>
+    /// Represents the shared core of all expressions.
+    /// </summary>
     abstract class BaseExpression
     {
         #region Fields
