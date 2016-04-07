@@ -11,6 +11,12 @@
             return tokens;
         }
 
+        public static Boolean IsNeither(this IToken token, TokenType a, TokenType b)
+        {
+            var type = token.Type;
+            return type != a && type != b;
+        }
+
         public static Boolean IsEither(this IToken token, TokenType a, TokenType b)
         {
             var type = token.Type;
