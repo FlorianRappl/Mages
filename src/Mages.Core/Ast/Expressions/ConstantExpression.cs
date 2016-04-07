@@ -2,7 +2,7 @@
 {
     using System;
 
-    sealed class ConstantExpression : ComputingExpression
+    sealed class ConstantExpression : ComputingExpression, IExpression
     {
         #region Fields
 

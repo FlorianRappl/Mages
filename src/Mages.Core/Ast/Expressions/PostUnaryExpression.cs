@@ -65,14 +65,6 @@
             }
         }
 
-        public sealed class Adjungate : PostUnaryExpression
-        {
-            public Adjungate(IExpression expression, TextPosition end)
-                : base(expression, end)
-            {
-            }
-        }
-
         public sealed class Increment : PostUnaryExpression
         {
             public Increment(IExpression expression, TextPosition end)
