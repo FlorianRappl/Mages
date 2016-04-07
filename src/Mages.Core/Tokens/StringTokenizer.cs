@@ -73,7 +73,7 @@
 
             public IToken Error()
             {
-                AddError(new ParseError(ErrorCode.StringMismatch, _scanner.Position));
+                AddError(new ParseError(ErrorCode.StringMismatch, _scanner.Position.ToRange()));
                 return Emit();
             }
 
@@ -97,7 +97,7 @@
                         case CharacterTable.QuestionMark: _buffer.Append('?'); _scanner.MoveNext(); break;
                         case CharacterTable.SingleQuotationMark: _buffer.Append('\''); _scanner.MoveNext(); break;
                         case CharacterTable.DoubleQuotationMark: _buffer.Append('\"'); _scanner.MoveNext(); break;
-                        default: AddError(new ParseError(ErrorCode.EscapeSequenceInvalid, _scanner.Position)); break;
+                        default: AddError(new ParseError(ErrorCode.EscapeSequenceInvalid, _scanner.Position.ToRange())); break;
                     }
 
                     return Normal();
@@ -108,6 +108,8 @@
 
             private String GetHexAsciiCharacter()
             {
+                var start = _scanner.Position;
+
                 if (_scanner.MoveNext() && _scanner.Current.IsHex())
                 {
                     var sum = 16 * _scanner.Current.FromHex();
@@ -120,19 +122,20 @@
                     }
                 }
 
-                AddError(new ParseError(ErrorCode.AsciiSequenceInvalid, _scanner.Position));
+                AddError(new ParseError(ErrorCode.AsciiSequenceInvalid, _scanner.Position.From(start)));
                 return String.Empty;
             }
 
             private String GetUnicodeCharacter()
             {
+                var start = _scanner.Position;
                 var sum = 0;
 
                 for (var i = 0; i < DigitWeights.Length; i++)
                 {
                     if (!_scanner.MoveNext() || !_scanner.Current.IsHex())
                     {
-                        AddError(new ParseError(ErrorCode.UnicodeSequenceInvalid, _scanner.Position));
+                        AddError(new ParseError(ErrorCode.UnicodeSequenceInvalid, _scanner.Position.From(start)));
                         return String.Empty;
                     }
 

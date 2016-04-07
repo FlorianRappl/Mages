@@ -36,7 +36,7 @@
         {
             if (_value is EmptyExpression)
             {
-                var error = new ParseError(ErrorCode.OperandRequired, _value.Start);
+                var error = new ParseError(ErrorCode.OperandRequired, _value);
                 context.Report(error);
             }
             else
@@ -84,7 +84,7 @@
             {
                 if (Value is VariableExpression == false)
                 {
-                    var error = new ParseError(ErrorCode.IncrementOperand, Value.Start);
+                    var error = new ParseError(ErrorCode.IncrementOperand, Value);
                     context.Report(error);
                 }
                 else
@@ -105,7 +105,7 @@
             {
                 if (Value is VariableExpression == false)
                 {
-                    var error = new ParseError(ErrorCode.DecrementOperand, Value.Start);
+                    var error = new ParseError(ErrorCode.DecrementOperand, Value);
                     context.Report(error);
                 }
                 else

@@ -3,12 +3,12 @@
     /// <summary>
     /// A class to encapsulate data of a parse error.
     /// </summary>
-    public sealed class ParseError
+    public sealed class ParseError : ITextRange
     {
         #region Fields
 
         private readonly ErrorCode _code;
-        private readonly TextPosition _position;
+        private readonly ITextRange _range;
 
         #endregion
 
@@ -18,11 +18,11 @@
         /// Creates a new parse error object with these properties.
         /// </summary>
         /// <param name="code">The code of the error.</param>
-        /// <param name="position">The position of the error.</param>
-        public ParseError(ErrorCode code, TextPosition position)
+        /// <param name="range">The text range of the error.</param>
+        public ParseError(ErrorCode code, ITextRange range)
         {
             _code = code;
-            _position = position;
+            _range = range;
         }
 
         #endregion
@@ -30,11 +30,19 @@
         #region Properties
 
         /// <summary>
-        /// Gets the position of the error.
+        /// Gets the start position of the error.
         /// </summary>
-        public TextPosition Position
+        public TextPosition Start
         {
-            get { return _position; }
+            get { return _range.Start; }
+        }
+
+        /// <summary>
+        /// Gets the end position of the error.
+        /// </summary>
+        public TextPosition End
+        {
+            get { return _range.End; }
         }
 
         /// <summary>

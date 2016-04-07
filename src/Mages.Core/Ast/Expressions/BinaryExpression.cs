@@ -43,7 +43,7 @@
         {
             if (_left is EmptyExpression)
             {
-                var error = new ParseError(ErrorCode.LeftOperandRequired, LValue.Start);
+                var error = new ParseError(ErrorCode.LeftOperandRequired, LValue);
                 context.Report(error);
             }
             else
@@ -53,7 +53,7 @@
 
             if (_right is EmptyExpression)
             {
-                var error = new ParseError(ErrorCode.RightOperandRequired, RValue.Start);
+                var error = new ParseError(ErrorCode.RightOperandRequired, RValue);
                 context.Report(error);
             }
             else

@@ -188,7 +188,7 @@
                         return Final();
                     }
 
-                    AddError(new ParseError(ErrorCode.FloatingMismatch, _scanner.Position));
+                    AddError(new ParseError(ErrorCode.FloatingMismatch, _scanner.Position.From(_start)));
                 }
 
                 if (_scanner.Current == CharacterTable.SmallE || _scanner.Current == CharacterTable.BigE)
@@ -230,7 +230,7 @@
 
                 if (num == 0)
                 {
-                    AddError(new ParseError(ErrorCode.ScientificMismatch, _scanner.Position));
+                    AddError(new ParseError(ErrorCode.ScientificMismatch, _scanner.Position.From(_start)));
                 }
 
                 _powers = sign * _powers;

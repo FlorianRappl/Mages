@@ -64,7 +64,7 @@
             }
             else
             {
-                var error = new ParseError(ErrorCode.AssignableExpected, Variable.Start);
+                var error = new ParseError(ErrorCode.AssignableExpected, Variable);
                 context.Report(error);
             }
 

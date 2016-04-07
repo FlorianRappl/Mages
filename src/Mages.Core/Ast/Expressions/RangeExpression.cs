@@ -50,7 +50,7 @@
         {
             if (_from is EmptyExpression)
             {
-                var error = new ParseError(ErrorCode.RangeStartRequired, _from.Start);
+                var error = new ParseError(ErrorCode.RangeStartRequired, _from);
                 context.Report(error);
             }
             else
@@ -65,7 +65,7 @@
 
             if (_to is EmptyExpression)
             {
-                var error = new ParseError(ErrorCode.RangeEndRequired, _to.Start);
+                var error = new ParseError(ErrorCode.RangeEndRequired, _to);
                 context.Report(error);
             }
             else
