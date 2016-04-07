@@ -31,5 +31,24 @@
         }
 
         #endregion
+
+        #region Methods
+
+        public AbstractScope Find(String identifier)
+        {
+            if (!_references.ContainsKey(identifier))
+            {
+                if (_parent == null)
+                {
+                    return null;
+                }
+
+                return _parent.Find(identifier);
+            }
+
+            return this;
+        }
+
+        #endregion
     }
 }
