@@ -5,18 +5,8 @@
     /// <summary>
     /// An abstract expression from the AST.
     /// </summary>
-    public interface IExpression
+    public interface IExpression : ITextRange
     {
-        /// <summary>
-        /// Gets the start position of the expression.
-        /// </summary>
-        TextPosition Start { get; }
-
-        /// <summary>
-        /// Gets the end position of the expression.
-        /// </summary>
-        TextPosition End { get; }
-
         /// <summary>
         /// Gets if the expression can be used as a value container.
         /// </summary>
