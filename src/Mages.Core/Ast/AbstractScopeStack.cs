@@ -23,9 +23,9 @@
             _scopes.Push(scope);
         }
 
-        public void PopCurrent()
+        public AbstractScope PopCurrent()
         {
-            _scopes.Pop();
+            return _scopes.Pop();
         }
     }
 }
