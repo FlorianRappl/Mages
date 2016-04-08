@@ -402,5 +402,64 @@
             Assert.AreEqual(source, str.Payload);
             Assert.IsInstanceOf<EndToken>(end);
         }
+
+        [Test]
+        public void TokensLookAheadIsWorkingCorrectly()
+        {
+            var source = "a+2.3-1e5^2&&k||l<true>=false $,?c++:--d";
+            var scanner = new StringScanner(source);
+            var tokenizer = new GeneralTokenizer(new NumberTokenizer(), new StringTokenizer(), new CommentTokenizer());
+            var a = tokenizer.Next(scanner);
+            var plus = tokenizer.Next(scanner);
+            var num = tokenizer.Next(scanner);
+            var subtract = tokenizer.Next(scanner);
+            var scientific = tokenizer.Next(scanner);
+            var power = tokenizer.Next(scanner);
+            var two = tokenizer.Next(scanner);
+            var and = tokenizer.Next(scanner);
+            var k = tokenizer.Next(scanner);
+            var or = tokenizer.Next(scanner);
+            var l = tokenizer.Next(scanner);
+            var smaller = tokenizer.Next(scanner);
+            var btrue = tokenizer.Next(scanner);
+            var greaterEqual = tokenizer.Next(scanner);
+            var bfalse = tokenizer.Next(scanner);
+            var space = tokenizer.Next(scanner);
+            var dollar = tokenizer.Next(scanner);
+            var comma = tokenizer.Next(scanner);
+            var condition = tokenizer.Next(scanner);
+            var c = tokenizer.Next(scanner);
+            var increment = tokenizer.Next(scanner);
+            var colon = tokenizer.Next(scanner);
+            var decrement = tokenizer.Next(scanner);
+            var d = tokenizer.Next(scanner);
+            var end = tokenizer.Next(scanner);
+
+            Assert.AreEqual(TokenType.Identifier, a.Type);
+            Assert.AreEqual(TokenType.Add, plus.Type);
+            Assert.AreEqual(TokenType.Number, num.Type);
+            Assert.AreEqual(TokenType.Subtract, subtract.Type);
+            Assert.AreEqual(TokenType.Number, scientific.Type);
+            Assert.AreEqual(TokenType.Power, power.Type);
+            Assert.AreEqual(TokenType.Number, two.Type);
+            Assert.AreEqual(TokenType.And, and.Type);
+            Assert.AreEqual(TokenType.Identifier, k.Type);
+            Assert.AreEqual(TokenType.Or, or.Type);
+            Assert.AreEqual(TokenType.Identifier, l.Type);
+            Assert.AreEqual(TokenType.Less, smaller.Type);
+            Assert.AreEqual(TokenType.Keyword, btrue.Type);
+            Assert.AreEqual(TokenType.GreaterEqual, greaterEqual.Type);
+            Assert.AreEqual(TokenType.Keyword, bfalse.Type);
+            Assert.AreEqual(TokenType.Space, space.Type);
+            Assert.AreEqual(TokenType.Unknown, dollar.Type);
+            Assert.AreEqual(TokenType.Comma, comma.Type);
+            Assert.AreEqual(TokenType.Condition, condition.Type);
+            Assert.AreEqual(TokenType.Identifier, c.Type);
+            Assert.AreEqual(TokenType.Increment, increment.Type);
+            Assert.AreEqual(TokenType.Colon, colon.Type);
+            Assert.AreEqual(TokenType.Decrement, decrement.Type);
+            Assert.AreEqual(TokenType.Identifier, d.Type);
+            Assert.IsInstanceOf<EndToken>(end);
+        }
     }
 }
