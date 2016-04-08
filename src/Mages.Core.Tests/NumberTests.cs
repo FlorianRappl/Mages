@@ -32,6 +32,54 @@
         }
 
         [Test]
+        public void NumberScannerTrailingDot()
+        {
+            var source = "3.";
+            var scanner = new StringScanner(source);
+            Assert.IsTrue(scanner.MoveNext());
+            var tokenizer = new NumberTokenizer();
+            var result = tokenizer.Next(scanner);
+            Assert.IsInstanceOf<NumberToken>(result);
+            Assert.AreEqual(3.0, ((NumberToken)result).Value);
+        }
+
+        [Test]
+        public void NumberScannerScientificMinus()
+        {
+            var source = "1e-1";
+            var scanner = new StringScanner(source);
+            Assert.IsTrue(scanner.MoveNext());
+            var tokenizer = new NumberTokenizer();
+            var result = tokenizer.Next(scanner);
+            Assert.IsInstanceOf<NumberToken>(result);
+            Assert.AreEqual(0.1, ((NumberToken)result).Value);
+        }
+
+        [Test]
+        public void NumberScannerScientificPlus()
+        {
+            var source = "1e+1";
+            var scanner = new StringScanner(source);
+            Assert.IsTrue(scanner.MoveNext());
+            var tokenizer = new NumberTokenizer();
+            var result = tokenizer.Next(scanner);
+            Assert.IsInstanceOf<NumberToken>(result);
+            Assert.AreEqual(10.0, ((NumberToken)result).Value);
+        }
+
+        [Test]
+        public void NumberScannerScientificDotShouldStop()
+        {
+            var source = "1e1.2";
+            var scanner = new StringScanner(source);
+            Assert.IsTrue(scanner.MoveNext());
+            var tokenizer = new NumberTokenizer();
+            var result = tokenizer.Next(scanner);
+            Assert.IsInstanceOf<NumberToken>(result);
+            Assert.AreEqual(10.0, ((NumberToken)result).Value);
+        }
+
+        [Test]
         public void NumberScannerInteger()
         {
             var source = "12345678";
