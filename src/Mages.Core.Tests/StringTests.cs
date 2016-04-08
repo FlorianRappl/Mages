@@ -13,8 +13,8 @@
             var source = "";
             var scanner = new StringScanner('"' + source + '"');
             Assert.IsTrue(scanner.MoveNext());
-            var number = new StringTokenizer();
-            var result = number.Next(scanner);
+            var tokenizer = new StringTokenizer();
+            var result = tokenizer.Next(scanner);
             Assert.IsInstanceOf<StringToken>(result);
             Assert.AreEqual(source, result.Payload);
         }
@@ -25,8 +25,8 @@
             var source = "Hallo";
             var scanner = new StringScanner('"' + source + '"');
             Assert.IsTrue(scanner.MoveNext());
-            var number = new StringTokenizer();
-            var result = number.Next(scanner);
+            var tokenizer = new StringTokenizer();
+            var result = tokenizer.Next(scanner);
             Assert.IsInstanceOf<StringToken>(result);
             Assert.AreEqual(source, result.Payload);
         }
@@ -37,8 +37,8 @@
             var source = "\\u2764";
             var scanner = new StringScanner('"' + source + '"');
             Assert.IsTrue(scanner.MoveNext());
-            var number = new StringTokenizer();
-            var result = number.Next(scanner);
+            var tokenizer = new StringTokenizer();
+            var result = tokenizer.Next(scanner);
             Assert.IsInstanceOf<StringToken>(result);
             Assert.AreEqual("❤", result.Payload);
         }
@@ -49,8 +49,8 @@
             var source = "\\u221e";
             var scanner = new StringScanner('"' + source + '"');
             Assert.IsTrue(scanner.MoveNext());
-            var number = new StringTokenizer();
-            var result = number.Next(scanner);
+            var tokenizer = new StringTokenizer();
+            var result = tokenizer.Next(scanner);
             Assert.IsInstanceOf<StringToken>(result);
             Assert.AreEqual("∞", result.Payload);
         }
@@ -61,10 +61,27 @@
             var source = "\\x7e";
             var scanner = new StringScanner('"' + source + '"');
             Assert.IsTrue(scanner.MoveNext());
-            var number = new StringTokenizer();
-            var result = number.Next(scanner);
+            var tokenizer = new StringTokenizer();
+            var result = tokenizer.Next(scanner);
             Assert.IsInstanceOf<StringToken>(result);
             Assert.AreEqual("~", result.Payload);
+        }
+
+        [Test]
+        public void StringAfterAndBeforeSpace()
+        {
+            var source = " \"foo\" ";
+            var scanner = new StringScanner(source);
+            var tokenizer = new GeneralTokenizer(null, new StringTokenizer(), null);
+            var space1 = tokenizer.Next(scanner);
+            var result = tokenizer.Next(scanner);
+            var space2 = tokenizer.Next(scanner);
+            var end = tokenizer.Next(scanner);
+            Assert.AreEqual(TokenType.Space, space1.Type);
+            Assert.AreEqual(TokenType.Text, result.Type);
+            Assert.AreEqual(TokenType.Space, space2.Type);
+            Assert.AreEqual(TokenType.End, end.Type);
+            Assert.AreEqual("foo", result.Payload);
         }
     }
 }
