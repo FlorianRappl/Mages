@@ -2,10 +2,18 @@
 {
     using Mages.Core.Source;
     using System;
+    using System.Collections.Generic;
 
     sealed class GeneralTokenizer : ITokenizer
     {
         #region Fields
+
+        private static readonly HashSet<String> Keywords = new HashSet<String>
+        {
+            "true",
+            "false",
+            "var",
+        };
 
         private readonly ITokenizer _number;
         private readonly ITokenizer _string;
@@ -179,8 +187,9 @@
             while (current.IsName());
 
             var name = sb.Stringify();
-            //TODO Look if its a keyword token
-            return new IdentToken(TokenType.Identifier, name, position, scanner.Position);
+            var isKeyword = Keywords.Contains(name);
+            var type = isKeyword ? TokenType.Keyword : TokenType.Identifier;
+            return new IdentToken(type, name, position, scanner.Position);
         }
 
         private static IToken ScanEqual(IScanner scanner)
