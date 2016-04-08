@@ -52,6 +52,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="AtomicExpressionTests.cs" />
     <Compile Include="CommentTests.cs" />
     <Compile Include="NumberTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

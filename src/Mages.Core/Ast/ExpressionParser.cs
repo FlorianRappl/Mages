@@ -18,7 +18,7 @@
 
         public IExpression ParseExpression(IEnumerator<IToken> tokens)
         {
-            return ParseAssignment(tokens);
+            return ParseAssignment(tokens.NextNonIgnorable());
         }
 
         private List<IExpression> ParseExpressions(IEnumerator<IToken> tokens)
@@ -386,7 +386,9 @@
 
         private IExpression ParseAtomic(IEnumerator<IToken> tokens)
         {
-            switch (tokens.Current.Type)
+            var current = tokens.Current;
+
+            switch (current.Type)
             {
                 case TokenType.OpenList:
                     return ParseMatrix(tokens);
@@ -402,9 +404,13 @@
                     return ParseNumber(tokens);
                 case TokenType.Text:
                     return ParseString(tokens);
+                case TokenType.SemiColon:
+                case TokenType.End:
+                    return new EmptyExpression(tokens.Current.Start);
             }
 
-            return new EmptyExpression(tokens.Current.Start);
+            tokens.NextNonIgnorable();
+            return new InvalidExpression(ErrorCode.InvalidSymbol, current);
         }
 
         private VariableExpression ParseVariable(IEnumerator<IToken> tokens)

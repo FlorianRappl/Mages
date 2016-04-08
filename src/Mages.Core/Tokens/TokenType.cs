@@ -9,7 +9,6 @@
         Keyword = 1,
         Identifier = 2,
         Number = 3,
-        Unit = 4,
         Text = 5,
         OpenGroup = 6,
         CloseGroup = 7,
