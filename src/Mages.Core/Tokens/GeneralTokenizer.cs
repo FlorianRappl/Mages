@@ -2,7 +2,6 @@
 {
     using Mages.Core.Source;
     using System;
-    using System.Collections.Generic;
 
     sealed class GeneralTokenizer : ITokenizer
     {
@@ -33,7 +32,7 @@
             {
                 var current = scanner.Current;
 
-                if (current.IsWhiteSpaceCharacter())
+                if (current.IsSpaceCharacter())
                 {
                     return new CharacterToken(TokenType.Space, current, scanner.Position);
                 }

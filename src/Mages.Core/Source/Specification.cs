@@ -118,7 +118,7 @@
         [DebuggerStepThrough]
         public static Boolean IsName(this Int32 character)
         {
-            return character >= 0x80 || IsLetter(character) || character == CharacterTable.Lowline || IsDigit(character);
+            return IsNameStart(character) || IsDigit(character);
         }
 
         /// <summary>
@@ -129,32 +129,7 @@
         [DebuggerStepThrough]
         public static Boolean IsNameStart(this Int32 character)
         {
-            return character >= 0x80 || IsUppercaseAscii(character) || IsLowercaseAscii(character) || character == CharacterTable.Lowline;
-        }
-
-        /// <summary>
-        /// Determines if the given character is a line break character.
-        /// </summary>
-        /// <param name="character">The character to examine.</param>
-        /// <returns>The result of the test.</returns>
-        [DebuggerStepThrough]
-        public static Boolean IsLineBreak(this Int32 character)
-        {
-            //line feed, carriage return
-            return character == CharacterTable.LineFeed || character == CharacterTable.CarriageReturn;
-        }
-
-        /// <summary>
-        /// Determines if the given character is a space character.
-        /// </summary>
-        /// <param name="character">The character to examine.</param>
-        /// <returns>The result of the test.</returns>
-        [DebuggerStepThrough]
-        public static Boolean IsSpaceCharacter(this Int32 character)
-        {
-            //white space, tab, line feed, form feed, carriage return
-            return character == CharacterTable.Space || character == CharacterTable.Tab || character == CharacterTable.LineFeed ||
-                character == CharacterTable.FormFeed || character == CharacterTable.CarriageReturn;
+            return character >= 0x80 || IsLetter(character) || character == CharacterTable.Lowline;
         }
 
         /// <summary>
@@ -163,7 +138,7 @@
         /// <param name="character">The character to examine.</param>
         /// <returns>The result of the test.</returns>
         [DebuggerStepThrough]
-        public static Boolean IsWhiteSpaceCharacter(this Int32 character)
+        public static Boolean IsSpaceCharacter(this Int32 character)
         {
             return character.IsInRange(0x0009, 0x000d) || character == 0x0020 || character == 0x0085 || character == 0x00a0 ||
                    character == 0x1680 || character == 0x180e || character.IsInRange(0x2000, 0x200a) || character == 0x2028 ||
