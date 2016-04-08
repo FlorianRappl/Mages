@@ -409,7 +409,6 @@
                     return new EmptyExpression(tokens.Current.Start);
             }
 
-            tokens.NextNonIgnorable();
             return new InvalidExpression(ErrorCode.InvalidSymbol, current);
         }
 
