@@ -63,5 +63,9 @@
         AssignableExpected,
         [Description("Too many indices provided. A maximum of 2 indices is allowed.")]
         TooManyIndices,
+        [Description("The conditional operator is missing the alternative branch.")]
+        BranchMissing,
+        [Description("The given keyword has been misplaced.")]
+        KeywordUnexpected,
     }
 }

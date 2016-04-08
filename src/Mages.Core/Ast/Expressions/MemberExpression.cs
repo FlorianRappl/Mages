@@ -8,13 +8,13 @@
         #region Fields
 
         private readonly IExpression _obj;
-        private readonly IdentifierExpression _member;
+        private readonly IExpression _member;
 
         #endregion
 
         #region ctor
 
-        public MemberExpression(IExpression obj, IdentifierExpression member)
+        public MemberExpression(IExpression obj, IExpression member)
             : base(obj.Start, member.End)
         {
             _obj = obj;
@@ -30,7 +30,7 @@
             get { return _obj; }
         }
 
-        public IdentifierExpression Member
+        public IExpression Member
         {
             get { return _member; }
         }

@@ -1,7 +1,7 @@
 ﻿namespace Mages.Core.Ast.Expressions
 {
     /// <summary>
-    /// Represents an empty expression (invalid).
+    /// Represents an empty expression (potentially invalid).
     /// </summary>
     sealed class EmptyExpression : ComputingExpression, IExpression
     {

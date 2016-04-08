@@ -56,6 +56,7 @@
     <Compile Include="Ast\Expressions\ExpressionExtensions.cs" />
     <Compile Include="Ast\Expressions\FunctionExpression.cs" />
     <Compile Include="Ast\Expressions\IdentifierExpression.cs" />
+    <Compile Include="Ast\Expressions\InvalidExpression.cs" />
     <Compile Include="Ast\Expressions\MatrixExpression.cs" />
     <Compile Include="Ast\Expressions\MemberExpression.cs" />
     <Compile Include="Ast\Expressions\ObjectExpression.cs" />
@@ -100,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Runtime\" />
+    <Folder Include="Vm\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

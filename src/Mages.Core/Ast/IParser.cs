@@ -10,16 +10,6 @@
     public interface IParser
     {
         /// <summary>
-        /// Gets if any errors have been encountered.
-        /// </summary>
-        Boolean HasErrors { get; }
-
-        /// <summary>
-        /// Gets the current error count.
-        /// </summary>
-        Int32 ErrorCount { get; }
-
-        /// <summary>
         /// Parses the next expression.
         /// </summary>
         /// <param name="tokens">The stream of tokens.</param>

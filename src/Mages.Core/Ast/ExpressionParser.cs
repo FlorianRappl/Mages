@@ -6,7 +6,7 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    class ExpressionParser
+    sealed class ExpressionParser : IParser
     {
         private readonly AbstractScopeStack _scopes;
 
@@ -92,15 +92,19 @@
             if (mode == TokenType.Condition)
             {
                 var y = ParseOr(tokens.NextNonIgnorable());
+                var z = default(IExpression);
                 mode = tokens.Current.Type;
 
                 if (mode == TokenType.Colon)
                 {
-                    var z = ParseOr(tokens.NextNonIgnorable());
-                    return new ConditionalExpression(x, y, z);
+                    z = ParseOr(tokens.NextNonIgnorable());
+                }
+                else
+                {
+                    z = new InvalidExpression(ErrorCode.BranchMissing, tokens.Current);
                 }
 
-                //TODO Report(new ParseError(ErrorCode.BranchMissing, tokens.Current.Start));
+                return new ConditionalExpression(x, y, z);
             }
             else if (mode == TokenType.Colon)
             {
@@ -273,17 +277,18 @@
                 {
                     tokens.NextNonIgnorable();
                     current = tokens.Current;
+                    var identifier = default(IExpression);
 
                     if (current.Type == TokenType.Identifier)
                     {
-                        var identifier = new IdentifierExpression(current.Payload, current.Start, current.End);
-                        left = new MemberExpression(left, identifier);
+                        identifier = new IdentifierExpression(current.Payload, current.Start, current.End);
                     }
                     else
                     {
-                        //TODO Report(new ParseError(ErrorCode.IdentifierExpected, current.Start));
-                        return left;
+                        identifier = new InvalidExpression(ErrorCode.IdentifierExpected, current);
                     }
+
+                    left = new MemberExpression(left, identifier);
                 }
                 else if (mode == TokenType.OpenGroup)
                 {
@@ -301,20 +306,21 @@
         private ArgumentsExpression ParseArguments(IEnumerator<IToken> tokens)
         {
             var start = tokens.Current.Start;
-            var arguments = ParseExpressions(tokens.NextNonIgnorable()).ToArray();
+            var arguments = ParseExpressions(tokens.NextNonIgnorable());
             var token = tokens.Current;
             var end = token.End;
 
-            if (token.Type == TokenType.CloseGroup)
+            if (token.Type != TokenType.CloseGroup)
             {
-                tokens.NextNonIgnorable();
+                var expr = new InvalidExpression(ErrorCode.BracketNotTerminated, token);
+                arguments.Add(expr);
             }
             else
             {
-                //TODO Report(new ParseError(ErrorCode.BracketNotTerminated, token));
+                tokens.NextNonIgnorable();
             }
 
-            return new ArgumentsExpression(arguments, start, end);
+            return new ArgumentsExpression(arguments.ToArray(), start, end);
         }
 
         private MatrixExpression ParseMatrix(IEnumerator<IToken> tokens)
@@ -422,7 +428,7 @@
                 return expr;
             }
 
-            return new EmptyExpression(token.Start);
+            return new InvalidExpression(ErrorCode.KeywordUnexpected, token);
         }
 
         private ConstantExpression ParseString(IEnumerator<IToken> tokens)
