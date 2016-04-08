@@ -220,7 +220,7 @@
         [Test]
         public void TokenizerComplexExpression()
         {
-            var scanner = new StringScanner("var a = (17 * 5 + 3 ^ x - z[i] / 3i);");
+            var scanner = new StringScanner("var a = (17 * 5 + 3 ^ x - z(i) / 3i);");
             var tokenizer = new GeneralTokenizer(new NumberTokenizer(), new StringTokenizer(), new CommentTokenizer());
             var _var = tokenizer.Next(scanner);
             var ws1 = tokenizer.Next(scanner);
@@ -252,7 +252,8 @@
             var ws12 = tokenizer.Next(scanner);
             var div = tokenizer.Next(scanner);
             var ws13 = tokenizer.Next(scanner);
-            var cmplx = tokenizer.Next(scanner);
+            var cmplxThree = tokenizer.Next(scanner);
+            var cmplxI = tokenizer.Next(scanner);
             var close = tokenizer.Next(scanner);
             var sc = tokenizer.Next(scanner);
             var end = tokenizer.Next(scanner);
@@ -280,13 +281,14 @@
             Assert.AreEqual(TokenType.Subtract, sub.Type);
             Assert.AreEqual(TokenType.Space, ws11.Type);
             Assert.AreEqual(TokenType.Identifier, z.Type);
-            Assert.AreEqual(TokenType.OpenList, cbo.Type);
+            Assert.AreEqual(TokenType.OpenGroup, cbo.Type);
             Assert.AreEqual(TokenType.Identifier, i.Type);
-            Assert.AreEqual(TokenType.CloseList, cbc.Type);
+            Assert.AreEqual(TokenType.CloseGroup, cbc.Type);
             Assert.AreEqual(TokenType.Space, ws12.Type);
             Assert.AreEqual(TokenType.RightDivide, div.Type);
             Assert.AreEqual(TokenType.Space, ws13.Type);
-            Assert.AreEqual(TokenType.Number, cmplx.Type);
+            Assert.AreEqual(TokenType.Number, cmplxThree.Type);
+            Assert.AreEqual(TokenType.Identifier, cmplxI.Type);
             Assert.AreEqual(TokenType.CloseGroup, close.Type);
             Assert.AreEqual(TokenType.SemiColon, sc.Type);
             Assert.IsInstanceOf<EndToken>(end);

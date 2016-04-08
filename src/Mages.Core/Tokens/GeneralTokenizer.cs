@@ -172,6 +172,7 @@
             var position = scanner.Position;
             var sb = StringBuilderPool.Pull();
             var current = scanner.Current;
+            var canContinue = true;
 
             do
             {
@@ -179,12 +180,18 @@
                 
                 if (!scanner.MoveNext())
                 {
+                    canContinue = false;
                     break;
                 }
 
                 current = scanner.Current;
             }
             while (current.IsName());
+
+            if (canContinue)
+            {
+                scanner.MoveBack();
+            }
 
             var name = sb.Stringify();
             var isKeyword = Keywords.Contains(name);

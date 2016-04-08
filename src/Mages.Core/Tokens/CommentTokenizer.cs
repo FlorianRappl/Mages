@@ -23,6 +23,8 @@
                 {
                     return ScanLine(scanner, position);
                 }
+
+                scanner.MoveBack();
             }
             
             return new OperatorToken(TokenType.RightDivide, "/", position);
