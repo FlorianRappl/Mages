@@ -8,12 +8,6 @@
 
     class ExpressionParser
     {
-        public static readonly Dictionary<String, Object> KeywordConstants = new Dictionary<String, Object>
-        {
-            { "true", true },
-            { "false", false },
-        };
-
         private readonly AbstractScopeStack _scopes;
 
         public ExpressionParser()
@@ -421,7 +415,7 @@
             var token = tokens.Current as IdentToken;
             var constant = default(Object);
 
-            if (KeywordConstants.TryGetValue(token.Payload, out constant))
+            if (Keywords.TryGetConstant(token.Payload, out constant))
             {
                 var expr = new ConstantExpression(constant, token.Start, token.End);
                 tokens.NextNonIgnorable();

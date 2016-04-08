@@ -8,14 +8,6 @@
     {
         #region Fields
 
-        private static readonly HashSet<String> Keywords = new HashSet<String>
-        {
-            "true",
-            "false",
-            "var",
-            "return",
-        };
-
         private readonly ITokenizer _number;
         private readonly ITokenizer _string;
         private readonly ITokenizer _comment;
@@ -195,8 +187,7 @@
             }
 
             var name = sb.Stringify();
-            var isKeyword = Keywords.Contains(name);
-            var type = isKeyword ? TokenType.Keyword : TokenType.Identifier;
+            var type = Keywords.IsKeyword(name) ? TokenType.Keyword : TokenType.Identifier;
             return new IdentToken(type, name, position, scanner.Position);
         }
 

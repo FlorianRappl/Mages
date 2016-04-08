@@ -68,6 +68,7 @@
     <Compile Include="Ast\IParser.cs" />
     <Compile Include="Ast\IValidationContext.cs" />
     <Compile Include="ITextRange.cs" />
+    <Compile Include="Keywords.cs" />
     <Compile Include="ParseError.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="ErrorCode.cs" />
