@@ -71,6 +71,7 @@
     <Compile Include="ParseError.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="ErrorCode.cs" />
+    <Compile Include="Source\ScannerExtensions.cs" />
     <Compile Include="TextPosition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\BaseScanner.cs" />

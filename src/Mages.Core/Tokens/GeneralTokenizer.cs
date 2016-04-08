@@ -80,28 +80,28 @@
                 case CharacterTable.SemiColon:
                     return new CharacterToken(TokenType.SemiColon, CharacterTable.SemiColon, start);
                 case CharacterTable.Plus:
-                    if (scanner.MoveNext() && scanner.Current == CharacterTable.Plus)
+                    if (scanner.PeekMoveNext(CharacterTable.Plus))
                     {
                         return new OperatorToken(TokenType.Increment, "++", start, scanner.Position);
                     }
                     
                     return new OperatorToken(TokenType.Add, "+", start);
                 case CharacterTable.Minus:
-                    if (scanner.MoveNext() && scanner.Current == CharacterTable.Minus)
+                    if (scanner.PeekMoveNext(CharacterTable.Minus))
                     {
                         return new OperatorToken(TokenType.Decrement, "--", start, scanner.Position);
                     }
 
                     return new OperatorToken(TokenType.Subtract, "-", start);
                 case CharacterTable.GreaterThan:
-                    if (scanner.MoveNext() && scanner.Current == CharacterTable.Equal)
+                    if (scanner.PeekMoveNext(CharacterTable.Equal))
                     {
                         return new OperatorToken(TokenType.GreaterEqual, ">=", start, scanner.Position);
                     }
 
                     return new OperatorToken(TokenType.Greater, ">", start);
                 case CharacterTable.LessThan:
-                    if (scanner.MoveNext() && scanner.Current == CharacterTable.Equal)
+                    if (scanner.PeekMoveNext(CharacterTable.Equal))
                     {
                         return new OperatorToken(TokenType.LessEqual, "<=", start, scanner.Position);
                     }
@@ -110,7 +110,7 @@
                 case CharacterTable.CircumflexAccent:
                     return new OperatorToken(TokenType.Power, "^", start);
                 case CharacterTable.Tilde:
-                    if (scanner.MoveNext() && scanner.Current == CharacterTable.Equal)
+                    if (scanner.PeekMoveNext(CharacterTable.Equal))
                     {
                         return new OperatorToken(TokenType.NotEqual, "~=", start, scanner.Position);
                     }
@@ -129,14 +129,14 @@
                 case CharacterTable.Percent:
                     return new OperatorToken(TokenType.Modulo, "%", start);
                 case CharacterTable.Pipe:
-                    if (scanner.MoveNext() && scanner.Current == CharacterTable.Pipe)
+                    if (scanner.PeekMoveNext(CharacterTable.Pipe))
                     {
                         return new OperatorToken(TokenType.Or, "||", start, scanner.Position);
                     }
 
                     break;
                 case CharacterTable.Ampersand:
-                    if (scanner.MoveNext() && scanner.Current == CharacterTable.Ampersand)
+                    if (scanner.PeekMoveNext(CharacterTable.Ampersand))
                     {
                         return new OperatorToken(TokenType.And, "&&", start, scanner.Position);
                     }
@@ -208,6 +208,8 @@
                 {
                     return new OperatorToken(TokenType.Lambda, "=>", position, scanner.Position);
                 }
+
+                scanner.MoveBack();
             }
 
             return new OperatorToken(TokenType.Assignment, "=", position);

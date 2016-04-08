@@ -239,11 +239,7 @@
 
             private IToken Final()
             {
-                if (_scanner.Current == CharacterTable.SmallI || _scanner.Current == CharacterTable.BigI)
-                {
-                    //TODO Emit Complex Number Token?
-                }
-
+                _scanner.MoveBack();
                 return new NumberToken(Number, _start, _scanner.Position);
             }
 
