@@ -13,6 +13,7 @@
             "true",
             "false",
             "var",
+            "return",
         };
 
         private readonly ITokenizer _number;

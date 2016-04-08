@@ -398,7 +398,7 @@
             Assert.AreEqual(1, str.Start.Row);
             Assert.AreEqual(7, end.Start.Column);
             Assert.AreEqual(1, end.Start.Row);
-            Assert.IsInstanceOf<IdentToken>(str);
+            Assert.AreEqual(TokenType.Keyword, str.Type);
             Assert.AreEqual(source, str.Payload);
             Assert.IsInstanceOf<EndToken>(end);
         }
