@@ -160,7 +160,7 @@
             Assert.AreEqual(1, end.Start.Row);
             Assert.IsInstanceOf<NumberToken>(two);
             Assert.IsInstanceOf<NumberToken>(three);
-            Assert.IsInstanceOf<NumberToken>(plus);
+            Assert.IsInstanceOf<OperatorToken>(plus);
             Assert.AreEqual(2.0, ((NumberToken)two).Value);
             Assert.AreEqual(3.0, ((NumberToken)three).Value);
             Assert.IsInstanceOf<EndToken>(end);
@@ -185,7 +185,7 @@
             Assert.AreEqual(1, end.Start.Row);
             Assert.IsInstanceOf<NumberToken>(two);
             Assert.IsInstanceOf<NumberToken>(dotfour);
-            Assert.IsInstanceOf<NumberToken>(power);
+            Assert.IsInstanceOf<OperatorToken>(power);
             Assert.AreEqual(2.0, ((NumberToken)two).Value);
             Assert.AreEqual(0.4, ((NumberToken)dotfour).Value);
             Assert.IsInstanceOf<EndToken>(end);
