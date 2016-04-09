@@ -57,8 +57,6 @@
         IndicesNotTerminated,
         [Description("An expected closing paranthesis could not be found ( ')' ).")]
         BracketNotTerminated,
-        [Description("Only variable, member and index expressions represent valid delete arguments.")]
-        DeleteExpectsVariablePointers,
         [Description("An assignable expression has been expected.")]
         AssignableExpected,
         [Description("Too many indices provided. A maximum of 2 indices is allowed.")]
@@ -67,5 +65,7 @@
         BranchMissing,
         [Description("The given keyword has been misplaced.")]
         KeywordUnexpected,
+        [Description("An expected colon has not been found.")]
+        ColonExpected,
     }
 }

@@ -23,15 +23,15 @@
 
         private List<IExpression> ParseExpressions(IEnumerator<IToken> tokens)
         {
-            var list = new List<IExpression>();
+            var expressions = new List<IExpression>();
             var token = tokens.Current;
             var allowNext = true;
 
             while (allowNext && token.Type != TokenType.End)
             {
-                var result = ParseExpression(tokens);
+                var expression = ParseExpression(tokens);
                 allowNext = false;
-                list.Add(result);
+                expressions.Add(expression);
                 tokens.NextNonIgnorable();
                 token = tokens.Current;
 
@@ -43,7 +43,7 @@
                 }
             }
 
-            return list;
+            return expressions;
         }
 
         private FunctionExpression ParseFunction(ParameterExpression parameters, IEnumerator<IToken> tokens)
@@ -101,7 +101,7 @@
                 }
                 else
                 {
-                    z = new InvalidExpression(ErrorCode.BranchMissing, tokens.Current);
+                    z = ParseInvalid(ErrorCode.BranchMissing, tokens);
                 }
 
                 return new ConditionalExpression(x, y, z);
@@ -265,29 +265,17 @@
 
             do
             {
-                tokens.NextNonIgnorable();
                 var current = tokens.Current;
                 var mode = current.Type;
 
                 if (current.IsOneOf(TokenType.Increment, TokenType.Decrement, TokenType.Factorial, TokenType.Transpose))
                 {
                     left = ExpressionCreators.PostUnary[mode].Invoke(left, current.End);
+                    tokens.NextNonIgnorable();
                 }
                 else if (mode == TokenType.Dot)
                 {
-                    tokens.NextNonIgnorable();
-                    current = tokens.Current;
-                    var identifier = default(IExpression);
-
-                    if (current.Type == TokenType.Identifier)
-                    {
-                        identifier = new IdentifierExpression(current.Payload, current.Start, current.End);
-                    }
-                    else
-                    {
-                        identifier = new InvalidExpression(ErrorCode.IdentifierExpected, current);
-                    }
-
+                    var identifier = ParseIdentifier(tokens.NextNonIgnorable());
                     left = new MemberExpression(left, identifier);
                 }
                 else if (mode == TokenType.OpenGroup)
@@ -307,12 +295,11 @@
         {
             var start = tokens.Current.Start;
             var arguments = ParseExpressions(tokens.NextNonIgnorable());
-            var token = tokens.Current;
-            var end = token.End;
+            var end = tokens.Current.End;
 
-            if (token.Type != TokenType.CloseGroup)
+            if (tokens.Current.Type != TokenType.CloseGroup)
             {
-                var expr = new InvalidExpression(ErrorCode.BracketNotTerminated, token);
+                var expr = ParseInvalid(ErrorCode.BracketNotTerminated, tokens);
                 arguments.Add(expr);
             }
             else
@@ -326,69 +313,101 @@
         private MatrixExpression ParseMatrix(IEnumerator<IToken> tokens)
         {
             var start = tokens.Current;
-            var buffer = new List<List<IExpression>>();
-            var current = tokens.Current;
+            var values = ParseRows(tokens.NextNonIgnorable());
+            var end = tokens.Current;
 
-            do
+            if (end.Type == TokenType.CloseList)
             {
                 tokens.NextNonIgnorable();
-                current = tokens.Current;
-
-                //TODO
-
-                if (current.Type == TokenType.Comma)
-                {
-                    tokens.NextNonIgnorable();
-                    current = tokens.Current;
-                }
             }
-            while (current.IsNeither(TokenType.CloseList, TokenType.End));
-
-            if (current.Type == TokenType.End)
+            else
             {
-                //TODO ...
+                var error = ParseInvalid(ErrorCode.MatrixNotTerminated, tokens);
+                values.Add(new IExpression[] { error });
             }
 
-            var end = current;
-            var values = buffer.Select(m => m.ToArray()).ToArray();
-            return new MatrixExpression(values, start.Start, end.End);
+            return new MatrixExpression(values.ToArray(), start.Start, end.End);
+        }
+
+        private List<IExpression> ParseColumns(IEnumerator<IToken> tokens)
+        {
+            var expressions = new List<IExpression>();
+
+
+            return expressions;
+        }
+
+        private List<IExpression[]> ParseRows(IEnumerator<IToken> tokens)
+        {
+            var expressions = new List<IExpression[]>();
+
+
+            return expressions;
         }
 
         private ObjectExpression ParseObject(IEnumerator<IToken> tokens)
         {
             var start = tokens.Current;
-            var values = new Dictionary<String, IExpression>();
-            var current = tokens.Current;
+            var values = ParseProperties(tokens.NextNonIgnorable());
+            var end = tokens.Current;
 
-            do 
+            if (end.Type == TokenType.CloseScope)
             {
                 tokens.NextNonIgnorable();
-                current = tokens.Current;
+            }
+            else
+            {
+                var error = ParseInvalid(ErrorCode.ObjectNotTerminated, tokens);
+                values.Add(error);
+            }
 
-                //TODO
+            return new ObjectExpression(values.ToArray(), start.Start, end.End);
+        }
 
-                if (current.Type == TokenType.Comma)
+        private PropertyExpression ParseProperty(IEnumerator<IToken> tokens)
+        {
+            var identifier = ParseIdentifier(tokens);
+            var value = default(IExpression);
+
+            if (tokens.Current.Type != TokenType.Colon)
+            {
+                value = ParseInvalid(ErrorCode.ColonExpected, tokens);
+            }
+            else
+            {
+                value = ParseExpression(tokens);
+            }
+
+            return new PropertyExpression(identifier, value);
+        }
+
+        private List<IExpression> ParseProperties(IEnumerator<IToken> tokens)
+        {
+            var expressions = new List<IExpression>();
+
+            if (tokens.Current.IsNeither(TokenType.CloseScope, TokenType.End))
+            {
+                var expression = ParseProperty(tokens);
+                expressions.Add(expression);
+
+                while (tokens.Current.Type == TokenType.Comma)
                 {
                     tokens.NextNonIgnorable();
-                    current = tokens.Current;
+
+                    if (tokens.Current.IsNeither(TokenType.CloseScope, TokenType.End))
+                    {
+                        expression = ParseProperty(tokens);
+                        expressions.Add(expression);
+                    }
                 }
             }
-            while (current.IsNeither(TokenType.CloseScope, TokenType.End));
 
-            if (current.Type == TokenType.End)
-            {
-                //TODO ...
-            }
-
-            var end = current;
-            return new ObjectExpression(values, start.Start, end.End);
+            return expressions;
         }
 
         private IExpression ParseAtomic(IEnumerator<IToken> tokens)
         {
-            var current = tokens.Current;
-
-            switch (current.Type)
+            switch (tokens.Current.Type)
             {
                 case TokenType.OpenList:
                     return ParseMatrix(tokens);
@@ -409,21 +428,48 @@
                     return new EmptyExpression(tokens.Current.Start);
             }
 
-            return new InvalidExpression(ErrorCode.InvalidSymbol, current);
+            return ParseInvalid(ErrorCode.InvalidSymbol, tokens);
         }
 
-        private VariableExpression ParseVariable(IEnumerator<IToken> tokens)
+        private InvalidExpression ParseInvalid(ErrorCode code, IEnumerator<IToken> tokens)
         {
-            var token = tokens.Current as IdentToken;
-            var scope = _scopes.Current.Find(token.Payload);
-            var expr = new VariableExpression(token.Payload, scope, token.Start, token.End);
+            var expr = new InvalidExpression(code, tokens.Current);
             tokens.NextNonIgnorable();
             return expr;
         }
 
+        private IExpression ParseVariable(IEnumerator<IToken> tokens)
+        {
+            var token = tokens.Current;
+
+            if (token.Type == TokenType.Identifier)
+            {
+                var scope = _scopes.Current.Find(token.Payload);
+                var expr = new VariableExpression(token.Payload, scope, token.Start, token.End);
+                tokens.NextNonIgnorable();
+                return expr;
+            }
+
+            return ParseInvalid(ErrorCode.IdentifierExpected, tokens);
+        }
+
+        private IExpression ParseIdentifier(IEnumerator<IToken> tokens)
+        {
+            var token = tokens.Current;
+
+            if (token.Type == TokenType.Identifier)
+            {
+                var expr = new IdentifierExpression(token.Payload, token.Start, token.End);
+                tokens.NextNonIgnorable();
+                return expr;
+            }
+
+            return ParseInvalid(ErrorCode.IdentifierExpected, tokens);
+        }
+
         private IExpression ParseKeywordConstant(IEnumerator<IToken> tokens)
         {
-            var token = tokens.Current as IdentToken;
+            var token = tokens.Current;
             var constant = default(Object);
 
             if (Keywords.TryGetConstant(token.Payload, out constant))
@@ -433,12 +479,12 @@
                 return expr;
             }
 
-            return new InvalidExpression(ErrorCode.KeywordUnexpected, token);
+            return ParseInvalid(ErrorCode.KeywordUnexpected, tokens);
         }
 
         private ConstantExpression ParseString(IEnumerator<IToken> tokens)
         {
-            var token = tokens.Current as StringToken;
+            var token = tokens.Current;
             var expr = new ConstantExpression(token.Payload, token.Start, token.End);
             tokens.NextNonIgnorable();
             return expr;
