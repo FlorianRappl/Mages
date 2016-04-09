@@ -73,5 +73,60 @@
             Assert.AreEqual(2.0, ((ConstantExpression)value3.LValue).Value);
             Assert.AreEqual(3.0, ((ConstantExpression)value3.RValue).Value);
         }
+
+        [Test]
+        public void TightEmptyObjectLiteral()
+        {
+            var source = "{}";
+            var tokens = source.ToTokenStream();
+            var parser = new ExpressionParser();
+            var result = parser.ParseExpression(tokens);
+
+            Assert.IsInstanceOf<ObjectExpression>(result);
+            var obj = (ObjectExpression)result;
+            Assert.AreEqual(0, obj.Values.Length);
+            Assert.AreEqual(1, obj.Start.Column);
+            Assert.AreEqual(2, obj.End.Column);
+        }
+
+        [Test]
+        public void RelaxedEmptyObjectLiteral()
+        {
+            var source = " {  } ";
+            var tokens = source.ToTokenStream();
+            var parser = new ExpressionParser();
+            var result = parser.ParseExpression(tokens);
+
+            Assert.IsInstanceOf<ObjectExpression>(result);
+            var obj = (ObjectExpression)result;
+            Assert.AreEqual(0, obj.Values.Length);
+            Assert.AreEqual(2, obj.Start.Column);
+            Assert.AreEqual(5, obj.End.Column);
+        }
+
+        [Test]
+        public void ObjectLiteralWithSingleKeyValueTrailingComma()
+        {
+            var source = "{ key: value , }";
+            var tokens = source.ToTokenStream();
+            var parser = new ExpressionParser();
+            var result = parser.ParseExpression(tokens);
+
+            Assert.IsInstanceOf<ObjectExpression>(result);
+            var obj = (ObjectExpression)result;
+            Assert.AreEqual(1, obj.Values.Length);
+
+            var property = obj.Values[0] as PropertyExpression;
+
+            Assert.IsNotNull(property);
+            Assert.IsInstanceOf<IdentifierExpression>(property.Name);
+            Assert.IsInstanceOf<VariableExpression>(property.Value);
+
+            var name = (IdentifierExpression)property.Name;
+            var value = (VariableExpression)property.Value;
+
+            Assert.AreEqual("key", name.Name);
+            Assert.AreEqual("value", value.Name);
+        }
     }
 }
