@@ -4,7 +4,6 @@
     using Mages.Core.Tokens;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     sealed class ExpressionParser : IParser
     {
@@ -333,6 +332,12 @@
         {
             var expressions = new List<IExpression>();
 
+            do
+            {
+                var expression = ParseAssignment(tokens);
+                expressions.Add(expression);
+            } 
+            while (tokens.Current.Type == TokenType.Comma && tokens.NextNonIgnorable().Current.Type != TokenType.End);
 
             return expressions;
         }
@@ -341,6 +346,20 @@
         {
             var expressions = new List<IExpression[]>();
 
+            if (tokens.Current.IsNeither(TokenType.CloseList, TokenType.End))
+            {
+                var columns = ParseColumns(tokens);
+                expressions.Add(columns.ToArray());
+
+                while (tokens.Current.Type == TokenType.SemiColon)
+                {
+                    if (tokens.NextNonIgnorable().Current.IsNeither(TokenType.CloseList, TokenType.End))
+                    {
+                        columns = ParseColumns(tokens);
+                        expressions.Add(columns.ToArray());
+                    }
+                }
+            }
 
             return expressions;
         }
@@ -392,9 +411,7 @@
 
                 while (tokens.Current.Type == TokenType.Comma)
                 {
-                    tokens.NextNonIgnorable();
-
-                    if (tokens.Current.IsNeither(TokenType.CloseScope, TokenType.End))
+                    if (tokens.NextNonIgnorable().Current.IsNeither(TokenType.CloseScope, TokenType.End))
                     {
                         expression = ParseProperty(tokens);
                         expressions.Add(expression);
