@@ -208,6 +208,11 @@
         public const Int32 Zero = 0x30;
 
         /// <summary>
+        /// The number 1.
+        /// </summary>
+        public const Int32 One = 0x31;
+
+        /// <summary>
         /// The letter E.
         /// </summary>
         public const Int32 BigE = 0x45;

@@ -134,7 +134,7 @@
                 var numbers = new List<Int32>();
                 var weight = 1;
 
-                while (_scanner.MoveNext() && _scanner.Current.IsInRange(CharacterTable.Zero, CharacterTable.Zero + 1))
+                while (_scanner.MoveNext() && _scanner.Current.IsInRange(CharacterTable.Zero, CharacterTable.One))
                 {
                     numbers.Add(_scanner.Current - CharacterTable.Zero);
                 }
