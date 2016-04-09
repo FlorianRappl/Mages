@@ -292,17 +292,29 @@
         private ArgumentsExpression ParseArguments(IEnumerator<IToken> tokens)
         {
             var start = tokens.Current.Start;
-            var arguments = ParseExpressions(tokens.NextNonIgnorable());
-            var end = tokens.Current.End;
+            var token = tokens.NextNonIgnorable().Current;
+            var arguments = default(List<IExpression>);
 
-            if (tokens.Current.Type != TokenType.CloseGroup)
+            if (token.Type != TokenType.CloseGroup)
             {
-                var expr = ParseInvalid(ErrorCode.BracketNotTerminated, tokens);
-                arguments.Add(expr);
+                arguments = ParseExpressions(tokens);
+                token = tokens.Current;
             }
             else
             {
+                arguments = new List<IExpression>();
+            }
+
+            var end = token.End;
+
+            if (token.Type == TokenType.CloseGroup)
+            {
                 tokens.NextNonIgnorable();
+            }
+            else
+            {
+                var expr = ParseInvalid(ErrorCode.BracketNotTerminated, tokens);
+                arguments.Add(expr);
             }
 
             return new ArgumentsExpression(arguments.ToArray(), start, end);

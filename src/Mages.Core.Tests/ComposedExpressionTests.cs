@@ -109,5 +109,76 @@
             Assert.AreEqual(3.0, ((ConstantExpression)power3.LValue).Value);
             Assert.AreEqual(4.0, ((ConstantExpression)power3.RValue).Value);
         }
+
+        [Test]
+        public void FunctionCallWithoutArguments()
+        {
+            var source = "f()";
+            var tokens = source.ToTokenStream();
+            var parser = new ExpressionParser();
+            var result = parser.ParseExpression(tokens);
+
+            Assert.IsInstanceOf<CallExpression>(result);
+
+            var call = (CallExpression)result;
+
+            var function = call.Function as VariableExpression;
+            var arguments = call.Arguments;
+
+            Assert.AreEqual("f", function.Name);
+            Assert.AreEqual(0, arguments.Expressions.Length);
+
+            Assert.AreEqual(1, call.Start.Column);
+            Assert.AreEqual(3, call.End.Column);
+        }
+
+        [Test]
+        public void FunctionCallWithTwoArguments()
+        {
+            var source = "f(1, a)";
+            var tokens = source.ToTokenStream();
+            var parser = new ExpressionParser();
+            var result = parser.ParseExpression(tokens);
+
+            Assert.IsInstanceOf<CallExpression>(result);
+
+            var call = (CallExpression)result;
+
+            var function = call.Function as VariableExpression;
+            var arguments = call.Arguments;
+
+            Assert.AreEqual("f", function.Name);
+            Assert.AreEqual(2, arguments.Expressions.Length);
+            Assert.IsInstanceOf<ConstantExpression>(arguments.Expressions[0]);
+            Assert.IsInstanceOf<VariableExpression>(arguments.Expressions[1]);
+
+            Assert.AreEqual(1, call.Start.Column);
+            Assert.AreEqual(7, call.End.Column);
+        }
+
+        [Test]
+        public void FunctionCallWithThreeArguments()
+        {
+            var source = "f(1,a,\"hi\")";
+            var tokens = source.ToTokenStream();
+            var parser = new ExpressionParser();
+            var result = parser.ParseExpression(tokens);
+
+            Assert.IsInstanceOf<CallExpression>(result);
+
+            var call = (CallExpression)result;
+
+            var function = call.Function as VariableExpression;
+            var arguments = call.Arguments;
+
+            Assert.AreEqual("f", function.Name);
+            Assert.AreEqual(3, arguments.Expressions.Length);
+            Assert.IsInstanceOf<ConstantExpression>(arguments.Expressions[0]);
+            Assert.IsInstanceOf<VariableExpression>(arguments.Expressions[1]);
+            Assert.IsInstanceOf<ConstantExpression>(arguments.Expressions[2]);
+
+            Assert.AreEqual(1, call.Start.Column);
+            Assert.AreEqual(11, call.End.Column);
+        }
     }
 }
