@@ -63,6 +63,7 @@
     <Compile Include="Ast\Expressions\ParameterExpression.cs" />
     <Compile Include="Ast\Expressions\PostUnaryExpression.cs" />
     <Compile Include="Ast\Expressions\PreUnaryExpression.cs" />
+    <Compile Include="Ast\Expressions\PropertyExpression.cs" />
     <Compile Include="Ast\Expressions\RangeExpression.cs" />
     <Compile Include="Ast\Expressions\VariableExpression.cs" />
     <Compile Include="Ast\IExpression.cs" />

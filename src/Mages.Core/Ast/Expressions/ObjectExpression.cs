@@ -1,8 +1,5 @@
 ﻿namespace Mages.Core.Ast.Expressions
 {
-    using System;
-    using System.Collections.Generic;
-
     /// <summary>
     /// Represents an object literal.
     /// </summary>
@@ -10,13 +7,13 @@
     {
         #region Fields
 
-        private readonly IDictionary<String, IExpression> _values;
+        private readonly IExpression[] _values;
 
         #endregion
 
         #region ctor
 
-        public ObjectExpression(IDictionary<String, IExpression> values, TextPosition start, TextPosition end)
+        public ObjectExpression(IExpression[] values, TextPosition start, TextPosition end)
             : base(start, end)
         {
             _values = values;
@@ -26,7 +23,7 @@
 
         #region Properties
 
-        public IDictionary<String, IExpression> Values
+        public IExpression[] Values
         {
             get { return _values; }
         }
@@ -37,9 +34,9 @@
 
         public void Validate(IValidationContext context)
         {
-            foreach (var row in _values)
+            foreach (var value in _values)
             {
-                row.Value.Validate(context);
+                value.Validate(context);
             }
         }
 
