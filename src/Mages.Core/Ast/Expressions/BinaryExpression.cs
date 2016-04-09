@@ -186,38 +186,6 @@
             }
         }
 
-        public sealed class DotMultiply : BinaryExpression
-        {
-            public DotMultiply(IExpression left, IExpression right)
-                : base(left, right)
-            {
-            }
-        }
-
-        public sealed class DotLeftDivide : BinaryExpression
-        {
-            public DotLeftDivide(IExpression left, IExpression right)
-                : base(left, right)
-            {
-            }
-        }
-
-        public sealed class DotRightDivide : BinaryExpression
-        {
-            public DotRightDivide(IExpression left, IExpression right)
-                : base(left, right)
-            {
-            }
-        }
-
-        public sealed class DotPower : BinaryExpression
-        {
-            public DotPower(IExpression left, IExpression right)
-                : base(left, right)
-            {
-            }
-        }
-
         #endregion
     }
 }

@@ -54,7 +54,10 @@
   <ItemGroup>
     <Compile Include="AtomicExpressionTests.cs" />
     <Compile Include="CommentTests.cs" />
+    <Compile Include="ComposedExpressionTests.cs" />
+    <Compile Include="Helpers.cs" />
     <Compile Include="NumberTests.cs" />
+    <Compile Include="ObjectExpressionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScannerTests.cs" />
     <Compile Include="StringTests.cs" />

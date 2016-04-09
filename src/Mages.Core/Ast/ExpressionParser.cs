@@ -28,10 +28,9 @@
 
             while (allowNext && token.Type != TokenType.End)
             {
-                var expression = ParseExpression(tokens);
+                var expression = ParseAssignment(tokens);
                 allowNext = false;
                 expressions.Add(expression);
-                tokens.NextNonIgnorable();
                 token = tokens.Current;
 
                 if (token.Type == TokenType.Comma)
