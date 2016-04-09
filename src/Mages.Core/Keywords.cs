@@ -17,6 +17,22 @@
             "false",
             "var",
             "return",
+            "let",
+            "const",
+            "for",
+            "while",
+            "do",
+            "module",
+            "if",
+            "else",
+            "break",
+            "yield",
+            "async",
+            "await",
+            "class",
+            "static",
+            "new",
+            "delete",
         };
 
         public static Boolean TryGetConstant(String keyword, out Object constant)
