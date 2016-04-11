@@ -47,6 +47,7 @@
         private FunctionExpression ParseFunction(ParameterExpression parameters, IEnumerator<IToken> tokens)
         {
             _scopes.PushNew();
+            parameters.BindTo(_scopes.Current);
             var body = ParseAssignment(tokens);
             var scope = _scopes.PopCurrent();
             return new FunctionExpression(scope, parameters, body);

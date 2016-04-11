@@ -1,6 +1,5 @@
 ﻿namespace Mages.Core.Ast
 {
-    using Mages.Core.Ast.Expressions;
     using System;
     using System.Collections.Generic;
 
@@ -9,7 +8,7 @@
         #region Fields
 
         private readonly AbstractScope _parent;
-        private readonly Dictionary<String, List<VariableExpression>> _references;
+        private readonly Dictionary<String, IExpression> _references;
 
         #endregion
 
@@ -18,7 +17,7 @@
         public AbstractScope(AbstractScope parent)
         {
             _parent = parent;
-            _references = new Dictionary<String, List<VariableExpression>>();
+            _references = new Dictionary<String, IExpression>();
         }
 
         #endregion
@@ -33,6 +32,11 @@
         #endregion
 
         #region Methods
+
+        public void Provide(String identifier, IExpression expression)
+        {
+            _references.Add(identifier, expression);
+        }
 
         public AbstractScope Find(String identifier)
         {

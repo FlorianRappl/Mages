@@ -16,21 +16,8 @@
         public ParameterExpression(IExpression[] expressions, TextPosition start, TextPosition end)
             : base(start, end)
         {
-            _expressions = new IExpression[expressions.Length];
+            _expressions = expressions;
 
-            for (var i = 0; i < expressions.Length; i++)
-            {
-                var variable = expressions[i] as VariableExpression;
-
-                if (variable != null)
-                {
-                    _expressions[i] = new IdentifierExpression(variable.Name, variable.Start, variable.End);
-                }
-                else
-                {
-                    _expressions[i] = expressions[i];
-                }
-            }
         }
 
         #endregion
@@ -45,6 +32,21 @@
         #endregion
 
         #region Methods
+
+        public void BindTo(AbstractScope scope)
+        {
+            for (var i = 0; i < _expressions.Length; i++)
+            {
+                var variable = _expressions[i] as VariableExpression;
+
+                if (variable != null)
+                {
+                    var expression = new IdentifierExpression(variable.Name, variable.Start, variable.End);
+                    _expressions[i] = expression;
+                    scope.Provide(variable.Name, expression);
+                }
+            }
+        }
 
         public void Validate(IValidationContext context)
         {
