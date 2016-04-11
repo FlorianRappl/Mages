@@ -40,7 +40,7 @@
         }
 
         [Test]
-        public void SingleVectorMatrix()
+        public void SingleColumnVectorMatrix()
         {
             var source = @"[1,2,3]";
             var tokens = source.ToTokenStream();
@@ -56,6 +56,27 @@
             Assert.IsInstanceOf<ConstantExpression>(matrix.Values[0][0]);
             Assert.IsInstanceOf<ConstantExpression>(matrix.Values[0][1]);
             Assert.IsInstanceOf<ConstantExpression>(matrix.Values[0][2]);
+        }
+
+        [Test]
+        public void SingleRowVectorMatrix()
+        {
+            var source = @"[1;2;3]";
+            var tokens = source.ToTokenStream();
+            var parser = new ExpressionParser();
+            var result = parser.ParseExpression(tokens);
+
+            Assert.IsInstanceOf<MatrixExpression>(result);
+
+            var matrix = (MatrixExpression)result;
+
+            Assert.AreEqual(3, matrix.Values.Length);
+            Assert.AreEqual(1, matrix.Values[0].Length);
+            Assert.AreEqual(1, matrix.Values[1].Length);
+            Assert.AreEqual(1, matrix.Values[2].Length);
+            Assert.IsInstanceOf<ConstantExpression>(matrix.Values[0][0]);
+            Assert.IsInstanceOf<ConstantExpression>(matrix.Values[1][0]);
+            Assert.IsInstanceOf<ConstantExpression>(matrix.Values[2][0]);
         }
 
         [Test]
@@ -79,7 +100,48 @@
         }
 
         [Test]
-        public void DifferentExpressionsInVectorMatrix()
+        public void SquareMatrixOfConstants()
+        {
+            var source = @"[1,2  ;   3,4];";
+            var tokens = source.ToTokenStream();
+            var parser = new ExpressionParser();
+            var result = parser.ParseExpression(tokens);
+
+            Assert.IsInstanceOf<MatrixExpression>(result);
+
+            var matrix = (MatrixExpression)result;
+
+            Assert.AreEqual(2, matrix.Values.Length);
+            Assert.AreEqual(2, matrix.Values[0].Length);
+            Assert.AreEqual(2, matrix.Values[1].Length);
+            Assert.IsInstanceOf<ConstantExpression>(matrix.Values[0][0]);
+            Assert.IsInstanceOf<ConstantExpression>(matrix.Values[0][1]);
+            Assert.IsInstanceOf<ConstantExpression>(matrix.Values[1][0]);
+            Assert.IsInstanceOf<ConstantExpression>(matrix.Values[1][1]);
+        }
+
+        [Test]
+        public void DifferentExpressionsInRowVectorMatrix()
+        {
+            var source = @"[1+3;x;f(3);7*3];";
+            var tokens = source.ToTokenStream();
+            var parser = new ExpressionParser();
+            var result = parser.ParseExpression(tokens);
+
+            Assert.IsInstanceOf<MatrixExpression>(result);
+
+            var matrix = (MatrixExpression)result;
+
+            Assert.AreEqual(4, matrix.Values.Length);
+            Assert.AreEqual(1, matrix.Values[0].Length);
+            Assert.IsInstanceOf<BinaryExpression.Add>(matrix.Values[0][0]);
+            Assert.IsInstanceOf<VariableExpression>(matrix.Values[1][0]);
+            Assert.IsInstanceOf<CallExpression>(matrix.Values[2][0]);
+            Assert.IsInstanceOf<BinaryExpression.Multiply>(matrix.Values[3][0]);
+        }
+
+        [Test]
+        public void DifferentExpressionsInColumnVectorMatrix()
         {
             var source = @"[1+3,x,f(3),7*3];";
             var tokens = source.ToTokenStream();
