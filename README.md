@@ -2,7 +2,19 @@
 
 ## Mages: Another Generalized Expression Simplifier
 
-MAGES is the official successor to YAMP. It is a very simple, yet powerful, expression parser and interpreter.
+MAGES is the official successor to YAMP. It is a very simple, yet powerful, expression parser and interpreter. You can use MAGES to include a sophisticated, easy to customize, and lightweight scripting engine to your application.
+
+### Installation
+
+TODO
+
+### Documentation
+
+TODO
+
+### Contributions
+
+TODO
 
 ## License
 
