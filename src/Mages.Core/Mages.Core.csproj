@@ -68,7 +68,11 @@
     <Compile Include="Ast\Expressions\VariableExpression.cs" />
     <Compile Include="Ast\IExpression.cs" />
     <Compile Include="Ast\IParser.cs" />
+    <Compile Include="Ast\IStatement.cs" />
+    <Compile Include="Ast\IValidatable.cs" />
     <Compile Include="Ast\IValidationContext.cs" />
+    <Compile Include="Ast\Statements\BaseStatement.cs" />
+    <Compile Include="Ast\Statements\VarStatement.cs" />
     <Compile Include="ITextRange.cs" />
     <Compile Include="Keywords.cs" />
     <Compile Include="ParseError.cs" />

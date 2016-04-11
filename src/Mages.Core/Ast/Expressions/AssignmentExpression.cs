@@ -43,7 +43,7 @@
                     return variable.Name;
                 }
 
-                return String.Empty;
+                return null;
             }
         }
 
