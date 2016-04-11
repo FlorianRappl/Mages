@@ -1,6 +1,7 @@
 ﻿namespace Mages.Core.Ast
 {
     using Mages.Core.Ast.Expressions;
+    using Mages.Core.Ast.Statements;
     using Mages.Core.Tokens;
     using System;
     using System.Collections.Generic;
@@ -13,6 +14,27 @@
         {
             var root = new AbstractScope(null);
             _scopes = new AbstractScopeStack(root);
+        }
+
+        public IStatement ParseStatement(IEnumerator<IToken> tokens)
+        {
+            tokens.NextNonIgnorable();
+
+            if (tokens.Current.Type == TokenType.Keyword && tokens.Current.Payload.Equals(Keywords.Var, StringComparison.Ordinal))
+            {
+                var start = tokens.Current.Start;
+                var expr = ParseAssignment(tokens.NextNonIgnorable());
+                var end = tokens.Current.End;
+                var stmt = new VarStatement(expr, start, end);
+                return stmt;
+            }
+            else
+            {
+                var expr = ParseAssignment(tokens);
+                var end = tokens.Current.End;
+                var stmt = new SimpleStatement(expr, end);
+                return stmt;
+            }
         }
 
         public IExpression ParseExpression(IEnumerator<IToken> tokens)
