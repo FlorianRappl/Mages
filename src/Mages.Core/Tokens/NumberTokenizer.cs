@@ -69,7 +69,7 @@
             {
                 if (!_scanner.MoveNext())
                 {
-                    return new NumberToken(0.0, _start, _scanner.Position);
+                    return new NumberToken(0.0, _errors, _start, _scanner.Position);
                 }
 
                 var current = _scanner.Current;
@@ -240,7 +240,7 @@
             private IToken Final()
             {
                 _scanner.MoveBack();
-                return new NumberToken(Number, _start, _scanner.Position);
+                return new NumberToken(Number, _errors, _start, _scanner.Position);
             }
 
             private void AddError(ParseError error)

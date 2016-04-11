@@ -503,7 +503,7 @@
 
             if (Keywords.TryGetConstant(token.Payload, out constant))
             {
-                var expr = new ConstantExpression(constant, token.Start, token.End);
+                var expr = ConstantExpression.From(constant, token);
                 tokens.NextNonIgnorable();
                 return expr;
             }
@@ -513,16 +513,16 @@
 
         private ConstantExpression ParseString(IEnumerator<IToken> tokens)
         {
-            var token = tokens.Current;
-            var expr = new ConstantExpression(token.Payload, token.Start, token.End);
+            var token = (StringToken)tokens.Current;
+            var expr = new ConstantExpression.Text(token.Payload, token, token.Errors);
             tokens.NextNonIgnorable();
             return expr;
         }
 
         private ConstantExpression ParseNumber(IEnumerator<IToken> tokens)
         {
-            var token = tokens.Current as NumberToken;
-            var expr = new ConstantExpression(token.Value, token.Start, token.End);
+            var token = (NumberToken)tokens.Current;
+            var expr = new ConstantExpression.Number(token.Value, token, token.Errors);
             tokens.NextNonIgnorable();
             return expr;
         }

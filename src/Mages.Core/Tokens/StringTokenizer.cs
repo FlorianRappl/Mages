@@ -150,7 +150,7 @@
             {
                 var content = _buffer.Stringify();
                 _buffer = null;
-                return new StringToken(content, _start, _scanner.Position);
+                return new StringToken(content, _errors, _start, _scanner.Position);
             }
 
             private void AddError(ParseError error)
