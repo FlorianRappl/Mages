@@ -16,7 +16,21 @@
         public ParameterExpression(IExpression[] expressions, TextPosition start, TextPosition end)
             : base(start, end)
         {
-            _expressions = expressions;
+            _expressions = new IExpression[expressions.Length];
+
+            for (var i = 0; i < expressions.Length; i++)
+            {
+                var variable = expressions[i] as VariableExpression;
+
+                if (variable != null)
+                {
+                    _expressions[i] = new IdentifierExpression(variable.Name, variable.Start, variable.End);
+                }
+                else
+                {
+                    _expressions[i] = expressions[i];
+                }
+            }
         }
 
         #endregion
