@@ -1,5 +1,7 @@
 ﻿namespace Mages.Core.Tests
 {
+    using Mages.Core.Ast;
+    using Mages.Core.Tests.Mocks;
     using NUnit.Framework;
     using System;
 
@@ -27,19 +29,13 @@
         [Test]
         public void LambdaExpressionWithInteger()
         {
-            Test("f = x => x.^2; f(2)", 4.0);
+            Test("(x => x^2)(2)", 4.0);
         }
 
         [Test]
         public void LambdaExpressionWithMatrices()
         {
-            Test("f = (x, y) => x*y'; f([1,2,3],[1,2,3])", 14.0);
-        }
-
-        [Test]
-        public void MatrixWithNewLines()
-        {
-            Test("sum(size([\n1 2 3 4\n5 6 7 8]))", 6.0);
+            Test("((x, y) => x*y')([1,2,3],[1,2,3])", 14.0);
         }
 
         [Test]
@@ -377,12 +373,6 @@
         }
 
         [Test]
-        public void ParseOpenBracketMissingRestShouldFail()
-        {
-            IsInvalid("function f(");
-        }
-
-        [Test]
         public void ParseStandaloneMemberOperatorShouldFail()
         {
             IsInvalid(".");
@@ -522,14 +512,26 @@
 
         private void IsInvalid(String sourceCode)
         {
-            //TODO:
-            Assert.IsFalse(false);
+            var hasError = Validate(sourceCode);
+            Assert.IsTrue(hasError);
         }
 
         private void IsValid(String sourceCode)
         {
-            //TODO:
-            Assert.IsTrue(true);
+            var hasError = Validate(sourceCode);
+            Assert.IsFalse(hasError);
+        }
+
+        private Boolean Validate(String sourceCode)
+        {
+            var hasError = false;
+            var validation = new ValidationContextMock(_ => hasError = true);
+            var tokenSource = sourceCode.ToTokenStream();
+            var parser = new ExpressionParser();
+            var statement = parser.ParseStatement(tokenSource);
+
+            statement.Validate(validation);
+            return hasError;
         }
     }
 }
