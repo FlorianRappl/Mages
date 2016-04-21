@@ -64,6 +64,7 @@
     <Compile Include="ScannerTests.cs" />
     <Compile Include="StringTests.cs" />
     <Compile Include="TokenizerTests.cs" />
+    <Compile Include="YampTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mages.Core\Mages.Core.csproj">
