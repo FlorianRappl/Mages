@@ -7,8 +7,14 @@
     {
         public static IEnumerator<IToken> NextNonIgnorable(this IEnumerator<IToken> tokens)
         {
-            while (tokens.MoveNext() && tokens.Current.Type == TokenType.Space) ;
+            while (tokens.MoveNext() && tokens.Current.IsIgnorable()) ;
             return tokens;
+        }
+
+        public static Boolean IsIgnorable(this IToken token)
+        {
+            var type = token.Type;
+            return type == TokenType.Space || type == TokenType.Comment;
         }
 
         public static Boolean IsNeither(this IToken token, TokenType a, TokenType b)

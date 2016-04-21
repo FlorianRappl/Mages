@@ -43,9 +43,8 @@
         Space = 36,
         Assignment = 37,
         Lambda = 38,
-        LineComment = 39,
-        BlockComment = 40,
-        SemiColon = 41,
+        SemiColon = 0xff,
+        Comment = 0xfffe,
         End = 0xffff,
     }
 }
