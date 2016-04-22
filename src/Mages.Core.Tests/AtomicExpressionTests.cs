@@ -11,9 +11,8 @@
         public void UnknownCharacterIsInvalidExpression()
         {
             var source = "$";
-            var tokenSource = source.ToTokenStream();
             var parser = new ExpressionParser();
-            var expr = parser.ParseExpression(tokenSource);
+            var expr = parser.ParseExpression(source);
             Assert.IsInstanceOf<InvalidExpression>(expr);
         }
 
@@ -21,9 +20,8 @@
         public void EmptySourceIsEmptyExpression()
         {
             var source = "";
-            var tokenSource = source.ToTokenStream();
             var parser = new ExpressionParser();
-            var expr = parser.ParseExpression(tokenSource);
+            var expr = parser.ParseExpression(source);
             Assert.IsInstanceOf<EmptyExpression>(expr);
         }
 
@@ -31,9 +29,8 @@
         public void SemicolonIsEmptyExpression()
         {
             var source = ";";
-            var tokenSource = source.ToTokenStream();
             var parser = new ExpressionParser();
-            var expr = parser.ParseExpression(tokenSource);
+            var expr = parser.ParseExpression(source);
             Assert.IsInstanceOf<EmptyExpression>(expr);
         }
 
@@ -41,9 +38,8 @@
         public void SpacesSourceIsEmptyExpression()
         {
             var source = "\t \n   ";
-            var tokenSource = source.ToTokenStream();
             var parser = new ExpressionParser();
-            var expr = parser.ParseExpression(tokenSource);
+            var expr = parser.ParseExpression(source);
             Assert.IsInstanceOf<EmptyExpression>(expr);
         }
 
@@ -51,9 +47,8 @@
         public void UnknownCharacterIsInvalidExpressionContainedInBinaryExpression()
         {
             var source = "$+";
-            var tokenSource = source.ToTokenStream();
             var parser = new ExpressionParser();
-            var expr = parser.ParseExpression(tokenSource);
+            var expr = parser.ParseExpression(source);
             Assert.IsInstanceOf<BinaryExpression>(expr);
             var left = ((BinaryExpression)expr).LValue;
             var right = ((BinaryExpression)expr).RValue;
@@ -65,9 +60,8 @@
         public void TrueIsConstantExpression()
         {
             var source = "true";
-            var tokenSource = source.ToTokenStream();
             var parser = new ExpressionParser();
-            var expr = parser.ParseExpression(tokenSource);
+            var expr = parser.ParseExpression(source);
             Assert.IsInstanceOf<ConstantExpression>(expr);
         }
 
@@ -75,9 +69,8 @@
         public void FalseIsConstantExpression()
         {
             var source = "false";
-            var tokenSource = source.ToTokenStream();
             var parser = new ExpressionParser();
-            var expr = parser.ParseExpression(tokenSource);
+            var expr = parser.ParseExpression(source);
             Assert.IsInstanceOf<ConstantExpression>(expr);
         }
 
@@ -85,9 +78,8 @@
         public void ArbitraryIdentifierIsVariableExpression()
         {
             var source = "a";
-            var tokenSource = source.ToTokenStream();
             var parser = new ExpressionParser();
-            var expr = parser.ParseExpression(tokenSource);
+            var expr = parser.ParseExpression(source);
             Assert.IsInstanceOf<VariableExpression>(expr);
         }
 
@@ -95,9 +87,8 @@
         public void NumberIsConstantExpression()
         {
             var source = "2.3";
-            var tokenSource = source.ToTokenStream();
             var parser = new ExpressionParser();
-            var expr = parser.ParseExpression(tokenSource);
+            var expr = parser.ParseExpression(source);
             Assert.IsInstanceOf<ConstantExpression>(expr);
         }
 
@@ -105,9 +96,8 @@
         public void StringIsConstantExpression()
         {
             var source = "\"hi there\"";
-            var tokenSource = source.ToTokenStream();
             var parser = new ExpressionParser();
-            var expr = parser.ParseExpression(tokenSource);
+            var expr = parser.ParseExpression(source);
             Assert.IsInstanceOf<ConstantExpression>(expr);
         }
     }
