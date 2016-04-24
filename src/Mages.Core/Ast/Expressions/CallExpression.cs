@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents a function call.
     /// </summary>
-    sealed class CallExpression : ComputingExpression, IExpression
+    public sealed class CallExpression : ComputingExpression, IExpression
     {
         #region Fields
 
@@ -38,6 +38,11 @@
         #endregion
 
         #region Methods
+
+        public void Accept(ITreeWalker visitor)
+        {
+            visitor.Visit(this);
+        }
 
         public void Validate(IValidationContext context)
         {

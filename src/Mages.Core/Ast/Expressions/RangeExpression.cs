@@ -3,7 +3,7 @@
     /// <summary>
     /// The range expression.
     /// </summary>
-    sealed class RangeExpression : ComputingExpression, IExpression
+    public sealed class RangeExpression : ComputingExpression, IExpression
     {
         #region Fields
 
@@ -45,6 +45,11 @@
         #endregion
 
         #region Methods
+
+        public void Accept(ITreeWalker visitor)
+        {
+            visitor.Visit(this);
+        }
 
         public void Validate(IValidationContext context)
         {

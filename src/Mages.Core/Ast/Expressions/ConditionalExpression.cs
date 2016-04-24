@@ -5,7 +5,7 @@
     /// <summary>
     /// Represents a conditional expression.
     /// </summary>
-    sealed class ConditionalExpression : ComputingExpression, IExpression
+    public sealed class ConditionalExpression : ComputingExpression, IExpression
     {
         #region Fields
 
@@ -47,6 +47,11 @@
         #endregion
 
         #region Methods
+
+        public void Accept(ITreeWalker visitor)
+        {
+            visitor.Visit(this);
+        }
 
         public void Validate(IValidationContext context)
         {

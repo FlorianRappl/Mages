@@ -5,7 +5,7 @@
     /// <summary>
     /// Represents the access of a variable.
     /// </summary>
-    sealed class VariableExpression : AssignableExpression, IExpression
+    public sealed class VariableExpression : AssignableExpression, IExpression
     {
         #region Fields
 
@@ -40,6 +40,11 @@
         #endregion
 
         #region Methods
+
+        public void Accept(ITreeWalker visitor)
+        {
+            visitor.Visit(this);
+        }
 
         public void Validate(IValidationContext context)
         {

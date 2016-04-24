@@ -5,7 +5,7 @@
     /// <summary>
     /// Represents an assignment expression.
     /// </summary>
-    sealed class AssignmentExpression : AssignableExpression, IExpression
+    public sealed class AssignmentExpression : AssignableExpression, IExpression
     {
         #region Fields
 
@@ -55,6 +55,11 @@
         #endregion
 
         #region Methods
+
+        public void Accept(ITreeWalker visitor)
+        {
+            visitor.Visit(this);
+        }
 
         public void Validate(IValidationContext context)
         {

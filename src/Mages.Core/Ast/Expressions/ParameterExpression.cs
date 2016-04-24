@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents an expression containing function parameters.
     /// </summary>
-    sealed class ParameterExpression : ComputingExpression, IExpression
+    public sealed class ParameterExpression : ComputingExpression, IExpression
     {
         #region Fields
 
@@ -32,6 +32,11 @@
         #endregion
 
         #region Methods
+
+        public void Accept(ITreeWalker visitor)
+        {
+            visitor.Visit(this);
+        }
 
         public void BindTo(AbstractScope scope)
         {

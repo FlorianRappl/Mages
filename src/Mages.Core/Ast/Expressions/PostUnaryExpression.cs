@@ -3,7 +3,7 @@
     /// <summary>
     /// Base class for all post unary expressions.
     /// </summary>
-    abstract class PostUnaryExpression : ComputingExpression, IExpression
+    public abstract class PostUnaryExpression : ComputingExpression, IExpression
     {
         #region Fields
 
@@ -31,6 +31,11 @@
         #endregion
 
         #region Methods
+
+        public void Accept(ITreeWalker visitor)
+        {
+            visitor.Visit(this);
+        }
 
         public virtual void Validate(IValidationContext context)
         {

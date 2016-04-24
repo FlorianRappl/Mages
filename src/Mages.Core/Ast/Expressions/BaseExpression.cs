@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents the shared core of all expressions.
     /// </summary>
-    abstract class BaseExpression
+    public abstract class BaseExpression
     {
         #region Fields
 

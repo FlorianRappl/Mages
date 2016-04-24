@@ -5,7 +5,7 @@
     /// <summary>
     /// Represents a computed expression (not-assignable).
     /// </summary>
-    abstract class ComputingExpression : BaseExpression
+    public abstract class ComputingExpression : BaseExpression
     {
         #region ctor
 

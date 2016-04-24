@@ -3,7 +3,10 @@
     using System;
     using System.Collections.Generic;
 
-    sealed class AbstractScope
+    /// <summary>
+    /// Represents an abstract (compile-time) scope information.
+    /// </summary>
+    public sealed class AbstractScope
     {
         #region Fields
 

@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents a member expression.
     /// </summary>
-    sealed class MemberExpression : AssignableExpression, IExpression
+    public sealed class MemberExpression : AssignableExpression, IExpression
     {
         #region Fields
 
@@ -38,6 +38,11 @@
         #endregion
 
         #region Methods
+
+        public void Accept(ITreeWalker visitor)
+        {
+            visitor.Visit(this);
+        }
 
         public void Validate(IValidationContext context)
         {

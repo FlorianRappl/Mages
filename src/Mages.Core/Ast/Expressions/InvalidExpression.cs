@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents an invalid expression.
     /// </summary>
-    sealed class InvalidExpression : ComputingExpression, IExpression
+    public sealed class InvalidExpression : ComputingExpression, IExpression
     {
         #region Fields
 
@@ -38,6 +38,11 @@
         #endregion
 
         #region Methods
+
+        public void Accept(ITreeWalker visitor)
+        {
+            visitor.Visit(this);
+        }
 
         public void Validate(IValidationContext context)
         {

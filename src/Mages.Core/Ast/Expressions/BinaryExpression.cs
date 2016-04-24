@@ -3,7 +3,7 @@
     /// <summary>
     /// The base class for all binary expressions.
     /// </summary>
-    abstract class BinaryExpression : ComputingExpression, IExpression
+    public abstract class BinaryExpression : ComputingExpression, IExpression
     {
         #region Fields
 
@@ -38,6 +38,11 @@
         #endregion
 
         #region Methods
+
+        public void Accept(ITreeWalker visitor)
+        {
+            visitor.Visit(this);
+        }
 
         public void Validate(IValidationContext context)
         {

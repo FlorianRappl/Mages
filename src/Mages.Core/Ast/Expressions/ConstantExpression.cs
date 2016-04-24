@@ -7,7 +7,7 @@
     /// <summary>
     /// Represents a constant (predefined value) expression.
     /// </summary>
-    abstract class ConstantExpression : ComputingExpression, IExpression
+    public abstract class ConstantExpression : ComputingExpression, IExpression
     {
         #region Fields
 
@@ -35,6 +35,11 @@
         #endregion
 
         #region Methods
+
+        public void Accept(ITreeWalker visitor)
+        {
+            visitor.Visit(this);
+        }
 
         public static ConstantExpression From(Object value, ITextRange range)
         {

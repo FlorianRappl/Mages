@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents a property (name-value pair) of an object.
     /// </summary>
-    sealed class PropertyExpression : ComputingExpression, IExpression
+    public sealed class PropertyExpression : ComputingExpression, IExpression
     {
         #region Fields
 
@@ -38,6 +38,11 @@
         #endregion
 
         #region Methods
+
+        public void Accept(ITreeWalker visitor)
+        {
+            visitor.Visit(this);
+        }
 
         public void Validate(IValidationContext context)
         {

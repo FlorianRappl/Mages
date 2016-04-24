@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents an empty expression (potentially invalid).
     /// </summary>
-    sealed class EmptyExpression : ComputingExpression, IExpression
+    public sealed class EmptyExpression : ComputingExpression, IExpression
     {
         #region ctor
 
@@ -15,6 +15,11 @@
         #endregion
 
         #region Methods
+
+        public void Accept(ITreeWalker visitor)
+        {
+            visitor.Visit(this);
+        }
 
         public void Validate(IValidationContext context)
         {

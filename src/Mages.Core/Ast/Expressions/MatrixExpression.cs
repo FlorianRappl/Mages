@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents a matrix expression.
     /// </summary>
-    sealed class MatrixExpression : ComputingExpression, IExpression
+    public sealed class MatrixExpression : ComputingExpression, IExpression
     {
         #region Fields
 
@@ -31,6 +31,11 @@
         #endregion
 
         #region Methods
+
+        public void Accept(ITreeWalker visitor)
+        {
+            visitor.Visit(this);
+        }
 
         public void Validate(IValidationContext context)
         {
