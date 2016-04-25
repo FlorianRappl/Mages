@@ -34,5 +34,11 @@
             var type = token.Type;
             return type == a || type == b || type == c || type == d;
         }
+
+        public static Boolean IsOneOf(this IToken token, TokenType a, TokenType b, TokenType c, TokenType d, TokenType e, TokenType f)
+        {
+            var type = token.Type;
+            return type == a || type == b || type == c || type == d || type == e || type == f;
+        }
     }
 }

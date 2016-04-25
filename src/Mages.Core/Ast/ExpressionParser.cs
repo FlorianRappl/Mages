@@ -220,10 +220,11 @@
         {
             var x = ParsePower(tokens);
 
-            while (tokens.Current.IsOneOf(TokenType.Multiply, TokenType.Modulo, TokenType.LeftDivide, TokenType.RightDivide))
+            while (tokens.Current.IsOneOf(TokenType.Multiply, TokenType.Modulo, TokenType.LeftDivide, TokenType.RightDivide, TokenType.Number, TokenType.Identifier))
             {
-                var mode = tokens.Current.Type;
-                var y = ParsePower(tokens.NextNonIgnorable());
+                var implicitMultiply = tokens.Current.IsEither(TokenType.Number, TokenType.Identifier);
+                var mode = implicitMultiply ? TokenType.Multiply : tokens.Current.Type;
+                var y = ParsePower(implicitMultiply ? tokens : tokens.NextNonIgnorable());
                 x = ExpressionCreators.Binary[mode].Invoke(x, y);
             }
 
