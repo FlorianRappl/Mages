@@ -2,6 +2,8 @@
 
 MAGES follows most of the syntax rules of YAMP, which is close to MATLAB. This is, however, a quite vague statement and does not reveal anything beyond speculation. Therefore, the following paragraphs outline the syntax details as specific as possible using something close to BNF.
 
+## Characters
+
 Ignorable characters (space characters) are defined via:
 
 ```
@@ -18,6 +20,8 @@ semicol ::= ';'
 letter ::= [A - Z] | [a - z]
 digit ::= [0 - 9]
 ``` 
+
+## Primitives
 
 A number is the usual suspect:
 
@@ -58,6 +62,8 @@ name_character ::= name_start_character | digit
 identifier ::= name_start_character name_character*
 ```
 
+## Literals
+
 A matrix is defined via columns and rows:
 
 ```
@@ -81,6 +87,8 @@ primitive ::= string | boolean | number
 literal ::= primitive | matrix | object
 ```
 
+## Functions
+
 Another important concept are anonymous functions, which are commonly referred to as lambda expressions:
 
 ```
@@ -102,6 +110,8 @@ range ::= expr space* ':' (space* expr space* ':')? space* expr
 condition ::= expr space* '?' space* expr space* ':' space* expr
 ```
 
+## Operators
+
 A special kind of binary operator is the member operator, which is used in conjunction with objects:
 
 ```
@@ -115,6 +125,14 @@ binary_operator ::= '+' | '-' | '*' | '/' | '\' | '%' | '^' | '>' | '>=' | '<=' 
 binary ::= expr space* binary_operator space* expr
 ```
 
+There is one exception to this rule: The multiplication operator also works in special cases without a symbol (`*`). This may be summarized as follows:
+
+```
+explicit_multiplication ::= expr space* '*' space* expr
+implicit_multiplication ::= expr space* (number | identifier)
+multiplication ::= explicit_multiplication | implicit_multiplication
+```
+
 Furthermore, two types of unary operations exist:
 
 ```
@@ -122,13 +140,16 @@ left_unary_operator ::= '+' | '-' | '~' | '++' | '--'
 right_unary_operator ::= '!' | ''' | '++' | '--'
 pre_unary ::= left_unary_operator space* expr
 post_unary ::= expr space* right_unary_operator
+unary ::= pre_unary | post_unary
 ```
+
+## Expressions
 
 Currently, we are missing the definition of `expr`. Since `expr` encloses objects and matrices one had to be first, which - in this case - was chosen to be objects and matrices.
 
 ```
-assignable_expr ::= 
-computing_expr ::= 
+assignable_expr ::= identifier | assignment | member | call
+computing_expr ::= literal | binary | unary | function | literal | condition | range | arguments
 expr ::= assignable_expr | computing_expr
 ```
 
@@ -138,8 +159,18 @@ The recursion of `assignable_expr` only works if we know the definition of this 
 assignment ::= assignable_expr space* '=' space* expr
 ```
 
+## Statements
+
 Introducing a new (local) variable can then be defined by the `var_statement`:
 
 ```
 var_statement ::= 'var' space+ assignment
 ```
+
+Statements are generally given by the following construct:
+
+```
+statement_line ::= expr | var_statement
+statement ::= statement_line space* ';'
+```
+
