@@ -49,6 +49,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReplCore.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mages.Core\Mages.Core.csproj">
+      <Project>{b0698a2a-bfe9-4568-9055-82302f325452}</Project>
+      <Name>Mages.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
