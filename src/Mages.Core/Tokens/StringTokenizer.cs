@@ -100,7 +100,10 @@
                         default: AddError(new ParseError(ErrorCode.EscapeSequenceInvalid, _scanner.Position.ToRange())); break;
                     }
 
-                    return Normal();
+                    if (_scanner.Current != CharacterTable.End)
+                    {
+                        return Normal();
+                    }
                 }
 
                 return Error();

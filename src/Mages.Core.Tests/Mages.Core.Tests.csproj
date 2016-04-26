@@ -57,6 +57,7 @@
     <Compile Include="ComposedExpressionTests.cs" />
     <Compile Include="FunctionExpressionTests.cs" />
     <Compile Include="ImplicitMultiplicationTests.cs" />
+    <Compile Include="InvalidInputTests.cs" />
     <Compile Include="MatrixExpressionTests.cs" />
     <Compile Include="Mocks\ValidationContextMock.cs" />
     <Compile Include="NumberTests.cs" />
