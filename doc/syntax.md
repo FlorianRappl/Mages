@@ -161,16 +161,21 @@ assignment ::= assignable_expr space* '=' space* expr
 
 ## Statements
 
-Introducing a new (local) variable can then be defined by the `var_statement`:
+Introducing a new (local) variable can then be defined by the `var_stmt` statement:
 
 ```
-var_statement ::= 'var' space+ assignment
+var_stmt ::= 'var' space+ assignment
+```
+
+Variables live in their local scope. Scopes are implicitely created by functions or by a block statement:
+
+```
+block_stmt ::= '{' space* statement* space* '}'
 ```
 
 Statements are generally given by the following construct:
 
 ```
-statement_line ::= expr | var_statement
-statement ::= statement_line space* ';'
+statement ::= (expr | var_stmt | block_stmt) space* ';'
 ```
 
