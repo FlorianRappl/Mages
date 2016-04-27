@@ -57,6 +57,8 @@
         IndicesNotTerminated,
         [Description("An expected closing paranthesis could not be found ( ')' ).")]
         BracketNotTerminated,
+        [Description("An expected opening bracket could not be found ( '{' ).")]
+        BracketExpected,
         [Description("An assignable expression has been expected.")]
         AssignableExpected,
         [Description("Too many indices provided. A maximum of 2 indices is allowed.")]

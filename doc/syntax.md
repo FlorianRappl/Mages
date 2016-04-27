@@ -77,7 +77,7 @@ The language also contains object literals. They are defined as:
 ```
 property ::= identifier space* colon space* expr space*
 properties ::= property (comma space* property)* comma? space*
-object ::= '{' space* properties? '}'
+object ::= 'new' space* '{' space* properties? '}'
 ```
 
 All the former definitions lead to primitives and literals in general. Primitives are fixed blocks of information, while in general literals may be composed of these fixed blocks.
@@ -93,8 +93,10 @@ Another important concept are anonymous functions, which are commonly referred t
 
 ```
 parameters ::= '(' space* (identifier space* (',' space* identifier space*)*)? ')'
-function ::= (parameters | identifier) space* '=>' space* expr
+function ::= (parameters | identifier) space* '=>' space* (expr | block_stmt)
 ```
+
+The `block_stmt` will be defined later.
 
 Functions can be called by using the function call operator in combination with a suitable amount of arguments.
 
@@ -170,12 +172,12 @@ var_stmt ::= 'var' space+ assignment
 Variables live in their local scope. Scopes are implicitely created by functions or by a block statement:
 
 ```
-block_stmt ::= '{' space* statement* space* '}'
+block_stmt ::= '{' space* stmt* space* '}'
 ```
 
 Statements are generally given by the following construct:
 
 ```
-statement ::= (expr | var_stmt | block_stmt) space* ';'
+stmt ::= (expr | var_stmt | block_stmt) space* ';'
 ```
 

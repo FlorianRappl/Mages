@@ -399,23 +399,30 @@
             return expressions;
         }
 
-        private ObjectExpression ParseObject(IEnumerator<IToken> tokens)
+        private IExpression ParseObject(IEnumerator<IToken> tokens)
         {
             var start = tokens.Current;
-            var values = ParseProperties(tokens.NextNonIgnorable());
-            var end = tokens.Current;
+            var current = tokens.NextNonIgnorable().Current;
 
-            if (end.Type == TokenType.CloseScope)
+            if (current.Type == TokenType.OpenScope)
             {
-                tokens.NextNonIgnorable();
-            }
-            else
-            {
-                var error = ParseInvalid(ErrorCode.ObjectNotTerminated, tokens);
-                values.Add(error);
+                var values = ParseProperties(tokens.NextNonIgnorable());
+                var end = tokens.Current;
+
+                if (end.Type == TokenType.CloseScope)
+                {
+                    tokens.NextNonIgnorable();
+                }
+                else
+                {
+                    var error = ParseInvalid(ErrorCode.ObjectNotTerminated, tokens);
+                    values.Add(error);
+                }
+
+                return new ObjectExpression(values.ToArray(), start.Start, end.End);
             }
 
-            return new ObjectExpression(values.ToArray(), start.Start, end.End);
+            return ParseInvalid(ErrorCode.BracketNotTerminated, tokens);
         }
 
         private PropertyExpression ParseProperty(IEnumerator<IToken> tokens)
@@ -463,8 +470,6 @@
             {
                 case TokenType.OpenList:
                     return ParseMatrix(tokens);
-                case TokenType.OpenScope:
-                    return ParseObject(tokens);
                 case TokenType.OpenGroup:
                     return ParseArguments(tokens);
                 case TokenType.Keyword:
@@ -522,13 +527,21 @@
         private IExpression ParseKeywordConstant(IEnumerator<IToken> tokens)
         {
             var token = tokens.Current;
-            var constant = default(Object);
 
-            if (Keywords.TryGetConstant(token.Payload, out constant))
+            if (token.Payload.Equals(Keywords.New, StringComparison.Ordinal))
             {
-                var expr = ConstantExpression.From(constant, token);
-                tokens.NextNonIgnorable();
-                return expr;
+                return ParseObject(tokens);
+            }
+            else
+            {
+                var constant = default(Object);
+
+                if (Keywords.TryGetConstant(token.Payload, out constant))
+                {
+                    var expr = ConstantExpression.From(constant, token);
+                    tokens.NextNonIgnorable();
+                    return expr;
+                }
             }
 
             return ParseInvalid(ErrorCode.KeywordUnexpected, tokens);

@@ -10,7 +10,7 @@
         [Test]
         public void ObjectLiteralWithSingleKeyValue()
         {
-            var source = "{ key: value }";
+            var source = "new { key: value }";
             var tokens = source.ToTokenStream();
             var parser = new ExpressionParser();
             var result = parser.ParseExpression(tokens);
@@ -35,7 +35,7 @@
         [Test]
         public void ObjectLiteralWithMultipleKeyValuesMixedExpressions()
         {
-            var source = "{ one: 1, two: false, three: 2 * 3 }";
+            var source = "new { one: 1, two: false, three: 2 * 3 }";
             var tokens = source.ToTokenStream();
             var parser = new ExpressionParser();
             var result = parser.ParseExpression(tokens);
@@ -77,7 +77,7 @@
         [Test]
         public void TightEmptyObjectLiteral()
         {
-            var source = "{}";
+            var source = "new{}";
             var tokens = source.ToTokenStream();
             var parser = new ExpressionParser();
             var result = parser.ParseExpression(tokens);
@@ -86,13 +86,13 @@
             var obj = (ObjectExpression)result;
             Assert.AreEqual(0, obj.Values.Length);
             Assert.AreEqual(1, obj.Start.Column);
-            Assert.AreEqual(2, obj.End.Column);
+            Assert.AreEqual(5, obj.End.Column);
         }
 
         [Test]
         public void RelaxedEmptyObjectLiteral()
         {
-            var source = " {  } ";
+            var source = " new {  } ";
             var tokens = source.ToTokenStream();
             var parser = new ExpressionParser();
             var result = parser.ParseExpression(tokens);
@@ -101,13 +101,13 @@
             var obj = (ObjectExpression)result;
             Assert.AreEqual(0, obj.Values.Length);
             Assert.AreEqual(2, obj.Start.Column);
-            Assert.AreEqual(5, obj.End.Column);
+            Assert.AreEqual(9, obj.End.Column);
         }
 
         [Test]
         public void ObjectLiteralWithSingleKeyValueTrailingComma()
         {
-            var source = "{ key: value , }";
+            var source = "new{ key: value , }";
             var tokens = source.ToTokenStream();
             var parser = new ExpressionParser();
             var result = parser.ParseExpression(tokens);

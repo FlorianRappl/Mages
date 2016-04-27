@@ -10,7 +10,7 @@
         [Test]
         public void ParseSimpleFunction()
         {
-            var source = "()=>{}";
+            var source = "()=>new{}";
             var tokens = source.ToTokenStream();
             var parser = new ExpressionParser();
             var result = parser.ParseExpression(tokens);
@@ -47,7 +47,7 @@
         [Test]
         public void ParseSimpleFunctionWithOneArgument()
         {
-            var source = "(x)=>{}";
+            var source = "(x) => new{}";
             var tokens = source.ToTokenStream();
             var parser = new ExpressionParser();
             var result = parser.ParseExpression(tokens);
@@ -67,7 +67,7 @@
         [Test]
         public void ParseSimpleFunctionWithTwoArguments()
         {
-            var source = "(x,y)=>{}";
+            var source = "(x,y)=>new {}";
             var tokens = source.ToTokenStream();
             var parser = new ExpressionParser();
             var result = parser.ParseExpression(tokens);
@@ -90,7 +90,7 @@
         [Test]
         public void ParseSimpleFunctionWithThreeArguments()
         {
-            var source = "(x,y, abc)=>{}";
+            var source = "(x,y, abc)=>new{}";
             var tokens = source.ToTokenStream();
             var parser = new ExpressionParser();
             var result = parser.ParseExpression(tokens);
@@ -116,7 +116,7 @@
         [Test]
         public void ParseSimpleFunctionWithSingleNakedArgument()
         {
-            var source = "_=>{}";
+            var source = "_=>new{}";
             var tokens = source.ToTokenStream();
             var parser = new ExpressionParser();
             var result = parser.ParseExpression(tokens);
