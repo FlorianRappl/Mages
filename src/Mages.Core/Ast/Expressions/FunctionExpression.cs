@@ -7,7 +7,6 @@
     {
         #region Fields
 
-        private readonly AbstractScope _scope;
         private readonly ParameterExpression _parameters;
         private readonly IExpression _body;
 
@@ -15,10 +14,9 @@
 
         #region ctor
 
-        public FunctionExpression(AbstractScope scope, ParameterExpression parameters, IExpression body)
+        public FunctionExpression(ParameterExpression parameters, IExpression body)
             : base(parameters.Start, parameters.End)
         {
-            _scope = scope;
             _parameters = parameters;
             _body = body;
         }
@@ -26,11 +24,6 @@
         #endregion
 
         #region Properties
-
-        public AbstractScope Scope
-        {
-            get { return _scope; }
-        }
 
         public ParameterExpression Parameters
         {

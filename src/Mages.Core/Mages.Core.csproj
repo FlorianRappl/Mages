@@ -73,6 +73,7 @@
     <Compile Include="Ast\IValidatable.cs" />
     <Compile Include="Ast\IValidationContext.cs" />
     <Compile Include="Ast\Statements\BaseStatement.cs" />
+    <Compile Include="Ast\Statements\BlockStatement.cs" />
     <Compile Include="Ast\Statements\SimpleStatement.cs" />
     <Compile Include="Ast\Statements\VarStatement.cs" />
     <Compile Include="EngineExtensions.cs" />

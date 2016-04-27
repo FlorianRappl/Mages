@@ -19,27 +19,65 @@
         public IStatement ParseStatement(IEnumerator<IToken> tokens)
         {
             tokens.NextNonIgnorable();
+            var current = tokens.Current;
 
-            if (tokens.Current.Type == TokenType.Keyword && tokens.Current.Payload.Equals(Keywords.Var, StringComparison.Ordinal))
+            if (current.Is(Keywords.Var))
             {
-                var start = tokens.Current.Start;
-                var expr = ParseAssignment(tokens.NextNonIgnorable());
-                var end = tokens.Current.End;
-                var stmt = new VarStatement(expr, start, end);
-                return stmt;
+                return ParseVarStatement(tokens);
+            }
+            else if (current.Type == TokenType.OpenScope)
+            {
+                return ParseBlockStatement(tokens);
             }
             else
             {
-                var expr = ParseAssignment(tokens);
-                var end = tokens.Current.End;
-                var stmt = new SimpleStatement(expr, end);
-                return stmt;
+                return ParseSimpleStatement(tokens);
             }
         }
 
         public IExpression ParseExpression(IEnumerator<IToken> tokens)
         {
             return ParseAssignment(tokens.NextNonIgnorable());
+        }
+
+        private SimpleStatement ParseSimpleStatement(IEnumerator<IToken> tokens)
+        {
+            var expr = ParseAssignment(tokens);
+            var end = tokens.Current.End;
+            return new SimpleStatement(expr, end);
+        }
+
+        private IStatement ParseVarStatement(IEnumerator<IToken> tokens)
+        {
+            var start = tokens.Current.Start;
+            var expr = ParseAssignment(tokens.NextNonIgnorable());
+            var end = tokens.Current.End;
+            var stmt = new VarStatement(expr, start, end);
+            return stmt;
+        }
+
+        private BlockStatement ParseBlockStatement(IEnumerator<IToken> tokens)
+        {
+            var start = tokens.Current.Start;
+            var current = tokens.NextNonIgnorable().Current;
+            var statements = new List<IStatement>();
+            _scopes.PushNew();
+
+            while (current.IsNeither(TokenType.CloseScope, TokenType.End))
+            {
+                var statement = ParseStatement(tokens);
+                statements.Add(statement);
+                current = tokens.Current;
+
+                if (current.Type == TokenType.SemiColon)
+                {
+                    current = tokens.NextNonIgnorable().Current;
+                }
+            }
+
+            var end = tokens.Current.End;
+            var scope = _scopes.PopCurrent();
+            return new BlockStatement(statements.ToArray(), start, end);
         }
 
         private List<IExpression> ParseExpressions(IEnumerator<IToken> tokens)
@@ -72,7 +110,7 @@
             parameters.BindTo(_scopes.Current);
             var body = ParseAssignment(tokens);
             var scope = _scopes.PopCurrent();
-            return new FunctionExpression(scope, parameters, body);
+            return new FunctionExpression(parameters, body);
         }
 
         private IExpression ParseAssignment(IEnumerator<IToken> tokens)

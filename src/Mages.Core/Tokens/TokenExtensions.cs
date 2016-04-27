@@ -40,5 +40,10 @@
             var type = token.Type;
             return type == a || type == b || type == c || type == d || type == e || type == f;
         }
+
+        public static Boolean Is(this IToken token, String keyword)
+        {
+            return token.Type == TokenType.Keyword && token.Payload.Equals(keyword, StringComparison.Ordinal);
+        }
     }
 }
