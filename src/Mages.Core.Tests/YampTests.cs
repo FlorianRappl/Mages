@@ -253,10 +253,23 @@
         {
             Test("(-75)^2", Math.Pow(75.0, 2.0));
         }
+
         [Test]
         public void AbsoluteValueOfSubtractedMatrices()
         {
             Test("abs([2,3,1]-[1,3,1])", 1.0);
+        }
+
+        [Test]
+        public void ExponentialAndPiCube()
+        {
+            Test("e^3-pi^3", Math.Pow(Math.E, 3.0) - Math.Pow(Math.PI, 3.0));
+        }
+
+        [Test]
+        public void NegatePi()
+        {
+            Test("-pi", -Math.PI);
         }
 
         [Test]
@@ -502,6 +515,54 @@
         public void NegativeNumberEqualsNot()
         {
             Test("3-i~=4", 1.0);
+        }
+
+        [Test]
+        public void Ceiling()
+        {
+            Test("ceil(2.5)", 3.0);
+        }
+
+        [Test]
+        public void Floor()
+        {
+            Test("floor(2.5)", 2.0);
+        }
+
+        [Test]
+        public void ExponentialZero()
+        {
+            Test("exp(0) 10-5", 5.0);
+        }
+
+        [Test]
+        public void ExponentialThree()
+        {
+            Test("exp(3) * 10", 10.0 * Math.Exp(3));
+        }
+
+        [Test]
+        public void Cosine()
+        {
+            Test("cos(pi)", -1.0);
+        }
+
+        [Test]
+        public void Sine()
+        {
+            Test("sin(pi/2)", 1.0);
+        }
+
+        [Test]
+        public void Trigonometric()
+        {
+            Test("cos(0)*exp(0)*sin(3*pi/2)", -1.0);
+        }
+
+        [Test]
+        public void Maximum()
+        {
+            Test("max([1,5,7,9,8])", 9.0);
         }
 
         private void Test(String sourceCode, Double expected, Double tolerance = 0.0)
