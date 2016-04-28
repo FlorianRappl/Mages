@@ -3,6 +3,7 @@
     using Mages.Core.Ast;
     using NUnit.Framework;
     using System;
+    using System.Linq;
 
     [TestFixture]
     public class SymbolTests
@@ -38,8 +39,10 @@
         private static void Test(String source, String[] variables)
         {
             var parser = new ExpressionParser();
-            var statements = parser.ParseStatement(source);
-            //TODO: check for variables
+            var statements = parser.ParseStatements(source);
+            var actual = statements.FindMissingSymbols().Select(m => m.Name).ToArray();
+
+            CollectionAssert.AreEquivalent(variables, actual);
         }
     }
 }
