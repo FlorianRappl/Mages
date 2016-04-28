@@ -53,6 +53,11 @@
             }
         }
 
+        public void Accept(ITreeWalker visitor)
+        {
+            _assignment.Accept(visitor);
+        }
+
         #endregion
     }
 }

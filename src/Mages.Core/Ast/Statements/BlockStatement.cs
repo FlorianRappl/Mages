@@ -28,6 +28,14 @@
             }
         }
 
+        public void Accept(ITreeWalker visitor)
+        {
+            foreach (var statement in _statements)
+            {
+                statement.Accept(visitor);
+            }
+        }
+
         #endregion
     }
 }

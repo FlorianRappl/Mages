@@ -18,11 +18,25 @@
 
         #endregion
 
+        #region Properties
+
+        public IExpression Expression
+        {
+            get { return _expression; }
+        }
+
+        #endregion
+
         #region Methods
 
         public void Validate(IValidationContext context)
         {
             _expression.Validate(context);
+        }
+
+        public void Accept(ITreeWalker visitor)
+        {
+            _expression.Accept(visitor);
         }
 
         #endregion
