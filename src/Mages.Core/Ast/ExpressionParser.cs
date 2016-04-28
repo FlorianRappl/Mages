@@ -121,7 +121,7 @@
 
             if (mode == TokenType.Assignment)
             {
-                var y = ParseExpression(tokens.NextNonIgnorable());
+                var y = ParseExpression(tokens);
                 return new AssignmentExpression(x, y);
             }
             else if (mode == TokenType.Lambda)
@@ -129,7 +129,7 @@
                 if (x is ArgumentsExpression)
                 {
                     var args = ((ArgumentsExpression)x);
-                    var parameters = new ParameterExpression(args.Expressions, args.Start, args.End);
+                    var parameters = new ParameterExpression(args.Arguments, args.Start, args.End);
                     return ParseFunction(parameters, tokens.NextNonIgnorable());
                 }
                 else
