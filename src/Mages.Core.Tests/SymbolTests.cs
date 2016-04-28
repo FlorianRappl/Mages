@@ -26,14 +26,14 @@
         public void ReadKnownAndUnknownVariablesInGlobalScope()
         {
             var source = "d = 5; a = b + c * d";
-            Test(source, new String[] { "b", "c" });
+            Test(source, new[] { "b", "c" });
         }
 
         [Test]
         public void ReadUnknownVariableInLocalScope()
         {
             var source = "f = (x) => x * y; g = f(z)";
-            Test(source, new String[] { "y", "z" });
+            Test(source, new[] { "y", "z" });
         }
 
         private static void Test(String source, String[] variables)

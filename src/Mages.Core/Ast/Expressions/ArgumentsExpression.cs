@@ -7,25 +7,25 @@
     {
         #region Fields
 
-        private readonly IExpression[] _expressions;
+        private readonly IExpression[] _arguments;
 
         #endregion
 
         #region ctor
 
-        public ArgumentsExpression(IExpression[] expressions, TextPosition start, TextPosition end)
+        public ArgumentsExpression(IExpression[] arguments, TextPosition start, TextPosition end)
             : base(start, end)
         {
-            _expressions = expressions;
+            _arguments = arguments;
         }
 
         #endregion
 
         #region Properties
 
-        public IExpression[] Expressions
+        public IExpression[] Arguments
         {
-            get { return _expressions; }
+            get { return _arguments; }
         }
 
         #endregion
@@ -39,7 +39,7 @@
 
         public void Validate(IValidationContext context)
         {
-            _expressions.Validate(context);
+            _arguments.Validate(context);
         }
 
         #endregion

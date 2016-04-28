@@ -103,7 +103,7 @@
         {
             AssertMultiplication<ConstantExpression, CallExpression>(expr,
                 constant => (Double)constant.Value == value,
-                call => ((VariableExpression)call.Function).Name == functionName && ((VariableExpression)call.Arguments.Expressions[0]).Name == functionArgument);
+                call => ((VariableExpression)call.Function).Name == functionName && ((VariableExpression)call.Arguments.Arguments[0]).Name == functionArgument);
         }
 
         private static void AssertMultiplication<TLeft, TRight>(IExpression expr, Predicate<TLeft> leftChecker, Predicate<TRight> rightChecker)

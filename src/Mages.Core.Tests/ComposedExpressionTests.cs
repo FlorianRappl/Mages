@@ -24,10 +24,10 @@
 
             var brackets = (ArgumentsExpression)multiply.LValue;
 
-            Assert.AreEqual(1, brackets.Expressions.Length);
-            Assert.IsInstanceOf<BinaryExpression.Add>(brackets.Expressions[0]);
+            Assert.AreEqual(1, brackets.Arguments.Length);
+            Assert.IsInstanceOf<BinaryExpression.Add>(brackets.Arguments[0]);
 
-            var add = (BinaryExpression.Add)brackets.Expressions[0];
+            var add = (BinaryExpression.Add)brackets.Arguments[0];
 
             Assert.IsInstanceOf<ConstantExpression>(add.LValue);
             Assert.IsInstanceOf<ConstantExpression>(add.RValue);
@@ -50,10 +50,10 @@
 
             var brackets = (ArgumentsExpression)multiply.LValue;
 
-            Assert.AreEqual(1, brackets.Expressions.Length);
-            Assert.IsInstanceOf<BinaryExpression.Add>(brackets.Expressions[0]);
+            Assert.AreEqual(1, brackets.Arguments.Length);
+            Assert.IsInstanceOf<BinaryExpression.Add>(brackets.Arguments[0]);
 
-            var add = (BinaryExpression.Add)brackets.Expressions[0];
+            var add = (BinaryExpression.Add)brackets.Arguments[0];
 
             Assert.IsInstanceOf<ConstantExpression>(add.LValue);
             Assert.IsInstanceOf<ConstantExpression>(add.RValue);
@@ -126,7 +126,7 @@
             var arguments = call.Arguments;
 
             Assert.AreEqual("f", function.Name);
-            Assert.AreEqual(0, arguments.Expressions.Length);
+            Assert.AreEqual(0, arguments.Arguments.Length);
 
             Assert.AreEqual(1, call.Start.Column);
             Assert.AreEqual(3, call.End.Column);
@@ -148,9 +148,9 @@
             var arguments = call.Arguments;
 
             Assert.AreEqual("f", function.Name);
-            Assert.AreEqual(2, arguments.Expressions.Length);
-            Assert.IsInstanceOf<ConstantExpression>(arguments.Expressions[0]);
-            Assert.IsInstanceOf<VariableExpression>(arguments.Expressions[1]);
+            Assert.AreEqual(2, arguments.Arguments.Length);
+            Assert.IsInstanceOf<ConstantExpression>(arguments.Arguments[0]);
+            Assert.IsInstanceOf<VariableExpression>(arguments.Arguments[1]);
 
             Assert.AreEqual(1, call.Start.Column);
             Assert.AreEqual(7, call.End.Column);
@@ -172,10 +172,10 @@
             var arguments = call.Arguments;
 
             Assert.AreEqual("f", function.Name);
-            Assert.AreEqual(3, arguments.Expressions.Length);
-            Assert.IsInstanceOf<ConstantExpression>(arguments.Expressions[0]);
-            Assert.IsInstanceOf<VariableExpression>(arguments.Expressions[1]);
-            Assert.IsInstanceOf<ConstantExpression>(arguments.Expressions[2]);
+            Assert.AreEqual(3, arguments.Arguments.Length);
+            Assert.IsInstanceOf<ConstantExpression>(arguments.Arguments[0]);
+            Assert.IsInstanceOf<VariableExpression>(arguments.Arguments[1]);
+            Assert.IsInstanceOf<ConstantExpression>(arguments.Arguments[2]);
 
             Assert.AreEqual(1, call.Start.Column);
             Assert.AreEqual(11, call.End.Column);
