@@ -53,6 +53,22 @@
             var expr = ParseAssignment(tokens.NextNonIgnorable());
             var end = tokens.Current.End;
             var stmt = new VarStatement(expr, start, end);
+
+            if (_scopes.Current.Parent != null)
+            {
+                var assignment = expr as AssignmentExpression;
+
+                if (assignment != null)
+                {
+                    var variable = assignment.VariableName;
+
+                    if (variable != null)
+                    {
+                        _scopes.Current.Provide(variable, assignment);
+                    }
+                }
+            }
+
             return stmt;
         }
 
@@ -122,7 +138,19 @@
             if (mode == TokenType.Assignment)
             {
                 var y = ParseExpression(tokens);
-                return new AssignmentExpression(x, y);
+                var expr = new AssignmentExpression(x, y);
+
+                if (_scopes.Current.Parent == null)
+                {
+                    var variable = expr.VariableName;
+
+                    if (variable != null)
+                    {
+                        _scopes.Current.Provide(variable, expr);
+                    }
+                }
+
+                return expr;
             }
             else if (mode == TokenType.Lambda)
             {
