@@ -4,9 +4,7 @@
 
     interface IInteractivity
     {
-        event EventHandler Cancelled;
-
-        event EventHandler<KeyEventArgs> KeyPressed;
+        String Read();
 
         void Write(String output);
     }
