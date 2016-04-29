@@ -1,6 +1,7 @@
 ﻿namespace Mages.Core
 {
     using Mages.Core.Ast;
+    using System;
 
     /// <summary>
     /// Represents the central engine for any kind of evaluation.
@@ -27,9 +28,12 @@
             get { return _parser; }
         }
 
-        public void Evaluate(IStatement statement)
+        public Object Interpret(String source)
         {
-
+            var statements = _parser.ParseStatements(source);
+            var operations = statements.MakeRunnable();
+            operations.Execute();
+            return operations.Pop();
         }
     }
 }

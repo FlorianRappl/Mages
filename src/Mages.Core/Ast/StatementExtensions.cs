@@ -1,8 +1,8 @@
 ﻿namespace Mages.Core.Ast
 {
     using Mages.Core.Ast.Expressions;
-    using Mages.Core.Ast.Statements;
     using Mages.Core.Ast.Walkers;
+    using Mages.Core.Vm;
     using System.Collections.Generic;
 
     public static class StatementExtensions
@@ -39,6 +39,19 @@
             }
 
             return missingSymbols;
+        }
+
+        public static ExecutionContext MakeRunnable(this IEnumerable<IStatement> statements)
+        {
+            var operations = new List<IOperation>();
+            var walker = new OperationTreeWalker(operations);
+
+            foreach (var statement in statements)
+            {
+                statement.Accept(walker);
+            }
+
+            return new ExecutionContext(operations.ToArray());
         }
     }
 }

@@ -78,6 +78,7 @@
     <Compile Include="Ast\Statements\BlockStatement.cs" />
     <Compile Include="Ast\Statements\SimpleStatement.cs" />
     <Compile Include="Ast\Statements\VarStatement.cs" />
+    <Compile Include="Ast\Walkers\OperationTreeWalker.cs" />
     <Compile Include="Ast\Walkers\SymbolTreeWalker.cs" />
     <Compile Include="EngineExtensions.cs" />
     <Compile Include="ITextRange.cs" />
@@ -112,10 +113,15 @@
     <Compile Include="Tokens\TextPositionExtensions.cs" />
     <Compile Include="Tokens\TokenExtensions.cs" />
     <Compile Include="Tokens\TokenType.cs" />
+    <Compile Include="Vm\ExecutionContext.cs" />
+    <Compile Include="Vm\IExecutionContext.cs" />
+    <Compile Include="Vm\IOperation.cs" />
+    <Compile Include="Vm\Operations\CallOperation.cs" />
+    <Compile Include="Vm\Operations\CollectArgsOperation.cs" />
+    <Compile Include="Vm\Operations\LoadOperation.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Runtime\" />
-    <Folder Include="Vm\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,5 +1,7 @@
 ﻿namespace Mages.Core.Ast.Expressions
 {
+    using System;
+
     /// <summary>
     /// The base class for all binary expressions.
     /// </summary>
@@ -67,6 +69,8 @@
             }
         }
 
+        public abstract Func<Object[], Object> GetFunction();
+
         #endregion
 
         #region Operations
@@ -77,6 +81,11 @@
                 : base(left, right)
             {
             }
+
+            public override Func<Object[], Object> GetFunction()
+            {
+                return args => (Double)args[0] != 0.0 && (Double)args[1] != 0.0;
+            }
         }
 
         public sealed class Or : BinaryExpression
@@ -84,6 +93,11 @@
             public Or(IExpression left, IExpression right)
                 : base(left, right)
             {
+            }
+
+            public override Func<Object[], Object> GetFunction()
+            {
+                return args => (Double)args[0] != 0.0 || (Double)args[1] != 0.0;
             }
         }
 
@@ -93,6 +107,11 @@
                 : base(left, right)
             {
             }
+
+            public override Func<Object[], Object> GetFunction()
+            {
+                return args => (Double)args[0] == (Double)args[1];
+            }
         }
 
         public sealed class NotEqual : BinaryExpression
@@ -100,6 +119,11 @@
             public NotEqual(IExpression left, IExpression right)
                 : base(left, right)
             {
+            }
+
+            public override Func<Object[], Object> GetFunction()
+            {
+                return args => (Double)args[0] != (Double)args[1];
             }
         }
 
@@ -109,6 +133,11 @@
                 : base(left, right)
             {
             }
+
+            public override Func<Object[], Object> GetFunction()
+            {
+                return args => (Double)args[0] > (Double)args[1];
+            }
         }
 
         public sealed class Less : BinaryExpression
@@ -116,6 +145,11 @@
             public Less(IExpression left, IExpression right)
                 : base(left, right)
             {
+            }
+
+            public override Func<Object[], Object> GetFunction()
+            {
+                return args => (Double)args[0] < (Double)args[1];
             }
         }
 
@@ -125,6 +159,11 @@
                 : base(left, right)
             {
             }
+
+            public override Func<Object[], Object> GetFunction()
+            {
+                return args => (Double)args[0] >= (Double)args[1];
+            }
         }
 
         public sealed class LessEqual : BinaryExpression
@@ -132,6 +171,11 @@
             public LessEqual(IExpression left, IExpression right)
                 : base(left, right)
             {
+            }
+
+            public override Func<Object[], Object> GetFunction()
+            {
+                return args => (Double)args[0] <= (Double)args[1];
             }
         }
 
@@ -141,6 +185,11 @@
                 : base(left, right)
             {
             }
+
+            public override Func<Object[], Object> GetFunction()
+            {
+                return args => (Double)args[0] + (Double)args[1];
+            }
         }
 
         public sealed class Subtract : BinaryExpression
@@ -148,6 +197,11 @@
             public Subtract(IExpression left, IExpression right)
                 : base(left, right)
             {
+            }
+
+            public override Func<Object[], Object> GetFunction()
+            {
+                return args => (Double)args[0] - (Double)args[1];
             }
         }
 
@@ -157,6 +211,11 @@
                 : base(left, right)
             {
             }
+
+            public override Func<Object[], Object> GetFunction()
+            {
+                return args => (Double)args[0] * (Double)args[1];
+            }
         }
 
         public sealed class LeftDivide : BinaryExpression
@@ -164,6 +223,11 @@
             public LeftDivide(IExpression left, IExpression right)
                 : base(left, right)
             {
+            }
+
+            public override Func<Object[], Object> GetFunction()
+            {
+                return args => (Double)args[1] / (Double)args[0];
             }
         }
 
@@ -173,6 +237,11 @@
                 : base(left, right)
             {
             }
+
+            public override Func<Object[], Object> GetFunction()
+            {
+                return args => (Double)args[0] / (Double)args[1];
+            }
         }
 
         public sealed class Power : BinaryExpression
@@ -181,6 +250,11 @@
                 : base(left, right)
             {
             }
+
+            public override Func<Object[], Object> GetFunction()
+            {
+                return args => Math.Pow((Double)args[0], (Double)args[1]);
+            }
         }
 
         public sealed class Modulo : BinaryExpression
@@ -188,6 +262,11 @@
             public Modulo(IExpression left, IExpression right)
                 : base(left, right)
             {
+            }
+
+            public override Func<Object[], Object> GetFunction()
+            {
+                return args => (Double)args[0] % (Double)args[1];
             }
         }
 
