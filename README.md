@@ -4,6 +4,12 @@
 
 MAGES is the official successor to YAMP. It is a very simple, yet powerful, expression parser and interpreter. You can use MAGES to include a sophisticated, easy to customize, and lightweight scripting engine to your application.
 
+### Current Status
+
+Currently, the tokenization and parsing is implemented, the interpretation, extension, as well as the standard functions are missing. The whole model is coming very soon.
+
+The installation described below is not working with NuGet, as there is no NuGet package yet. However, once the interpretation is included a NuGet bundle will be published. The current version is thus `0.0` with `0.1` coming soon.
+
 ### Installation
 
 MAGES itself does not have any dependencies, however, the tests are dependent on NUnit and the benchmarks use BenchmarkDotNet. Usually, MAGES should be installed via the NuGet package source. If this does not work for you, then clone the source and build MAGES yourself. Make sure that all unit tests pass.
@@ -30,9 +36,9 @@ Contributions may also be taken in form of bug reports and feature requests. Lon
 
 The rules of [semver](http://semver.org/) are our bread and butter. In short this means:
 
-1. MAJOR versions at maintainers' discretion following significant changes to the codebase (e.g., API changes)
-2. MINOR versions for backwards-compatible enhancements (e.g., performance improvements)
-3. PATCH versions for backwards-compatible bug fixes (e.g., spec compliance bugs, support issues)
+1. MAJOR versions at maintainers' discretion following significant changes to the codebase (e.g., breaking API changes)
+2. MINOR versions for backwards-compatible enhancements (e.g., performance improvements, additional extensions)
+3. PATCH versions for backwards-compatible bug fixes (e.g., specification compliance bugs, support issues)
 
 Hence: Do not expect any breaking changes within the same major version.
 
