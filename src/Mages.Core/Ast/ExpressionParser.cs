@@ -131,7 +131,7 @@
 
         private IExpression ParseAssignment(IEnumerator<IToken> tokens)
         {
-            var x = ParseConditional(tokens);
+            var x = ParseRange(tokens);
             var token = tokens.Current;
             var mode = token.Type;
 
@@ -170,38 +170,18 @@
             return x;
         }
 
-        private IExpression ParseConditional(IEnumerator<IToken> tokens)
+        private IExpression ParseRange(IEnumerator<IToken> tokens)
         {
-            var x = ParseOr(tokens);
-            var current = tokens.Current;
-            var mode = current.Type;
+            var x = ParseConditional(tokens);
 
-            if (mode == TokenType.Condition)
+            if (tokens.Current.Type == TokenType.Colon)
             {
-                var y = ParseOr(tokens.NextNonIgnorable());
-                var z = default(IExpression);
-                mode = tokens.Current.Type;
-
-                if (mode == TokenType.Colon)
-                {
-                    z = ParseOr(tokens.NextNonIgnorable());
-                }
-                else
-                {
-                    z = ParseInvalid(ErrorCode.BranchMissing, tokens);
-                }
-
-                return new ConditionalExpression(x, y, z);
-            }
-            else if (mode == TokenType.Colon)
-            {
-                var z = ParseOr(tokens.NextNonIgnorable());
+                var z = ParseConditional(tokens.NextNonIgnorable());
                 var y = z;
-                mode = tokens.Current.Type;
 
-                if (mode == TokenType.Colon)
+                if (tokens.Current.Type == TokenType.Colon)
                 {
-                    z = ParseOr(tokens.NextNonIgnorable());
+                    z = ParseConditional(tokens.NextNonIgnorable());
                 }
                 else
                 {
@@ -209,6 +189,30 @@
                 }
 
                 return new RangeExpression(x, y, z);
+            }
+
+            return x;
+        }
+
+        private IExpression ParseConditional(IEnumerator<IToken> tokens)
+        {
+            var x = ParseOr(tokens);
+
+            if (tokens.Current.Type == TokenType.Condition)
+            {
+                var y = ParseConditional(tokens.NextNonIgnorable());
+                var z = default(IExpression);
+
+                if (tokens.Current.Type == TokenType.Colon)
+                {
+                    z = ParseConditional(tokens.NextNonIgnorable());
+                }
+                else
+                {
+                    z = ParseInvalid(ErrorCode.BranchMissing, tokens);
+                }
+
+                return new ConditionalExpression(x, y, z);
             }
 
             return x;

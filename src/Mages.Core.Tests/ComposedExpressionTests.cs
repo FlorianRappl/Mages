@@ -11,9 +11,8 @@
         public void TightBracketStatement()
         {
             var source = "(2+3)*2";
-            var tokens = source.ToTokenStream();
             var parser = new ExpressionParser();
-            var result = parser.ParseExpression(tokens);
+            var result = parser.ParseExpression(source);
 
             Assert.IsInstanceOf<BinaryExpression.Multiply>(result);
 
@@ -37,9 +36,8 @@
         public void RelaxedBracketStatement()
         {
             var source = " ( 2 + 3 ) * 2 ";
-            var tokens = source.ToTokenStream();
             var parser = new ExpressionParser();
-            var result = parser.ParseExpression(tokens);
+            var result = parser.ParseExpression(source);
 
             Assert.IsInstanceOf<BinaryExpression.Multiply>(result);
 
@@ -63,9 +61,8 @@
         public void MemberOperatorFromLeftSide()
         {
             var source = "a.b.c";
-            var tokens = source.ToTokenStream();
             var parser = new ExpressionParser();
-            var result = parser.ParseExpression(tokens);
+            var result = parser.ParseExpression(source);
 
             Assert.IsInstanceOf<MemberExpression>(result);
 
@@ -88,9 +85,8 @@
         public void PowerOperatorsFromRightSide()
         {
             var source = "1^2^3^4";
-            var tokens = source.ToTokenStream();
             var parser = new ExpressionParser();
-            var result = parser.ParseExpression(tokens);
+            var result = parser.ParseExpression(source);
 
             Assert.IsInstanceOf<BinaryExpression.Power>(result);
 
@@ -114,9 +110,8 @@
         public void FunctionCallWithoutArguments()
         {
             var source = "f()";
-            var tokens = source.ToTokenStream();
             var parser = new ExpressionParser();
-            var result = parser.ParseExpression(tokens);
+            var result = parser.ParseExpression(source);
 
             Assert.IsInstanceOf<CallExpression>(result);
 
@@ -136,9 +131,8 @@
         public void FunctionCallWithTwoArguments()
         {
             var source = "f(1, a)";
-            var tokens = source.ToTokenStream();
             var parser = new ExpressionParser();
-            var result = parser.ParseExpression(tokens);
+            var result = parser.ParseExpression(source);
 
             Assert.IsInstanceOf<CallExpression>(result);
 
@@ -160,9 +154,8 @@
         public void FunctionCallWithThreeArguments()
         {
             var source = "f(1,a,\"hi\")";
-            var tokens = source.ToTokenStream();
             var parser = new ExpressionParser();
-            var result = parser.ParseExpression(tokens);
+            var result = parser.ParseExpression(source);
 
             Assert.IsInstanceOf<CallExpression>(result);
 
@@ -179,6 +172,40 @@
 
             Assert.AreEqual(1, call.Start.Column);
             Assert.AreEqual(11, call.End.Column);
+        }
+
+        [Test]
+        public void ConditionWithRangeShouldYieldRange()
+        {
+            var source = "c ? a : 2:3:1";
+            var parser = new ExpressionParser();
+            var result = parser.ParseExpression(source);
+
+            Assert.IsInstanceOf<RangeExpression>(result);
+
+            var range = (RangeExpression)result;
+            var condition = (ConditionalExpression)range.From;
+
+            Assert.IsInstanceOf<VariableExpression>(condition.Condition);
+            Assert.IsInstanceOf<VariableExpression>(condition.Primary);
+            Assert.IsInstanceOf<ConstantExpression>(condition.Secondary);
+            Assert.IsInstanceOf<ConstantExpression>(range.Step);
+            Assert.IsInstanceOf<ConstantExpression>(range.To);
+        }
+
+        [Test]
+        public void ConditionWithConditionShouldYieldRightResult()
+        {
+            var source = "c ? a ? 1 : 2 : 3";
+            var parser = new ExpressionParser();
+            var result = parser.ParseExpression(source);
+
+            Assert.IsInstanceOf<ConditionalExpression>(result);
+
+            var condition = (ConditionalExpression)result;
+            Assert.IsInstanceOf<VariableExpression>(condition.Condition);
+            Assert.IsInstanceOf<ConditionalExpression>(condition.Primary);
+            Assert.IsInstanceOf<ConstantExpression>(condition.Secondary);
         }
     }
 }
