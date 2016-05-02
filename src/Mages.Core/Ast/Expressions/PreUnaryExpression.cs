@@ -1,5 +1,7 @@
 ﻿namespace Mages.Core.Ast.Expressions
 {
+    using System;
+
     /// <summary>
     /// Base class for all pre unary expressions.
     /// </summary>
@@ -50,6 +52,8 @@
             }
         }
 
+        public abstract Func<Object[], Object> GetFunction();
+
         #endregion
 
         #region Operations
@@ -60,6 +64,11 @@
                 : base(start, value)
             {
             }
+
+            public override Func<Object[], Object> GetFunction()
+            {
+                return args => (Double)args[0] == 0.0 ? 1.0 : 0.0;
+            }
         }
 
         public class Minus : PreUnaryExpression
@@ -68,6 +77,11 @@
                 : base(start, value)
             {
             }
+
+            public override Func<Object[], Object> GetFunction()
+            {
+                return args => -(Double)args[0];
+            }
         }
 
         public class Plus : PreUnaryExpression
@@ -75,6 +89,11 @@
             public Plus(TextPosition start, IExpression value)
                 : base(start, value)
             {
+            }
+
+            public override Func<Object[], Object> GetFunction()
+            {
+                return args => (Double)args[0];
             }
         }
 
@@ -97,6 +116,11 @@
                     base.Validate(context);
                 }
             }
+
+            public override Func<Object[], Object> GetFunction()
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public class Decrement : PreUnaryExpression
@@ -117,6 +141,11 @@
                 {
                     base.Validate(context);
                 }
+            }
+
+            public override Func<Object[], Object> GetFunction()
+            {
+                throw new NotImplementedException();
             }
         }
 

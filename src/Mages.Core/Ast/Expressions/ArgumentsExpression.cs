@@ -1,5 +1,7 @@
 ﻿namespace Mages.Core.Ast.Expressions
 {
+    using System;
+
     /// <summary>
     /// The class for an argument expression.
     /// </summary>
@@ -26,6 +28,11 @@
         public IExpression[] Arguments
         {
             get { return _arguments; }
+        }
+
+        public Int32 Count 
+        {
+            get { return _arguments.Length; }
         }
 
         #endregion

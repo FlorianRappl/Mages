@@ -1,5 +1,7 @@
 ﻿namespace Mages.Core.Ast.Expressions
 {
+    using System;
+
     /// <summary>
     /// Base class for all post unary expressions.
     /// </summary>
@@ -50,6 +52,8 @@
             }
         }
 
+        public abstract Func<Object[], Object> GetFunction();
+
         #endregion
 
         #region Operations
@@ -60,6 +64,11 @@
                 : base(expression, end)
             {
             }
+
+            public override Func<Object[], Object> GetFunction()
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public sealed class Transpose : PostUnaryExpression
@@ -67,6 +76,11 @@
             public Transpose(IExpression expression, TextPosition end)
                 : base(expression, end)
             {
+            }
+
+            public override Func<Object[], Object> GetFunction()
+            {
+                throw new NotImplementedException();
             }
         }
 
@@ -89,6 +103,11 @@
                     base.Validate(context);
                 }
             }
+
+            public override Func<Object[], Object> GetFunction()
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public sealed class Decrement : PostUnaryExpression
@@ -109,6 +128,11 @@
                 {
                     base.Validate(context);
                 }
+            }
+
+            public override Func<Object[], Object> GetFunction()
+            {
+                throw new NotImplementedException();
             }
         }
 
