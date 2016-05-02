@@ -6,9 +6,27 @@
     public class TrivialBenchmarks
     {
         [Benchmark]
-        public Double Foo()
+        public Double AddTwoNumbersWithYamp()
         {
-            return Math.Exp(1.2);
+            return YampNumeric("2 + 3");
+        }
+
+        [Benchmark]
+        public Double AddTwoNumbersWithMages()
+        {
+            return MagesNumeric("2 + 3");
+        }
+
+        private Double YampNumeric(String sourceCode)
+        {
+            //TODO
+            return 10.0;
+        }
+
+        private Double MagesNumeric(String sourceCode)
+        {
+            //TODO
+            return 10.0;
         }
     }
 }
