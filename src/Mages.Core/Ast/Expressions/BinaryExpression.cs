@@ -84,7 +84,7 @@
 
             public override Func<Object[], Object> GetFunction()
             {
-                return args => (Double)args[0] != 0.0 && (Double)args[1] != 0.0;
+                return args => ((Double)args[0] != 0.0 && (Double)args[1] != 0.0) ? 1.0 : 0.0;
             }
         }
 
@@ -97,7 +97,7 @@
 
             public override Func<Object[], Object> GetFunction()
             {
-                return args => (Double)args[0] != 0.0 || (Double)args[1] != 0.0;
+                return args => ((Double)args[0] != 0.0 || (Double)args[1] != 0.0) ? 1.0 : 0.0;
             }
         }
 
@@ -110,7 +110,7 @@
 
             public override Func<Object[], Object> GetFunction()
             {
-                return args => (Double)args[0] == (Double)args[1];
+                return args => ((Double)args[0] == (Double)args[1]) ? 1.0 : 0.0;
             }
         }
 
@@ -123,7 +123,7 @@
 
             public override Func<Object[], Object> GetFunction()
             {
-                return args => (Double)args[0] != (Double)args[1];
+                return args => ((Double)args[0] != (Double)args[1]) ? 1.0 : 0.0;
             }
         }
 
@@ -136,7 +136,7 @@
 
             public override Func<Object[], Object> GetFunction()
             {
-                return args => (Double)args[0] > (Double)args[1];
+                return args => ((Double)args[0] > (Double)args[1]) ? 1.0 : 0.0;
             }
         }
 
@@ -149,7 +149,7 @@
 
             public override Func<Object[], Object> GetFunction()
             {
-                return args => (Double)args[0] < (Double)args[1];
+                return args => ((Double)args[0] < (Double)args[1]) ? 1.0 : 0.0;
             }
         }
 
@@ -162,7 +162,7 @@
 
             public override Func<Object[], Object> GetFunction()
             {
-                return args => (Double)args[0] >= (Double)args[1];
+                return args => ((Double)args[0] >= (Double)args[1]) ? 1.0 : 0.0;
             }
         }
 
@@ -175,7 +175,7 @@
 
             public override Func<Object[], Object> GetFunction()
             {
-                return args => (Double)args[0] <= (Double)args[1];
+                return args => ((Double)args[0] <= (Double)args[1]) ? 1.0 : 0.0;
             }
         }
 

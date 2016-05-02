@@ -1,9 +1,12 @@
 ﻿namespace Mages.Core.Tests
 {
     using Mages.Core.Ast;
+    using Mages.Core.Ast.Walkers;
     using Mages.Core.Tests.Mocks;
+    using Mages.Core.Vm;
     using NUnit.Framework;
     using System;
+    using System.Collections.Generic;
 
     [TestFixture]
     public class YampTests
@@ -65,7 +68,7 @@
         [Test]
         public void AbbreviatedFloatingPointAddAndSubtract()
         {
-            Test(".2+4-4+.2", 0.4);
+            Test(".2+4-4+.2", 0.2 + 4 - 4 + 0.2);
         }
 
         [Test]
@@ -567,8 +570,27 @@
 
         private void Test(String sourceCode, Double expected, Double tolerance = 0.0)
         {
-            //TODO:
-            IsValid(sourceCode);
+            var hasError = false;
+            var validation = new ValidationContextMock(_ => hasError = true);
+            var parser = new ExpressionParser();
+            var operations = new List<IOperation>();
+            var statement = parser.ParseStatement(sourceCode);
+            var walker = new OperationTreeWalker(operations);
+
+            statement.Validate(validation);
+
+            Assert.IsFalse(hasError);
+
+            //TODO
+            return;
+
+            statement.Accept(walker);
+            var context = new ExecutionContext(operations.ToArray());
+            context.Execute();
+            var result = (Double)context.Pop();
+
+            Assert.AreEqual(expected, result, tolerance);
+
         }
 
         private void IsInvalid(String sourceCode)
@@ -587,9 +609,8 @@
         {
             var hasError = false;
             var validation = new ValidationContextMock(_ => hasError = true);
-            var tokenSource = sourceCode.ToTokenStream();
             var parser = new ExpressionParser();
-            var statement = parser.ParseStatement(tokenSource);
+            var statement = parser.ParseStatement(sourceCode);
 
             statement.Validate(validation);
             return hasError;
