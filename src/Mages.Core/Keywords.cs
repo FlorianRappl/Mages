@@ -10,6 +10,7 @@
     {
         public static readonly String True = "true";
         public static readonly String False = "false";
+        public static readonly String Pi = "pi";
         public static readonly String Var = "var";
         public static readonly String Return = "return";
         public static readonly String Let = "let";
@@ -33,6 +34,7 @@
         {
             { True, true },
             { False, false },
+            { Pi, Math.PI }
         };
 
         private static readonly HashSet<String> KeywordNames = new HashSet<String>
@@ -57,6 +59,7 @@
             Static,
             New,
             Delete,
+            Pi
         };
 
         public static Boolean TryGetConstant(String keyword, out Object constant)

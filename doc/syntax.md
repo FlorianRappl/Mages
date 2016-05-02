@@ -43,8 +43,10 @@ boolean ::= 'true' | 'false'
 The full list of keywords is actually a bit longer. These values are reserved (even though most are not used in the current specification):
 
 ```
-keywords ::= 'true' | 'false' | 'return' | 'var' | 'let' | 'const' | 'for' | 'while' | 'do' | 'module' | 'if' | 'else' | 'break' | 'yield' | 'async' | 'await' | 'class' | 'static' | 'new' | 'delete'
+keywords ::= 'true' | 'false' | 'return' | 'var' | 'let' | 'const' | 'for' | 'while' | 'do' | 'module' | 'if' | 'else' | 'break' | 'yield' | 'async' | 'await' | 'class' | 'static' | 'new' | 'delete' | 'pi'
 ```
+
+The `pi` keyword resolves to the known mathematical constant. It is a really strong version of a `constant` allowing many optimizations and disallowing any kind of shadowing.
 
 A string literal is specified as follows:
 
