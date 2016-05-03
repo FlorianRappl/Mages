@@ -1,5 +1,8 @@
 ﻿namespace Mages.Core.Ast.Expressions
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Represents a property (name-value pair) of an object.
     /// </summary>
@@ -48,6 +51,17 @@
         {
             _name.Validate(context);
             _value.Validate(context);
+        }
+
+        public Func<Object[], Object> GetFunction()
+        {
+            return args =>
+            {
+                var obj = (Dictionary<String, Object>)args[2];
+                var key = (String)args[0];
+                obj[key] = args[1];
+                return obj;
+            };
         }
 
         #endregion

@@ -1,5 +1,8 @@
 ﻿namespace Mages.Core.Ast.Expressions
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Represents a member expression.
     /// </summary>
@@ -48,6 +51,18 @@
         {
             _obj.Validate(context);
             _member.Validate(context);
+        }
+
+        public Func<Object[], Object> GetFunction()
+        {
+            return args =>
+            {
+                var obj = (Dictionary<String, Object>)args[0];
+                var key = (String)args[1];
+                var result = default(Object);
+                obj.TryGetValue(key, out result);
+                return result;
+            };
         }
 
         #endregion

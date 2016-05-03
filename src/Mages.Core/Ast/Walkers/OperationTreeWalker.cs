@@ -95,12 +95,22 @@
 
         public void Visit(ObjectExpression expression)
         {
-            throw new NotImplementedException();
+            var obj = new Dictionary<String, Object>();
+            var init = new LoadOperation(obj);
+            _operations.Add(init);
+
+            foreach (var property in expression.Values)
+            {
+                property.Accept(this);
+            }
         }
 
         public void Visit(PropertyExpression expression)
         {
-            throw new NotImplementedException();
+            expression.Value.Accept(this);
+            expression.Name.Accept(this);
+
+            CallFunction(expression.GetFunction(), 3);
         }
 
         public void Visit(MatrixExpression expression)
@@ -115,17 +125,20 @@
 
         public void Visit(InvalidExpression expression)
         {
-            throw new NotImplementedException();
         }
 
         public void Visit(IdentifierExpression expression)
         {
-            throw new NotImplementedException();
+            var load = new LoadOperation(expression.Name);
+            _operations.Add(load);
         }
 
         public void Visit(MemberExpression expression)
         {
-            throw new NotImplementedException();
+            expression.Member.Accept(this);
+            expression.Object.Accept(this);
+
+            CallFunction(expression.GetFunction(), 2);
         }
 
         public void Visit(ParameterExpression expression)
