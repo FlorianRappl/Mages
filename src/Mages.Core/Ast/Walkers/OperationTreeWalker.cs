@@ -21,7 +21,8 @@
 
         public void Visit(ConstantExpression expression)
         {
-            var operation = new LoadOperation(expression.Value);
+            var constant = expression.Value;
+            var operation = new LoadOperation(ctx => constant);
             _operations.Add(operation);
         }
 
@@ -95,8 +96,7 @@
 
         public void Visit(ObjectExpression expression)
         {
-            var obj = new Dictionary<String, Object>();
-            var init = new LoadOperation(obj);
+            var init = new LoadOperation(ctx => new Dictionary<String, Object>());
             _operations.Add(init);
 
             foreach (var property in expression.Values)
@@ -115,7 +115,29 @@
 
         public void Visit(MatrixExpression expression)
         {
-            throw new NotImplementedException();
+            var values = expression.Values;
+            var rows = values.Length;
+            var cols = rows > 0 ? values[0].Length : 0;
+            var init = new LoadOperation(ctx => new Double[rows, cols]);
+            _operations.Add(init);
+
+            for (var row = 0; row < rows; row++)
+            {
+                for (var col = 0; col < cols; col++)
+                {
+                    var value = values[row][col];
+                    var i = row;
+                    var j = col;
+                    value.Accept(this);
+
+                    CallFunction(args =>
+                    {
+                        var matrix = (Double[,])args[1];
+                        matrix[i, j] = (Double)args[0];
+                        return matrix;
+                    }, 2);
+                }
+            }
         }
 
         public void Visit(FunctionExpression expression)
@@ -129,7 +151,8 @@
 
         public void Visit(IdentifierExpression expression)
         {
-            var load = new LoadOperation(expression.Name);
+            var name = expression.Name;
+            var load = new LoadOperation(ctx => name);
             _operations.Add(load);
         }
 
@@ -143,12 +166,12 @@
 
         public void Visit(ParameterExpression expression)
         {
-            throw new NotImplementedException();
+
         }
 
         public void Visit(VariableExpression expression)
         {
-            throw new NotImplementedException();
+            
         }
 
         private void CallFunction(Func<Object[], Object> func, Int32 argumentCount)
@@ -156,7 +179,7 @@
             var arguments = new CollectArgsOperation(argumentCount);
             _operations.Add(arguments);
 
-            var function = new LoadOperation(func);
+            var function = new LoadOperation(ctx => func);
             _operations.Add(function);
 
             var call = new CallOperation();
