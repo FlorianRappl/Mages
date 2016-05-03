@@ -41,7 +41,7 @@
             return missingSymbols;
         }
 
-        public static ExecutionContext MakeRunnable(this IEnumerable<IStatement> statements)
+        public static ExecutionContext MakeRunnable(this IEnumerable<IStatement> statements, IMemory memory)
         {
             var operations = new List<IOperation>();
             var walker = new OperationTreeWalker(operations);
@@ -51,7 +51,7 @@
                 statement.Accept(walker);
             }
 
-            return new ExecutionContext(operations.ToArray());
+            return new ExecutionContext(operations.ToArray(), memory);
         }
     }
 }

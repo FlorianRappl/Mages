@@ -12,5 +12,7 @@
         void Push(Object value);
 
         Object Pop();
+
+        IMemory Memory { get; }
     }
 }

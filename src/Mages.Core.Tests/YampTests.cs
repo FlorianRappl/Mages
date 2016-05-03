@@ -576,6 +576,7 @@
             var operations = new List<IOperation>();
             var statement = parser.ParseStatement(sourceCode);
             var walker = new OperationTreeWalker(operations);
+            var memory = new SimpleMemory();
 
             statement.Validate(validation);
 
@@ -585,7 +586,7 @@
             return;
 
             statement.Accept(walker);
-            var context = new ExecutionContext(operations.ToArray());
+            var context = new ExecutionContext(operations.ToArray(), memory);
             context.Execute();
             var result = (Double)context.Pop();
 

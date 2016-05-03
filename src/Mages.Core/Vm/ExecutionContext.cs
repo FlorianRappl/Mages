@@ -10,12 +10,14 @@
     {
         private readonly Stack<Object> _stack;
         private readonly IOperation[] _operations;
+        private readonly IMemory _memory;
         private Int32 _position;
 
-        public ExecutionContext(IOperation[] operations)
+        public ExecutionContext(IOperation[] operations, IMemory memory)
         {
             _stack = new Stack<Object>();
             _operations = operations;
+            _memory = memory;
             _position = 0;
         }
 
@@ -23,6 +25,11 @@
         {
             get { return _position; }
             set { _position = value; }
+        }
+
+        public IMemory Memory
+        {
+            get { return _memory; }
         }
 
         public void Execute()

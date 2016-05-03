@@ -115,10 +115,12 @@
     <Compile Include="Tokens\TokenType.cs" />
     <Compile Include="Vm\ExecutionContext.cs" />
     <Compile Include="Vm\IExecutionContext.cs" />
+    <Compile Include="Vm\IMemory.cs" />
     <Compile Include="Vm\IOperation.cs" />
     <Compile Include="Vm\Operations\CallOperation.cs" />
     <Compile Include="Vm\Operations\CollectArgsOperation.cs" />
     <Compile Include="Vm\Operations\LoadOperation.cs" />
+    <Compile Include="Vm\SimpleMemory.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Runtime\" />
