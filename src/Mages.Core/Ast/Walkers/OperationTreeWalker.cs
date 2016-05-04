@@ -9,10 +9,12 @@
     public class OperationTreeWalker : ITreeWalker
     {
         private readonly List<IOperation> _operations;
+        private readonly Dictionary<IExpression, Int32> _positions;
 
         public OperationTreeWalker(List<IOperation> operations)
         {
             _operations = operations;
+            _positions = new Dictionary<IExpression, Int32>();
         }
 
         public void Visit(EmptyExpression expression)
@@ -22,8 +24,7 @@
         public void Visit(ConstantExpression expression)
         {
             var constant = expression.Value;
-            var operation = new LoadOperation(ctx => constant);
-            _operations.Add(operation);
+            _operations.Add(new LoadOperation(ctx => constant));
         }
 
         public void Visit(ArgumentsExpression expression)
@@ -84,14 +85,9 @@
         public void Visit(CallExpression expression)
         {
             expression.Arguments.Accept(this);
-
-            var arguments = new CollectArgsOperation(expression.Arguments.Count);
-            _operations.Add(arguments);
-
+            _operations.Add(new CollectArgsOperation(expression.Arguments.Count));
             expression.Function.Accept(this);
-
-            var call = new CallOperation();
-            _operations.Add(call);
+            _operations.Add(new CallOperation());
         }
 
         public void Visit(ObjectExpression expression)
@@ -152,8 +148,7 @@
         public void Visit(IdentifierExpression expression)
         {
             var name = expression.Name;
-            var load = new LoadOperation(ctx => name);
-            _operations.Add(load);
+            _operations.Add(new LoadOperation(ctx => name));
         }
 
         public void Visit(MemberExpression expression)
@@ -171,19 +166,21 @@
 
         public void Visit(VariableExpression expression)
         {
+            var symbol = expression.ReferencedSymbol;
+            var position = _positions[symbol];
             
+            _operations.Add(new LoadOperation(ctx => new Pointer
+            {
+                Memory = ctx.Memory,
+                Address = position
+            }));
         }
 
         private void CallFunction(Func<Object[], Object> func, Int32 argumentCount)
         {
-            var arguments = new CollectArgsOperation(argumentCount);
-            _operations.Add(arguments);
-
-            var function = new LoadOperation(ctx => func);
-            _operations.Add(function);
-
-            var call = new CallOperation();
-            _operations.Add(call);
+            _operations.Add(new CollectArgsOperation(argumentCount));
+            _operations.Add(new LoadOperation(ctx => func));
+            _operations.Add(new CallOperation());
         }
     }
 }

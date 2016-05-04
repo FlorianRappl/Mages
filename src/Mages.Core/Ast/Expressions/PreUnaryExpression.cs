@@ -1,7 +1,7 @@
 ﻿namespace Mages.Core.Ast.Expressions
 {
     using System;
-
+    using Vm;
     /// <summary>
     /// Base class for all pre unary expressions.
     /// </summary>
@@ -119,7 +119,12 @@
 
             public override Func<Object[], Object> GetFunction()
             {
-                throw new NotImplementedException();
+                return args =>
+                {
+                    var p = (Pointer)args[0];
+                    var value = (Double)p.Value;
+                    return p.Value = value + 1;
+                };
             }
         }
 
@@ -145,7 +150,12 @@
 
             public override Func<Object[], Object> GetFunction()
             {
-                throw new NotImplementedException();
+                return args =>
+                {
+                    var p = (Pointer)args[0];
+                    var value = (Double)p.Value;
+                    return p.Value = value - 1;
+                };
             }
         }
 
