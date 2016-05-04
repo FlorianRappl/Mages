@@ -571,7 +571,7 @@
 
             if (token.Type == TokenType.Identifier)
             {
-                var scope = _scopes.Current.Find(token.Payload);
+                var scope = _scopes.Find(token.Payload);
                 var expr = new VariableExpression(token.Payload, scope, token.Start, token.End);
                 tokens.NextNonIgnorable();
                 return expr;

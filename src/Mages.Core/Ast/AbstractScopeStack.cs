@@ -1,5 +1,6 @@
 ﻿namespace Mages.Core.Ast
 {
+    using System;
     using System.Collections.Generic;
 
     sealed class AbstractScopeStack
@@ -26,6 +27,18 @@
         public AbstractScope PopCurrent()
         {
             return _scopes.Pop();
+        }
+
+        public AbstractScope Find(String identifier)
+        {
+            var current = Current;
+
+            while (current != null && current.Find(identifier) == null)
+            {
+                current = current.Parent;
+            }
+
+            return current;
         }
     }
 }

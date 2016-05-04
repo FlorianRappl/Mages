@@ -41,19 +41,11 @@
             _references.Add(identifier, expression);
         }
 
-        public AbstractScope Find(String identifier)
+        public IExpression Find(String identifier)
         {
-            if (!_references.ContainsKey(identifier))
-            {
-                if (_parent == null)
-                {
-                    return null;
-                }
-
-                return _parent.Find(identifier);
-            }
-
-            return this;
+            var expression = default(IExpression);
+            _references.TryGetValue(identifier, out expression);
+            return expression;
         }
 
         #endregion
