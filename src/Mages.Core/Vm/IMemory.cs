@@ -1,5 +1,6 @@
 ﻿namespace Mages.Core.Vm
 {
+    using Mages.Core.Types;
     using System;
 
     /// <summary>
@@ -7,9 +8,9 @@
     /// </summary>
     public interface IMemory
     {
-        Object Load(Int32 address);
+        IMagesType Load(Int32 address);
 
-        void Store(Int32 address, Object value);
+        void Store(Int32 address, IMagesType value);
 
         void Clear();
     }

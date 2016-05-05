@@ -1,7 +1,8 @@
 ﻿namespace Mages.Core.Ast.Expressions
 {
+    using Mages.Core.Types;
     using System;
-    using Vm;
+
     /// <summary>
     /// Base class for all post unary expressions.
     /// </summary>
@@ -52,7 +53,7 @@
             }
         }
 
-        public abstract Func<Object[], Object> GetFunction();
+        public abstract Func<IMagesType[], IMagesType> GetFunction();
 
         #endregion
 
@@ -65,7 +66,7 @@
             {
             }
 
-            public override Func<Object[], Object> GetFunction()
+            public override Func<IMagesType[], IMagesType> GetFunction()
             {
                 throw new NotImplementedException();
             }
@@ -78,7 +79,7 @@
             {
             }
 
-            public override Func<Object[], Object> GetFunction()
+            public override Func<IMagesType[], IMagesType> GetFunction()
             {
                 throw new NotImplementedException();
             }
@@ -104,13 +105,13 @@
                 }
             }
 
-            public override Func<Object[], Object> GetFunction()
+            public override Func<IMagesType[], IMagesType> GetFunction()
             {
                 return args =>
                 {
                     var p = (Pointer)args[0];
-                    var value = (Double)p.Value;
-                    p.Value = value + 1;
+                    var value = (Number)p.Reference;
+                    p.Reference = new Number { Value = value.Value + 1.0 };
                     return value;
                 };
 
@@ -137,13 +138,13 @@
                 }
             }
 
-            public override Func<Object[], Object> GetFunction()
+            public override Func<IMagesType[], IMagesType> GetFunction()
             {
                 return args =>
                 {
                     var p = (Pointer)args[0];
-                    var value = (Double)p.Value;
-                    p.Value = value - 1;
+                    var value = (Number)p.Reference;
+                    p.Reference = new Number { Value = value.Value - 1.0 };
                     return value;
                 };
             }

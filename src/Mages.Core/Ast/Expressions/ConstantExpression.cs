@@ -1,5 +1,6 @@
 ﻿namespace Mages.Core.Ast.Expressions
 {
+    using Mages.Core.Types;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -11,25 +12,25 @@
     {
         #region Fields
 
-        private readonly Object _objValue;
+        private readonly IMagesType _value;
 
         #endregion
 
         #region ctor
 
-        public ConstantExpression(Object value, TextPosition start, TextPosition end)
+        public ConstantExpression(IMagesType value, TextPosition start, TextPosition end)
             : base(start, end)
         {
-            _objValue = value;
+            _value = value;
         }
 
         #endregion
 
         #region Properties
 
-        public Object Value  
+        public IMagesType Value  
         {
-            get { return _objValue; }
+            get { return _value; }
         }
 
         #endregion
@@ -45,15 +46,15 @@
         {
             if (value is Boolean)
             {
-                return new Bool((Boolean)value, range);
+                return new BooleanConstant((Boolean)value, range);
             }
             else if (value is Double)
             {
-                return new Number((Double)value, range, Enumerable.Empty<ParseError>());
+                return new NumberConstant((Double)value, range, Enumerable.Empty<ParseError>());
             }
             else if (value is String)
             {
-                return new Text((String)value, range, Enumerable.Empty<ParseError>());
+                return new StringConstant((String)value, range, Enumerable.Empty<ParseError>());
             }
 
             throw new InvalidOperationException();
@@ -67,15 +68,13 @@
 
         #region Operations
 
-        public class Text : ConstantExpression
+        public class StringConstant : ConstantExpression
         {
-            private readonly String _value;
             private readonly IEnumerable<ParseError> _errors;
 
-            public Text(String value, ITextRange range, IEnumerable<ParseError> errors)
-                : base(value, range.Start, range.End)
+            public StringConstant(String value, ITextRange range, IEnumerable<ParseError> errors)
+                : base(new MagesString { Value = value }, range.Start, range.End)
             {
-                _value = value;
                 _errors = errors;
             }
 
@@ -90,26 +89,21 @@
             }
         }
 
-        public class Bool : ConstantExpression
+        public class BooleanConstant : ConstantExpression
         {
-            private readonly Boolean _value;
-
-            public Bool(Boolean value, ITextRange range)
-                : base(value, range.Start, range.End)
+            public BooleanConstant(Boolean value, ITextRange range)
+                : base(new Number { Value = value ? 1.0 : 0.0 }, range.Start, range.End)
             {
-                _value = value;
             }
         }
 
-        public class Number : ConstantExpression
+        public class NumberConstant : ConstantExpression
         {
-            private readonly Double _value;
             private readonly IEnumerable<ParseError> _errors;
 
-            public Number(Double value, ITextRange range, IEnumerable<ParseError> errors)
-                : base(value, range.Start, range.End)
+            public NumberConstant(Double value, ITextRange range, IEnumerable<ParseError> errors)
+                : base(new Number { Value = value }, range.Start, range.End)
             {
-                _value = value;
                 _errors = errors;
             }
 

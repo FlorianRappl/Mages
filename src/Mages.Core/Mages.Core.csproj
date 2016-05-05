@@ -113,6 +113,14 @@
     <Compile Include="Tokens\TextPositionExtensions.cs" />
     <Compile Include="Tokens\TokenExtensions.cs" />
     <Compile Include="Tokens\TokenType.cs" />
+    <Compile Include="Types\Function.cs" />
+    <Compile Include="IMagesType.cs" />
+    <Compile Include="Types\MagesObject.cs" />
+    <Compile Include="Types\MagesString.cs" />
+    <Compile Include="Types\Matrix.cs" />
+    <Compile Include="Types\Number.cs" />
+    <Compile Include="Types\TypeId.cs" />
+    <Compile Include="Types\Undefined.cs" />
     <Compile Include="Vm\ExecutionContext.cs" />
     <Compile Include="Vm\IExecutionContext.cs" />
     <Compile Include="Vm\IMemory.cs" />
@@ -120,12 +128,11 @@
     <Compile Include="Vm\Operations\CallOperation.cs" />
     <Compile Include="Vm\Operations\CollectArgsOperation.cs" />
     <Compile Include="Vm\Operations\LoadOperation.cs" />
-    <Compile Include="Vm\Pointer.cs" />
+    <Compile Include="Types\Pointer.cs" />
     <Compile Include="Vm\SimpleMemory.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Runtime\" />
-    <Folder Include="Types\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

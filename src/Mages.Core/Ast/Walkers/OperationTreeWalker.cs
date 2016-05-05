@@ -1,6 +1,7 @@
 ﻿namespace Mages.Core.Ast.Walkers
 {
     using Mages.Core.Ast.Expressions;
+    using Mages.Core.Types;
     using Mages.Core.Vm;
     using Mages.Core.Vm.Operations;
     using System;
@@ -92,7 +93,7 @@
 
         public void Visit(ObjectExpression expression)
         {
-            var init = new LoadOperation(ctx => new Dictionary<String, Object>());
+            var init = new LoadOperation(ctx => new MagesObject { Value = new Dictionary<String, IMagesType>() });
             _operations.Add(init);
 
             foreach (var property in expression.Values)
@@ -114,7 +115,10 @@
             var values = expression.Values;
             var rows = values.Length;
             var cols = rows > 0 ? values[0].Length : 0;
-            var init = new LoadOperation(ctx => new Double[rows, cols]);
+            var init = new LoadOperation(ctx => new Matrix 
+            { 
+                Value = new Double[rows, cols] 
+            });
             _operations.Add(init);
 
             for (var row = 0; row < rows; row++)
@@ -128,8 +132,8 @@
 
                     CallFunction(args =>
                     {
-                        var matrix = (Double[,])args[1];
-                        matrix[i, j] = (Double)args[0];
+                        var matrix = (Matrix)args[1];
+                        matrix.Set(i, j, (Number)args[0]);
                         return matrix;
                     }, 2);
                 }
@@ -148,7 +152,7 @@
         public void Visit(IdentifierExpression expression)
         {
             var name = expression.Name;
-            _operations.Add(new LoadOperation(ctx => name));
+            _operations.Add(new LoadOperation(ctx => new MagesString { Value = name }));
         }
 
         public void Visit(MemberExpression expression)
@@ -176,10 +180,10 @@
             }));
         }
 
-        private void CallFunction(Func<Object[], Object> func, Int32 argumentCount)
+        private void CallFunction(Func<IMagesType[], IMagesType> func, Int32 argumentCount)
         {
             _operations.Add(new CollectArgsOperation(argumentCount));
-            _operations.Add(new LoadOperation(ctx => func));
+            _operations.Add(new LoadOperation(ctx => new Function { Value = func }));
             _operations.Add(new CallOperation());
         }
     }

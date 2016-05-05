@@ -620,7 +620,7 @@
         private ConstantExpression ParseString(IEnumerator<IToken> tokens)
         {
             var token = (StringToken)tokens.Current;
-            var expr = new ConstantExpression.Text(token.Payload, token, token.Errors);
+            var expr = new ConstantExpression.StringConstant(token.Payload, token, token.Errors);
             tokens.NextNonIgnorable();
             return expr;
         }
@@ -628,7 +628,7 @@
         private ConstantExpression ParseNumber(IEnumerator<IToken> tokens)
         {
             var token = (NumberToken)tokens.Current;
-            var expr = new ConstantExpression.Number(token.Value, token, token.Errors);
+            var expr = new ConstantExpression.NumberConstant(token.Value, token, token.Errors);
             tokens.NextNonIgnorable();
             return expr;
         }

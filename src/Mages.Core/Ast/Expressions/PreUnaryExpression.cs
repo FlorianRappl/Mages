@@ -1,7 +1,8 @@
 ﻿namespace Mages.Core.Ast.Expressions
 {
+    using Mages.Core.Types;
     using System;
-    using Vm;
+
     /// <summary>
     /// Base class for all pre unary expressions.
     /// </summary>
@@ -52,7 +53,7 @@
             }
         }
 
-        public abstract Func<Object[], Object> GetFunction();
+        public abstract Func<IMagesType[], IMagesType> GetFunction();
 
         #endregion
 
@@ -65,9 +66,9 @@
             {
             }
 
-            public override Func<Object[], Object> GetFunction()
+            public override Func<IMagesType[], IMagesType> GetFunction()
             {
-                return args => (Double)args[0] == 0.0 ? 1.0 : 0.0;
+                return args => new Number { Value = ((Number)args[0]).IsTrue ? 0.0 : 1.0 };
             }
         }
 
@@ -78,9 +79,9 @@
             {
             }
 
-            public override Func<Object[], Object> GetFunction()
+            public override Func<IMagesType[], IMagesType> GetFunction()
             {
-                return args => -(Double)args[0];
+                return args => new Number { Value = -((Number)args[0]).Value };
             }
         }
 
@@ -91,9 +92,9 @@
             {
             }
 
-            public override Func<Object[], Object> GetFunction()
+            public override Func<IMagesType[], IMagesType> GetFunction()
             {
-                return args => (Double)args[0];
+                return args => new Number { Value = +((Number)args[0]).Value };
             }
         }
 
@@ -117,13 +118,13 @@
                 }
             }
 
-            public override Func<Object[], Object> GetFunction()
+            public override Func<IMagesType[], IMagesType> GetFunction()
             {
                 return args =>
                 {
                     var p = (Pointer)args[0];
-                    var value = (Double)p.Value;
-                    return p.Value = value + 1;
+                    var value = (Number)p.Reference;
+                    return p.Reference = new Number { Value = value.Value + 1.0 };
                 };
             }
         }
@@ -148,13 +149,13 @@
                 }
             }
 
-            public override Func<Object[], Object> GetFunction()
+            public override Func<IMagesType[], IMagesType> GetFunction()
             {
                 return args =>
                 {
                     var p = (Pointer)args[0];
-                    var value = (Double)p.Value;
-                    return p.Value = value - 1;
+                    var value = (Number)p.Reference;
+                    return p.Reference = new Number { Value = value.Value - 1.0 };
                 };
             }
         }

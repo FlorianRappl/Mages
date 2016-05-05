@@ -1,6 +1,6 @@
 ﻿namespace Mages.Core.Vm.Operations
 {
-    using System;
+    using Mages.Core.Types;
 
     /// <summary>
     /// Takes two objects from the stack and returns one.
@@ -9,8 +9,8 @@
     {
         public void Invoke(IExecutionContext context)
         {
-            var function = context.Pop() as Func<Object[], Object>;
-            var arguments = context.Pop() as Object[];
+            var function = (Function)context.Pop();
+            var arguments = (IMagesType[])context.Pop();
             context.Push(function.Invoke(arguments));
         }
     }

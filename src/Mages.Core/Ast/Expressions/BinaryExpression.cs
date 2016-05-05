@@ -1,5 +1,6 @@
 ﻿namespace Mages.Core.Ast.Expressions
 {
+    using Mages.Core.Types;
     using System;
 
     /// <summary>
@@ -69,7 +70,12 @@
             }
         }
 
-        public abstract Func<Object[], Object> GetFunction();
+        public Func<IMagesType[], IMagesType> GetFunction()
+        {
+            return args => new Number { Value = Calculate(((Number)args[0]).Value, ((Number)args[1]).Value) };
+        }
+
+        protected abstract Double Calculate(Double x, Double y);
 
         #endregion
 
@@ -82,9 +88,9 @@
             {
             }
 
-            public override Func<Object[], Object> GetFunction()
+            protected override Double Calculate(Double x, Double y)
             {
-                return args => ((Double)args[0] != 0.0 && (Double)args[1] != 0.0) ? 1.0 : 0.0;
+                return x != 0.0 && y != 0.0 ? 1.0 : 0.0;
             }
         }
 
@@ -95,9 +101,9 @@
             {
             }
 
-            public override Func<Object[], Object> GetFunction()
+            protected override Double Calculate(Double x, Double y)
             {
-                return args => ((Double)args[0] != 0.0 || (Double)args[1] != 0.0) ? 1.0 : 0.0;
+                return x != 0.0 || y != 0.0 ? 1.0 : 0.0;
             }
         }
 
@@ -108,9 +114,9 @@
             {
             }
 
-            public override Func<Object[], Object> GetFunction()
+            protected override Double Calculate(Double x, Double y)
             {
-                return args => ((Double)args[0] == (Double)args[1]) ? 1.0 : 0.0;
+                return x == y ? 1.0 : 0.0;
             }
         }
 
@@ -121,9 +127,9 @@
             {
             }
 
-            public override Func<Object[], Object> GetFunction()
+            protected override Double Calculate(Double x, Double y)
             {
-                return args => ((Double)args[0] != (Double)args[1]) ? 1.0 : 0.0;
+                return x != y ? 1.0 : 0.0;
             }
         }
 
@@ -134,9 +140,9 @@
             {
             }
 
-            public override Func<Object[], Object> GetFunction()
+            protected override Double Calculate(Double x, Double y)
             {
-                return args => ((Double)args[0] > (Double)args[1]) ? 1.0 : 0.0;
+                return x > y ? 1.0 : 0.0;
             }
         }
 
@@ -147,9 +153,9 @@
             {
             }
 
-            public override Func<Object[], Object> GetFunction()
+            protected override Double Calculate(Double x, Double y)
             {
-                return args => ((Double)args[0] < (Double)args[1]) ? 1.0 : 0.0;
+                return x < y ? 1.0 : 0.0;
             }
         }
 
@@ -160,9 +166,9 @@
             {
             }
 
-            public override Func<Object[], Object> GetFunction()
+            protected override Double Calculate(Double x, Double y)
             {
-                return args => ((Double)args[0] >= (Double)args[1]) ? 1.0 : 0.0;
+                return x >= y ? 1.0 : 0.0;
             }
         }
 
@@ -173,9 +179,9 @@
             {
             }
 
-            public override Func<Object[], Object> GetFunction()
+            protected override Double Calculate(Double x, Double y)
             {
-                return args => ((Double)args[0] <= (Double)args[1]) ? 1.0 : 0.0;
+                return x <= y ? 1.0 : 0.0;
             }
         }
 
@@ -186,9 +192,9 @@
             {
             }
 
-            public override Func<Object[], Object> GetFunction()
+            protected override Double Calculate(Double x, Double y)
             {
-                return args => (Double)args[0] + (Double)args[1];
+                return x + y;
             }
         }
 
@@ -199,9 +205,9 @@
             {
             }
 
-            public override Func<Object[], Object> GetFunction()
+            protected override Double Calculate(Double x, Double y)
             {
-                return args => (Double)args[0] - (Double)args[1];
+                return x - y;
             }
         }
 
@@ -212,9 +218,9 @@
             {
             }
 
-            public override Func<Object[], Object> GetFunction()
+            protected override Double Calculate(Double x, Double y)
             {
-                return args => (Double)args[0] * (Double)args[1];
+                return x * y;
             }
         }
 
@@ -225,9 +231,9 @@
             {
             }
 
-            public override Func<Object[], Object> GetFunction()
+            protected override Double Calculate(Double x, Double y)
             {
-                return args => (Double)args[1] / (Double)args[0];
+                return y / x;
             }
         }
 
@@ -238,9 +244,9 @@
             {
             }
 
-            public override Func<Object[], Object> GetFunction()
+            protected override Double Calculate(Double x, Double y)
             {
-                return args => (Double)args[0] / (Double)args[1];
+                return x / y;
             }
         }
 
@@ -251,9 +257,9 @@
             {
             }
 
-            public override Func<Object[], Object> GetFunction()
+            protected override Double Calculate(Double x, Double y)
             {
-                return args => Math.Pow((Double)args[0], (Double)args[1]);
+                return Math.Pow(x, y);
             }
         }
 
@@ -264,9 +270,9 @@
             {
             }
 
-            public override Func<Object[], Object> GetFunction()
+            protected override Double Calculate(Double x, Double y)
             {
-                return args => (Double)args[0] % (Double)args[1];
+                return x % y;
             }
         }
 

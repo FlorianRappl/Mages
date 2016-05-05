@@ -1,5 +1,6 @@
 ﻿namespace Mages.Core.Vm.Operations
 {
+    using Mages.Core.Types;
     using System;
 
     /// <summary>
@@ -7,9 +8,9 @@
     /// </summary>
     sealed class LoadOperation : IOperation
     {
-        private readonly Func<IExecutionContext, Object> _loader;
+        private readonly Func<IExecutionContext, IMagesType> _loader;
 
-        public LoadOperation(Func<IExecutionContext, Object> loader)
+        public LoadOperation(Func<IExecutionContext, IMagesType> loader)
         {
             _loader = loader;
         }
