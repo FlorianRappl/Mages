@@ -129,6 +129,7 @@
     <Compile Include="Vm\Operations\CollectArgsOperation.cs" />
     <Compile Include="Vm\Operations\LoadOperation.cs" />
     <Compile Include="Types\Pointer.cs" />
+    <Compile Include="Vm\Operations\StoreOperation.cs" />
     <Compile Include="Vm\SimpleMemory.cs" />
   </ItemGroup>
   <ItemGroup>

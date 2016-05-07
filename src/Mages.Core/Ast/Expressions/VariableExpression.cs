@@ -39,7 +39,7 @@
 
         public IExpression ReferencedSymbol
         {
-            get { return _scope.Find(_name); }
+            get { return _scope != null ? _scope.Find(_name) : null; }
         }
 
         #endregion

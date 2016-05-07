@@ -40,7 +40,9 @@
 
         public void Visit(AssignmentExpression expression)
         {
-            throw new NotImplementedException();
+            expression.Value.Accept(this);
+            expression.Variable.Accept(this);
+            _operations.Add(new StoreOperation());
         }
 
         public void Visit(BinaryExpression expression)

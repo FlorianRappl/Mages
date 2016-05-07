@@ -4,7 +4,7 @@
     using System;
 
     /// <summary>
-    /// Loads a constant by placing it on the stack.
+    /// Loads a value by placing it on the stack.
     /// </summary>
     sealed class LoadOperation : IOperation
     {
