@@ -2,6 +2,7 @@
 {
     using Mages.Core.Ast;
     using Mages.Core.Ast.Expressions;
+    using Mages.Core.Types;
     using NUnit.Framework;
     using System;
 
@@ -11,9 +12,7 @@
         [Test]
         public void ExplicitMultiplicationInvolvingNumberAndIdentifier()
         {
-            var source = "2 * x";
-            var parser = new ExpressionParser();
-            var expr = parser.ParseExpression(source);
+            var expr = "2 * x".ToExpression();
 
             AssertMultiplication(expr, 2.0, "x");
         }
@@ -21,9 +20,7 @@
         [Test]
         public void ExplicitMultiplicationInvolvingTwoIdentifiers()
         {
-            var source = "x * y";
-            var parser = new ExpressionParser();
-            var expr = parser.ParseExpression(source);
+            var expr = "x * y".ToExpression();
 
             AssertMultiplication(expr, "x", "y");
         }
@@ -31,9 +28,7 @@
         [Test]
         public void ImplicitMultiplicationInvolvingNumberAndIdentifierSeparatedBySpace()
         {
-            var source = "2 x";
-            var parser = new ExpressionParser();
-            var expr = parser.ParseExpression(source);
+            var expr = "2 x".ToExpression();
 
             AssertMultiplication(expr, 2.0, "x");
         }
@@ -41,9 +36,7 @@
         [Test]
         public void ImplicitMultiplicationInvolvingTwoNumbersSeparatedBySpace()
         {
-            var source = "2 3";
-            var parser = new ExpressionParser();
-            var expr = parser.ParseExpression(source);
+            var expr = "2 3".ToExpression();
 
             AssertMultiplication(expr, 2.0, 3.0);
         }
@@ -51,9 +44,7 @@
         [Test]
         public void ImplicitMultiplicationInvolvingTwoIdentifiersSeparatedBySpace()
         {
-            var source = "x y";
-            var parser = new ExpressionParser();
-            var expr = parser.ParseExpression(source);
+            var expr = "x y".ToExpression();
 
             AssertMultiplication(expr, "x", "y");
         }
@@ -61,9 +52,7 @@
         [Test]
         public void ImplicitMultiplicationInvolvingNumberAndIdentifierNotSeparatedBySpace()
         {
-            var source = "2x";
-            var parser = new ExpressionParser();
-            var expr = parser.ParseExpression(source);
+            var expr = "2x".ToExpression();
 
             AssertMultiplication(expr, 2.0, "x");
         }
@@ -71,9 +60,7 @@
         [Test]
         public void ImplicitMultiplicationInvolvingNumberAndFunctionCallNotSeparatedBySpace()
         {
-            var source = "6.28sin(x)";
-            var parser = new ExpressionParser();
-            var expr = parser.ParseExpression(source);
+            var expr = "6.28sin(x)".ToExpression();
 
             AssertMultiplication(expr, 6.28, "sin", "x");
         }
@@ -88,21 +75,21 @@
         private static void AssertMultiplication(IExpression expr, Double value, String name)
         {
             AssertMultiplication<ConstantExpression, VariableExpression>(expr,
-                constant => (Double)constant.Value == value,
+                constant => ((Number)constant.Value).Value == value,
                 variable => variable.Name == name);
         }
 
         private static void AssertMultiplication(IExpression expr, Double leftValue, Double rightValue)
         {
             AssertMultiplication<ConstantExpression, ConstantExpression>(expr,
-                constant => (Double)constant.Value == leftValue,
-                constant => (Double)constant.Value == rightValue);
+                constant => ((Number)constant.Value).Value == leftValue,
+                constant => ((Number)constant.Value).Value == rightValue);
         }
 
         private static void AssertMultiplication(IExpression expr, Double value, String functionName, String functionArgument)
         {
             AssertMultiplication<ConstantExpression, CallExpression>(expr,
-                constant => (Double)constant.Value == value,
+                constant => ((Number)constant.Value).Value == value,
                 call => ((VariableExpression)call.Function).Name == functionName && ((VariableExpression)call.Arguments.Arguments[0]).Name == functionArgument);
         }
 

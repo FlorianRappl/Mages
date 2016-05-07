@@ -1,6 +1,5 @@
 ﻿namespace Mages.Core.Tests
 {
-    using Mages.Core.Ast;
     using Mages.Core.Ast.Expressions;
     using NUnit.Framework;
 
@@ -10,10 +9,7 @@
         [Test]
         public void ParseSimpleFunction()
         {
-            var source = "()=>new{}";
-            var tokens = source.ToTokenStream();
-            var parser = new ExpressionParser();
-            var result = parser.ParseExpression(tokens);
+            var result = "()=>new{}".ToExpression();
             
             Assert.IsInstanceOf<FunctionExpression>(result);
 
@@ -26,10 +22,7 @@
         [Test]
         public void ParseSimpleFunctionWithImplicitReturn()
         {
-            var source = "()=>2*3";
-            var tokens = source.ToTokenStream();
-            var parser = new ExpressionParser();
-            var result = parser.ParseExpression(tokens);
+            var result = "()=>2*3".ToExpression();
 
             Assert.IsInstanceOf<FunctionExpression>(result);
 
@@ -47,10 +40,7 @@
         [Test]
         public void ParseSimpleFunctionWithOneArgument()
         {
-            var source = "(x) => new{}";
-            var tokens = source.ToTokenStream();
-            var parser = new ExpressionParser();
-            var result = parser.ParseExpression(tokens);
+            var result = "(x) => new{}".ToExpression();
 
             Assert.IsInstanceOf<FunctionExpression>(result);
 
@@ -67,10 +57,7 @@
         [Test]
         public void ParseSimpleFunctionWithTwoArguments()
         {
-            var source = "(x,y)=>new {}";
-            var tokens = source.ToTokenStream();
-            var parser = new ExpressionParser();
-            var result = parser.ParseExpression(tokens);
+            var result = "(x,y)=>new {}".ToExpression();
 
             Assert.IsInstanceOf<FunctionExpression>(result);
 
@@ -90,10 +77,7 @@
         [Test]
         public void ParseSimpleFunctionWithThreeArguments()
         {
-            var source = "(x,y, abc)=>new{}";
-            var tokens = source.ToTokenStream();
-            var parser = new ExpressionParser();
-            var result = parser.ParseExpression(tokens);
+            var result = "(x,y, abc)=>new{}".ToExpression();
 
             Assert.IsInstanceOf<FunctionExpression>(result);
 
@@ -116,10 +100,7 @@
         [Test]
         public void ParseSimpleFunctionWithSingleNakedArgument()
         {
-            var source = "_=>new{}";
-            var tokens = source.ToTokenStream();
-            var parser = new ExpressionParser();
-            var result = parser.ParseExpression(tokens);
+            var result = "_=>new{}".ToExpression();
 
             Assert.IsInstanceOf<FunctionExpression>(result);
 

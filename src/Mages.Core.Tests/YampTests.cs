@@ -1,6 +1,5 @@
 ﻿namespace Mages.Core.Tests
 {
-    using Mages.Core.Ast;
     using Mages.Core.Ast.Walkers;
     using Mages.Core.Tests.Mocks;
     using Mages.Core.Vm;
@@ -572,9 +571,8 @@
         {
             var hasError = false;
             var validation = new ValidationContextMock(_ => hasError = true);
-            var parser = new ExpressionParser();
             var operations = new List<IOperation>();
-            var statement = parser.ParseStatement(sourceCode);
+            var statement = sourceCode.ToStatement();
             var walker = new OperationTreeWalker(operations);
             var memory = new SimpleMemory();
 
@@ -610,8 +608,7 @@
         {
             var hasError = false;
             var validation = new ValidationContextMock(_ => hasError = true);
-            var parser = new ExpressionParser();
-            var statement = parser.ParseStatement(sourceCode);
+            var statement = sourceCode.ToStatement();
 
             statement.Validate(validation);
             return hasError;

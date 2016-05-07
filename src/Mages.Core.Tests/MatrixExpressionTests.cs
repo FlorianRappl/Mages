@@ -1,6 +1,5 @@
 ﻿namespace Mages.Core.Tests
 {
-    using Mages.Core.Ast;
     using Mages.Core.Ast.Expressions;
     using NUnit.Framework;
 
@@ -10,10 +9,7 @@
         [Test]
         public void EmptyMatrix()
         {
-            var source = @"[]";
-            var tokens = source.ToTokenStream();
-            var parser = new ExpressionParser();
-            var result = parser.ParseExpression(tokens);
+            var result = @"[]".ToExpression();
 
             Assert.IsInstanceOf<MatrixExpression>(result);
 
@@ -25,10 +21,7 @@
         [Test]
         public void SingleElementMatrix()
         {
-            var source = @"[2]";
-            var tokens = source.ToTokenStream();
-            var parser = new ExpressionParser();
-            var result = parser.ParseExpression(tokens);
+            var result = @"[2]".ToExpression();
 
             Assert.IsInstanceOf<MatrixExpression>(result);
 
@@ -42,10 +35,7 @@
         [Test]
         public void SingleColumnVectorMatrix()
         {
-            var source = @"[1,2,3]";
-            var tokens = source.ToTokenStream();
-            var parser = new ExpressionParser();
-            var result = parser.ParseExpression(tokens);
+            var result = @"[1,2,3]".ToExpression();
 
             Assert.IsInstanceOf<MatrixExpression>(result);
 
@@ -61,10 +51,7 @@
         [Test]
         public void SingleRowVectorMatrix()
         {
-            var source = @"[1;2;3]";
-            var tokens = source.ToTokenStream();
-            var parser = new ExpressionParser();
-            var result = parser.ParseExpression(tokens);
+            var result = @"[1;2;3]".ToExpression();
 
             Assert.IsInstanceOf<MatrixExpression>(result);
 
@@ -82,10 +69,7 @@
         [Test]
         public void VectorWithSpacesMatrix()
         {
-            var source = @"[1,2  ,   3,4];";
-            var tokens = source.ToTokenStream();
-            var parser = new ExpressionParser();
-            var result = parser.ParseExpression(tokens);
+            var result = @"[1,2  ,   3,4];".ToExpression();
 
             Assert.IsInstanceOf<MatrixExpression>(result);
 
@@ -102,10 +86,7 @@
         [Test]
         public void SquareMatrixOfConstants()
         {
-            var source = @"[1,2  ;   3,4];";
-            var tokens = source.ToTokenStream();
-            var parser = new ExpressionParser();
-            var result = parser.ParseExpression(tokens);
+            var result = @"[1,2  ;   3,4];".ToExpression();
 
             Assert.IsInstanceOf<MatrixExpression>(result);
 
@@ -123,10 +104,7 @@
         [Test]
         public void DifferentExpressionsInRowVectorMatrix()
         {
-            var source = @"[1+3;x;f(3);7*3];";
-            var tokens = source.ToTokenStream();
-            var parser = new ExpressionParser();
-            var result = parser.ParseExpression(tokens);
+            var result = @"[1+3;x;f(3);7*3];".ToExpression();
 
             Assert.IsInstanceOf<MatrixExpression>(result);
 
@@ -143,10 +121,7 @@
         [Test]
         public void DifferentExpressionsInColumnVectorMatrix()
         {
-            var source = @"[1+3,x,f(3),7*3];";
-            var tokens = source.ToTokenStream();
-            var parser = new ExpressionParser();
-            var result = parser.ParseExpression(tokens);
+            var result = @"[1+3,x,f(3),7*3];".ToExpression();
 
             Assert.IsInstanceOf<MatrixExpression>(result);
 
@@ -163,10 +138,7 @@
         [Test]
         public void FunctionVectorAndArithmeticInVectorMatrix()
         {
-            var source = @"[()=>3,[1,2,3,4],2+3,(1-2)*3];";
-            var tokens = source.ToTokenStream();
-            var parser = new ExpressionParser();
-            var result = parser.ParseExpression(tokens);
+            var result = @"[()=>3,[1,2,3,4],2+3,(1-2)*3];".ToExpression();
 
             Assert.IsInstanceOf<MatrixExpression>(result);
 

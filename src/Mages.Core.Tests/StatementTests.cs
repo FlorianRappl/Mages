@@ -3,6 +3,7 @@
     using Mages.Core.Ast;
     using Mages.Core.Ast.Expressions;
     using Mages.Core.Ast.Statements;
+    using Mages.Core.Types;
     using NUnit.Framework;
 
     [TestFixture]
@@ -27,7 +28,7 @@
 
             Assert.AreEqual("d", assignment1.VariableName);
             Assert.AreEqual("a", assignment2.VariableName);
-            Assert.AreEqual(5.0, ((ConstantExpression)assignment1.Value).Value);
+            Assert.AreEqual(5.0, ((Number)((ConstantExpression)assignment1.Value).Value).Value);
             Assert.IsInstanceOf<BinaryExpression.Add>(assignment2.Value);
         }
     }

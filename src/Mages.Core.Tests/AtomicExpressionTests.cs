@@ -1,6 +1,5 @@
 ﻿namespace Mages.Core.Tests
 {
-    using Mages.Core.Ast;
     using Mages.Core.Ast.Expressions;
     using NUnit.Framework;
 
@@ -10,45 +9,35 @@
         [Test]
         public void UnknownCharacterIsInvalidExpression()
         {
-            var source = "$";
-            var parser = new ExpressionParser();
-            var expr = parser.ParseExpression(source);
+            var expr = "$".ToExpression();
             Assert.IsInstanceOf<InvalidExpression>(expr);
         }
 
         [Test]
         public void EmptySourceIsEmptyExpression()
         {
-            var source = "";
-            var parser = new ExpressionParser();
-            var expr = parser.ParseExpression(source);
+            var expr = "".ToExpression();
             Assert.IsInstanceOf<EmptyExpression>(expr);
         }
 
         [Test]
         public void SemicolonIsEmptyExpression()
         {
-            var source = ";";
-            var parser = new ExpressionParser();
-            var expr = parser.ParseExpression(source);
+            var expr = ";".ToExpression();
             Assert.IsInstanceOf<EmptyExpression>(expr);
         }
 
         [Test]
         public void SpacesSourceIsEmptyExpression()
         {
-            var source = "\t \n   ";
-            var parser = new ExpressionParser();
-            var expr = parser.ParseExpression(source);
+            var expr = "\t \n   ".ToExpression();
             Assert.IsInstanceOf<EmptyExpression>(expr);
         }
 
         [Test]
         public void UnknownCharacterIsInvalidExpressionContainedInBinaryExpression()
         {
-            var source = "$+";
-            var parser = new ExpressionParser();
-            var expr = parser.ParseExpression(source);
+            var expr = "$+".ToExpression();
             Assert.IsInstanceOf<BinaryExpression>(expr);
             var left = ((BinaryExpression)expr).LValue;
             var right = ((BinaryExpression)expr).RValue;
@@ -59,45 +48,35 @@
         [Test]
         public void TrueIsConstantExpression()
         {
-            var source = "true";
-            var parser = new ExpressionParser();
-            var expr = parser.ParseExpression(source);
+            var expr = "true".ToExpression();
             Assert.IsInstanceOf<ConstantExpression>(expr);
         }
 
         [Test]
         public void FalseIsConstantExpression()
         {
-            var source = "false";
-            var parser = new ExpressionParser();
-            var expr = parser.ParseExpression(source);
+            var expr = "false".ToExpression();
             Assert.IsInstanceOf<ConstantExpression>(expr);
         }
 
         [Test]
         public void ArbitraryIdentifierIsVariableExpression()
         {
-            var source = "a";
-            var parser = new ExpressionParser();
-            var expr = parser.ParseExpression(source);
+            var expr = "a".ToExpression();
             Assert.IsInstanceOf<VariableExpression>(expr);
         }
 
         [Test]
         public void NumberIsConstantExpression()
         {
-            var source = "2.3";
-            var parser = new ExpressionParser();
-            var expr = parser.ParseExpression(source);
+            var expr = "2.3".ToExpression();
             Assert.IsInstanceOf<ConstantExpression>(expr);
         }
 
         [Test]
         public void StringIsConstantExpression()
         {
-            var source = "\"hi there\"";
-            var parser = new ExpressionParser();
-            var expr = parser.ParseExpression(source);
+            var expr = "\"hi there\"".ToExpression();
             Assert.IsInstanceOf<ConstantExpression>(expr);
         }
     }

@@ -1,6 +1,5 @@
 ﻿namespace Mages.Core.Tests
 {
-    using Mages.Core.Ast;
     using Mages.Core.Ast.Expressions;
     using NUnit.Framework;
 
@@ -10,9 +9,7 @@
         [Test]
         public void EscapeSequenceClosedDirectlyShouldNotThrowException()
         {
-            var source = "\"\\\"";
-            var parser = new ExpressionParser();
-            var expr = parser.ParseExpression(source);
+            var expr = "\"\\\"".ToExpression();
             Assert.IsInstanceOf<ConstantExpression>(expr);
         }
     }

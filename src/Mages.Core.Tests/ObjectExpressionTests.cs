@@ -1,7 +1,7 @@
 ﻿namespace Mages.Core.Tests
 {
-    using Mages.Core.Ast;
     using Mages.Core.Ast.Expressions;
+    using Mages.Core.Types;
     using NUnit.Framework;
 
     [TestFixture]
@@ -10,10 +10,7 @@
         [Test]
         public void ObjectLiteralWithSingleKeyValue()
         {
-            var source = "new { key: value }";
-            var tokens = source.ToTokenStream();
-            var parser = new ExpressionParser();
-            var result = parser.ParseExpression(tokens);
+            var result = "new { key: value }".ToExpression();
 
             Assert.IsInstanceOf<ObjectExpression>(result);
             var obj = (ObjectExpression)result;
@@ -35,10 +32,7 @@
         [Test]
         public void ObjectLiteralWithMultipleKeyValuesMixedExpressions()
         {
-            var source = "new { one: 1, two: false, three: 2 * 3 }";
-            var tokens = source.ToTokenStream();
-            var parser = new ExpressionParser();
-            var result = parser.ParseExpression(tokens);
+            var result = "new { one: 1, two: false, three: 2 * 3 }".ToExpression();
 
             Assert.IsInstanceOf<ObjectExpression>(result);
             var obj = (ObjectExpression)result;
@@ -58,29 +52,26 @@
             var value1 = (ConstantExpression)property1.Value;
 
             Assert.AreEqual("one", name1.Name);
-            Assert.AreEqual(1.0, value1.Value);
+            Assert.AreEqual(1.0, ((Number)value1.Value).Value);
 
             var name2 = (IdentifierExpression)property2.Name;
             var value2 = (ConstantExpression)property2.Value;
 
             Assert.AreEqual("two", name2.Name);
-            Assert.AreEqual(false, value2.Value);
+            Assert.AreEqual(0.0, ((Number)value2.Value).Value);
 
             var name3 = (IdentifierExpression)property3.Name;
             var value3 = (BinaryExpression.Multiply)property3.Value;
 
             Assert.AreEqual("three", name3.Name);
-            Assert.AreEqual(2.0, ((ConstantExpression)value3.LValue).Value);
-            Assert.AreEqual(3.0, ((ConstantExpression)value3.RValue).Value);
+            Assert.AreEqual(2.0, ((Number)((ConstantExpression)value3.LValue).Value).Value);
+            Assert.AreEqual(3.0, ((Number)((ConstantExpression)value3.RValue).Value).Value);
         }
 
         [Test]
         public void TightEmptyObjectLiteral()
         {
-            var source = "new{}";
-            var tokens = source.ToTokenStream();
-            var parser = new ExpressionParser();
-            var result = parser.ParseExpression(tokens);
+            var result = "new{}".ToExpression();
 
             Assert.IsInstanceOf<ObjectExpression>(result);
             var obj = (ObjectExpression)result;
@@ -92,10 +83,7 @@
         [Test]
         public void RelaxedEmptyObjectLiteral()
         {
-            var source = " new {  } ";
-            var tokens = source.ToTokenStream();
-            var parser = new ExpressionParser();
-            var result = parser.ParseExpression(tokens);
+            var result = " new {  } ".ToExpression();
 
             Assert.IsInstanceOf<ObjectExpression>(result);
             var obj = (ObjectExpression)result;
@@ -107,10 +95,7 @@
         [Test]
         public void ObjectLiteralWithSingleKeyValueTrailingComma()
         {
-            var source = "new{ key: value , }";
-            var tokens = source.ToTokenStream();
-            var parser = new ExpressionParser();
-            var result = parser.ParseExpression(tokens);
+            var result = "new{ key: value , }".ToExpression();
 
             Assert.IsInstanceOf<ObjectExpression>(result);
             var obj = (ObjectExpression)result;

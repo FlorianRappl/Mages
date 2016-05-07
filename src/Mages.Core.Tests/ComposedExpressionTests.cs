@@ -1,7 +1,7 @@
 ﻿namespace Mages.Core.Tests
 {
-    using Mages.Core.Ast;
     using Mages.Core.Ast.Expressions;
+    using Mages.Core.Types;
     using NUnit.Framework;
 
     [TestFixture]
@@ -10,9 +10,7 @@
         [Test]
         public void TightBracketStatement()
         {
-            var source = "(2+3)*2";
-            var parser = new ExpressionParser();
-            var result = parser.ParseExpression(source);
+            var result = "(2+3)*2".ToExpression();
 
             Assert.IsInstanceOf<BinaryExpression.Multiply>(result);
 
@@ -35,9 +33,7 @@
         [Test]
         public void RelaxedBracketStatement()
         {
-            var source = " ( 2 + 3 ) * 2 ";
-            var parser = new ExpressionParser();
-            var result = parser.ParseExpression(source);
+            var result = " ( 2 + 3 ) * 2 ".ToExpression();
 
             Assert.IsInstanceOf<BinaryExpression.Multiply>(result);
 
@@ -60,9 +56,7 @@
         [Test]
         public void MemberOperatorFromLeftSide()
         {
-            var source = "a.b.c";
-            var parser = new ExpressionParser();
-            var result = parser.ParseExpression(source);
+            var result = "a.b.c".ToExpression();
 
             Assert.IsInstanceOf<MemberExpression>(result);
 
@@ -84,9 +78,7 @@
         [Test]
         public void PowerOperatorsFromRightSide()
         {
-            var source = "1^2^3^4";
-            var parser = new ExpressionParser();
-            var result = parser.ParseExpression(source);
+            var result = "1^2^3^4".ToExpression();
 
             Assert.IsInstanceOf<BinaryExpression.Power>(result);
 
@@ -100,18 +92,16 @@
 
             var power3 = (BinaryExpression)power2.RValue;
 
-            Assert.AreEqual(1.0, ((ConstantExpression)power1.LValue).Value);
-            Assert.AreEqual(2.0, ((ConstantExpression)power2.LValue).Value);
-            Assert.AreEqual(3.0, ((ConstantExpression)power3.LValue).Value);
-            Assert.AreEqual(4.0, ((ConstantExpression)power3.RValue).Value);
+            Assert.AreEqual(1.0, ((Number)((ConstantExpression)power1.LValue).Value).Value);
+            Assert.AreEqual(2.0, ((Number)((ConstantExpression)power2.LValue).Value).Value);
+            Assert.AreEqual(3.0, ((Number)((ConstantExpression)power3.LValue).Value).Value);
+            Assert.AreEqual(4.0, ((Number)((ConstantExpression)power3.RValue).Value).Value);
         }
 
         [Test]
         public void FunctionCallWithoutArguments()
         {
-            var source = "f()";
-            var parser = new ExpressionParser();
-            var result = parser.ParseExpression(source);
+            var result = "f()".ToExpression();
 
             Assert.IsInstanceOf<CallExpression>(result);
 
@@ -130,9 +120,7 @@
         [Test]
         public void FunctionCallWithTwoArguments()
         {
-            var source = "f(1, a)";
-            var parser = new ExpressionParser();
-            var result = parser.ParseExpression(source);
+            var result = "f(1, a)".ToExpression();
 
             Assert.IsInstanceOf<CallExpression>(result);
 
@@ -153,9 +141,7 @@
         [Test]
         public void FunctionCallWithThreeArguments()
         {
-            var source = "f(1,a,\"hi\")";
-            var parser = new ExpressionParser();
-            var result = parser.ParseExpression(source);
+            var result = "f(1,a,\"hi\")".ToExpression();
 
             Assert.IsInstanceOf<CallExpression>(result);
 
@@ -177,9 +163,7 @@
         [Test]
         public void ConditionWithRangeShouldYieldRange()
         {
-            var source = "c ? a : 2:3:1";
-            var parser = new ExpressionParser();
-            var result = parser.ParseExpression(source);
+            var result = "c ? a : 2:3:1".ToExpression();
 
             Assert.IsInstanceOf<RangeExpression>(result);
 
@@ -196,9 +180,7 @@
         [Test]
         public void ConditionWithConditionShouldYieldRightResult()
         {
-            var source = "c ? a ? 1 : 2 : 3";
-            var parser = new ExpressionParser();
-            var result = parser.ParseExpression(source);
+            var result = "c ? a ? 1 : 2 : 3".ToExpression();
 
             Assert.IsInstanceOf<ConditionalExpression>(result);
 
