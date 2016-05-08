@@ -1,10 +1,11 @@
 ﻿namespace Mages.Core.Performance
 {
     using BenchmarkDotNet.Running;
+    using System;
 
-    public static class Benchmarks
+    static class Program
     {
-        public static void Run()
+        static void Main(String[] arguments)
         {
             BenchmarkRunner.Run<TrivialBenchmarks>();
         }

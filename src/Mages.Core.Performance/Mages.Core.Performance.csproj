@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{15B324FD-3EE3-467A-BDDA-A6F571FEA4C8}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Mages.Core.Performance</RootNamespace>
     <AssemblyName>Mages.Core.Performance</AssemblyName>
@@ -29,6 +29,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="BenchmarkDotNet">
       <HintPath>..\packages\BenchmarkDotNet.0.9.4\lib\net40\BenchmarkDotNet.dll</HintPath>
@@ -49,7 +52,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Benchmarks.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="TrivialBenchmarks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
