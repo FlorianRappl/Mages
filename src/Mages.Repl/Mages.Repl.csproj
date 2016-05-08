@@ -49,10 +49,6 @@
     <Compile Include="ReplCore.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Mages.Core.Performance\Mages.Core.Performance.csproj">
-      <Project>{15b324fd-3ee3-467a-bdda-a6f571fea4c8}</Project>
-      <Name>Mages.Core.Performance</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Mages.Core\Mages.Core.csproj">
       <Project>{b0698a2a-bfe9-4568-9055-82302f325452}</Project>
       <Name>Mages.Core</Name>
