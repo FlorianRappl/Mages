@@ -574,7 +574,7 @@
             var operations = new List<IOperation>();
             var statement = sourceCode.ToStatement();
             var walker = new OperationTreeWalker(operations);
-            var memory = new SimpleMemory();
+            var scope = new Dictionary<String, IMagesType>();
 
             statement.Validate(validation);
 
@@ -584,8 +584,8 @@
             return;
 
             statement.Accept(walker);
-            var context = new ExecutionContext(operations.ToArray(), memory);
-            context.Execute();
+            var context = new ExecutionContext(operations.ToArray());
+            context.Execute(scope);
             var result = (Double)context.Pop();
 
             Assert.AreEqual(expected, result, tolerance);

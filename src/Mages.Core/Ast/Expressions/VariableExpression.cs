@@ -37,11 +37,6 @@
             get { return _scope; }
         }
 
-        public IExpression ReferencedSymbol
-        {
-            get { return _scope != null ? _scope.Find(_name) : null; }
-        }
-
         #endregion
 
         #region Methods

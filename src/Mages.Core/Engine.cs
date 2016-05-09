@@ -1,8 +1,8 @@
 ﻿namespace Mages.Core
 {
     using Mages.Core.Ast;
-    using Mages.Core.Vm;
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Represents the central engine for any kind of evaluation.
@@ -12,7 +12,7 @@
         #region Fields
 
         private readonly IParser _parser;
-        private readonly IMemory _memory;
+        private readonly IDictionary<String, IMagesType> _scope;
 
         #endregion
 
@@ -23,11 +23,11 @@
         /// elements are being used.
         /// </summary>
         /// <param name="parser">The parser to use.</param>
-        /// <param name="memory">The memory to use.</param>
-        public Engine(IParser parser = null, IMemory memory = null)
+        /// <param name="scope">The context to use.</param>
+        public Engine(IParser parser = null, IDictionary<String, IMagesType> scope = null)
         {
             _parser = parser ?? new ExpressionParser();
-            _memory = memory ?? new SimpleMemory();
+            _scope = scope ?? new Dictionary<String, IMagesType>();
         }
 
         #endregion
@@ -43,11 +43,11 @@
         }
 
         /// <summary>
-        /// Gets the used memory.
+        /// Gets the used global scope.
         /// </summary>
-        public IMemory Memory
+        public IDictionary<String, IMagesType> Scope
         {
-            get { return _memory; }
+            get { return _scope; }
         }
 
         #endregion
@@ -62,8 +62,8 @@
         public Object Interpret(String source)
         {
             var statements = _parser.ParseStatements(source);
-            var operations = statements.MakeRunnable(_memory);
-            operations.Execute();
+            var operations = statements.MakeRunnable();
+            operations.Execute(_scope);
             return operations.Pop();
         }
 

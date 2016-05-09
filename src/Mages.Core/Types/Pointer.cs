@@ -1,12 +1,12 @@
 ﻿namespace Mages.Core.Types
 {
-    using Mages.Core.Vm;
     using System;
+    using System.Collections.Generic;
 
     public struct Pointer : IMagesType
     {
-        public IMemory Memory;
-        public Int32 Address;
+        public IDictionary<String, IMagesType> Scope;
+        public String Name;
 
         public TypeId Type
         {
@@ -15,8 +15,8 @@
 
         public IMagesType Reference
         {
-            get { return Memory.Load(Address); }
-            set { Memory.Store(Address, value); }
+            get { return Scope[Name]; }
+            set { Scope[Name] = value; }
         }
 
         public override String ToString()

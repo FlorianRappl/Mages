@@ -38,21 +38,6 @@
             visitor.Visit(this);
         }
 
-        public void BindTo(AbstractScope scope)
-        {
-            for (var i = 0; i < _expressions.Length; i++)
-            {
-                var variable = _expressions[i] as VariableExpression;
-
-                if (variable != null)
-                {
-                    var expression = new IdentifierExpression(variable.Name, variable.Start, variable.End);
-                    _expressions[i] = expression;
-                    scope.Provide(variable.Name, expression);
-                }
-            }
-        }
-
         public void Validate(IValidationContext context)
         {
             foreach (var expression in _expressions)

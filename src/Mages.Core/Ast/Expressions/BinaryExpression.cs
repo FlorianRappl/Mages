@@ -72,7 +72,7 @@
 
         public Func<IMagesType[], IMagesType> GetFunction()
         {
-            return args => new Number { Value = Calculate(((Number)args[0]).Value, ((Number)args[1]).Value) };
+            return args => new Number { Value = Calculate(args[0].ToNumber(), args[1].ToNumber()) };
         }
 
         protected abstract Double Calculate(Double x, Double y);

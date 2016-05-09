@@ -52,24 +52,7 @@
             var start = tokens.Current.Start;
             var expr = ParseAssignment(tokens.NextNonIgnorable());
             var end = tokens.Current.End;
-            var stmt = new VarStatement(expr, start, end);
-
-            if (_scopes.Current.Parent != null)
-            {
-                var assignment = expr as AssignmentExpression;
-
-                if (assignment != null)
-                {
-                    var variable = assignment.VariableName;
-
-                    if (variable != null)
-                    {
-                        _scopes.Current.Provide(variable, assignment);
-                    }
-                }
-            }
-
-            return stmt;
+            return new VarStatement(expr, start, end);
         }
 
         private BlockStatement ParseBlockStatement(IEnumerator<IToken> tokens)
@@ -123,7 +106,6 @@
         private FunctionExpression ParseFunction(ParameterExpression parameters, IEnumerator<IToken> tokens)
         {
             _scopes.PushNew();
-            parameters.BindTo(_scopes.Current);
             var body = ParseAssignment(tokens);
             var scope = _scopes.PopCurrent();
             return new FunctionExpression(parameters, body);
@@ -138,19 +120,7 @@
             if (mode == TokenType.Assignment)
             {
                 var y = ParseExpression(tokens);
-                var expr = new AssignmentExpression(x, y);
-
-                if (_scopes.Current.Parent == null)
-                {
-                    var variable = expr.VariableName;
-
-                    if (variable != null)
-                    {
-                        _scopes.Current.Provide(variable, expr);
-                    }
-                }
-
-                return expr;
+                return new AssignmentExpression(x, y);
             }
             else if (mode == TokenType.Lambda)
             {
@@ -571,8 +541,7 @@
 
             if (token.Type == TokenType.Identifier)
             {
-                var scope = _scopes.Find(token.Payload);
-                var expr = new VariableExpression(token.Payload, scope, token.Start, token.End);
+                var expr = new VariableExpression(token.Payload, _scopes.Current, token.Start, token.End);
                 tokens.NextNonIgnorable();
                 return expr;
             }

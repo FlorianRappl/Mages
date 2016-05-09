@@ -10,12 +10,10 @@
     public class OperationTreeWalker : ITreeWalker
     {
         private readonly List<IOperation> _operations;
-        private readonly Dictionary<IExpression, Int32> _positions;
 
         public OperationTreeWalker(List<IOperation> operations)
         {
             _operations = operations;
-            _positions = new Dictionary<IExpression, Int32>();
         }
 
         public void Visit(EmptyExpression expression)
@@ -172,13 +170,12 @@
 
         public void Visit(VariableExpression expression)
         {
-            var symbol = expression.ReferencedSymbol;
-            var position = _positions[symbol];
-            
+            //TODO get scope operation
+
             _operations.Add(new LoadOperation(ctx => new Pointer
             {
-                Memory = ctx.Memory,
-                Address = position
+                Name = expression.Name,
+                Scope = null
             }));
         }
 
