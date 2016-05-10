@@ -46,9 +46,9 @@
 
             var fx = (FunctionExpression)result;
             Assert.AreEqual(1, fx.Parameters.Expressions.Length);
-            Assert.IsInstanceOf<IdentifierExpression>(fx.Parameters.Expressions[0]);
+            Assert.IsInstanceOf<VariableExpression>(fx.Parameters.Expressions[0]);
 
-            var x = (IdentifierExpression)fx.Parameters.Expressions[0];
+            var x = (VariableExpression)fx.Parameters.Expressions[0];
             Assert.AreEqual("x", x.Name);
 
             Assert.IsInstanceOf<ObjectExpression>(fx.Body);
@@ -63,12 +63,12 @@
 
             var fx = (FunctionExpression)result;
             Assert.AreEqual(2, fx.Parameters.Expressions.Length);
-            Assert.IsInstanceOf<IdentifierExpression>(fx.Parameters.Expressions[0]);
-            Assert.IsInstanceOf<IdentifierExpression>(fx.Parameters.Expressions[1]);
+            Assert.IsInstanceOf<VariableExpression>(fx.Parameters.Expressions[0]);
+            Assert.IsInstanceOf<VariableExpression>(fx.Parameters.Expressions[1]);
 
-            var x = (IdentifierExpression)fx.Parameters.Expressions[0];
+            var x = (VariableExpression)fx.Parameters.Expressions[0];
             Assert.AreEqual("x", x.Name);
-            var y = (IdentifierExpression)fx.Parameters.Expressions[1];
+            var y = (VariableExpression)fx.Parameters.Expressions[1];
             Assert.AreEqual("y", y.Name);
 
             Assert.IsInstanceOf<ObjectExpression>(fx.Body);
@@ -83,15 +83,15 @@
 
             var fx = (FunctionExpression)result;
             Assert.AreEqual(3, fx.Parameters.Expressions.Length);
-            Assert.IsInstanceOf<IdentifierExpression>(fx.Parameters.Expressions[0]);
-            Assert.IsInstanceOf<IdentifierExpression>(fx.Parameters.Expressions[1]);
-            Assert.IsInstanceOf<IdentifierExpression>(fx.Parameters.Expressions[2]);
+            Assert.IsInstanceOf<VariableExpression>(fx.Parameters.Expressions[0]);
+            Assert.IsInstanceOf<VariableExpression>(fx.Parameters.Expressions[1]);
+            Assert.IsInstanceOf<VariableExpression>(fx.Parameters.Expressions[2]);
 
-            var x = (IdentifierExpression)fx.Parameters.Expressions[0];
+            var x = (VariableExpression)fx.Parameters.Expressions[0];
             Assert.AreEqual("x", x.Name);
-            var y = (IdentifierExpression)fx.Parameters.Expressions[1];
+            var y = (VariableExpression)fx.Parameters.Expressions[1];
             Assert.AreEqual("y", y.Name);
-            var abc = (IdentifierExpression)fx.Parameters.Expressions[2];
+            var abc = (VariableExpression)fx.Parameters.Expressions[2];
             Assert.AreEqual("abc", abc.Name);
 
             Assert.IsInstanceOf<ObjectExpression>(fx.Body);
@@ -106,9 +106,9 @@
 
             var fx = (FunctionExpression)result;
             Assert.AreEqual(1, fx.Parameters.Expressions.Length);
-            Assert.IsInstanceOf<IdentifierExpression>(fx.Parameters.Expressions[0]);
+            Assert.IsInstanceOf<VariableExpression>(fx.Parameters.Expressions[0]);
 
-            var underscore = (IdentifierExpression)fx.Parameters.Expressions[0];
+            var underscore = (VariableExpression)fx.Parameters.Expressions[0];
             Assert.AreEqual("_", underscore.Name);
 
             Assert.IsInstanceOf<ObjectExpression>(fx.Body);
