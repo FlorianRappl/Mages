@@ -1,6 +1,7 @@
 ﻿namespace Mages.Core.Ast.Walkers
 {
     using Mages.Core.Ast.Expressions;
+    using Mages.Core.Ast.Statements;
     using Mages.Core.Types;
     using Mages.Core.Vm;
     using Mages.Core.Vm.Operations;
@@ -14,6 +15,24 @@
         public OperationTreeWalker(List<IOperation> operations)
         {
             _operations = operations;
+        }
+
+        public void Visit(BlockStatement block)
+        {
+            foreach (var statement in block.Statements)
+            {
+                statement.Accept(this);
+            }
+        }
+
+        public void Visit(SimpleStatement statement)
+        {
+            statement.Expression.Accept(this);
+        }
+
+        public void Visit(VarStatement statement)
+        {
+            statement.Assignment.Accept(this);
         }
 
         public void Visit(EmptyExpression expression)

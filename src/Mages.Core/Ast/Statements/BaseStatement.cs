@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents the shared core of all statements.
     /// </summary>
-    abstract class BaseStatement
+    public abstract class BaseStatement
     {
         #region Fields
 

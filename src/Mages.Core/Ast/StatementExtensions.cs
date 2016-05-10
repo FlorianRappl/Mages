@@ -1,6 +1,7 @@
 ﻿namespace Mages.Core.Ast
 {
     using Mages.Core.Ast.Expressions;
+    using Mages.Core.Ast.Statements;
     using Mages.Core.Ast.Walkers;
     using Mages.Core.Vm;
     using System.Collections.Generic;
@@ -12,6 +13,14 @@
             var missingSymbols = new List<VariableExpression>();
             statement.CollectMissingSymbols(missingSymbols);
             return missingSymbols;
+        }
+
+        public static BlockStatement ToBlock(this IEnumerable<IStatement> statements)
+        {
+            var list = new List<IStatement>(statements);
+            var start = list.Count > 0 ? list[0].Start : new TextPosition();
+            var end = list.Count > 0 ? list[list.Count - 1].End : start;
+            return new BlockStatement(list.ToArray(), start, end);
         }
 
         public static void CollectMissingSymbols(this IStatement statement, List<VariableExpression> missingSymbols)
@@ -32,12 +41,7 @@
         public static List<VariableExpression> FindMissingSymbols(this IEnumerable<IStatement> statements)
         {
             var missingSymbols = new List<VariableExpression>();
-
-            foreach (var statement in statements)
-            {
-                statement.CollectMissingSymbols(missingSymbols);
-            }
-
+            statements.ToBlock().CollectMissingSymbols(missingSymbols);
             return missingSymbols;
         }
 
@@ -45,12 +49,7 @@
         {
             var operations = new List<IOperation>();
             var walker = new OperationTreeWalker(operations);
-
-            foreach (var statement in statements)
-            {
-                statement.Accept(walker);
-            }
-
+            statements.ToBlock().Accept(walker);
             return new ExecutionContext(operations.ToArray());
         }
     }

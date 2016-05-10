@@ -1,7 +1,7 @@
 ﻿namespace Mages.Core.Ast.Walkers
 {
     using Mages.Core.Ast.Expressions;
-    using System;
+    using Mages.Core.Ast.Statements;
     using System.Collections.Generic;
 
     public class SymbolTreeWalker : ITreeWalker
@@ -11,6 +11,24 @@
         public SymbolTreeWalker(List<VariableExpression> collector)
         {
             _collector = collector;
+        }
+
+        public void Visit(BlockStatement block)
+        {
+            foreach (var statement in block.Statements)
+            {
+                statement.Accept(this);
+            }
+        }
+
+        public void Visit(SimpleStatement statement)
+        {
+            statement.Expression.Accept(this);
+        }
+
+        public void Visit(VarStatement statement)
+        {
+            statement.Assignment.Accept(this);
         }
 
         public void Visit(EmptyExpression expression)

@@ -1,6 +1,9 @@
 ﻿namespace Mages.Core.Ast.Statements
 {
-    sealed class SimpleStatement : BaseStatement, IStatement
+    /// <summary>
+    /// Represents a simple statement containing an expression.
+    /// </summary>
+    public sealed class SimpleStatement : BaseStatement, IStatement
     {
         #region Fields
 
@@ -36,7 +39,7 @@
 
         public void Accept(ITreeWalker visitor)
         {
-            _expression.Accept(visitor);
+            visitor.Visit(this);
         }
 
         #endregion

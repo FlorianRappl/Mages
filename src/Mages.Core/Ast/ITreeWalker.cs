@@ -1,12 +1,19 @@
 ﻿namespace Mages.Core.Ast
 {
     using Mages.Core.Ast.Expressions;
+    using Mages.Core.Ast.Statements;
 
     /// <summary>
     /// Represents a syntax tree walker.
     /// </summary>
     public interface ITreeWalker
     {
+        void Visit(VarStatement statement);
+
+        void Visit(BlockStatement statement);
+
+        void Visit(SimpleStatement statement);
+
         void Visit(EmptyExpression expression);
 
         void Visit(ConstantExpression expression);

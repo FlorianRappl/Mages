@@ -5,7 +5,7 @@
     /// <summary>
     /// Represents a "var ...;" statement.
     /// </summary>
-    sealed class VarStatement : BaseStatement, IStatement
+    public sealed class VarStatement : BaseStatement, IStatement
     {
         #region Fields
 
@@ -55,7 +55,7 @@
 
         public void Accept(ITreeWalker visitor)
         {
-            _assignment.Accept(visitor);
+            visitor.Visit(this);
         }
 
         #endregion

@@ -1,6 +1,11 @@
 ﻿namespace Mages.Core.Ast.Statements
 {
-    sealed class BlockStatement : BaseStatement, IStatement
+    using System.Collections.Generic;
+
+    /// <summary>
+    /// Represents a block of statements.
+    /// </summary>
+    public sealed class BlockStatement : BaseStatement, IStatement
     {
         #region Fields
 
@@ -18,6 +23,15 @@
 
         #endregion
 
+        #region Properties
+
+        public IEnumerable<IStatement> Statements
+        {
+            get { return _statements; }
+        }
+
+        #endregion
+
         #region Methods
 
         public void Validate(IValidationContext context)
@@ -30,10 +44,7 @@
 
         public void Accept(ITreeWalker visitor)
         {
-            foreach (var statement in _statements)
-            {
-                statement.Accept(visitor);
-            }
+            visitor.Visit(this);
         }
 
         #endregion
