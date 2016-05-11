@@ -122,9 +122,10 @@
             {
                 return args =>
                 {
-                    var p = (Pointer)args[0];
-                    var value = (Number)p.Reference;
-                    return p.Reference = new Number { Value = value.Value + 1.0 };
+                    throw new NotImplementedException();
+                    //var p = (Pointer)args[0];
+                    //var value = (Number)p.Reference;
+                    //return p.Reference = new Number { Value = value.Value + 1.0 };
                 };
             }
         }
@@ -153,9 +154,10 @@
             {
                 return args =>
                 {
-                    var p = (Pointer)args[0];
-                    var value = (Number)p.Reference;
-                    return p.Reference = new Number { Value = value.Value - 1.0 };
+                    throw new NotImplementedException();
+                    //var p = (Pointer)args[0];
+                    //var value = (Number)p.Reference;
+                    //return p.Reference = new Number { Value = value.Value - 1.0 };
                 };
             }
         }

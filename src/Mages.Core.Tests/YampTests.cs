@@ -2,6 +2,7 @@
 {
     using Mages.Core.Ast.Walkers;
     using Mages.Core.Tests.Mocks;
+    using Mages.Core.Types;
     using Mages.Core.Vm;
     using NUnit.Framework;
     using System;
@@ -586,7 +587,7 @@
             statement.Accept(walker);
             var context = new ExecutionContext(operations.ToArray());
             context.Execute(scope);
-            var result = (Double)context.Pop();
+            var result = ((Number)context.Pop()).Value;
 
             Assert.AreEqual(expected, result, tolerance);
 

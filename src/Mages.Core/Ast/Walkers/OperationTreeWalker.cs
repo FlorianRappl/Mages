@@ -59,7 +59,7 @@
         {
             expression.Value.Accept(this);
             expression.Variable.Accept(this);
-            _operations.Add(new StoreOperation());
+            _operations.Add(new StoreOperation(expression.VariableName));
         }
 
         public void Visit(BinaryExpression expression)
@@ -105,9 +105,8 @@
         public void Visit(CallExpression expression)
         {
             expression.Arguments.Accept(this);
-            _operations.Add(new CollectArgsOperation(expression.Arguments.Count));
             expression.Function.Accept(this);
-            _operations.Add(new CallOperation());
+            _operations.Add(new CallOperation(expression.Arguments.Count));
         }
 
         public void Visit(ObjectExpression expression)
@@ -191,18 +190,17 @@
         {
             //TODO get scope operation
 
-            _operations.Add(new LoadOperation(ctx => new Pointer
-            {
-                Name = expression.Name,
-                Scope = null
-            }));
+            //_operations.Add(new LoadOperation(ctx => new Pointer
+            //{
+            //    Name = expression.Name,
+            //    Scope = null
+            //}));
         }
 
         private void CallFunction(Func<IMagesType[], IMagesType> func, Int32 argumentCount)
         {
-            _operations.Add(new CollectArgsOperation(argumentCount));
             _operations.Add(new LoadOperation(ctx => new Function { Value = func }));
-            _operations.Add(new CallOperation());
+            _operations.Add(new CallOperation(argumentCount));
         }
     }
 }

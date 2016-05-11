@@ -55,6 +55,22 @@
         #region Methods
 
         /// <summary>
+        /// Compiles the given source and returns a function to execute later.
+        /// </summary>
+        /// <param name="source">The source to compile.</param>
+        /// <returns>The function to invoke later.</returns>
+        public Func<Object> Compile(String source)
+        {
+            var statements = _parser.ParseStatements(source);
+            var operations = statements.MakeRunnable();
+            return () =>
+            {
+                operations.Execute(_scope);
+                return operations.Pop();
+            };
+        }
+
+        /// <summary>
         /// Interprets the given source and returns the result, if any.
         /// </summary>
         /// <param name="source">The source to interpret.</param>

@@ -9,8 +9,8 @@
         {
             switch (value.Type)
             {
-                case TypeId.Pointer:
-                    return ((Pointer)value).Reference.ToNumber();
+                //case TypeId.Pointer:
+                //    return ((Pointer)value).Reference.ToNumber();
 
                 case TypeId.Number:
                     return ((Number)value).Value;

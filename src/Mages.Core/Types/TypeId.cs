@@ -10,7 +10,6 @@
         String,
         Object,
         Matrix,
-        Function,
-        Pointer
+        Function
     }
 }

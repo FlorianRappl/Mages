@@ -126,9 +126,7 @@
     <Compile Include="Vm\IExecutionContext.cs" />
     <Compile Include="Vm\IOperation.cs" />
     <Compile Include="Vm\Operations\CallOperation.cs" />
-    <Compile Include="Vm\Operations\CollectArgsOperation.cs" />
     <Compile Include="Vm\Operations\LoadOperation.cs" />
-    <Compile Include="Types\Pointer.cs" />
     <Compile Include="Vm\Operations\StoreOperation.cs" />
   </ItemGroup>
   <ItemGroup>

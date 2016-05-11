@@ -16,12 +16,12 @@
         /// Pushes a new value on the stack.
         /// </summary>
         /// <param name="value">The value to push on the stack.</param>
-        void Push(Object value);
+        void Push(IMagesType value);
 
         /// <summary>
         /// Pops a value from the stack.
         /// </summary>
         /// <returns>The value that came from the stack.</returns>
-        Object Pop();
+        IMagesType Pop();
     }
 }
