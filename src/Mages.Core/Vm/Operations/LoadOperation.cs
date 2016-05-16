@@ -7,16 +7,16 @@
     /// </summary>
     sealed class LoadOperation : IOperation
     {
-        private readonly Func<IExecutionContext, Object> _loader;
+        private readonly Func<IExecutionContext, Object> _load;
 
-        public LoadOperation(Func<IExecutionContext, Object> loader)
+        public LoadOperation(Func<IExecutionContext, Object> load)
         {
-            _loader = loader;
+            _load = load;
         }
 
         public void Invoke(IExecutionContext context)
         {
-            var value = _loader.Invoke(context);
+            var value = _load.Invoke(context);
             context.Push(value);
         }
     }

@@ -11,10 +11,12 @@
     public class OperationTreeWalker : ITreeWalker
     {
         private readonly List<IOperation> _operations;
+        private Boolean _assigning;
 
         public OperationTreeWalker(List<IOperation> operations)
         {
             _operations = operations;
+            _assigning = false;
         }
 
         public void Visit(BlockStatement block)
@@ -58,8 +60,8 @@
         public void Visit(AssignmentExpression expression)
         {
             expression.Value.Accept(this);
+            _assigning = true;
             expression.Variable.Accept(this);
-            _operations.Add(new StoreOperation(expression.VariableName));
         }
 
         public void Visit(BinaryExpression expression)
@@ -175,7 +177,16 @@
             expression.Member.Accept(this);
             expression.Object.Accept(this);
 
-            CallFunction(expression.GetFunction(), 2);
+            if (_assigning)
+            {
+                _operations.Add(new StoreOperation((ctx, val) => Helpers.SetProperty((IDictionary<String, Object>)val, (String)ctx.Pop(), ctx.Pop())));
+            }
+            else
+            {
+                _operations.Add(new LoadOperation(ctx => Helpers.GetProperty((IDictionary<String, Object>)ctx.Pop(), (String)ctx.Pop())));
+            }
+
+            _assigning = false;
         }
 
         public void Visit(ParameterExpression expression)
@@ -185,13 +196,17 @@
 
         public void Visit(VariableExpression expression)
         {
-            //TODO get scope operation
+            if (_assigning)
+            {
+                var name = expression.Name;
+                _operations.Add(new StoreOperation((ctx, val) => { }));
+            }
+            else
+            {
+                _operations.Add(new LoadOperation(ctx => null));
+            }
 
-            //_operations.Add(new LoadOperation(ctx => new Pointer
-            //{
-            //    Name = expression.Name,
-            //    Scope = null
-            //}));
+            _assigning = false;
         }
 
         private void CallFunction(Function func, Int32 argumentCount)

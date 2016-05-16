@@ -7,18 +7,18 @@
     /// </summary>
     sealed class StoreOperation : IOperation
     {
-        private readonly String _variableName;
+        private readonly Action<IExecutionContext, Object> _store;
 
-        public StoreOperation(String variableName)
+        public StoreOperation(Action<IExecutionContext, Object> store)
         {
-            _variableName = variableName;
+            _store = store;
         }
 
         public void Invoke(IExecutionContext context)
         {
-            //var pointer = (Pointer)context.Pop();
-            //var value = (IMagesType)context.Pop();
-            //pointer.Reference = value;
+            var value = context.Pop();
+            _store.Invoke(context, value);
+            context.Push(value);
         }
     }
 }

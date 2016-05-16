@@ -1,9 +1,5 @@
 ﻿namespace Mages.Core.Ast.Expressions
 {
-    using Mages.Core.Runtime;
-    using System;
-    using System.Collections.Generic;
-
     /// <summary>
     /// Represents a member expression.
     /// </summary>
@@ -52,16 +48,6 @@
         {
             _obj.Validate(context);
             _member.Validate(context);
-        }
-
-        public Function GetFunction()
-        {
-            return args =>
-            {
-                var obj = (IDictionary<String, Object>)args[0];
-                var key = (String)args[1];
-                return Helpers.GetProperty(obj, key);
-            };
         }
 
         #endregion

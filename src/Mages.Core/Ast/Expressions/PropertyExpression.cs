@@ -58,7 +58,8 @@
         {
             return args =>
             {
-                return Helpers.GetProperty((IDictionary<String, Object>)args[0], (String)args[1]);
+                Helpers.SetProperty((IDictionary<String, Object>)args[2], (String)args[1], args[0]);
+                return args[2];
             };
         }
 

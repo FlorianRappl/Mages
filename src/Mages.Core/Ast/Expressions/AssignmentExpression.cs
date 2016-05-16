@@ -5,7 +5,7 @@
     /// <summary>
     /// Represents an assignment expression.
     /// </summary>
-    public sealed class AssignmentExpression : AssignableExpression, IExpression
+    public sealed class AssignmentExpression : ComputingExpression, IExpression
     {
         #region Fields
 
