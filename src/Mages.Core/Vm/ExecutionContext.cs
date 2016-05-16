@@ -1,6 +1,5 @@
 ﻿namespace Mages.Core.Vm
 {
-    using Mages.Core.Types;
     using System;
     using System.Collections.Generic;
 
@@ -9,13 +8,13 @@
     /// </summary>
     public sealed class ExecutionContext : IExecutionContext
     {
-        private readonly Stack<IMagesType> _stack;
+        private readonly Stack<Object> _stack;
         private readonly IOperation[] _operations;
         private Int32 _position;
 
         public ExecutionContext(IOperation[] operations)
         {
-            _stack = new Stack<IMagesType>();
+            _stack = new Stack<Object>();
             _operations = operations;
             _position = 0;
         }
@@ -26,7 +25,7 @@
             set { _position = value; }
         }
 
-        public void Execute(IDictionary<String, IMagesType> globalScope)
+        public void Execute(IDictionary<String, Object> globalScope)
         {
             while (_position < _operations.Length)
             {
@@ -35,14 +34,14 @@
             }
         }
 
-        public void Push(IMagesType value)
+        public void Push(Object value)
         {
             _stack.Push(value);
         }
 
-        public IMagesType Pop()
+        public Object Pop()
         {
-            return _stack.Count > 0 ? _stack.Pop() : new Undefined();
+            return _stack.Count > 0 ? _stack.Pop() : null;
         }
     }
 }

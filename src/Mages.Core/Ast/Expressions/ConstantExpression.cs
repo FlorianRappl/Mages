@@ -1,6 +1,5 @@
 ﻿namespace Mages.Core.Ast.Expressions
 {
-    using Mages.Core.Types;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -12,13 +11,13 @@
     {
         #region Fields
 
-        private readonly IMagesType _value;
+        private readonly Object _value;
 
         #endregion
 
         #region ctor
 
-        public ConstantExpression(IMagesType value, TextPosition start, TextPosition end)
+        public ConstantExpression(Object value, TextPosition start, TextPosition end)
             : base(start, end)
         {
             _value = value;
@@ -28,7 +27,7 @@
 
         #region Properties
 
-        public IMagesType Value  
+        public Object Value  
         {
             get { return _value; }
         }
@@ -73,7 +72,7 @@
             private readonly IEnumerable<ParseError> _errors;
 
             public StringConstant(String value, ITextRange range, IEnumerable<ParseError> errors)
-                : base(new MagesString { Value = value }, range.Start, range.End)
+                : base(value, range.Start, range.End)
             {
                 _errors = errors;
             }
@@ -92,7 +91,7 @@
         public class BooleanConstant : ConstantExpression
         {
             public BooleanConstant(Boolean value, ITextRange range)
-                : base(new Number { Value = value ? 1.0 : 0.0 }, range.Start, range.End)
+                : base(value ? 1.0 : 0.0, range.Start, range.End)
             {
             }
         }
@@ -102,7 +101,7 @@
             private readonly IEnumerable<ParseError> _errors;
 
             public NumberConstant(Double value, ITextRange range, IEnumerable<ParseError> errors)
-                : base(new Number { Value = value }, range.Start, range.End)
+                : base(value, range.Start, range.End)
             {
                 _errors = errors;
             }

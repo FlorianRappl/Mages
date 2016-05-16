@@ -1,6 +1,5 @@
 ﻿namespace Mages.Core.Vm.Operations
 {
-    using Mages.Core.Types;
     using System;
 
     /// <summary>

@@ -81,13 +81,16 @@
     <Compile Include="Ast\Walkers\OperationTreeWalker.cs" />
     <Compile Include="Ast\Walkers\SymbolTreeWalker.cs" />
     <Compile Include="EngineExtensions.cs" />
+    <Compile Include="Function.cs" />
     <Compile Include="ITextRange.cs" />
     <Compile Include="Keywords.cs" />
-    <Compile Include="MagesTypeExtensions.cs" />
     <Compile Include="ParseError.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="ErrorCode.cs" />
     <Compile Include="ParserExtensions.cs" />
+    <Compile Include="Runtime\Helpers.cs" />
+    <Compile Include="Runtime\Logic.cs" />
+    <Compile Include="Runtime\Stringify.cs" />
     <Compile Include="Source\ScannerExtensions.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="TextPosition.cs" />
@@ -114,14 +117,6 @@
     <Compile Include="Tokens\TextPositionExtensions.cs" />
     <Compile Include="Tokens\TokenExtensions.cs" />
     <Compile Include="Tokens\TokenType.cs" />
-    <Compile Include="Types\Function.cs" />
-    <Compile Include="IMagesType.cs" />
-    <Compile Include="Types\MagesObject.cs" />
-    <Compile Include="Types\MagesString.cs" />
-    <Compile Include="Types\Matrix.cs" />
-    <Compile Include="Types\Number.cs" />
-    <Compile Include="Types\TypeId.cs" />
-    <Compile Include="Types\Undefined.cs" />
     <Compile Include="Vm\ExecutionContext.cs" />
     <Compile Include="Vm\IExecutionContext.cs" />
     <Compile Include="Vm\IOperation.cs" />
@@ -129,9 +124,7 @@
     <Compile Include="Vm\Operations\LoadOperation.cs" />
     <Compile Include="Vm\Operations\StoreOperation.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Runtime\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

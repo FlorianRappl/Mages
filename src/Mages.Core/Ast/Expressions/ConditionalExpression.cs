@@ -1,6 +1,6 @@
 ﻿namespace Mages.Core.Ast.Expressions
 {
-    using Mages.Core.Types;
+    using Mages.Core.Runtime;
     using System;
 
     /// <summary>
@@ -61,9 +61,9 @@
             _secondary.Validate(context);
         }
 
-        public Func<IMagesType[], IMagesType> GetFunction()
+        public Function GetFunction()
         {
-            return args => ((Number)args[0]).IsTrue ? args[1] : args[2];
+            return args => Logic.IsTrue((Double)args[0]) ? args[1] : args[2];
         }
 
         #endregion

@@ -1,7 +1,8 @@
 ﻿namespace Mages.Core.Ast.Expressions
 {
-    using Mages.Core.Types;
+    using Mages.Core.Runtime;
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Represents a property (name-value pair) of an object.
@@ -53,14 +54,11 @@
             _value.Validate(context);
         }
 
-        public Func<IMagesType[], IMagesType> GetFunction()
+        public Function GetFunction()
         {
             return args =>
             {
-                var obj = (MagesObject)args[2];
-                var key = (MagesString)args[0];
-                obj.SetProperty(key.Value, args[1]);
-                return obj;
+                return Helpers.GetProperty((IDictionary<String, Object>)args[0], (String)args[1]);
             };
         }
 

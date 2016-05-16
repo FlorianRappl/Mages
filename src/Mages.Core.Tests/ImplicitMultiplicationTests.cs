@@ -2,7 +2,6 @@
 {
     using Mages.Core.Ast;
     using Mages.Core.Ast.Expressions;
-    using Mages.Core.Types;
     using NUnit.Framework;
     using System;
 
@@ -75,21 +74,21 @@
         private static void AssertMultiplication(IExpression expr, Double value, String name)
         {
             AssertMultiplication<ConstantExpression, VariableExpression>(expr,
-                constant => ((Number)constant.Value).Value == value,
+                constant => (Double)constant.Value == value,
                 variable => variable.Name == name);
         }
 
         private static void AssertMultiplication(IExpression expr, Double leftValue, Double rightValue)
         {
             AssertMultiplication<ConstantExpression, ConstantExpression>(expr,
-                constant => ((Number)constant.Value).Value == leftValue,
-                constant => ((Number)constant.Value).Value == rightValue);
+                constant => (Double)constant.Value == leftValue,
+                constant => (Double)constant.Value == rightValue);
         }
 
         private static void AssertMultiplication(IExpression expr, Double value, String functionName, String functionArgument)
         {
             AssertMultiplication<ConstantExpression, CallExpression>(expr,
-                constant => ((Number)constant.Value).Value == value,
+                constant => (Double)constant.Value == value,
                 call => ((VariableExpression)call.Function).Name == functionName && ((VariableExpression)call.Arguments.Arguments[0]).Name == functionArgument);
         }
 

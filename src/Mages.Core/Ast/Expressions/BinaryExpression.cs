@@ -1,6 +1,5 @@
 ﻿namespace Mages.Core.Ast.Expressions
 {
-    using Mages.Core.Types;
     using System;
 
     /// <summary>
@@ -70,9 +69,9 @@
             }
         }
 
-        public Func<IMagesType[], IMagesType> GetFunction()
+        public Function GetFunction()
         {
-            return args => new Number { Value = Calculate(args[0].ToNumber(), args[1].ToNumber()) };
+            return args => Calculate((Double)args[0], (Double)args[1]);
         }
 
         protected abstract Double Calculate(Double x, Double y);

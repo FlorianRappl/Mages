@@ -1,8 +1,8 @@
 ﻿namespace Mages.Core.Tests
 {
     using Mages.Core.Ast.Expressions;
-    using Mages.Core.Types;
     using NUnit.Framework;
+    using System;
 
     [TestFixture]
     public class ObjectExpressionTests
@@ -52,20 +52,20 @@
             var value1 = (ConstantExpression)property1.Value;
 
             Assert.AreEqual("one", name1.Name);
-            Assert.AreEqual(1.0, ((Number)value1.Value).Value);
+            Assert.AreEqual(1.0, (Double)value1.Value);
 
             var name2 = (IdentifierExpression)property2.Name;
             var value2 = (ConstantExpression)property2.Value;
 
             Assert.AreEqual("two", name2.Name);
-            Assert.AreEqual(0.0, ((Number)value2.Value).Value);
+            Assert.AreEqual(0.0, (Double)value2.Value);
 
             var name3 = (IdentifierExpression)property3.Name;
             var value3 = (BinaryExpression.Multiply)property3.Value;
 
             Assert.AreEqual("three", name3.Name);
-            Assert.AreEqual(2.0, ((Number)((ConstantExpression)value3.LValue).Value).Value);
-            Assert.AreEqual(3.0, ((Number)((ConstantExpression)value3.RValue).Value).Value);
+            Assert.AreEqual(2.0, (Double)((ConstantExpression)value3.LValue).Value);
+            Assert.AreEqual(3.0, (Double)((ConstantExpression)value3.RValue).Value);
         }
 
         [Test]

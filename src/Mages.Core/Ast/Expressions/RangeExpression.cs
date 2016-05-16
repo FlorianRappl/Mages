@@ -1,6 +1,5 @@
 ﻿namespace Mages.Core.Ast.Expressions
 {
-    using Mages.Core.Types;
     using System;
 
     /// <summary>
@@ -82,9 +81,9 @@
             }
         }
 
-        public Func<IMagesType[], IMagesType> GetFunction()
+        public Function GetFunction()
         {
-            return args => new Matrix { Value = Range(((Number)args[0]).Value, ((Number)args[1]).Value, ((Number)args[2]).Value) };
+            return args => Range((Double)args[0], (Double)args[1], (Double)args[2]);
         }
 
         private static Double[,] Range(Double from, Double to, Double step)

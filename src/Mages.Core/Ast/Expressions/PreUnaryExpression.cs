@@ -1,6 +1,6 @@
 ﻿namespace Mages.Core.Ast.Expressions
 {
-    using Mages.Core.Types;
+    using Mages.Core.Runtime;
     using System;
 
     /// <summary>
@@ -53,7 +53,7 @@
             }
         }
 
-        public abstract Func<IMagesType[], IMagesType> GetFunction();
+        public abstract Function GetFunction();
 
         #endregion
 
@@ -66,9 +66,9 @@
             {
             }
 
-            public override Func<IMagesType[], IMagesType> GetFunction()
+            public override Function GetFunction()
             {
-                return args => new Number { Value = ((Number)args[0]).IsTrue ? 0.0 : 1.0 };
+                return args => Logic.IsFalse((Double)args[0]) ? 1.0 : 0.0;
             }
         }
 
@@ -79,9 +79,9 @@
             {
             }
 
-            public override Func<IMagesType[], IMagesType> GetFunction()
+            public override Function GetFunction()
             {
-                return args => new Number { Value = -((Number)args[0]).Value };
+                return args => -(Double)args[0];
             }
         }
 
@@ -92,9 +92,9 @@
             {
             }
 
-            public override Func<IMagesType[], IMagesType> GetFunction()
+            public override Function GetFunction()
             {
-                return args => new Number { Value = +((Number)args[0]).Value };
+                return args => +(Double)args[0];
             }
         }
 
@@ -118,7 +118,7 @@
                 }
             }
 
-            public override Func<IMagesType[], IMagesType> GetFunction()
+            public override Function GetFunction()
             {
                 return args =>
                 {
@@ -150,7 +150,7 @@
                 }
             }
 
-            public override Func<IMagesType[], IMagesType> GetFunction()
+            public override Function GetFunction()
             {
                 return args =>
                 {

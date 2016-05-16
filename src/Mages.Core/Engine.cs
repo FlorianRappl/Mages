@@ -12,7 +12,7 @@
         #region Fields
 
         private readonly IParser _parser;
-        private readonly IDictionary<String, IMagesType> _scope;
+        private readonly IDictionary<String, Object> _scope;
 
         #endregion
 
@@ -24,10 +24,10 @@
         /// </summary>
         /// <param name="parser">The parser to use.</param>
         /// <param name="scope">The context to use.</param>
-        public Engine(IParser parser = null, IDictionary<String, IMagesType> scope = null)
+        public Engine(IParser parser = null, IDictionary<String, Object> scope = null)
         {
             _parser = parser ?? new ExpressionParser();
-            _scope = scope ?? new Dictionary<String, IMagesType>();
+            _scope = scope ?? new Dictionary<String, Object>();
         }
 
         #endregion
@@ -45,7 +45,7 @@
         /// <summary>
         /// Gets the used global scope.
         /// </summary>
-        public IDictionary<String, IMagesType> Scope
+        public IDictionary<String, Object> Scope
         {
             get { return _scope; }
         }

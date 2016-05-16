@@ -58,7 +58,7 @@
         private Double MagesNumeric(String sourceCode)
         {
             var result = MagesEngine.Interpret(sourceCode);
-            return ((Mages.Core.Types.Number)result).Value;
+            return (Double)result;
         }
     }
 }

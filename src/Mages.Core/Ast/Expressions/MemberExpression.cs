@@ -1,7 +1,8 @@
 ﻿namespace Mages.Core.Ast.Expressions
 {
-    using Mages.Core.Types;
+    using Mages.Core.Runtime;
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Represents a member expression.
@@ -53,13 +54,13 @@
             _member.Validate(context);
         }
 
-        public Func<IMagesType[], IMagesType> GetFunction()
+        public Function GetFunction()
         {
             return args =>
             {
-                var obj = (MagesObject)args[0];
-                var key = (MagesString)args[1];
-                return obj.GetProperty(key.Value);
+                var obj = (IDictionary<String, Object>)args[0];
+                var key = (String)args[1];
+                return Helpers.GetProperty(obj, key);
             };
         }
 

@@ -2,7 +2,7 @@
 {
     using Mages.Core.Ast.Expressions;
     using Mages.Core.Ast.Statements;
-    using Mages.Core.Types;
+    using Mages.Core.Runtime;
     using Mages.Core.Vm;
     using Mages.Core.Vm.Operations;
     using System;
@@ -111,7 +111,7 @@
 
         public void Visit(ObjectExpression expression)
         {
-            var init = new LoadOperation(ctx => new MagesObject { Value = new Dictionary<String, IMagesType>() });
+            var init = new LoadOperation(ctx => new Dictionary<String, Object>());
             _operations.Add(init);
 
             foreach (var property in expression.Values)
@@ -122,8 +122,8 @@
 
         public void Visit(PropertyExpression expression)
         {
-            expression.Value.Accept(this);
             expression.Name.Accept(this);
+            expression.Value.Accept(this);
 
             CallFunction(expression.GetFunction(), 3);
         }
@@ -133,10 +133,7 @@
             var values = expression.Values;
             var rows = values.Length;
             var cols = rows > 0 ? values[0].Length : 0;
-            var init = new LoadOperation(ctx => new Matrix 
-            { 
-                Value = new Double[rows, cols] 
-            });
+            var init = new LoadOperation(ctx => new Double[rows, cols]);
             _operations.Add(init);
 
             for (var row = 0; row < rows; row++)
@@ -150,8 +147,8 @@
 
                     CallFunction(args =>
                     {
-                        var matrix = (Matrix)args[1];
-                        matrix.Set(i, j, (Number)args[0]);
+                        var matrix = (Double[,])args[1];
+                        matrix.SetValue(i, j, (Double)args[0]);
                         return matrix;
                     }, 2);
                 }
@@ -170,7 +167,7 @@
         public void Visit(IdentifierExpression expression)
         {
             var name = expression.Name;
-            _operations.Add(new LoadOperation(ctx => new MagesString { Value = name }));
+            _operations.Add(new LoadOperation(ctx => name));
         }
 
         public void Visit(MemberExpression expression)
@@ -197,9 +194,9 @@
             //}));
         }
 
-        private void CallFunction(Func<IMagesType[], IMagesType> func, Int32 argumentCount)
+        private void CallFunction(Function func, Int32 argumentCount)
         {
-            _operations.Add(new LoadOperation(ctx => new Function { Value = func }));
+            _operations.Add(new LoadOperation(ctx => func));
             _operations.Add(new CallOperation(argumentCount));
         }
     }

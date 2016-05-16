@@ -1,8 +1,8 @@
 ﻿namespace Mages.Core.Tests
 {
     using Mages.Core.Ast.Expressions;
-    using Mages.Core.Types;
     using NUnit.Framework;
+    using System;
 
     [TestFixture]
     public class ComposedExpressionTests
@@ -92,10 +92,10 @@
 
             var power3 = (BinaryExpression)power2.RValue;
 
-            Assert.AreEqual(1.0, ((Number)((ConstantExpression)power1.LValue).Value).Value);
-            Assert.AreEqual(2.0, ((Number)((ConstantExpression)power2.LValue).Value).Value);
-            Assert.AreEqual(3.0, ((Number)((ConstantExpression)power3.LValue).Value).Value);
-            Assert.AreEqual(4.0, ((Number)((ConstantExpression)power3.RValue).Value).Value);
+            Assert.AreEqual(1.0, (Double)((ConstantExpression)power1.LValue).Value);
+            Assert.AreEqual(2.0, (Double)((ConstantExpression)power2.LValue).Value);
+            Assert.AreEqual(3.0, (Double)((ConstantExpression)power3.LValue).Value);
+            Assert.AreEqual(4.0, (Double)((ConstantExpression)power3.RValue).Value);
         }
 
         [Test]

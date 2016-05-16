@@ -2,7 +2,6 @@
 {
     using Mages.Core.Ast.Walkers;
     using Mages.Core.Tests.Mocks;
-    using Mages.Core.Types;
     using Mages.Core.Vm;
     using NUnit.Framework;
     using System;
@@ -575,7 +574,7 @@
             var operations = new List<IOperation>();
             var statement = sourceCode.ToStatement();
             var walker = new OperationTreeWalker(operations);
-            var scope = new Dictionary<String, IMagesType>();
+            var scope = new Dictionary<String, Object>();
 
             statement.Validate(validation);
 
@@ -587,7 +586,7 @@
             statement.Accept(walker);
             var context = new ExecutionContext(operations.ToArray());
             context.Execute(scope);
-            var result = ((Number)context.Pop()).Value;
+            var result = (Double)context.Pop();
 
             Assert.AreEqual(expected, result, tolerance);
 

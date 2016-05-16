@@ -1,6 +1,5 @@
 ﻿namespace Mages.Core.Vm.Operations
 {
-    using Mages.Core.Types;
     using System;
 
     /// <summary>
@@ -8,11 +7,11 @@
     /// </summary>
     sealed class CallOperation : IOperation
     {
-        private readonly IMagesType[] _arguments;
+        private readonly Object[] _arguments;
 
         public CallOperation(Int32 length)
         {
-            _arguments = new IMagesType[length];
+            _arguments = new Object[length];
         }
 
         public void Invoke(IExecutionContext context)
