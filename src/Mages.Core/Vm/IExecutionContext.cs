@@ -1,6 +1,7 @@
 ﻿namespace Mages.Core.Vm
 {
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Represents the model of the MAGES VM.
@@ -11,6 +12,11 @@
         /// Gets or sets the position of the previous statement.
         /// </summary>
         Int32 Position { get; set; }
+
+        /// <summary>
+        /// Gets the currently used execution scope.
+        /// </summary>
+        IDictionary<String, Object> Scope { get; }
 
         /// <summary>
         /// Pushes a new value on the stack.

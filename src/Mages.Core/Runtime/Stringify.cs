@@ -4,19 +4,19 @@
     using System.Collections.Generic;
     using System.Globalization;
 
-    static class Stringify
+    public static class Stringify
     {
-        public static String Number(this Double value)
+        public static String This(Double value)
         {
             return value.ToString(CultureInfo.InvariantCulture);
         }
 
-        public static String String(this String value)
+        public static String This(String value)
         {
             return value.ToString(CultureInfo.InvariantCulture);
         }
 
-        public static String Matrix(this Double[,] value)
+        public static String This(Double[,] value)
         {
             var sb = StringBuilderPool.Pull();
             var rows = value.GetLength(0);
@@ -45,12 +45,12 @@
             return sb.Stringify();
         }
 
-        public static String Object(this IDictionary<String, Object> value)
+        public static String This(IDictionary<String, Object> value)
         {
             return "[Object]";
         }
 
-        public static String Function(this Function value)
+        public static String This(Function value)
         {
             return "[Function]";
         }
@@ -58,6 +58,36 @@
         public static String Undefined()
         {
             return System.String.Empty;
+        }
+
+        public static String This(Object value)
+        {
+            if (value == null)
+            {
+                return Undefined();
+            }
+            else if (value is Function)
+            {
+                return This((Function)value);
+            }
+            else if (value is IDictionary<String, Object>)
+            {
+                return This((Dictionary<String, Object>)value);
+            }
+            else if (value is Double[,])
+            {
+                return This((Double[,])value);
+            }
+            else if (value is String)
+            {
+                return This((String)value);
+            }
+            else if (value is Double)
+            {
+                return This((Double)value);
+            }
+
+            return "(unknown)";
         }
     }
 }

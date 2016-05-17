@@ -60,7 +60,6 @@
             var start = tokens.Current.Start;
             var current = tokens.NextNonIgnorable().Current;
             var statements = new List<IStatement>();
-            _scopes.PushNew();
 
             while (current.IsNeither(TokenType.CloseScope, TokenType.End))
             {
@@ -75,7 +74,6 @@
             }
 
             var end = tokens.Current.End;
-            var scope = _scopes.PopCurrent();
             return new BlockStatement(statements.ToArray(), start, end);
         }
 
@@ -108,7 +106,7 @@
             _scopes.PushNew();
             var body = ParseAssignment(tokens);
             var scope = _scopes.PopCurrent();
-            return new FunctionExpression(parameters, body);
+            return new FunctionExpression(scope, parameters, body);
         }
 
         private IExpression ParseAssignment(IEnumerator<IToken> tokens)

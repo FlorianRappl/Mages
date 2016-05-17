@@ -59,9 +59,11 @@
 
         public void Visit(AssignmentExpression expression)
         {
-            expression.Value.Accept(this);
             _assigning = true;
             expression.Variable.Accept(this);
+            var store = PopOperation();
+            expression.Value.Accept(this);
+            _operations.Add(store);
         }
 
         public void Visit(BinaryExpression expression)
@@ -159,7 +161,11 @@
 
         public void Visit(FunctionExpression expression)
         {
-            throw new NotImplementedException();
+            var current = _operations.Count;
+            AddScope(expression.Scope);
+
+            expression.Parameters.Accept(this);
+            //TODO
         }
 
         public void Visit(InvalidExpression expression)
@@ -179,7 +185,7 @@
 
             if (_assigning)
             {
-                _operations.Add(new StoreOperation((ctx, val) => Helpers.SetProperty((IDictionary<String, Object>)val, (String)ctx.Pop(), ctx.Pop())));
+                _operations.Add(new StoreOperation((ctx, val) => Helpers.SetProperty((IDictionary<String, Object>)ctx.Pop(), (String)ctx.Pop(), val)));
             }
             else
             {
@@ -196,14 +202,15 @@
 
         public void Visit(VariableExpression expression)
         {
+            var name = expression.Name;
+
             if (_assigning)
             {
-                var name = expression.Name;
-                _operations.Add(new StoreOperation((ctx, val) => { }));
+                _operations.Add(new StoreOperation((ctx, val) => ctx.Scope.SetProperty(name, val)));
             }
             else
             {
-                _operations.Add(new LoadOperation(ctx => null));
+                _operations.Add(new LoadOperation(ctx => ctx.Scope.GetProperty(name)));
             }
 
             _assigning = false;
@@ -213,6 +220,19 @@
         {
             _operations.Add(new LoadOperation(ctx => func));
             _operations.Add(new CallOperation(argumentCount));
+        }
+
+        private void AddScope(AbstractScope scope)
+        {
+            //TODO
+        }
+
+        private IOperation PopOperation()
+        {
+            var index = _operations.Count - 1;
+            var operation = _operations[index];
+            _operations.RemoveAt(index);
+            return operation;
         }
     }
 }

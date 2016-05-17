@@ -10,6 +10,7 @@
     {
         private readonly Stack<Object> _stack;
         private readonly IOperation[] _operations;
+        private IDictionary<String, Object> _scope;
         private Int32 _position;
 
         public ExecutionContext(IOperation[] operations)
@@ -25,8 +26,16 @@
             set { _position = value; }
         }
 
+        public IDictionary<String, Object> Scope
+        {
+            get { return _scope; }
+            private set { _scope = value; }
+        }
+
         public void Execute(IDictionary<String, Object> globalScope)
         {
+            _scope = globalScope;
+
             while (_position < _operations.Length)
             {
                 _operations[_position].Invoke(this);
