@@ -1,6 +1,6 @@
 ﻿namespace Mages.Core.Ast.Expressions
 {
-    using System;
+    using Runtime;
 
     /// <summary>
     /// The base class for all binary expressions.
@@ -11,16 +11,18 @@
 
         private readonly IExpression _left;
         private readonly IExpression _right;
+        private readonly Function _function;
 
         #endregion
 
         #region ctor
 
-        public BinaryExpression(IExpression left, IExpression right)
+        public BinaryExpression(IExpression left, IExpression right, Function function)
             : base(left.Start, right.End)
         {
             _left = left;
             _right = right;
+            _function = function;
         }
 
         #endregion
@@ -71,10 +73,8 @@
 
         public Function GetFunction()
         {
-            return args => Calculate((Double)args[0], (Double)args[1]);
+            return _function;
         }
-
-        protected abstract Double Calculate(Double x, Double y);
 
         #endregion
 
@@ -83,195 +83,120 @@
         public sealed class And : BinaryExpression
         {
             public And(IExpression left, IExpression right)
-                : base(left, right)
+                : base(left, right, BinaryOperators.And)
             {
-            }
-
-            protected override Double Calculate(Double x, Double y)
-            {
-                return x != 0.0 && y != 0.0 ? 1.0 : 0.0;
             }
         }
 
         public sealed class Or : BinaryExpression
         {
             public Or(IExpression left, IExpression right)
-                : base(left, right)
+                : base(left, right, BinaryOperators.Or)
             {
-            }
-
-            protected override Double Calculate(Double x, Double y)
-            {
-                return x != 0.0 || y != 0.0 ? 1.0 : 0.0;
             }
         }
 
         public sealed class Equal : BinaryExpression
         {
             public Equal(IExpression left, IExpression right)
-                : base(left, right)
+                : base(left, right, BinaryOperators.Eq)
             {
-            }
-
-            protected override Double Calculate(Double x, Double y)
-            {
-                return x == y ? 1.0 : 0.0;
             }
         }
 
         public sealed class NotEqual : BinaryExpression
         {
             public NotEqual(IExpression left, IExpression right)
-                : base(left, right)
+                : base(left, right, BinaryOperators.Neq)
             {
-            }
-
-            protected override Double Calculate(Double x, Double y)
-            {
-                return x != y ? 1.0 : 0.0;
             }
         }
 
         public sealed class Greater : BinaryExpression
         {
             public Greater(IExpression left, IExpression right)
-                : base(left, right)
+                : base(left, right, BinaryOperators.Gt)
             {
-            }
-
-            protected override Double Calculate(Double x, Double y)
-            {
-                return x > y ? 1.0 : 0.0;
             }
         }
 
         public sealed class Less : BinaryExpression
         {
             public Less(IExpression left, IExpression right)
-                : base(left, right)
+                : base(left, right, BinaryOperators.Lt)
             {
-            }
-
-            protected override Double Calculate(Double x, Double y)
-            {
-                return x < y ? 1.0 : 0.0;
             }
         }
 
         public sealed class GreaterEqual : BinaryExpression
         {
             public GreaterEqual(IExpression left, IExpression right)
-                : base(left, right)
+                : base(left, right, BinaryOperators.Geq)
             {
-            }
-
-            protected override Double Calculate(Double x, Double y)
-            {
-                return x >= y ? 1.0 : 0.0;
             }
         }
 
         public sealed class LessEqual : BinaryExpression
         {
             public LessEqual(IExpression left, IExpression right)
-                : base(left, right)
+                : base(left, right, BinaryOperators.Leq)
             {
-            }
-
-            protected override Double Calculate(Double x, Double y)
-            {
-                return x <= y ? 1.0 : 0.0;
             }
         }
 
         public sealed class Add : BinaryExpression
         {
             public Add(IExpression left, IExpression right)
-                : base(left, right)
+                : base(left, right, BinaryOperators.Add)
             {
-            }
-
-            protected override Double Calculate(Double x, Double y)
-            {
-                return x + y;
             }
         }
 
         public sealed class Subtract : BinaryExpression
         {
             public Subtract(IExpression left, IExpression right)
-                : base(left, right)
+                : base(left, right, BinaryOperators.Sub)
             {
-            }
-
-            protected override Double Calculate(Double x, Double y)
-            {
-                return x - y;
             }
         }
 
         public sealed class Multiply : BinaryExpression
         {
             public Multiply(IExpression left, IExpression right)
-                : base(left, right)
+                : base(left, right, BinaryOperators.Mul)
             {
-            }
-
-            protected override Double Calculate(Double x, Double y)
-            {
-                return x * y;
             }
         }
 
         public sealed class LeftDivide : BinaryExpression
         {
             public LeftDivide(IExpression left, IExpression right)
-                : base(left, right)
+                : base(left, right, BinaryOperators.LDiv)
             {
-            }
-
-            protected override Double Calculate(Double x, Double y)
-            {
-                return y / x;
             }
         }
 
         public sealed class RightDivide : BinaryExpression
         {
             public RightDivide(IExpression left, IExpression right)
-                : base(left, right)
+                : base(left, right, BinaryOperators.RDiv)
             {
-            }
-
-            protected override Double Calculate(Double x, Double y)
-            {
-                return x / y;
             }
         }
 
         public sealed class Power : BinaryExpression
         {
             public Power(IExpression left, IExpression right)
-                : base(left, right)
+                : base(left, right, BinaryOperators.Pow)
             {
-            }
-
-            protected override Double Calculate(Double x, Double y)
-            {
-                return Math.Pow(x, y);
             }
         }
 
         public sealed class Modulo : BinaryExpression
         {
             public Modulo(IExpression left, IExpression right)
-                : base(left, right)
+                : base(left, right, BinaryOperators.Mod)
             {
-            }
-
-            protected override Double Calculate(Double x, Double y)
-            {
-                return x % y;
             }
         }
 
