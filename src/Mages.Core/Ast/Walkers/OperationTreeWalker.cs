@@ -162,10 +162,17 @@
         public void Visit(FunctionExpression expression)
         {
             var current = _operations.Count;
-            AddScope(expression.Scope);
-
             expression.Parameters.Accept(this);
-            //TODO
+            expression.Body.Accept(this);
+            var operations = ExtractFrom(current);
+            var context = new ExecutionContext(operations);
+            _operations.Add(new LoadOperation(ctx => new Function(args =>
+            {
+                var scope = new VariableScope(ctx.Scope);
+                context.Push(args);
+                context.Execute(scope);
+                return context.Pop();
+            })));
         }
 
         public void Visit(InvalidExpression expression)
@@ -197,7 +204,21 @@
 
         public void Visit(ParameterExpression expression)
         {
+            var expressions = expression.Expressions;
 
+            for (var i = 0; i < expressions.Length; i++)
+            {
+                var identifier = (VariableExpression)expressions[i];
+                var name = identifier.Name;
+                var index = i;
+
+                _operations.Add(new StoreOperation((ctx, val) =>
+                {
+                    var parameters = (Object[])val;
+                    var value = parameters.Length > index ? parameters[index] : null;
+                    ctx.Scope.SetProperty(name, value);
+                }));
+            }
         }
 
         public void Visit(VariableExpression expression)
@@ -222,17 +243,27 @@
             _operations.Add(new CallOperation(argumentCount));
         }
 
-        private void AddScope(AbstractScope scope)
-        {
-            //TODO
-        }
-
         private IOperation PopOperation()
         {
             var index = _operations.Count - 1;
             var operation = _operations[index];
             _operations.RemoveAt(index);
             return operation;
+        }
+
+        private IOperation[] ExtractFrom(Int32 index)
+        {
+            var count = _operations.Count;
+            var length = count - index;
+            var operations = new IOperation[length];
+
+            while (count > index)
+            {
+                operations[--length] = _operations[--count];
+                _operations.RemoveAt(count);
+            }
+
+            return operations;
         }
     }
 }

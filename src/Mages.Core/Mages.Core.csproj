@@ -91,6 +91,7 @@
     <Compile Include="Runtime\Helpers.cs" />
     <Compile Include="Runtime\Logic.cs" />
     <Compile Include="Runtime\Stringify.cs" />
+    <Compile Include="Runtime\VariableScope.cs" />
     <Compile Include="Source\ScannerExtensions.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="TextPosition.cs" />
