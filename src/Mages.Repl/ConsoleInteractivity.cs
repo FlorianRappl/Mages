@@ -17,7 +17,7 @@
         public String Read()
         {
             Console.ForegroundColor = ConsoleColor.DarkCyan;
-            Console.Write(">> ");
+            Console.Write("SWM> ");
             Console.ResetColor();
             return Console.ReadLine();
         }
