@@ -3,6 +3,7 @@
     using Mages.Core.Ast.Expressions;
     using Mages.Core.Ast.Statements;
     using Mages.Core.Runtime;
+    using Mages.Core.Runtime.Functions;
     using Mages.Core.Vm;
     using Mages.Core.Vm.Operations;
     using System;
@@ -31,21 +32,21 @@
 
         private static readonly Dictionary<String, Action<OperationTreeWalker, BinaryExpression>> BinaryOperatorMapping = new Dictionary<String, Action<OperationTreeWalker, BinaryExpression>>
         {
-            { "&&", (walker, expr) => walker.Handle(expr, BinaryOperators.And) },
-            { "||", (walker, expr) => walker.Handle(expr, BinaryOperators.Or) },
-            { "==", (walker, expr) => walker.Handle(expr, BinaryOperators.Eq) },
-            { "~=", (walker, expr) => walker.Handle(expr, BinaryOperators.Neq) },
-            { ">", (walker, expr) => walker.Handle(expr, BinaryOperators.Gt) },
-            { "<", (walker, expr) => walker.Handle(expr, BinaryOperators.Lt) },
-            { ">=", (walker, expr) => walker.Handle(expr, BinaryOperators.Geq) },
-            { "<=", (walker, expr) => walker.Handle(expr, BinaryOperators.Leq) },
-            { "+", (walker, expr) => walker.Handle(expr, BinaryOperators.Add) },
-            { "-", (walker, expr) => walker.Handle(expr, BinaryOperators.Sub) },
-            { "*", (walker, expr) => walker.Handle(expr, BinaryOperators.Mul) },
-            { "/", (walker, expr) => walker.Handle(expr, BinaryOperators.RDiv) },
-            { "\\", (walker, expr) => walker.Handle(expr, BinaryOperators.LDiv) },
-            { "^", (walker, expr) => walker.Handle(expr, BinaryOperators.Pow) },
-            { "%", (walker, expr) => walker.Handle(expr, BinaryOperators.Mod) }
+            { "&&", (walker, expr) => walker.Handle(expr, StandardFunctions.And) },
+            { "||", (walker, expr) => walker.Handle(expr, StandardFunctions.Or) },
+            { "==", (walker, expr) => walker.Handle(expr, StandardFunctions.Eq) },
+            { "~=", (walker, expr) => walker.Handle(expr, StandardFunctions.Neq) },
+            { ">", (walker, expr) => walker.Handle(expr, StandardFunctions.Gt) },
+            { "<", (walker, expr) => walker.Handle(expr, StandardFunctions.Lt) },
+            { ">=", (walker, expr) => walker.Handle(expr, StandardFunctions.Geq) },
+            { "<=", (walker, expr) => walker.Handle(expr, StandardFunctions.Leq) },
+            { "+", (walker, expr) => walker.Handle(expr, StandardFunctions.Add) },
+            { "-", (walker, expr) => walker.Handle(expr, StandardFunctions.Sub) },
+            { "*", (walker, expr) => walker.Handle(expr, StandardFunctions.Mul) },
+            { "/", (walker, expr) => walker.Handle(expr, StandardFunctions.RDiv) },
+            { "\\", (walker, expr) => walker.Handle(expr, StandardFunctions.LDiv) },
+            { "^", (walker, expr) => walker.Handle(expr, StandardFunctions.Pow) },
+            { "%", (walker, expr) => walker.Handle(expr, StandardFunctions.Mod) }
         };
 
         #endregion

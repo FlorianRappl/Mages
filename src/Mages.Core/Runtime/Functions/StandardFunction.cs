@@ -80,7 +80,7 @@
                 return result;
             }
 
-            return null;
+            return new Function(Invoke);
         }
     }
 }
