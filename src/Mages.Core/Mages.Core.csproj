@@ -126,6 +126,7 @@
     <Compile Include="Vm\IOperation.cs" />
     <Compile Include="Vm\Operations\CallOperation.cs" />
     <Compile Include="Vm\Operations\DecOperation.cs" />
+    <Compile Include="Vm\Operations\FuncOperation.cs" />
     <Compile Include="Vm\Operations\IncOperation.cs" />
     <Compile Include="Vm\Operations\LoadOperation.cs" />
     <Compile Include="Vm\Operations\StoreOperation.cs" />

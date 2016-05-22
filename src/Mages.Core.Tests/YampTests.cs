@@ -594,7 +594,6 @@
             var result = (Double)context.Pop();
 
             Assert.AreEqual(expected, result, tolerance);
-
         }
 
         private void IsInvalid(String sourceCode)

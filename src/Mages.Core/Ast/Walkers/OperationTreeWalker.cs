@@ -10,6 +10,8 @@
 
     public class OperationTreeWalker : ITreeWalker
     {
+        #region Operator Mappings
+
         private static readonly Dictionary<String, Action<OperationTreeWalker, PreUnaryExpression>> PreUnaryOperatorMapping = new Dictionary<String, Action<OperationTreeWalker, PreUnaryExpression>>
         {
             { "~", (walker, expr) => walker.Handle(expr, UnaryOperators.Not) },
@@ -46,14 +48,26 @@
             { "%", (walker, expr) => walker.Handle(expr, BinaryOperators.Mod) }
         };
 
+        #endregion
+
+        #region Fields
+
         private readonly List<IOperation> _operations;
         private Boolean _assigning;
+
+        #endregion
+
+        #region ctor
 
         public OperationTreeWalker(List<IOperation> operations)
         {
             _operations = operations;
             _assigning = false;
         }
+
+        #endregion
+
+        #region Visitors
 
         public void Visit(BlockStatement block)
         {
@@ -204,14 +218,7 @@
             expression.Parameters.Accept(this);
             expression.Body.Accept(this);
             var operations = ExtractFrom(current);
-            var context = new ExecutionContext(operations);
-            _operations.Add(new LoadOperation(ctx => new Function(args =>
-            {
-                var scope = new VariableScope(ctx.Scope);
-                context.Push(args);
-                context.Execute(scope);
-                return context.Pop();
-            })));
+            _operations.Add(new FuncOperation(operations));
         }
 
         public void Visit(InvalidExpression expression)
@@ -276,6 +283,10 @@
             _assigning = false;
         }
 
+        #endregion
+
+        #region Helpers
+
         private void Handle(BinaryExpression expression, Function function)
         {
             expression.RValue.Accept(this);
@@ -329,8 +340,7 @@
             expr.Accept(this);
             _assigning = true;
             expr.Accept(this);
-            var store = PopOperation();
-            _operations.Add(new DecOperation(store, postOperation));
+            _operations.Add(new DecOperation(PopOperation(), postOperation));
         }
 
         private void Increment(IExpression expr, Boolean postOperation)
@@ -338,8 +348,9 @@
             expr.Accept(this);
             _assigning = true;
             expr.Accept(this);
-            var store = PopOperation();
-            _operations.Add(new IncOperation(store, postOperation));
+            _operations.Add(new IncOperation(PopOperation(), postOperation));
         }
+
+        #endregion
     }
 }
