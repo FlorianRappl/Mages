@@ -1,6 +1,6 @@
 ﻿namespace Mages.Core.Ast.Expressions
 {
-    using Runtime;
+    using System;
 
     /// <summary>
     /// The base class for all binary expressions.
@@ -11,18 +11,18 @@
 
         private readonly IExpression _left;
         private readonly IExpression _right;
-        private readonly Function _function;
+        private readonly String _operator;
 
         #endregion
 
         #region ctor
 
-        public BinaryExpression(IExpression left, IExpression right, Function function)
+        public BinaryExpression(IExpression left, IExpression right, String op)
             : base(left.Start, right.End)
         {
             _left = left;
             _right = right;
-            _function = function;
+            _operator = op;
         }
 
         #endregion
@@ -37,6 +37,11 @@
         public IExpression RValue
         {
             get { return _right; }
+        }
+
+        public String Operator
+        {
+            get { return _operator; }
         }
 
         #endregion
@@ -71,11 +76,6 @@
             }
         }
 
-        public Function GetFunction()
-        {
-            return _function;
-        }
-
         #endregion
 
         #region Operations
@@ -83,7 +83,7 @@
         public sealed class And : BinaryExpression
         {
             public And(IExpression left, IExpression right)
-                : base(left, right, BinaryOperators.And)
+                : base(left, right, "&&")
             {
             }
         }
@@ -91,7 +91,7 @@
         public sealed class Or : BinaryExpression
         {
             public Or(IExpression left, IExpression right)
-                : base(left, right, BinaryOperators.Or)
+                : base(left, right, "||")
             {
             }
         }
@@ -99,7 +99,7 @@
         public sealed class Equal : BinaryExpression
         {
             public Equal(IExpression left, IExpression right)
-                : base(left, right, BinaryOperators.Eq)
+                : base(left, right, "==")
             {
             }
         }
@@ -107,7 +107,7 @@
         public sealed class NotEqual : BinaryExpression
         {
             public NotEqual(IExpression left, IExpression right)
-                : base(left, right, BinaryOperators.Neq)
+                : base(left, right, "~=")
             {
             }
         }
@@ -115,7 +115,7 @@
         public sealed class Greater : BinaryExpression
         {
             public Greater(IExpression left, IExpression right)
-                : base(left, right, BinaryOperators.Gt)
+                : base(left, right, ">")
             {
             }
         }
@@ -123,7 +123,7 @@
         public sealed class Less : BinaryExpression
         {
             public Less(IExpression left, IExpression right)
-                : base(left, right, BinaryOperators.Lt)
+                : base(left, right, "<")
             {
             }
         }
@@ -131,7 +131,7 @@
         public sealed class GreaterEqual : BinaryExpression
         {
             public GreaterEqual(IExpression left, IExpression right)
-                : base(left, right, BinaryOperators.Geq)
+                : base(left, right, ">=")
             {
             }
         }
@@ -139,7 +139,7 @@
         public sealed class LessEqual : BinaryExpression
         {
             public LessEqual(IExpression left, IExpression right)
-                : base(left, right, BinaryOperators.Leq)
+                : base(left, right, "<=")
             {
             }
         }
@@ -147,7 +147,7 @@
         public sealed class Add : BinaryExpression
         {
             public Add(IExpression left, IExpression right)
-                : base(left, right, BinaryOperators.Add)
+                : base(left, right, "+")
             {
             }
         }
@@ -155,7 +155,7 @@
         public sealed class Subtract : BinaryExpression
         {
             public Subtract(IExpression left, IExpression right)
-                : base(left, right, BinaryOperators.Sub)
+                : base(left, right, "-")
             {
             }
         }
@@ -163,7 +163,7 @@
         public sealed class Multiply : BinaryExpression
         {
             public Multiply(IExpression left, IExpression right)
-                : base(left, right, BinaryOperators.Mul)
+                : base(left, right, "*")
             {
             }
         }
@@ -171,7 +171,7 @@
         public sealed class LeftDivide : BinaryExpression
         {
             public LeftDivide(IExpression left, IExpression right)
-                : base(left, right, BinaryOperators.LDiv)
+                : base(left, right, "\\")
             {
             }
         }
@@ -179,7 +179,7 @@
         public sealed class RightDivide : BinaryExpression
         {
             public RightDivide(IExpression left, IExpression right)
-                : base(left, right, BinaryOperators.RDiv)
+                : base(left, right, "/")
             {
             }
         }
@@ -187,7 +187,7 @@
         public sealed class Power : BinaryExpression
         {
             public Power(IExpression left, IExpression right)
-                : base(left, right, BinaryOperators.Pow)
+                : base(left, right, "^")
             {
             }
         }
@@ -195,7 +195,7 @@
         public sealed class Modulo : BinaryExpression
         {
             public Modulo(IExpression left, IExpression right)
-                : base(left, right, BinaryOperators.Mod)
+                : base(left, right, "%")
             {
             }
         }

@@ -10,15 +10,17 @@
         #region Fields
 
         private readonly IExpression _value;
+        private readonly String _operator;
 
         #endregion
 
         #region ctor
 
-        public PostUnaryExpression(IExpression value, TextPosition end)
+        public PostUnaryExpression(IExpression value, TextPosition end, String op)
             : base(value.Start, end)
         {
             _value = value;
+            _operator = op;
         }
 
         #endregion
@@ -28,6 +30,11 @@
         public IExpression Value 
         {
             get { return _value; }
+        }
+
+        public String Operator
+        {
+            get { return _operator; }
         }
 
         #endregion
@@ -52,8 +59,6 @@
             }
         }
 
-        public abstract Function GetFunction();
-
         #endregion
 
         #region Operations
@@ -61,33 +66,23 @@
         public sealed class Factorial : PostUnaryExpression
         {
             public Factorial(IExpression expression, TextPosition end)
-                : base(expression, end)
+                : base(expression, end, "!")
             {
-            }
-
-            public override Function GetFunction()
-            {
-                throw new NotImplementedException();
             }
         }
 
         public sealed class Transpose : PostUnaryExpression
         {
             public Transpose(IExpression expression, TextPosition end)
-                : base(expression, end)
+                : base(expression, end, "'")
             {
-            }
-
-            public override Function GetFunction()
-            {
-                throw new NotImplementedException();
             }
         }
 
         public sealed class Increment : PostUnaryExpression
         {
             public Increment(IExpression expression, TextPosition end)
-                : base(expression, end)
+                : base(expression, end, "++")
             {
             }
 
@@ -103,25 +98,12 @@
                     base.Validate(context);
                 }
             }
-
-            public override Function GetFunction()
-            {
-                return args =>
-                {
-                    throw new NotImplementedException();
-                    //var p = (Pointer)args[0];
-                    //var value = (Number)p.Reference;
-                    //p.Reference = new Number { Value = value.Value + 1.0 };
-                    //return value;
-                };
-
-            }
         }
 
         public sealed class Decrement : PostUnaryExpression
         {
             public Decrement(IExpression expression, TextPosition end)
-                : base(expression, end)
+                : base(expression, end, "--")
             {
             }
 
@@ -136,18 +118,6 @@
                 {
                     base.Validate(context);
                 }
-            }
-
-            public override Function GetFunction()
-            {
-                return args =>
-                {
-                    throw new NotImplementedException();
-                    //var p = (Pointer)args[0];
-                    //var value = (Number)p.Reference;
-                    //p.Reference = new Number { Value = value.Value - 1.0 };
-                    //return value;
-                };
             }
         }
 

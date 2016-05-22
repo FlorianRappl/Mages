@@ -1,6 +1,5 @@
 ﻿namespace Mages.Core.Ast.Expressions
 {
-    using Mages.Core.Runtime;
     using System;
 
     /// <summary>
@@ -11,15 +10,17 @@
         #region Fields
 
         private readonly IExpression _value;
+        private readonly String _operator;
 
         #endregion
 
         #region ctor
 
-        public PreUnaryExpression(TextPosition start, IExpression value)
+        public PreUnaryExpression(TextPosition start, IExpression value, String op)
             : base(start, value.End)
         {
             _value = value;
+            _operator = op;
         }
 
         #endregion
@@ -29,6 +30,11 @@
         public IExpression Value 
         {
             get { return _value; }
+        }
+
+        public String Operator
+        {
+            get { return _operator; }
         }
 
         #endregion
@@ -53,8 +59,6 @@
             }
         }
 
-        public abstract Function GetFunction();
-
         #endregion
 
         #region Operations
@@ -62,46 +66,31 @@
         public class Not : PreUnaryExpression
         {
             public Not(TextPosition start, IExpression value)
-                : base(start, value)
+                : base(start, value, "~")
             {
-            }
-
-            public override Function GetFunction()
-            {
-                return args => Logic.IsFalse((Double)args[0]) ? 1.0 : 0.0;
             }
         }
 
         public class Minus : PreUnaryExpression
         {
             public Minus(TextPosition start, IExpression value)
-                : base(start, value)
+                : base(start, value, "-")
             {
-            }
-
-            public override Function GetFunction()
-            {
-                return args => -(Double)args[0];
             }
         }
 
         public class Plus : PreUnaryExpression
         {
             public Plus(TextPosition start, IExpression value)
-                : base(start, value)
+                : base(start, value, "+")
             {
-            }
-
-            public override Function GetFunction()
-            {
-                return args => +(Double)args[0];
             }
         }
 
         public class Increment : PreUnaryExpression
         {
             public Increment(TextPosition start, IExpression value)
-                : base(start, value)
+                : base(start, value, "++")
             {
             }
 
@@ -117,23 +106,12 @@
                     base.Validate(context);
                 }
             }
-
-            public override Function GetFunction()
-            {
-                return args =>
-                {
-                    throw new NotImplementedException();
-                    //var p = (Pointer)args[0];
-                    //var value = (Number)p.Reference;
-                    //return p.Reference = new Number { Value = value.Value + 1.0 };
-                };
-            }
         }
 
         public class Decrement : PreUnaryExpression
         {
             public Decrement(TextPosition start, IExpression value)
-                : base(start, value)
+                : base(start, value, "--")
             {
             }
 
@@ -148,17 +126,6 @@
                 {
                     base.Validate(context);
                 }
-            }
-
-            public override Function GetFunction()
-            {
-                return args =>
-                {
-                    throw new NotImplementedException();
-                    //var p = (Pointer)args[0];
-                    //var value = (Number)p.Reference;
-                    //return p.Reference = new Number { Value = value.Value - 1.0 };
-                };
             }
         }
 

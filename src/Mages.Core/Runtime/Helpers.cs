@@ -16,6 +16,23 @@
             }
         }
 
+        public static Double[,] Transpose(this Double[,] matrix)
+        {
+            var rows = matrix.GetLength(0);
+            var cols = matrix.GetLength(1);
+            var result = new Double[cols, rows];
+
+            for (var i = 0; i < rows; i++)
+            {
+                for (var j = 0; j < cols; j++)
+                {
+                    result[j, i] = matrix[i, j];
+                }
+            }
+
+            return result;
+        }
+
         public static Double GetValue(this Double[,] matrix, Int32 i, Int32 j)
         {
             var rows = matrix.GetLength(0);
@@ -39,6 +56,19 @@
             var value = default(Object);
             obj.TryGetValue(name, out value);
             return value;
+        }
+
+        public static Double Factorial(this Double value)
+        {
+            var result = Math.Sign(value);
+            var n = (Int32)Math.Floor(result * value);
+
+            while (n > 0)
+            {
+                result *= n--;
+            }
+
+            return result;
         }
     }
 }

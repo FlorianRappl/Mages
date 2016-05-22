@@ -10,6 +10,42 @@
 
     public class OperationTreeWalker : ITreeWalker
     {
+        private static readonly Dictionary<String, Action<OperationTreeWalker, PreUnaryExpression>> PreUnaryOperatorMapping = new Dictionary<String, Action<OperationTreeWalker, PreUnaryExpression>>
+        {
+            { "~", (walker, expr) => walker.Handle(expr, UnaryOperators.Not) },
+            { "+", (walker, expr) => walker.Handle(expr, UnaryOperators.Positive) },
+            { "-", (walker, expr) => walker.Handle(expr, UnaryOperators.Negative) },
+            { "++", (walker, expr) => {} },
+            { "--", (walker, expr) => {} }
+        };
+
+        private static readonly Dictionary<String, Action<OperationTreeWalker, PostUnaryExpression>> PostUnaryOperatorMapping = new Dictionary<String, Action<OperationTreeWalker, PostUnaryExpression>>
+        {
+            { "!", (walker, expr) => walker.Handle(expr, UnaryOperators.Factorial) },
+            { "'", (walker, expr) => walker.Handle(expr, UnaryOperators.Transpose) },
+            { "++", (walker, expr) => {} },
+            { "--", (walker, expr) => {} }
+        };
+
+        private static readonly Dictionary<String, Action<OperationTreeWalker, BinaryExpression>> BinaryOperatorMapping = new Dictionary<String, Action<OperationTreeWalker, BinaryExpression>>
+        {
+            { "&&", (walker, expr) => walker.Handle(expr, BinaryOperators.And) },
+            { "||", (walker, expr) => walker.Handle(expr, BinaryOperators.Or) },
+            { "==", (walker, expr) => walker.Handle(expr, BinaryOperators.Eq) },
+            { "~=", (walker, expr) => walker.Handle(expr, BinaryOperators.Neq) },
+            { ">", (walker, expr) => walker.Handle(expr, BinaryOperators.Gt) },
+            { "<", (walker, expr) => walker.Handle(expr, BinaryOperators.Lt) },
+            { ">=", (walker, expr) => walker.Handle(expr, BinaryOperators.Geq) },
+            { "<=", (walker, expr) => walker.Handle(expr, BinaryOperators.Leq) },
+            { "+", (walker, expr) => walker.Handle(expr, BinaryOperators.Add) },
+            { "-", (walker, expr) => walker.Handle(expr, BinaryOperators.Sub) },
+            { "*", (walker, expr) => walker.Handle(expr, BinaryOperators.Mul) },
+            { "/", (walker, expr) => walker.Handle(expr, BinaryOperators.RDiv) },
+            { "\\", (walker, expr) => walker.Handle(expr, BinaryOperators.LDiv) },
+            { "^", (walker, expr) => walker.Handle(expr, BinaryOperators.Pow) },
+            { "%", (walker, expr) => walker.Handle(expr, BinaryOperators.Mod) }
+        };
+
         private readonly List<IOperation> _operations;
         private Boolean _assigning;
 
@@ -68,24 +104,23 @@
 
         public void Visit(BinaryExpression expression)
         {
-            expression.RValue.Accept(this);
-            expression.LValue.Accept(this);
-
-            CallFunction(expression.GetFunction(), 2);
+            var action = default(Action<OperationTreeWalker, BinaryExpression>);
+            BinaryOperatorMapping.TryGetValue(expression.Operator, out action);
+            action.Invoke(this, expression);
         }
 
         public void Visit(PreUnaryExpression expression)
         {
-            expression.Value.Accept(this);
-
-            CallFunction(expression.GetFunction(), 1);
+            var action = default(Action<OperationTreeWalker, PreUnaryExpression>);
+            PreUnaryOperatorMapping.TryGetValue(expression.Operator, out action);
+            action.Invoke(this, expression);
         }
 
         public void Visit(PostUnaryExpression expression)
         {
-            expression.Value.Accept(this);
-
-            CallFunction(expression.GetFunction(), 1);
+            var action = default(Action<OperationTreeWalker, PostUnaryExpression>);
+            PostUnaryOperatorMapping.TryGetValue(expression.Operator, out action);
+            action.Invoke(this, expression);
         }
 
         public void Visit(RangeExpression expression)
@@ -235,6 +270,25 @@
             }
 
             _assigning = false;
+        }
+
+        private void Handle(BinaryExpression expression, Function function)
+        {
+            expression.RValue.Accept(this);
+            expression.LValue.Accept(this);
+            CallFunction(function, 2);
+        }
+
+        private void Handle(PreUnaryExpression expression, Function function)
+        {
+            expression.Value.Accept(this);
+            CallFunction(function, 1);
+        }
+
+        private void Handle(PostUnaryExpression expression, Function function)
+        {
+            expression.Value.Accept(this);
+            CallFunction(function, 1);
         }
 
         private void CallFunction(Function func, Int32 argumentCount)
