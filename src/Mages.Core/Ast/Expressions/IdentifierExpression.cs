@@ -15,6 +15,9 @@
 
         #region ctor
 
+        /// <summary>
+        /// Creates a new identifier expression.
+        /// </summary>
         public IdentifierExpression(String name, TextPosition start, TextPosition end)
             : base(start, end)
         {
@@ -25,6 +28,9 @@
 
         #region Properties
 
+        /// <summary>
+        /// Gets the name of the identifier.
+        /// </summary>
         public String Name
         {
             get { return _name; }
@@ -34,11 +40,19 @@
 
         #region Methods
 
+        /// <summary>
+        /// Accepts the visitor by showing him around.
+        /// </summary>
+        /// <param name="visitor">The visitor walking the tree.</param>
         public void Accept(ITreeWalker visitor)
         {
             visitor.Visit(this);
         }
 
+        /// <summary>
+        /// Validates the expression with the given context.
+        /// </summary>
+        /// <param name="context">The validator to report errors to.</param>
         public void Validate(IValidationContext context)
         {
         }

@@ -14,6 +14,9 @@
 
         #region ctor
 
+        /// <summary>
+        /// Creates a new statement.
+        /// </summary>
         public BaseStatement(TextPosition start, TextPosition end)
         {
             _start = start;
@@ -24,11 +27,17 @@
 
         #region Properties
 
+        /// <summary>
+        /// Gets the start position of the statement.
+        /// </summary>
         public TextPosition Start
         {
             get { return _start; }
         }
 
+        /// <summary>
+        /// Gets the end position of the statement.
+        /// </summary>
         public TextPosition End
         {
             get { return _end; }

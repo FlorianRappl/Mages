@@ -14,6 +14,9 @@
 
         #region ctor
 
+        /// <summary>
+        /// Creates a new function call expression.
+        /// </summary>
         public CallExpression(IExpression function, ArgumentsExpression arguments)
             : base(function.Start, arguments.End)
         {
@@ -25,11 +28,17 @@
 
         #region Properties
 
+        /// <summary>
+        /// Gets the associated function.
+        /// </summary>
         public IExpression Function 
         {
             get { return _function; }
         }
 
+        /// <summary>
+        /// Gets the arguments to pass to the function.
+        /// </summary>
         public ArgumentsExpression Arguments
         {
             get { return _arguments; }
@@ -39,11 +48,19 @@
 
         #region Methods
 
+        /// <summary>
+        /// Accepts the visitor by showing him around.
+        /// </summary>
+        /// <param name="visitor">The visitor walking the tree.</param>
         public void Accept(ITreeWalker visitor)
         {
             visitor.Visit(this);
         }
 
+        /// <summary>
+        /// Validates the expression with the given context.
+        /// </summary>
+        /// <param name="context">The validator to report errors to.</param>
         public void Validate(IValidationContext context)
         {
             _function.Validate(context);

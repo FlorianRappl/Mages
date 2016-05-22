@@ -2,7 +2,7 @@
 {
     using System;
 
-    public static class BinaryOperators
+    static class BinaryOperators
     {
         public static Object Add(Object[] args)
         {

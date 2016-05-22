@@ -14,6 +14,9 @@
 
         #region ctor
 
+        /// <summary>
+        /// Creates a new invalid expression.
+        /// </summary>
         public InvalidExpression(ErrorCode error, ITextRange payload)
             : base(payload.Start, payload.End)
         {
@@ -25,11 +28,17 @@
 
         #region Properties
 
+        /// <summary>
+        /// Gets the payload covered by the container.
+        /// </summary>
         public ITextRange Payload
         {
             get { return _payload; }
         }
 
+        /// <summary>
+        /// Gets the associated error code.
+        /// </summary>
         public ErrorCode Error
         {
             get { return _error; }
@@ -39,11 +48,19 @@
 
         #region Methods
 
+        /// <summary>
+        /// Accepts the visitor by showing him around.
+        /// </summary>
+        /// <param name="visitor">The visitor walking the tree.</param>
         public void Accept(ITreeWalker visitor)
         {
             visitor.Visit(this);
         }
 
+        /// <summary>
+        /// Validates the expression with the given context.
+        /// </summary>
+        /// <param name="context">The validator to report errors to.</param>
         public void Validate(IValidationContext context)
         {
             context.Report(new ParseError(_error, _payload));

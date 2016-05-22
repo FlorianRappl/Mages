@@ -9,6 +9,9 @@
     {
         #region ctor
 
+        /// <summary>
+        /// Creates a new assignable expression.
+        /// </summary>
         public AssignableExpression(TextPosition start, TextPosition end)
             : base(start, end)
         {
@@ -18,6 +21,9 @@
 
         #region Properties
 
+        /// <summary>
+        /// Gets if the expression is assignable.
+        /// </summary>
         public Boolean IsAssignable
         {
             get { return true; }

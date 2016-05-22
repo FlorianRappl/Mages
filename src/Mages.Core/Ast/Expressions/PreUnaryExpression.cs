@@ -16,6 +16,9 @@
 
         #region ctor
 
+        /// <summary>
+        /// Creates a new pre unary expression.
+        /// </summary>
         public PreUnaryExpression(TextPosition start, IExpression value, String op)
             : base(start, value.End)
         {
@@ -27,11 +30,17 @@
 
         #region Properties
 
-        public IExpression Value 
+        /// <summary>
+        /// Gets the used value.
+        /// </summary>
+        public IExpression Value
         {
             get { return _value; }
         }
 
+        /// <summary>
+        /// Gets the operator string.
+        /// </summary>
         public String Operator
         {
             get { return _operator; }
@@ -41,11 +50,19 @@
 
         #region Methods
 
+        /// <summary>
+        /// Accepts the visitor by showing him around.
+        /// </summary>
+        /// <param name="visitor">The visitor walking the tree.</param>
         public void Accept(ITreeWalker visitor)
         {
             visitor.Visit(this);
         }
 
+        /// <summary>
+        /// Validates the expression with the given context.
+        /// </summary>
+        /// <param name="context">The validator to report errors to.</param>
         public virtual void Validate(IValidationContext context)
         {
             if (_value is EmptyExpression)
@@ -63,7 +80,7 @@
 
         #region Operations
 
-        public class Not : PreUnaryExpression
+        internal sealed class Not : PreUnaryExpression
         {
             public Not(TextPosition start, IExpression value)
                 : base(start, value, "~")
@@ -71,7 +88,7 @@
             }
         }
 
-        public class Minus : PreUnaryExpression
+        internal sealed class Minus : PreUnaryExpression
         {
             public Minus(TextPosition start, IExpression value)
                 : base(start, value, "-")
@@ -79,7 +96,7 @@
             }
         }
 
-        public class Plus : PreUnaryExpression
+        internal sealed class Plus : PreUnaryExpression
         {
             public Plus(TextPosition start, IExpression value)
                 : base(start, value, "+")
@@ -87,7 +104,7 @@
             }
         }
 
-        public class Increment : PreUnaryExpression
+        internal sealed class Increment : PreUnaryExpression
         {
             public Increment(TextPosition start, IExpression value)
                 : base(start, value, "++")
@@ -108,7 +125,7 @@
             }
         }
 
-        public class Decrement : PreUnaryExpression
+        internal sealed class Decrement : PreUnaryExpression
         {
             public Decrement(TextPosition start, IExpression value)
                 : base(start, value, "--")

@@ -13,6 +13,9 @@
 
         #region ctor
 
+        /// <summary>
+        /// Creates a new simple statement.
+        /// </summary>
         public SimpleStatement(IExpression expression, TextPosition end)
             : base(expression.Start, end)
         {
@@ -23,6 +26,9 @@
 
         #region Properties
 
+        /// <summary>
+        /// Gets the contained expression.
+        /// </summary>
         public IExpression Expression
         {
             get { return _expression; }
@@ -32,11 +38,19 @@
 
         #region Methods
 
+        /// <summary>
+        /// Validates the expression with the given context.
+        /// </summary>
+        /// <param name="context">The validator to report errors to.</param>
         public void Validate(IValidationContext context)
         {
             _expression.Validate(context);
         }
 
+        /// <summary>
+        /// Accepts the visitor by showing him around.
+        /// </summary>
+        /// <param name="visitor">The visitor walking the tree.</param>
         public void Accept(ITreeWalker visitor)
         {
             visitor.Visit(this);

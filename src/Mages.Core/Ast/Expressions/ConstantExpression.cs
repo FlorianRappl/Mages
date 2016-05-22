@@ -17,6 +17,9 @@
 
         #region ctor
 
+        /// <summary>
+        /// Creates a new constant expression for the given value.
+        /// </summary>
         public ConstantExpression(Object value, TextPosition start, TextPosition end)
             : base(start, end)
         {
@@ -27,6 +30,9 @@
 
         #region Properties
 
+        /// <summary>
+        /// Gets the carried value.
+        /// </summary>
         public Object Value  
         {
             get { return _value; }
@@ -36,11 +42,21 @@
 
         #region Methods
 
+        /// <summary>
+        /// Accepts the visitor by showing him around.
+        /// </summary>
+        /// <param name="visitor">The visitor walking the tree.</param>
         public void Accept(ITreeWalker visitor)
         {
             visitor.Visit(this);
         }
 
+        /// <summary>
+        /// Creates a new constant expression carrying the given object.
+        /// </summary>
+        /// <param name="value">The value to carry.</param>
+        /// <param name="range">The range that is covered.</param>
+        /// <returns>The constant expression.</returns>
         public static ConstantExpression From(Object value, ITextRange range)
         {
             if (value is Boolean)
@@ -59,6 +75,10 @@
             throw new InvalidOperationException();
         }
 
+        /// <summary>
+        /// Validates the expression with the given context.
+        /// </summary>
+        /// <param name="context">The validator to report errors to.</param>
         public virtual void Validate(IValidationContext context)
         {
         }
@@ -67,7 +87,7 @@
 
         #region Operations
 
-        public class StringConstant : ConstantExpression
+        internal sealed class StringConstant : ConstantExpression
         {
             private readonly IEnumerable<ParseError> _errors;
 
@@ -88,7 +108,7 @@
             }
         }
 
-        public class BooleanConstant : ConstantExpression
+        internal sealed class BooleanConstant : ConstantExpression
         {
             public BooleanConstant(Boolean value, ITextRange range)
                 : base(value ? 1.0 : 0.0, range.Start, range.End)
@@ -96,7 +116,7 @@
             }
         }
 
-        public class NumberConstant : ConstantExpression
+        internal sealed class NumberConstant : ConstantExpression
         {
             private readonly IEnumerable<ParseError> _errors;
 

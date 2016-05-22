@@ -15,6 +15,9 @@
 
         #region ctor
 
+        /// <summary>
+        /// Creates a new block statement.
+        /// </summary>
         public BlockStatement(IStatement[] statements, TextPosition start, TextPosition end)
             : base(start, end)
         {
@@ -25,6 +28,9 @@
 
         #region Properties
 
+        /// <summary>
+        /// Gets the contained statements.
+        /// </summary>
         public IEnumerable<IStatement> Statements
         {
             get { return _statements; }
@@ -34,6 +40,10 @@
 
         #region Methods
 
+        /// <summary>
+        /// Validates the expression with the given context.
+        /// </summary>
+        /// <param name="context">The validator to report errors to.</param>
         public void Validate(IValidationContext context)
         {
             foreach (var statement in _statements)
@@ -42,6 +52,10 @@
             }
         }
 
+        /// <summary>
+        /// Accepts the visitor by showing him around.
+        /// </summary>
+        /// <param name="visitor">The visitor walking the tree.</param>
         public void Accept(ITreeWalker visitor)
         {
             visitor.Visit(this);

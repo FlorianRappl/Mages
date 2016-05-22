@@ -4,18 +4,30 @@
     using System.Collections.Generic;
     using System.Globalization;
 
+    /// <summary>
+    /// Helpers to stringify objects used by MAGES.
+    /// </summary>
     public static class Stringify
     {
+        /// <summary>
+        /// Converts the number to a string.
+        /// </summary>
         public static String This(Double value)
         {
             return value.ToString(CultureInfo.InvariantCulture);
         }
 
+        /// <summary>
+        /// Converts the string for output.
+        /// </summary>
         public static String This(String value)
         {
             return value.ToString(CultureInfo.InvariantCulture);
         }
 
+        /// <summary>
+        /// Converts the matrix to a string.
+        /// </summary>
         public static String This(Double[,] value)
         {
             var sb = StringBuilderPool.Pull();
@@ -45,21 +57,34 @@
             return sb.Stringify();
         }
 
+        /// <summary>
+        /// Converts the object to a string.
+        /// </summary>
         public static String This(IDictionary<String, Object> value)
         {
             return "[Object]";
         }
 
+        /// <summary>
+        /// Converts the function to a string.
+        /// </summary>
         public static String This(Function value)
         {
             return "[Function]";
         }
 
+        /// <summary>
+        /// Outputs the string for an undefined (null?) value.
+        /// </summary>
+        /// <returns></returns>
         public static String Undefined()
         {
             return System.String.Empty;
         }
 
+        /// <summary>
+        /// Converts the undetermined value to a string.
+        /// </summary>
         public static String This(Object value)
         {
             if (value == null)

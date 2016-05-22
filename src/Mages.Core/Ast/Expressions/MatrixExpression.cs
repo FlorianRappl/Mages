@@ -13,6 +13,9 @@
 
         #region ctor
 
+        /// <summary>
+        /// Creates a new matrix expression.
+        /// </summary>
         public MatrixExpression(IExpression[][] values, TextPosition start, TextPosition end)
             : base(start, end)
         {
@@ -23,6 +26,9 @@
 
         #region Properties
 
+        /// <summary>
+        /// Gets the initialized values.
+        /// </summary>
         public IExpression[][] Values
         {
             get { return _values; }
@@ -32,11 +38,19 @@
 
         #region Methods
 
+        /// <summary>
+        /// Accepts the visitor by showing him around.
+        /// </summary>
+        /// <param name="visitor">The visitor walking the tree.</param>
         public void Accept(ITreeWalker visitor)
         {
             visitor.Visit(this);
         }
 
+        /// <summary>
+        /// Validates the expression with the given context.
+        /// </summary>
+        /// <param name="context">The validator to report errors to.</param>
         public void Validate(IValidationContext context)
         {
             var columns = _values.Length > 0 ? _values[0].Length : 0;

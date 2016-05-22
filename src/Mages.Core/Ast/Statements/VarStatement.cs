@@ -15,6 +15,9 @@
 
         #region ctor
 
+        /// <summary>
+        /// Creates a new var statement.
+        /// </summary>
         public VarStatement(IExpression assignment, TextPosition start, TextPosition end)
             : base(start, end)
         {
@@ -25,6 +28,9 @@
 
         #region Properties
 
+        /// <summary>
+        /// Gets the associated assignment.
+        /// </summary>
         public IExpression Assignment
         {
             get { return _assignment; }
@@ -34,6 +40,10 @@
 
         #region Methods
 
+        /// <summary>
+        /// Validates the expression with the given context.
+        /// </summary>
+        /// <param name="context">The validator to report errors to.</param>
         public void Validate(IValidationContext context)
         {
             var assignment = _assignment as AssignmentExpression;
@@ -53,6 +63,10 @@
             }
         }
 
+        /// <summary>
+        /// Accepts the visitor by showing him around.
+        /// </summary>
+        /// <param name="visitor">The visitor walking the tree.</param>
         public void Accept(ITreeWalker visitor)
         {
             visitor.Visit(this);

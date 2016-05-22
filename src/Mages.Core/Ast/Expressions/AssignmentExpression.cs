@@ -16,6 +16,9 @@
 
         #region ctor
 
+        /// <summary>
+        /// Creates a new assignment expression.
+        /// </summary>
         public AssignmentExpression(IExpression variable, IExpression value)
             : base(variable.Start, value.End)
         {
@@ -27,11 +30,17 @@
 
         #region Properties
 
+        /// <summary>
+        /// Gets the variable (value on the left side).
+        /// </summary>
         public IExpression Variable 
         {
             get { return _variable; }
         }
 
+        /// <summary>
+        /// Gets the variable name, if any.
+        /// </summary>
         public String VariableName 
         {
             get 
@@ -47,6 +56,9 @@
             }
         }
 
+        /// <summary>
+        /// Gets the value on the right side.
+        /// </summary>
         public IExpression Value 
         {
             get { return _value; }
@@ -56,11 +68,19 @@
 
         #region Methods
 
+        /// <summary>
+        /// Accepts the visitor by showing him around.
+        /// </summary>
+        /// <param name="visitor">The visitor walking the tree.</param>
         public void Accept(ITreeWalker visitor)
         {
             visitor.Visit(this);
         }
 
+        /// <summary>
+        /// Validates the expression with the given context.
+        /// </summary>
+        /// <param name="context">The validator to report errors to.</param>
         public void Validate(IValidationContext context)
         {
             if (Variable.IsAssignable)

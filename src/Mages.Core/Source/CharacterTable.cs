@@ -28,7 +28,7 @@
         public const Int32 NullPtr = 0x0;
 
         /// <summary>
-        /// The ampersand Character (&).
+        /// The ampersand Character (&amp;).
         /// </summary>
         public const Int32 Ampersand = 0x26;
 

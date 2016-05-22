@@ -13,6 +13,9 @@
 
         #region ctor
 
+        /// <summary>
+        /// Creates a new object expression.
+        /// </summary>
         public ObjectExpression(IExpression[] values, TextPosition start, TextPosition end)
             : base(start, end)
         {
@@ -23,6 +26,9 @@
 
         #region Properties
 
+        /// <summary>
+        /// Gets the contained expressions.
+        /// </summary>
         public IExpression[] Values
         {
             get { return _values; }
@@ -32,11 +38,19 @@
 
         #region Methods
 
+        /// <summary>
+        /// Accepts the visitor by showing him around.
+        /// </summary>
+        /// <param name="visitor">The visitor walking the tree.</param>
         public void Accept(ITreeWalker visitor)
         {
             visitor.Visit(this);
         }
 
+        /// <summary>
+        /// Validates the expression with the given context.
+        /// </summary>
+        /// <param name="context">The validator to report errors to.</param>
         public void Validate(IValidationContext context)
         {
             foreach (var value in _values)

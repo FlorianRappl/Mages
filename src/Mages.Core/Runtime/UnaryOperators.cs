@@ -2,7 +2,7 @@
 {
     using System;
 
-    public static class UnaryOperators
+    static class UnaryOperators
     {
         public static Object Not(Object[] args)
         {
