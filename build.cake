@@ -175,7 +175,8 @@ Task("Publish-Release")
             TargetCommitish = "master"
         }).Result;
 
-        var libPath = buildResultDir + File("Mages.Core.dll");
+        var target = nugetRoot + Directory("lib") + Directory("net35");
+        var libPath = target + File("Mages.Core.dll");
 
         using (var libStream = System.IO.File.OpenRead(libPath.Path.FullPath))
         {
