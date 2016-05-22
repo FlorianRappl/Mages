@@ -31,7 +31,7 @@
         {
             var rows = matrix.GetLength(0);
             var cols = matrix.GetLength(1);
-            var result = new Double[cols, rows];
+            var result = new Double[rows, cols];
 
             for (var i = 0; i < rows; i++)
             {
