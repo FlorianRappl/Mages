@@ -189,5 +189,22 @@
             Assert.IsInstanceOf<ConditionalExpression>(condition.Primary);
             Assert.IsInstanceOf<ConstantExpression>(condition.Secondary);
         }
+
+        [Test]
+        public void UnaryExpressionOnPowerShouldActOnUnaryExpression()
+        {
+            var result = "-2^2".ToExpression();
+
+            Assert.IsInstanceOf<BinaryExpression.Power>(result);
+
+            var power = (BinaryExpression.Power)result;
+
+            Assert.IsInstanceOf<PreUnaryExpression.Minus>(power.LValue);
+            Assert.IsInstanceOf<ConstantExpression>(power.RValue);
+
+            var unary = (PreUnaryExpression.Minus)power.LValue;
+
+            Assert.IsInstanceOf<ConstantExpression>(unary.Value);
+        }
     }
 }

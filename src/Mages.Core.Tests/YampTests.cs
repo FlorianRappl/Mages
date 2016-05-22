@@ -157,7 +157,13 @@
         [Test]
         public void NegativePowerWithoutBracket()
         {
-            Test("-2^2", -4.0);
+            Test("-2^2", 4.0);
+        }
+
+        [Test]
+        public void NegativePowerWithBracket()
+        {
+            Test("-(2^2)", -4.0);
         }
 
         [Test]
@@ -175,7 +181,7 @@
         [Test]
         public void NegatePowerAndAdd()
         {
-            Test("-2^2+4", 0.0);
+            Test("-2^2+4", 8.0);
         }
 
         [Test]
