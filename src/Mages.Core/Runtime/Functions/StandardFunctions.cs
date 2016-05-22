@@ -60,5 +60,7 @@
         public static readonly Function RDiv = new Function(BinaryOperators.RDiv);
 
         public static readonly Function Sub = new Function(BinaryOperators.Sub);
+
+        public static readonly Function Rand = (new RandFunction()).Invoke;
     }
 }

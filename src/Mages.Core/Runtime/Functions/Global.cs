@@ -33,6 +33,7 @@
             { "or", StandardFunctions.Or },
             { "divide", StandardFunctions.RDiv },
             { "subtract", StandardFunctions.Sub },
+            { "rand", StandardFunctions.Rand }
         };
     }
 }
