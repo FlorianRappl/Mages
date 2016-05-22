@@ -30,5 +30,11 @@
             var matrix = (Double[,])args[0];
             return matrix.Transpose();
         }
+
+        public static Object Abs(Object[] args)
+        {
+            var value = (Double)args[0];
+            return Math.Abs(value);
+        }
     }
 }

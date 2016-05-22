@@ -14,17 +14,17 @@
 
         private static readonly Dictionary<String, Action<OperationTreeWalker, PreUnaryExpression>> PreUnaryOperatorMapping = new Dictionary<String, Action<OperationTreeWalker, PreUnaryExpression>>
         {
-            { "~", (walker, expr) => walker.Handle(expr, UnaryOperators.Not) },
-            { "+", (walker, expr) => walker.Handle(expr, UnaryOperators.Positive) },
-            { "-", (walker, expr) => walker.Handle(expr, UnaryOperators.Negative) },
+            { "~", (walker, expr) => walker.Handle(expr, StandardFunctions.Not) },
+            { "+", (walker, expr) => walker.Handle(expr, StandardFunctions.Positive) },
+            { "-", (walker, expr) => walker.Handle(expr, StandardFunctions.Negative) },
             { "++", (walker, expr) => walker.Increment(expr.Value, false) },
             { "--", (walker, expr) => walker.Decrement(expr.Value, false) }
         };
 
         private static readonly Dictionary<String, Action<OperationTreeWalker, PostUnaryExpression>> PostUnaryOperatorMapping = new Dictionary<String, Action<OperationTreeWalker, PostUnaryExpression>>
         {
-            { "!", (walker, expr) => walker.Handle(expr, UnaryOperators.Factorial) },
-            { "'", (walker, expr) => walker.Handle(expr, UnaryOperators.Transpose) },
+            { "!", (walker, expr) => walker.Handle(expr, StandardFunctions.Factorial) },
+            { "'", (walker, expr) => walker.Handle(expr, StandardFunctions.Transpose) },
             { "++", (walker, expr) => walker.Increment(expr.Value, true) },
             { "--", (walker, expr) => walker.Decrement(expr.Value, true) }
         };

@@ -70,5 +70,15 @@
 
             return result;
         }
+
+        public static Function Wrap<TArg, TRes>(Func<TArg, TRes> func)
+        {
+            return Wrap((Delegate)func);
+        }
+
+        public static Function Wrap(Delegate func)
+        {
+            return new Function(func.DynamicInvoke);
+        }
     }
 }
