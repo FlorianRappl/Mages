@@ -15,16 +15,16 @@
             { "~", (walker, expr) => walker.Handle(expr, UnaryOperators.Not) },
             { "+", (walker, expr) => walker.Handle(expr, UnaryOperators.Positive) },
             { "-", (walker, expr) => walker.Handle(expr, UnaryOperators.Negative) },
-            { "++", (walker, expr) => {} },
-            { "--", (walker, expr) => {} }
+            { "++", (walker, expr) => walker.Increment(expr.Value, false) },
+            { "--", (walker, expr) => walker.Decrement(expr.Value, false) }
         };
 
         private static readonly Dictionary<String, Action<OperationTreeWalker, PostUnaryExpression>> PostUnaryOperatorMapping = new Dictionary<String, Action<OperationTreeWalker, PostUnaryExpression>>
         {
             { "!", (walker, expr) => walker.Handle(expr, UnaryOperators.Factorial) },
             { "'", (walker, expr) => walker.Handle(expr, UnaryOperators.Transpose) },
-            { "++", (walker, expr) => {} },
-            { "--", (walker, expr) => {} }
+            { "++", (walker, expr) => walker.Increment(expr.Value, true) },
+            { "--", (walker, expr) => walker.Decrement(expr.Value, true) }
         };
 
         private static readonly Dictionary<String, Action<OperationTreeWalker, BinaryExpression>> BinaryOperatorMapping = new Dictionary<String, Action<OperationTreeWalker, BinaryExpression>>
@@ -129,7 +129,7 @@
             expression.To.Accept(this);
             expression.From.Accept(this);
 
-            CallFunction(expression.GetFunction(), 3);
+            CallFunction(args => Range.Create((Double)args[0], (Double)args[1], (Double)args[2]), 3);
         }
 
         public void Visit(ConditionalExpression expression)
@@ -138,7 +138,7 @@
             expression.Primary.Accept(this);
             expression.Condition.Accept(this);
 
-            CallFunction(expression.GetFunction(), 3);
+            CallFunction(args => Logic.IsTrue((Double)args[0]) ? args[1] : args[2], 3);
         }
 
         public void Visit(CallExpression expression)
@@ -164,7 +164,11 @@
             expression.Name.Accept(this);
             expression.Value.Accept(this);
 
-            CallFunction(expression.GetFunction(), 3);
+            CallFunction(args =>
+            {
+                Helpers.SetProperty((IDictionary<String, Object>)args[2], (String)args[1], args[0]);
+                return args[2];
+            }, 3);
         }
 
         public void Visit(MatrixExpression expression)
@@ -318,6 +322,24 @@
             }
 
             return operations;
+        }
+
+        private void Decrement(IExpression expr, Boolean postOperation)
+        {
+            expr.Accept(this);
+            _assigning = true;
+            expr.Accept(this);
+            var store = PopOperation();
+            _operations.Add(new DecOperation(store, postOperation));
+        }
+
+        private void Increment(IExpression expr, Boolean postOperation)
+        {
+            expr.Accept(this);
+            _assigning = true;
+            expr.Accept(this);
+            var store = PopOperation();
+            _operations.Add(new IncOperation(store, postOperation));
         }
     }
 }

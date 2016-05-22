@@ -91,6 +91,7 @@
     <Compile Include="Runtime\BinaryOperators.cs" />
     <Compile Include="Runtime\Helpers.cs" />
     <Compile Include="Runtime\Logic.cs" />
+    <Compile Include="Runtime\Range.cs" />
     <Compile Include="Runtime\Stringify.cs" />
     <Compile Include="Runtime\UnaryOperators.cs" />
     <Compile Include="Runtime\VariableScope.cs" />
@@ -124,6 +125,8 @@
     <Compile Include="Vm\IExecutionContext.cs" />
     <Compile Include="Vm\IOperation.cs" />
     <Compile Include="Vm\Operations\CallOperation.cs" />
+    <Compile Include="Vm\Operations\DecOperation.cs" />
+    <Compile Include="Vm\Operations\IncOperation.cs" />
     <Compile Include="Vm\Operations\LoadOperation.cs" />
     <Compile Include="Vm\Operations\StoreOperation.cs" />
   </ItemGroup>

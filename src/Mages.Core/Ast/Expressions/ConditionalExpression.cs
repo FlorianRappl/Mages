@@ -1,8 +1,5 @@
 ﻿namespace Mages.Core.Ast.Expressions
 {
-    using Mages.Core.Runtime;
-    using System;
-
     /// <summary>
     /// Represents a conditional expression.
     /// </summary>
@@ -59,11 +56,6 @@
             _condition.Validate(context);
             _primary.Validate(context);
             _secondary.Validate(context);
-        }
-
-        public Function GetFunction()
-        {
-            return args => Logic.IsTrue((Double)args[0]) ? args[1] : args[2];
         }
 
         #endregion

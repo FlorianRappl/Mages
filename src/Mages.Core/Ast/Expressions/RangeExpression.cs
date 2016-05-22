@@ -1,7 +1,5 @@
 ﻿namespace Mages.Core.Ast.Expressions
 {
-    using System;
-
     /// <summary>
     /// The range expression.
     /// </summary>
@@ -79,35 +77,6 @@
             {
                 _to.Validate(context);
             }
-        }
-
-        public Function GetFunction()
-        {
-            return args => Range((Double)args[0], (Double)args[1], (Double)args[2]);
-        }
-
-        private static Double[,] Range(Double from, Double to, Double step)
-        {
-            var count = (to - from) / step;
-
-            if (count < 0)
-            {
-                count = 0;
-            }
-            else
-            {
-                count = Math.Floor(count);
-            }
-
-            var result = new Double[(Int32)count, 1];
-
-            for (int i = 0; i < count; i++)
-            {
-                result[i, 0] = from;
-                from += step;
-            }
-
-            return result;
         }
 
         #endregion
