@@ -46,8 +46,8 @@
             private readonly TextPosition _start;
 
             private List<ParseError> _errors;
-            private Int32 _value;
-            private Int32 _digits;
+            private Int64 _value;
+            private Int16 _digits;
             private Int32 _powers;
 
             public NumberState(IScanner scanner)
@@ -109,7 +109,7 @@
             {
                 while (_scanner.Current.IsDigit())
                 {
-                    _value = _value * 10 + _scanner.Current - CharacterTable.Zero;
+                    _value = _value * 10L + _scanner.Current - CharacterTable.Zero;
 
                     if (!_scanner.MoveNext())
                     {
@@ -171,7 +171,7 @@
             {
                 while (_scanner.Current.IsDigit())
                 {
-                    _value = _value * 10 + _scanner.Current - CharacterTable.Zero;
+                    _value = _value * 10L + _scanner.Current - CharacterTable.Zero;
                     _digits++;
 
                     if (!_scanner.MoveNext())

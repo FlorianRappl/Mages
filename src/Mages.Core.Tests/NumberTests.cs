@@ -195,5 +195,31 @@
             Assert.AreEqual(TokenType.End, end.Type);
             Assert.AreEqual("120000", result.Payload);
         }
+
+        [Test]
+        public void DigitsOnlyNumberWithOverflowForInt32()
+        {
+            var source = "0.212410080106903";
+            var scanner = new StringScanner(source);
+            var comment = new GeneralTokenizer(new NumberTokenizer(), null, null);
+            var result = comment.Next(scanner);
+            var end = comment.Next(scanner);
+            Assert.AreEqual(TokenType.Number, result.Type);
+            Assert.AreEqual(TokenType.End, end.Type);
+            Assert.AreEqual("0.212410080106903", result.Payload);
+        }
+
+        [Test]
+        public void IntegerDigitsNumberWithOverflowForInt32()
+        {
+            var source = "131.208072980527";
+            var scanner = new StringScanner(source);
+            var comment = new GeneralTokenizer(new NumberTokenizer(), null, null);
+            var result = comment.Next(scanner);
+            var end = comment.Next(scanner);
+            Assert.AreEqual(TokenType.Number, result.Type);
+            Assert.AreEqual(TokenType.End, end.Type);
+            Assert.AreEqual("131.208072980527", result.Payload);
+        }
     }
 }

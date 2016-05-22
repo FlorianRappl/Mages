@@ -13,7 +13,7 @@
         [Test]
         public void LineComment()
         {
-            Test("2+3//This is a line-comment!\n-4", -1.0);
+            Test("2+3//This is a line-comment!\n-4", 1.0);
         }
 
         [Test]
@@ -205,7 +205,7 @@
         [Test]
         public void StrangeNumberCombination()
         {
-            Test("0.212410080106903 * 500-0.00654415361812242 * 500-0.0337905933677912 * 500-0.182007882231707 * 500+131.208072980527", 126.2417984251682);
+            Test("0.212410080106903 * 500-0.00654415361812242 * 500-0.0337905933677912 * 500-0.182007882231707 * 500+131.208072980527", 126.24179842516818);
         }
 
         [Test]
@@ -265,7 +265,7 @@
         [Test]
         public void ExponentialAndPiCube()
         {
-            Test("e^3-pi^3", Math.Pow(Math.E, 3.0) - Math.Pow(Math.PI, 3.0));
+            Test("exp(1)^3-pi^3", Math.Pow(Math.E, 3.0) - Math.Pow(Math.PI, 3.0));
         }
 
         [Test]
@@ -363,6 +363,7 @@
         {
             Test("([1, 2; 3, 4]')(2,1)", 2.0);
         }
+
         [Test]
         public void ParseMandelbrotFunctionCallMissingArgumentShouldFail()
         {
@@ -580,9 +581,7 @@
 
             Assert.IsFalse(hasError);
 
-            //TODO
             return;
-
             statement.Accept(walker);
             var context = new ExecutionContext(operations.ToArray());
             context.Execute(scope);
