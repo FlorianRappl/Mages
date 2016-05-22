@@ -112,6 +112,7 @@
         {
             _assigning = true;
             expression.Variable.Accept(this);
+            _assigning = false;
             var store = PopOperation();
             expression.Value.Accept(this);
             _operations.Add(store);
@@ -245,8 +246,6 @@
             {
                 _operations.Add(new LoadOperation(ctx => Helpers.GetProperty((IDictionary<String, Object>)ctx.Pop(), (String)ctx.Pop())));
             }
-
-            _assigning = false;
         }
 
         public void Visit(ParameterExpression expression)
@@ -280,8 +279,6 @@
             {
                 _operations.Add(new LoadOperation(ctx => ctx.Scope.GetProperty(name)));
             }
-
-            _assigning = false;
         }
 
         #endregion
@@ -341,6 +338,7 @@
             expr.Accept(this);
             _assigning = true;
             expr.Accept(this);
+            _assigning = false;
             _operations.Add(new DecOperation(PopOperation(), postOperation));
         }
 
@@ -349,6 +347,7 @@
             expr.Accept(this);
             _assigning = true;
             expr.Accept(this);
+            _assigning = false;
             _operations.Add(new IncOperation(PopOperation(), postOperation));
         }
 

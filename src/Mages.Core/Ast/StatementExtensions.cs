@@ -15,6 +15,12 @@
             return missingSymbols;
         }
 
+        public static List<VariableExpression> FindMissingSymbols(this IEnumerable<IStatement> statements)
+        {
+            var block = statements.ToBlock();
+            return block.FindMissingSymbols();
+        }
+
         public static BlockStatement ToBlock(this IEnumerable<IStatement> statements)
         {
             var list = new List<IStatement>(statements);
@@ -25,24 +31,8 @@
 
         public static void CollectMissingSymbols(this IStatement statement, List<VariableExpression> missingSymbols)
         {
-            var symbols = new List<VariableExpression>();
-            var walker = new SymbolTreeWalker(symbols);
+            var walker = new SymbolTreeWalker(missingSymbols);
             statement.Accept(walker);
-
-            foreach (var symbol in symbols)
-            {
-                if (symbol.Scope == null)
-                {
-                    missingSymbols.Add(symbol);
-                }
-            }
-        }
-
-        public static List<VariableExpression> FindMissingSymbols(this IEnumerable<IStatement> statements)
-        {
-            var missingSymbols = new List<VariableExpression>();
-            statements.ToBlock().CollectMissingSymbols(missingSymbols);
-            return missingSymbols;
         }
 
         public static ExecutionContext MakeRunnable(this IEnumerable<IStatement> statements)
