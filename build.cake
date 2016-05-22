@@ -159,7 +159,7 @@ Task("Publish-Release")
 
         if (String.IsNullOrEmpty(githubToken))
         {
-            throw new InvalidOperationException("Could not resolve AngleSharp GitHub token.");
+            throw new InvalidOperationException("Could not resolve MAGES GitHub token.");
         }
         
         var github = new GitHubClient(new ProductHeaderValue("MagesCakeBuild"))
@@ -167,13 +167,20 @@ Task("Publish-Release")
             Credentials = new Credentials(githubToken)
         };
 
-        github.Release.Create("FlorianRappl", "Mages", new NewRelease("v" + version) 
+        var release = github.Release.Create("FlorianRappl", "Mages", new NewRelease("v" + version) 
         {
             Name = version,
             Body = String.Join(Environment.NewLine, releaseNotes.Notes),
             Prerelease = false,
             TargetCommitish = "master"
-        }).Wait();
+        }).Result;
+
+        var libPath = buildResultDir + File("Mages.Core.dll");
+
+        using (var libStream = System.IO.File.OpenRead(libPath.Path.FullPath))
+        {
+            github.Release.UploadAsset(release, new ReleaseAssetUpload("Mages.Core.dll", "application/x-msdownload", libStream, null)).Wait();
+        }
     });
     
 Task("Update-AppVeyor-Build-Number")
