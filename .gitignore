@@ -21,6 +21,8 @@ bld/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
+[Tt]ools/
+![Tt]ools/packages.config
 
 # Visual Studio 2015 cache/options directory
 .vs/
