@@ -4,15 +4,15 @@
     using System.Collections;
     using System.Collections.Generic;
 
-    sealed class VariableScope : IDictionary<String, Object>
+    sealed class GlobalScope : IDictionary<String, Object>
     {
         private readonly IDictionary<String, Object> _scope;
         private readonly IDictionary<String, Object> _parent;
 
-        public VariableScope(IDictionary<String, Object> parent)
+        public GlobalScope(IDictionary<String, Object> scope)
         {
-            _scope = new Dictionary<String, Object>();
-            _parent = parent;
+            _scope = scope ?? new Dictionary<String, Object>();
+            _parent = new Dictionary<String, Object>();
         }
 
         public IDictionary<String, Object> Parent

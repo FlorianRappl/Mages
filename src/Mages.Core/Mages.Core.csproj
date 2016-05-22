@@ -91,6 +91,7 @@
     <Compile Include="Runtime\BinaryOperators.cs" />
     <Compile Include="Runtime\Functions\ArithmeticFunction.cs" />
     <Compile Include="Runtime\Functions\StandardFunction.cs" />
+    <Compile Include="Runtime\GlobalScope.cs" />
     <Compile Include="Runtime\Helpers.cs" />
     <Compile Include="Runtime\Logic.cs" />
     <Compile Include="Runtime\Range.cs" />

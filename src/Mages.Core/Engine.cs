@@ -1,6 +1,7 @@
 ﻿namespace Mages.Core
 {
     using Mages.Core.Ast;
+    using Mages.Core.Runtime;
     using System;
     using System.Collections.Generic;
 
@@ -12,7 +13,7 @@
         #region Fields
 
         private readonly IParser _parser;
-        private readonly IDictionary<String, Object> _scope;
+        private readonly GlobalScope _scope;
 
         #endregion
 
@@ -27,7 +28,7 @@
         public Engine(IParser parser = null, IDictionary<String, Object> scope = null)
         {
             _parser = parser ?? new ExpressionParser();
-            _scope = scope ?? new Dictionary<String, Object>();
+            _scope = new GlobalScope(scope);
         }
 
         #endregion
