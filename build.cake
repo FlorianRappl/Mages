@@ -44,7 +44,7 @@ Setup(() =>
 Task("Clean")
     .Does(() =>
     {
-        CleanDirectories(buildDirs.OfType<DirectoryPath>().Concat(new DirectoryPath[] { buildResultDir, nugetRoot }));
+        CleanDirectories(new DirectoryPath[] { buildDir, buildResultDir, nugetRoot });
     });
 
 Task("Restore-Packages")
