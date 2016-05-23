@@ -62,6 +62,13 @@
             CollectionAssert.AreEquivalent(new Double[,] { { 1.0 }, { 3.0 } }, (Double[,])result);
         }
 
+        [Test]
+        public void ComparisonFunctionsOfEmptyMatrixShouldBeAnEmptyMatrix()
+        {
+            var result = Eval("sort([])");
+            CollectionAssert.AreEquivalent(new Double[,] { }, (Double[,])result);
+        }
+
         private static Object Eval(String source)
         {
             var engine = new Engine();
