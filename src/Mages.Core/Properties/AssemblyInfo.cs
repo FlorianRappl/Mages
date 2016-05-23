@@ -12,5 +12,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 [assembly: Guid("f75805c5-2ae8-49dc-b423-25a7060a3b2b")]
-[assembly: AssemblyVersion("0.1.*")]
+[assembly: AssemblyVersion("0.2.*")]
 [assembly: InternalsVisibleTo("Mages.Core.Tests")]
