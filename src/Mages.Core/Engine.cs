@@ -51,6 +51,14 @@
             get { return _scope; }
         }
 
+        /// <summary>
+        /// Gets the used global function layer.
+        /// </summary>
+        public IDictionary<String, Object> Globals
+        {
+            get { return _scope.Parent; }
+        }
+
         #endregion
 
         #region Methods
