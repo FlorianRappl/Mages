@@ -59,16 +59,16 @@
         }
 
         /// <summary>
-        /// Transforms the statements to an execution context.
+        /// Transforms the statements to an array of operations.
         /// </summary>
         /// <param name="statements">The statements.</param>
-        /// <returns>The execution context that can be run.</returns>
-        public static ExecutionContext MakeRunnable(this IEnumerable<IStatement> statements)
+        /// <returns>The operations that can be run.</returns>
+        public static IOperation[] MakeRunnable(this IEnumerable<IStatement> statements)
         {
             var operations = new List<IOperation>();
             var walker = new OperationTreeWalker(operations);
             statements.ToBlock().Accept(walker);
-            return new ExecutionContext(operations.ToArray());
+            return operations.ToArray();
         }
     }
 }

@@ -3,30 +3,61 @@
     using System;
     using System.Collections.Generic;
 
+    /// <summary>
+    /// Represents a template for a flexible function.
+    /// </summary>
     public abstract class StandardFunction
     {
+        /// <summary>
+        /// Defines the placeholder to return for indicating a not implemented function.
+        /// </summary>
         protected readonly Object NotImplemented = new Object();
 
+        /// <summary>
+        /// Invokes the function with a single number argument.
+        /// </summary>
+        /// <param name="value">The number.</param>
+        /// <returns>The return value.</returns>
         public virtual Object Invoke(Double value)
         {
             return NotImplemented;
         }
 
+        /// <summary>
+        /// Invokes the function with a single boolean argument.
+        /// </summary>
+        /// <param name="value">The boolean.</param>
+        /// <returns>The return value.</returns>
         public virtual Object Invoke(Boolean value)
         {
             return Invoke(value ? 1.0 : 0.0);
         }
 
+        /// <summary>
+        /// Invokes the function with a single string argument.
+        /// </summary>
+        /// <param name="value">The string.</param>
+        /// <returns>The return value.</returns>
         public virtual Object Invoke(String value)
         {
             return NotImplemented;
         }
 
+        /// <summary>
+        /// Invokes the function with a single object argument.
+        /// </summary>
+        /// <param name="obj">The dictionary.</param>
+        /// <returns>The return value.</returns>
         public virtual Object Invoke(IDictionary<String, Object> obj)
         {
             return NotImplemented;
         }
 
+        /// <summary>
+        /// Invokes the function with a single matrix argument.
+        /// </summary>
+        /// <param name="matrix">The matrix.</param>
+        /// <returns>The return value.</returns>
         public virtual Object Invoke(Double[,] matrix)
         {
             var rows = matrix.GetLength(0);
@@ -44,6 +75,11 @@
             return result;
         }
 
+        /// <summary>
+        /// Invokes the function with any number of arguments.
+        /// </summary>
+        /// <param name="arguments">The arguments.</param>
+        /// <returns>The return value.</returns>
         public Object Invoke(Object[] arguments)
         {
             if (arguments.Length > 0)

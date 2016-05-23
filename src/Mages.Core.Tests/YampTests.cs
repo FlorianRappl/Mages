@@ -589,8 +589,8 @@
 
             return;
             statement.Accept(walker);
-            var context = new ExecutionContext(operations.ToArray());
-            context.Execute(scope);
+            var context = new ExecutionContext(operations.ToArray(), scope);
+            context.Execute();
             var result = (Double)context.Pop();
 
             Assert.AreEqual(expected, result, tolerance);

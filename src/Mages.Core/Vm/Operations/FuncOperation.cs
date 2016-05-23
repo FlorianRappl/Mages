@@ -33,10 +33,10 @@
 
             public Object Invoke(Object[] arguments)
             {
-                var ctx = new ExecutionContext(_operations);
                 var scope = new VariableScope(_parentScope);
+                var ctx = new ExecutionContext(_operations, scope);
                 ctx.Push(arguments);
-                ctx.Execute(scope);
+                ctx.Execute();
                 return ctx.Pop();
             }
         }

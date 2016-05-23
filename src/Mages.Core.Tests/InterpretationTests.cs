@@ -48,6 +48,33 @@
             Assert.IsInstanceOf<Function>(scope["B"]);
         }
 
+        [Test]
+        public void CompilationWorksAndCanBeExecutedRepeaditly()
+        {
+            var engine = new Engine();
+            var func = engine.Compile("A = 6; B = 7; A * B");
+            var result1 = func.Invoke();
+            var result2 = func.Invoke();
+            Assert.AreEqual(42.0, result1);
+            Assert.AreEqual(42.0, result2);
+        }
+
+        [Test]
+        public void CompilationUsingScopeWorksAndCanBeExecutedRepeaditlyWithDifferentInputs()
+        {
+            var engine = new Engine();
+            var func = engine.Compile("A * B - C");
+            engine.Scope["A"] = 1.0;
+            engine.Scope["B"] = 2.0;
+            engine.Scope["C"] = 0.0;
+            var result1 = func.Invoke();
+            engine.Scope["B"] = 3.0;
+            engine.Scope["C"] = 4.0;
+            var result2 = func.Invoke();
+            Assert.AreEqual(2.0, result1);
+            Assert.AreEqual(-1.0, result2);
+        }
+
         private IDictionary<String, Object> Test(String sourceCode, Double expected, Double tolerance = 0.0)
         {
             var engine = new Engine();

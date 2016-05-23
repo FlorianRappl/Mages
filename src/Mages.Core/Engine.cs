@@ -2,6 +2,7 @@
 {
     using Mages.Core.Ast;
     using Mages.Core.Runtime;
+    using Mages.Core.Vm;
     using System;
     using System.Collections.Generic;
 
@@ -74,8 +75,9 @@
             var operations = statements.MakeRunnable();
             return () =>
             {
-                operations.Execute(_scope);
-                return operations.Pop();
+                var context = new ExecutionContext(operations, _scope);
+                context.Execute();
+                return context.Pop();
             };
         }
 
@@ -88,8 +90,9 @@
         {
             var statements = _parser.ParseStatements(source);
             var operations = statements.MakeRunnable();
-            operations.Execute(_scope);
-            return operations.Pop();
+            var context = new ExecutionContext(operations, _scope);
+            context.Execute();
+            return context.Pop();
         }
 
         #endregion

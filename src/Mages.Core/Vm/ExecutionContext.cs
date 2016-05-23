@@ -10,17 +10,19 @@
     {
         private readonly Stack<Object> _stack;
         private readonly IOperation[] _operations;
-        private IDictionary<String, Object> _scope;
+        private readonly IDictionary<String, Object> _scope;
         private Int32 _position;
 
         /// <summary>
         /// Creates a new execution context.
         /// </summary>
         /// <param name="operations">The operations to use.</param>
-        public ExecutionContext(IOperation[] operations)
+        /// <param name="scope">The global scope to use.</param>
+        public ExecutionContext(IOperation[] operations, IDictionary<String, Object> scope)
         {
             _stack = new Stack<Object>();
             _operations = operations;
+            _scope = scope;
             _position = 0;
         }
 
@@ -39,17 +41,13 @@
         public IDictionary<String, Object> Scope
         {
             get { return _scope; }
-            private set { _scope = value; }
         }
 
         /// <summary>
-        /// Executes the operations with the given scope.
+        /// Executes the operations.
         /// </summary>
-        /// <param name="globalScope">The global scope to use.</param>
-        public void Execute(IDictionary<String, Object> globalScope)
+        public void Execute()
         {
-            _scope = globalScope;
-
             while (_position < _operations.Length)
             {
                 _operations[_position].Invoke(this);
