@@ -38,7 +38,7 @@
         {
             var engine = new Engine();
             var func = new Func<Double, String, Boolean>((n, str) => n == str.Length);
-            engine.AddOrReplace("foo", func.Method);
+            engine.AddOrReplace("foo", func.Method, func.Target);
 
             var result1 = engine.Interpret("foo(2,\"hi\")");
             var result2 = engine.Interpret("foo(2,\"hallo\")");
@@ -52,7 +52,7 @@
         {
             var engine = new Engine();
             var func = new Action<String>(str => Console.WriteLine(str));
-            engine.AddOrReplace("hello", func.Method);
+            engine.AddOrReplace("hello", func.Method, func.Target);
 
             var result = engine.Interpret("hello(\"World\")");
 
@@ -64,7 +64,7 @@
         {
             var engine = new Engine();
             var func = new Func<Int32, String, Char>((n, str) => str[n]);
-            engine.AddOrReplace("getCharAt", func.Method);
+            engine.AddOrReplace("getCharAt", func.Method, func.Target);
 
             var result1 = engine.Interpret("getCharAt(1,\"hi\")");
             var result2 = engine.Interpret("getCharAt(2,\"hallo\")");
@@ -78,7 +78,7 @@
         {
             var engine = new Engine();
             var func = new Func<Double[], List<Double>>(vec => vec.Skip(1).Reverse().Take(2).ToList());
-            engine.AddOrReplace("bottom", func.Method);
+            engine.AddOrReplace("bottom", func.Method, func.Target);
 
             var result = engine.Interpret("bottom([1,2,3,4,5])");
 

@@ -39,9 +39,10 @@
         /// <param name="engine">The engine.</param>
         /// <param name="name">The name of the function to add or replace.</param>
         /// <param name="method">The function to be wrapped.</param>
-        public static void AddOrReplace(this Engine engine, String name, MethodInfo method)
+        /// <param name="target">The optional target object of the method.</param>
+        public static void AddOrReplace(this Engine engine, String name, MethodInfo method, Object target = null)
         {
-            engine.Globals[name] = Helpers.Wrap(method, null);
+            engine.Globals[name] = Helpers.Wrap(method, target);
         }
     }
 }
