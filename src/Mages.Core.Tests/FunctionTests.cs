@@ -34,6 +34,34 @@
             Assert.AreEqual(Math.Cos(1.0), result);
         }
 
+        [Test]
+        public void ComparisonFunctionsShouldYieldNumericValue()
+        {
+            var result = Eval("min(1)");
+            Assert.AreEqual(1.0, result);
+        }
+
+        [Test]
+        public void ComparisonFunctionsShouldReduceRowVectorToNumericValue()
+        {
+            var result = Eval("max([1,2,30,4,5])");
+            Assert.AreEqual(30.0, result);
+        }
+
+        [Test]
+        public void ComparisonFunctionsShouldReduceColumnVectorToNumericValue()
+        {
+            var result = Eval("min([1;2;3;-4;5])");
+            Assert.AreEqual(-4.0, result);
+        }
+
+        [Test]
+        public void ComparisonFunctionsShouldReduceMatrixToColumnVector()
+        {
+            var result = Eval("min([1,2,3;3,4,5])");
+            CollectionAssert.AreEquivalent(new Double[,] { { 1.0 }, { 3.0 } }, (Double[,])result);
+        }
+
         private static Object Eval(String source)
         {
             var engine = new Engine();
