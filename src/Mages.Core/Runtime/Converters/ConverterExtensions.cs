@@ -54,7 +54,7 @@
 
         public static Object ToNumber(this Double[,] matrix)
         {
-            if (matrix.GetLength(0) == 1 && matrix.GetLength(1) == 1)
+            if (matrix.GetRows() == 1 && matrix.GetColumns() == 1)
             {
                 return matrix[0, 0];
             }
@@ -106,8 +106,8 @@
 
         public static List<Double> ToList(this Double[,] matrix)
         {
-            var rows = matrix.GetLength(0);
-            var cols = matrix.GetLength(1);
+            var rows = matrix.GetRows();
+            var cols = matrix.GetColumns();
             var list = new List<Double>(rows * cols);
 
             for (var i = 0; i < rows; i++)

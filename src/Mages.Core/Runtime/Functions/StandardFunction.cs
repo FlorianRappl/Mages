@@ -61,8 +61,8 @@
         /// <returns>The return value.</returns>
         public virtual Object Invoke(Double[,] matrix)
         {
-            var rows = matrix.GetLength(0);
-            var cols = matrix.GetLength(1);
+            var rows = matrix.GetRows();
+            var cols = matrix.GetColumns();
             var result = new Double[rows, cols];
 
             for (var i = 0; i < rows; i++)
@@ -125,6 +125,9 @@
         /// </summary>
         /// <param name="value">The value input.</param>
         /// <returns>The result.</returns>
-        protected abstract Double Compute(Double value);
+        protected virtual Double Compute(Double value)
+        {
+            return Double.NaN;
+        }
     }
 }

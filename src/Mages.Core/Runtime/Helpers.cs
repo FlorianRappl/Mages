@@ -10,10 +10,20 @@
     {
         public static readonly TypeConverterMap Converters = new TypeConverterMap();
 
+        public static Int32 GetRows(this Double[,] matrix)
+        {
+            return matrix.GetLength(0);
+        }
+
+        public static Int32 GetColumns(this Double[,] matrix)
+        {
+            return matrix.GetLength(1);
+        }
+
         public static void SetValue(this Double[,] matrix, Int32 i, Int32 j, Double value)
         {
-            var rows = matrix.GetLength(0);
-            var cols = matrix.GetLength(1);
+            var rows = matrix.GetRows();
+            var cols = matrix.GetColumns();
 
             if (i >= 0 && i < rows && j >= 0 && j < cols)
             {
@@ -23,8 +33,8 @@
 
         public static Double[,] Transpose(this Double[,] matrix)
         {
-            var rows = matrix.GetLength(0);
-            var cols = matrix.GetLength(1);
+            var rows = matrix.GetRows();
+            var cols = matrix.GetColumns();
             var result = new Double[cols, rows];
 
             for (var i = 0; i < rows; i++)
@@ -40,8 +50,8 @@
 
         public static Double GetValue(this Double[,] matrix, Int32 i, Int32 j)
         {
-            var rows = matrix.GetLength(0);
-            var cols = matrix.GetLength(1);
+            var rows = matrix.GetRows();
+            var cols = matrix.GetColumns();
 
             if (i >= 0 && i < rows && j >= 0 && j < cols)
             {

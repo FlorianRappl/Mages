@@ -23,14 +23,14 @@
             { "transpose", StandardFunctions.Transpose },
             { "add", StandardFunctions.Add },
             { "and", StandardFunctions.And },
-            { "equals", StandardFunctions.Eq },
-            { "greaterEquals", StandardFunctions.Geq },
-            { "greater", StandardFunctions.Gt },
-            { "lessEquals", StandardFunctions.Leq },
-            { "less", StandardFunctions.Lt },
+            { "equals", ComparisonFunctions.Eq },
+            { "notEquals", ComparisonFunctions.Neq },
+            { "greaterEquals", ComparisonFunctions.Geq },
+            { "greater", ComparisonFunctions.Gt },
+            { "lessEquals", ComparisonFunctions.Leq },
+            { "less", ComparisonFunctions.Lt },
             { "modulo", StandardFunctions.Mod },
             { "multiply", StandardFunctions.Mul },
-            { "notEquals", StandardFunctions.Neq },
             { "or", StandardFunctions.Or },
             { "divide", StandardFunctions.RDiv },
             { "subtract", StandardFunctions.Sub },
@@ -47,7 +47,11 @@
             { "isnan", LogicalFunctions.IsNaN },
             { "isint", LogicalFunctions.IsInt },
             { "isprime", LogicalFunctions.IsPrime },
-            { "isinfty", LogicalFunctions.IsInfty }
+            { "isinfty", LogicalFunctions.IsInfty },
+            { "min", ComparisonFunctions.Min },
+            { "max", ComparisonFunctions.Max },
+            { "sort", ComparisonFunctions.Sort },
+            { "reverse", ComparisonFunctions.Reverse }
         };
     }
 }

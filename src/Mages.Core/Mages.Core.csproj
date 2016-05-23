@@ -95,10 +95,13 @@
     <Compile Include="Runtime\Converters\TypeConverter.cs" />
     <Compile Include="Runtime\Converters\TypeConverterMap.cs" />
     <Compile Include="Runtime\Functions\ArithmeticFunction.cs" />
+    <Compile Include="Runtime\Functions\ArrayFunction.cs" />
+    <Compile Include="Runtime\Functions\ComparisonFunctions.cs" />
     <Compile Include="Runtime\Functions\Global.cs" />
     <Compile Include="Runtime\Functions\LogicalFunction.cs" />
     <Compile Include="Runtime\Functions\LogicalFunctions.cs" />
     <Compile Include="Runtime\Functions\RandFunction.cs" />
+    <Compile Include="Runtime\Functions\ReducerFunction.cs" />
     <Compile Include="Runtime\Functions\StandardFunction.cs" />
     <Compile Include="Runtime\Functions\TrigonometricFunctions.cs" />
     <Compile Include="Runtime\GlobalScope.cs" />

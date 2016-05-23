@@ -83,34 +83,9 @@
         public static readonly Function And = new Function(BinaryOperators.And);
 
         /// <summary>
-        /// Contains the equality operator.
-        /// </summary>
-        public static readonly Function Eq = new Function(BinaryOperators.Eq);
-
-        /// <summary>
-        /// Contains the greater or equals operator.
-        /// </summary>
-        public static readonly Function Geq = new Function(BinaryOperators.Geq);
-
-        /// <summary>
-        /// Contains the greater than operator.
-        /// </summary>
-        public static readonly Function Gt = new Function(BinaryOperators.Gt);
-
-        /// <summary>
         /// Contains the left division operator.
         /// </summary>
         public static readonly Function LDiv = new Function(BinaryOperators.LDiv);
-
-        /// <summary>
-        /// Contains the less or equals operator.
-        /// </summary>
-        public static readonly Function Leq = new Function(BinaryOperators.Leq);
-
-        /// <summary>
-        /// Contains the less than operator.
-        /// </summary>
-        public static readonly Function Lt = new Function(BinaryOperators.Lt);
 
         /// <summary>
         /// Contains the modulo operator.
@@ -121,11 +96,6 @@
         /// Contains the multiplication operator.
         /// </summary>
         public static readonly Function Mul = new Function(BinaryOperators.Mul);
-
-        /// <summary>
-        /// Contains the not equals operator.
-        /// </summary>
-        public static readonly Function Neq = new Function(BinaryOperators.Neq);
 
         /// <summary>
         /// Contains the or operator.
