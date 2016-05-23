@@ -18,6 +18,14 @@
         }
 
         /// <summary>
+        /// Converts the boolean to a string.
+        /// </summary>
+        public static String This(Boolean value)
+        {
+            return value ? Keywords.True : Keywords.False;
+        }
+
+        /// <summary>
         /// Converts the string for output.
         /// </summary>
         public static String This(String value)

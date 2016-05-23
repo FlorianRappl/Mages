@@ -32,6 +32,32 @@
         }
 
         [Test]
+        public void AddingANewMethodInfoCanBeUsed()
+        {
+            var engine = new Engine();
+            var func = new Func<Double, String, Boolean>((n, str) => n == str.Length);
+            engine.AddOrReplace("foo", func.Method);
+
+            var result1 = engine.Interpret("foo(2,\"hi\")");
+            var result2 = engine.Interpret("foo(2,\"hallo\")");
+
+            Assert.AreEqual(true, result1);
+            Assert.AreEqual(false, result2);
+        }
+
+        [Test]
+        public void AddingANewMethodReturningVoidShouldYieldNull()
+        {
+            var engine = new Engine();
+            var func = new Action<String>(str => Console.WriteLine(str));
+            engine.AddOrReplace("hello", func.Method);
+
+            var result = engine.Interpret("hello(\"World\")");
+
+            Assert.AreEqual(null, result);
+        }
+
+        [Test]
         public void ReplacingAnExistingFunctionOverwrites()
         {
             var engine = new Engine();

@@ -41,8 +41,7 @@
         /// <param name="method">The function to be wrapped.</param>
         public static void AddOrReplace(this Engine engine, String name, MethodInfo method)
         {
-            var function = Delegate.CreateDelegate(typeof(Function), method);
-            engine.Globals[name] = Helpers.Wrap(function);
+            engine.Globals[name] = Helpers.Wrap(method, null);
         }
     }
 }

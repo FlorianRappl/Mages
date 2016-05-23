@@ -2,6 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
 
     static class Helpers
     {
@@ -71,9 +73,45 @@
             return result;
         }
 
+        public static Object ConvertTo(this Object value, Type newType)
+        {
+            if (value != null)
+            {
+                var originalType = value.GetType();
+
+                if (originalType != newType)
+                {
+                    //TODO
+                }
+            }
+
+            return value;
+        }
+
+        public static Type Narrow(this Type type)
+        {
+            //TODO
+            return type;
+        }
+
+        public static T ConvertTo<T>(this Object value)
+        {
+            return (T)value.ConvertTo(typeof(T));
+        }
+
         public static Function Wrap(Delegate func)
         {
-            return new Function(func.DynamicInvoke);
+            return Wrap(func.Method, func.Target);
+        }
+
+        public static Function Wrap(MethodInfo method, Object target)
+        {
+            var parameterTypes = method.GetParameters().Select(m => m.ParameterType).ToArray();
+            var returnType = method.ReturnType.Narrow();
+            return new Function(args =>
+            {
+                return method.Invoke(target, args).ConvertTo(returnType);
+            });
         }
     }
 }
