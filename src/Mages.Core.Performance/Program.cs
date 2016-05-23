@@ -8,6 +8,7 @@
         static void Main(String[] arguments)
         {
             BenchmarkRunner.Run<TrivialBenchmarks>();
+            BenchmarkRunner.Run<CachedBenchmarks>();
         }
     }
 }

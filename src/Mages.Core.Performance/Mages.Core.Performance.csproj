@@ -52,6 +52,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CachedBenchmarks.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="TrivialBenchmarks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
