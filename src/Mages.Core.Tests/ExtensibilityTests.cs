@@ -18,6 +18,20 @@
         }
 
         [Test]
+        public void AddingANewDelegateCanBeUsed()
+        {
+            var engine = new Engine();
+            var func = new Func<Double, String, Boolean>((n, str) => n == str.Length);
+            engine.AddOrReplace("foo", func);
+
+            var result1 = engine.Interpret("foo(2,\"hi\")");
+            var result2 = engine.Interpret("foo(2,\"hallo\")");
+
+            Assert.AreEqual(true, result1);
+            Assert.AreEqual(false, result2);
+        }
+
+        [Test]
         public void ReplacingAnExistingFunctionOverwrites()
         {
             var engine = new Engine();
