@@ -12,6 +12,7 @@
             { "exp", StandardFunctions.Exp },
             { "factorial", StandardFunctions.Factorial },
             { "floor", StandardFunctions.Floor },
+            { "round", StandardFunctions.Round },
             { "log", StandardFunctions.Log },
             { "negative", StandardFunctions.Negative },
             { "not", StandardFunctions.Not },
@@ -33,7 +34,16 @@
             { "or", StandardFunctions.Or },
             { "divide", StandardFunctions.RDiv },
             { "subtract", StandardFunctions.Sub },
-            { "rand", StandardFunctions.Rand }
+            { "rand", StandardFunctions.Rand },
+            { "sin", TrigonometricFunctions.Sin },
+            { "cos", TrigonometricFunctions.Cos },
+            { "tan", TrigonometricFunctions.Tan },
+            { "sinh", TrigonometricFunctions.Sinh },
+            { "cosh", TrigonometricFunctions.Cosh },
+            { "tanh", TrigonometricFunctions.Tanh },
+            { "arcsin", TrigonometricFunctions.ArcSin },
+            { "arccos", TrigonometricFunctions.ArcCos },
+            { "arctan", TrigonometricFunctions.ArcTan }
         };
     }
 }
