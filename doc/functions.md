@@ -183,8 +183,8 @@ M = tan([0, pi/4, pi]) // [0, 1, 0]
 Works with numbers and matrices (applied to each value).
 
 ```
-x = asin(0) // 0
-M = asin([0, 1/sqrt(2), 1]) // [0, 0.78..., 1.57...]
+x = arcsin(0) // 0
+M = arcsin([0, 1/sqrt(2), 1]) // [0, 0.78..., 1.57...]
 ```
 
 ### Arcosine
@@ -192,8 +192,8 @@ M = asin([0, 1/sqrt(2), 1]) // [0, 0.78..., 1.57...]
 Works with numbers and matrices (applied to each value).
 
 ```
-x = acos(1) // 0
-M = acos([0, 1/sqrt(2), 1]) // [1.57..., 0.78..., 0]
+x = arccos(1) // 0
+M = arccos([0, 1/sqrt(2), 1]) // [1.57..., 0.78..., 0]
 ```
 
 ### Artangent
@@ -201,8 +201,8 @@ M = acos([0, 1/sqrt(2), 1]) // [1.57..., 0.78..., 0]
 Works with numbers and matrices (applied to each value).
 
 ```
-x = atan(1) // 0.78...
-M = atan([0, 1/sqrt(2), 1]) // [0, 0.61..., 0.78...]
+x = arctan(1) // 0.78...
+M = arctan([0, 1/sqrt(2), 1]) // [0, 0.61..., 0.78...]
 ```
 
 ## Logical Functions
@@ -251,4 +251,20 @@ Works without any arguments.
 
 ```
 x = rand() // any number between 0 and 1
+```
+
+### Generate Random Vector
+
+Works with one argument.
+
+```
+v = rand(3) // a 1x3 matrix with numbers between 0 and 1
+```
+
+### Generate Random Matrix
+
+Works with two arguments.
+
+```
+M = rand(3, 2) // a 3x2 matrix with numbers between 0 and 1
 ```

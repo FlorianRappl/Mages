@@ -95,6 +95,7 @@
     <Compile Include="Runtime\Functions\Global.cs" />
     <Compile Include="Runtime\Functions\RandFunction.cs" />
     <Compile Include="Runtime\Functions\StandardFunction.cs" />
+    <Compile Include="Runtime\Functions\TrigonometricFunctions.cs" />
     <Compile Include="Runtime\GlobalScope.cs" />
     <Compile Include="Runtime\Helpers.cs" />
     <Compile Include="Runtime\Logic.cs" />
