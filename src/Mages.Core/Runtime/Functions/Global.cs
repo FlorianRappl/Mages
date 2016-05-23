@@ -43,7 +43,11 @@
             { "tanh", TrigonometricFunctions.Tanh },
             { "arcsin", TrigonometricFunctions.ArcSin },
             { "arccos", TrigonometricFunctions.ArcCos },
-            { "arctan", TrigonometricFunctions.ArcTan }
+            { "arctan", TrigonometricFunctions.ArcTan },
+            { "isnan", LogicalFunctions.IsNaN },
+            { "isint", LogicalFunctions.IsInt },
+            { "isprime", LogicalFunctions.IsPrime },
+            { "isinfty", LogicalFunctions.IsInfty }
         };
     }
 }

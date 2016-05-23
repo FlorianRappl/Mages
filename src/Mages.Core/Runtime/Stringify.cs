@@ -119,6 +119,10 @@
             {
                 return This((Double)value);
             }
+            else if (value is Boolean)
+            {
+                return This((Boolean)value);
+            }
 
             return "(unknown)";
         }

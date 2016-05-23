@@ -1,5 +1,6 @@
 ﻿namespace Mages.Core.Runtime.Functions
 {
+    using Mages.Core.Runtime.Converters;
     using System;
     using System.Collections.Generic;
 
@@ -30,7 +31,7 @@
         /// <returns>The return value.</returns>
         public virtual Object Invoke(Boolean value)
         {
-            return Invoke(value ? 1.0 : 0.0);
+            return Invoke(value.ToNumber());
         }
 
         /// <summary>
@@ -68,7 +69,7 @@
             {
                 for (var j = 0; j < cols; j++)
                 {
-                    result[i, j] = (Double)Invoke(matrix[i, j]);
+                    result[i, j] = Compute(matrix[i, j]);
                 }
             }
 
@@ -118,5 +119,12 @@
 
             return new Function(Invoke);
         }
+
+        /// <summary>
+        /// Computes the value for a single element.
+        /// </summary>
+        /// <param name="value">The value input.</param>
+        /// <returns>The result.</returns>
+        protected abstract Double Compute(Double value);
     }
 }

@@ -1,12 +1,13 @@
 ﻿namespace Mages.Core.Runtime.Functions
 {
+    using Mages.Core.Runtime.Converters;
     using System;
 
-    sealed class ArithmeticFunction : StandardFunction
+    sealed class LogicalFunction : StandardFunction
     {
-        private readonly Func<Double, Double> _function;
+        private readonly Func<Double, Boolean> _function;
 
-        public ArithmeticFunction(Func<Double, Double> function)
+        public LogicalFunction(Func<Double, Boolean> function)
         {
             _function = function;
         }
@@ -18,7 +19,7 @@
 
         protected override Double Compute(Double value)
         {
-            return _function.Invoke(value);
+            return _function.Invoke(value).ToNumber();
         }
     }
 }

@@ -57,6 +57,7 @@
     <Compile Include="ComposedExpressionTests.cs" />
     <Compile Include="ExtensibilityTests.cs" />
     <Compile Include="FunctionExpressionTests.cs" />
+    <Compile Include="FunctionTests.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="ImplicitMultiplicationTests.cs" />
     <Compile Include="InterpretationTests.cs" />
