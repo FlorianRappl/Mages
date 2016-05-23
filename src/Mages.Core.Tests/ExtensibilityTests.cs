@@ -2,6 +2,8 @@
 {
     using NUnit.Framework;
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     [TestFixture]
     public class ExtensibilityTests
@@ -55,6 +57,32 @@
             var result = engine.Interpret("hello(\"World\")");
 
             Assert.AreEqual(null, result);
+        }
+
+        [Test]
+        public void AddingANewMethodInfoWithArbitraryReturnTypeAndIntParameterCanBeUsed()
+        {
+            var engine = new Engine();
+            var func = new Func<Int32, String, Char>((n, str) => str[n]);
+            engine.AddOrReplace("getCharAt", func.Method);
+
+            var result1 = engine.Interpret("getCharAt(1,\"hi\")");
+            var result2 = engine.Interpret("getCharAt(2,\"hallo\")");
+
+            Assert.AreEqual("i", result1);
+            Assert.AreEqual("l", result2);
+        }
+
+        [Test]
+        public void AddingANewMethodTakingAVectorAndReturningAList()
+        {
+            var engine = new Engine();
+            var func = new Func<Double[], List<Double>>(vec => vec.Skip(1).Reverse().Take(2).ToList());
+            engine.AddOrReplace("bottom", func.Method);
+
+            var result = engine.Interpret("bottom([1,2,3,4,5])");
+
+            CollectionAssert.AreEquivalent(new Double[,]{{ 5, 4 }}, (Double[,])result);
         }
 
         [Test]

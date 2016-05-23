@@ -1,5 +1,6 @@
 ﻿namespace Mages.Core.Runtime
 {
+    using Mages.Core.Runtime.Converters;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -7,6 +8,8 @@
 
     static class Helpers
     {
+        public static readonly TypeConverterMap Converters = new TypeConverterMap();
+
         public static void SetValue(this Double[,] matrix, Int32 i, Int32 j, Double value)
         {
             var rows = matrix.GetLength(0);
@@ -73,30 +76,9 @@
             return result;
         }
 
-        public static Object ConvertTo(this Object value, Type newType)
-        {
-            if (value != null)
-            {
-                var originalType = value.GetType();
-
-                if (originalType != newType)
-                {
-                    //TODO
-                }
-            }
-
-            return value;
-        }
-
         public static Type Narrow(this Type type)
         {
-            //TODO
-            return type;
-        }
-
-        public static T ConvertTo<T>(this Object value)
-        {
-            return (T)value.ConvertTo(typeof(T));
+            return Converters.FindPrimitiveOf(type);
         }
 
         public static Function Wrap(Delegate func)
@@ -106,11 +88,23 @@
 
         public static Function Wrap(MethodInfo method, Object target)
         {
-            var parameterTypes = method.GetParameters().Select(m => m.ParameterType).ToArray();
-            var returnType = method.ReturnType.Narrow();
+            var parameterConverters = method.GetParameters().Select(m => Converters.FindConverter(m.ParameterType)).ToArray();
+            var returnType = method.ReturnType;
+            var returnConverter = Converters.FindConverter(returnType, returnType.Narrow());
             return new Function(args =>
             {
-                return method.Invoke(target, args).ConvertTo(returnType);
+                if (args.Length >= parameterConverters.Length)
+                {
+                    for (var i = 0; i < parameterConverters.Length; i++)
+                    {
+                        args[i] = parameterConverters[i].Invoke(args[i]);
+                    }
+
+                    var result = method.Invoke(target, args);
+                    return returnConverter.Invoke(result);
+                }
+
+                return null;
             });
         }
     }
