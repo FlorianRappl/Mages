@@ -6,15 +6,38 @@ MAGES is the official successor to YAMP. It is a very simple, yet powerful, expr
 
 ### Current Status
 
-Currently, the tokenization and parsing is implemented, the interpretation, extension, as well as the standard functions are missing. The whole model is coming very soon.
-
-The installation described below is not working with NuGet, as there is no NuGet package yet. However, once the interpretation is included a NuGet bundle will be published. The current version is thus `0.0` with `0.1` coming soon.
+Currently, the tokenization, parsing, interpretation, some extensions, as well as most of the standard functions are implemented. The whole library is about to be completed very soon.
 
 ### Installation
 
 MAGES itself does not have any dependencies, however, the tests are dependent on NUnit and the benchmarks use BenchmarkDotNet. Usually, MAGES should be installed via the NuGet package source. If this does not work for you, then clone the source and build MAGES yourself. Make sure that all unit tests pass.
 
-The whole library was designed to be consumed from .NET 4 (or higher) applications. This means it is (amongst others) compatible with Unity / Mono 2.6.
+The whole library was designed to be consumed from .NET 4 (or higher) applications. This means it is (amongst others) compatible with Unity / Mono 2.6. The NuGet package is available via [the official package feed](https://www.nuget.org/packages/MAGES).
+
+### Get Me Started!
+
+In the most simple case you are creating a new engine to hold a global scope (for variables and functions) and launch the interpretation.
+
+```cs
+var engine = new Mages.Core.Engine();
+var result = engine.Interpret("sin(2) * cos(pi / 4)"); // 0.642970376623918
+```
+
+You can also go-ahead and make re-usable blocks from snippets.
+
+```cs
+var expOne = engine.Compile("exp(1)");
+var result = expOne(); // 2.71828182845905
+```
+
+Or you can interact with elements created by MAGES.
+
+```cs
+var func = engine.Interpret("(x, y) => x * y + 3 * sqrt(x)") as Mages.Core.Function;
+var result = func.Invoke(new Object[] { 4.0, 3.0 }); // 18.0
+```
+
+These are just some of the more basic examples. More information can be found in the documentation.
 
 ### Documentation
 
@@ -22,6 +45,7 @@ The documentation is given in form of Markdown documents being placed in the *do
 
 * [Documentation of the MAGES syntax](doc/syntax.md)
 * [Included functions](doc/functions.md)
+* [Performance evaluations](doc/performance.md)
 * [Contribution guidelines](doc/contributing.md)
 
 If anything is missing, unclear, or wrong then either submit a PR or file an issue. See the following section on contributions for more information.
