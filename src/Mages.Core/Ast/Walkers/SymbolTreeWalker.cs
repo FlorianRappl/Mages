@@ -6,22 +6,43 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    /// <summary>
+    /// Represents the walker to gather symbol information.
+    /// </summary>
     public class SymbolTreeWalker : ITreeWalker
     {
+        #region Fields
+
         private readonly IDictionary<VariableExpression, List<VariableExpression>> _collector;
         private readonly IList<VariableExpression> _missing;
         private Boolean _assigning;
 
+        #endregion
+
+        #region ctor
+
+        /// <summary>
+        /// Creates a new symbol tree walker.
+        /// </summary>
         public SymbolTreeWalker()
             : this(new Dictionary<VariableExpression, List<VariableExpression>>(), new List<VariableExpression>())
         {
         }
 
+        /// <summary>
+        /// Creates a new symbol tree walker with a missing symbols collector.
+        /// </summary>
+        /// <param name="missing">The target for missing symbols.</param>
         public SymbolTreeWalker(IList<VariableExpression> missing)
             : this(new Dictionary<VariableExpression, List<VariableExpression>>(), missing)
         {
         }
 
+        /// <summary>
+        /// Creates a new symbol tree walker with a new general and missing symbols collector.
+        /// </summary>
+        /// <param name="collector">The target for general symbol information.</param>
+        /// <param name="missing">The target for missing symbols.</param>
         public SymbolTreeWalker(IDictionary<VariableExpression, List<VariableExpression>> collector, IList<VariableExpression> missing)
         {
             _assigning = false;
@@ -29,16 +50,35 @@
             _missing = missing;
         }
 
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the found potentially missing symbols.
+        /// </summary>
         public IEnumerable<VariableExpression> Missing
         {
             get { return _missing; }
         }
 
+        /// <summary>
+        /// Gets the found resolved symbols.
+        /// </summary>
         public IEnumerable<VariableExpression> Symbols
         {
             get { return _collector.Keys; }
         }
 
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Finds all references of the given symbol.
+        /// </summary>
+        /// <param name="symbol">The variable to get references for.</param>
+        /// <returns>The list of all references of the variable.</returns>
         public IEnumerable<VariableExpression> FindAllReferences(VariableExpression symbol)
         {
             var references = default(List<VariableExpression>);
@@ -51,7 +91,11 @@
             return references;
         }
 
-        public void Visit(BlockStatement block)
+        #endregion
+
+        #region Visitors
+
+        void ITreeWalker.Visit(BlockStatement block)
         {
             foreach (var statement in block.Statements)
             {
@@ -59,25 +103,25 @@
             }
         }
 
-        public void Visit(SimpleStatement statement)
+        void ITreeWalker.Visit(SimpleStatement statement)
         {
             statement.Expression.Accept(this);
         }
 
-        public void Visit(VarStatement statement)
+        void ITreeWalker.Visit(VarStatement statement)
         {
             statement.Assignment.Accept(this);
         }
 
-        public void Visit(EmptyExpression expression)
+        void ITreeWalker.Visit(EmptyExpression expression)
         {
         }
 
-        public void Visit(ConstantExpression expression)
+        void ITreeWalker.Visit(ConstantExpression expression)
         {
         }
 
-        public void Visit(ArgumentsExpression expression)
+        void ITreeWalker.Visit(ArgumentsExpression expression)
         {
             foreach (var argument in expression.Arguments)
             {
@@ -85,7 +129,7 @@
             }
         }
 
-        public void Visit(AssignmentExpression expression)
+        void ITreeWalker.Visit(AssignmentExpression expression)
         {
             expression.Value.Accept(this);
             _assigning = true;
@@ -93,43 +137,43 @@
             _assigning = false;
         }
 
-        public void Visit(BinaryExpression expression)
+        void ITreeWalker.Visit(BinaryExpression expression)
         {
             expression.LValue.Accept(this);
             expression.RValue.Accept(this);
         }
 
-        public void Visit(PreUnaryExpression expression)
+        void ITreeWalker.Visit(PreUnaryExpression expression)
         {
             expression.Value.Accept(this);
         }
 
-        public void Visit(PostUnaryExpression expression)
+        void ITreeWalker.Visit(PostUnaryExpression expression)
         {
             expression.Value.Accept(this);
         }
 
-        public void Visit(RangeExpression expression)
+        void ITreeWalker.Visit(RangeExpression expression)
         {
             expression.From.Accept(this);
             expression.Step.Accept(this);
             expression.To.Accept(this);
         }
 
-        public void Visit(ConditionalExpression expression)
+        void ITreeWalker.Visit(ConditionalExpression expression)
         {
             expression.Condition.Accept(this);
             expression.Primary.Accept(this);
             expression.Secondary.Accept(this);
         }
 
-        public void Visit(CallExpression expression)
+        void ITreeWalker.Visit(CallExpression expression)
         {
             expression.Function.Accept(this);
             expression.Arguments.Accept(this);
         }
 
-        public void Visit(ObjectExpression expression)
+        void ITreeWalker.Visit(ObjectExpression expression)
         {
             foreach (var value in expression.Values)
             {
@@ -137,12 +181,12 @@
             }
         }
 
-        public void Visit(PropertyExpression expression)
+        void ITreeWalker.Visit(PropertyExpression expression)
         {
             expression.Value.Accept(this);
         }
 
-        public void Visit(MatrixExpression expression)
+        void ITreeWalker.Visit(MatrixExpression expression)
         {
             foreach (var rows in expression.Values)
             {
@@ -153,7 +197,7 @@
             }
         }
 
-        public void Visit(FunctionExpression expression)
+        void ITreeWalker.Visit(FunctionExpression expression)
         {
             var scope = expression.Scope;
             var variables = expression.Parameters.Expressions.OfType<VariableExpression>();
@@ -169,24 +213,24 @@
             expression.Body.Accept(this);
         }
 
-        public void Visit(InvalidExpression expression)
+        void ITreeWalker.Visit(InvalidExpression expression)
         {
         }
 
-        public void Visit(IdentifierExpression expression)
+        void ITreeWalker.Visit(IdentifierExpression expression)
         {
         }
 
-        public void Visit(MemberExpression expression)
+        void ITreeWalker.Visit(MemberExpression expression)
         {
             expression.Object.Accept(this);
         }
 
-        public void Visit(ParameterExpression expression)
+        void ITreeWalker.Visit(ParameterExpression expression)
         {
         }
 
-        public void Visit(VariableExpression expression)
+        void ITreeWalker.Visit(VariableExpression expression)
         {
             var list = Find(expression.Name, expression.Scope);
 
@@ -206,9 +250,15 @@
             }
         }
 
+        #endregion
+
+        #region Helpers
+
         private List<VariableExpression> Find(String name, AbstractScope scope)
         {
             return Symbols.Where(m => m.Name == name && m.Scope == scope).Select(m => _collector[m]).FirstOrDefault();
         }
+
+        #endregion
     }
 }

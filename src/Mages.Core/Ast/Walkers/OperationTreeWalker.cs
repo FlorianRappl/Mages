@@ -9,6 +9,9 @@
     using System;
     using System.Collections.Generic;
 
+    /// <summary>
+    /// Represents the walker to create operations.
+    /// </summary>
     public class OperationTreeWalker : ITreeWalker
     {
         #region Operator Mappings
@@ -60,6 +63,10 @@
 
         #region ctor
 
+        /// <summary>
+        /// Creates a new operation tree walker.
+        /// </summary>
+        /// <param name="operations">The list of operations to populate.</param>
         public OperationTreeWalker(List<IOperation> operations)
         {
             _operations = operations;
@@ -70,7 +77,7 @@
 
         #region Visitors
 
-        public void Visit(BlockStatement block)
+        void ITreeWalker.Visit(BlockStatement block)
         {
             foreach (var statement in block.Statements)
             {
@@ -78,27 +85,27 @@
             }
         }
 
-        public void Visit(SimpleStatement statement)
+        void ITreeWalker.Visit(SimpleStatement statement)
         {
             statement.Expression.Accept(this);
         }
 
-        public void Visit(VarStatement statement)
+        void ITreeWalker.Visit(VarStatement statement)
         {
             statement.Assignment.Accept(this);
         }
 
-        public void Visit(EmptyExpression expression)
+        void ITreeWalker.Visit(EmptyExpression expression)
         {
         }
 
-        public void Visit(ConstantExpression expression)
+        void ITreeWalker.Visit(ConstantExpression expression)
         {
             var constant = expression.Value;
             _operations.Add(new LoadOperation(ctx => constant));
         }
 
-        public void Visit(ArgumentsExpression expression)
+        void ITreeWalker.Visit(ArgumentsExpression expression)
         {
             var arguments = expression.Arguments;
 
@@ -108,7 +115,7 @@
             }
         }
 
-        public void Visit(AssignmentExpression expression)
+        void ITreeWalker.Visit(AssignmentExpression expression)
         {
             _assigning = true;
             expression.Variable.Accept(this);
@@ -118,28 +125,28 @@
             _operations.Add(store);
         }
 
-        public void Visit(BinaryExpression expression)
+        void ITreeWalker.Visit(BinaryExpression expression)
         {
             var action = default(Action<OperationTreeWalker, BinaryExpression>);
             BinaryOperatorMapping.TryGetValue(expression.Operator, out action);
             action.Invoke(this, expression);
         }
 
-        public void Visit(PreUnaryExpression expression)
+        void ITreeWalker.Visit(PreUnaryExpression expression)
         {
             var action = default(Action<OperationTreeWalker, PreUnaryExpression>);
             PreUnaryOperatorMapping.TryGetValue(expression.Operator, out action);
             action.Invoke(this, expression);
         }
 
-        public void Visit(PostUnaryExpression expression)
+        void ITreeWalker.Visit(PostUnaryExpression expression)
         {
             var action = default(Action<OperationTreeWalker, PostUnaryExpression>);
             PostUnaryOperatorMapping.TryGetValue(expression.Operator, out action);
             action.Invoke(this, expression);
         }
 
-        public void Visit(RangeExpression expression)
+        void ITreeWalker.Visit(RangeExpression expression)
         {
             expression.Step.Accept(this);
             expression.To.Accept(this);
@@ -148,7 +155,7 @@
             CallFunction(args => Range.Create((Double)args[0], (Double)args[1], (Double)args[2]), 3);
         }
 
-        public void Visit(ConditionalExpression expression)
+        void ITreeWalker.Visit(ConditionalExpression expression)
         {
             expression.Secondary.Accept(this);
             expression.Primary.Accept(this);
@@ -157,14 +164,14 @@
             CallFunction(args => Logic.IsTrue((Double)args[0]) ? args[1] : args[2], 3);
         }
 
-        public void Visit(CallExpression expression)
+        void ITreeWalker.Visit(CallExpression expression)
         {
             expression.Arguments.Accept(this);
             expression.Function.Accept(this);
             _operations.Add(new CallOperation(expression.Arguments.Count));
         }
 
-        public void Visit(ObjectExpression expression)
+        void ITreeWalker.Visit(ObjectExpression expression)
         {
             var init = new LoadOperation(ctx => new Dictionary<String, Object>());
             _operations.Add(init);
@@ -175,7 +182,7 @@
             }
         }
 
-        public void Visit(PropertyExpression expression)
+        void ITreeWalker.Visit(PropertyExpression expression)
         {
             expression.Name.Accept(this);
             expression.Value.Accept(this);
@@ -187,7 +194,7 @@
             }, 3);
         }
 
-        public void Visit(MatrixExpression expression)
+        void ITreeWalker.Visit(MatrixExpression expression)
         {
             var values = expression.Values;
             var rows = values.Length;
@@ -214,7 +221,7 @@
             }
         }
 
-        public void Visit(FunctionExpression expression)
+        void ITreeWalker.Visit(FunctionExpression expression)
         {
             var current = _operations.Count;
             expression.Parameters.Accept(this);
@@ -223,17 +230,17 @@
             _operations.Add(new FuncOperation(operations));
         }
 
-        public void Visit(InvalidExpression expression)
+        void ITreeWalker.Visit(InvalidExpression expression)
         {
         }
 
-        public void Visit(IdentifierExpression expression)
+        void ITreeWalker.Visit(IdentifierExpression expression)
         {
             var name = expression.Name;
             _operations.Add(new LoadOperation(ctx => name));
         }
 
-        public void Visit(MemberExpression expression)
+        void ITreeWalker.Visit(MemberExpression expression)
         {
             expression.Member.Accept(this);
             expression.Object.Accept(this);
@@ -248,7 +255,7 @@
             }
         }
 
-        public void Visit(ParameterExpression expression)
+        void ITreeWalker.Visit(ParameterExpression expression)
         {
             var expressions = expression.Expressions;
 
@@ -267,7 +274,7 @@
             }
         }
 
-        public void Visit(VariableExpression expression)
+        void ITreeWalker.Visit(VariableExpression expression)
         {
             var name = expression.Name;
 
