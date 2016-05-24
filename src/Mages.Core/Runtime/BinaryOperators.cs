@@ -6,17 +6,23 @@
     {
         public static Object Add(Object[] args)
         {
-            return Binary<Double, Double>(args, (x, y) => x + y);
+            return Binary<Double, Double>(args, (x, y) => x + y) ??
+                Binary<Double[,], Double[,]>(args, Matrix.Add) ??
+                Binary<String, String>(args, String.Concat);
         }
 
         public static Object Sub(Object[] args)
         {
-            return Binary<Double, Double>(args, (x, y) => x - y);
+            return Binary<Double, Double>(args, (x, y) => x - y) ??
+                Binary<Double[,], Double[,]>(args, Matrix.Subtract);
         }
         
         public static Object Mul(Object[] args)
         {
-            return Binary<Double, Double>(args, (x, y) => x * y);
+            return Binary<Double, Double>(args, (x, y) => x * y) ??
+                Binary<Double[,], Double[,]>(args, Matrix.Multiply) ??
+                Binary<Double, Double[,]>(args, (y, x) => x.Multiply(y)) ??
+                Binary<Double[,], Double>(args, Matrix.Multiply);
         }
 
         public static Object RDiv(Object[] args)
@@ -81,7 +87,12 @@
 
         private static Object Binary<Tx, Ty>(Object[] args, Func<Tx, Ty, Object> f)
         {
-            return f((Tx)args[0], (Ty)args[1]);
+            if (args[0] is Tx && args[1] is Ty)
+            {
+                return f((Tx)args[0], (Ty)args[1]);
+            }
+
+            return null;
         }
     }
 }
