@@ -4,6 +4,12 @@
 
     static class Range
     {
+        public static Double[,] Create(Double from, Double to)
+        {
+            var step = Math.Sign(to - from);
+            return Create(from, to, step);
+        }
+
         public static Double[,] Create(Double from, Double to, Double step)
         {
             var count = (to - from) / step;
