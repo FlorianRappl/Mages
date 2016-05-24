@@ -37,7 +37,8 @@
 
         public static Object Pow(Object[] args)
         {
-            return Binary<Double, Double>(args, (x, y) => Math.Pow(x, y));
+            return Binary<Double, Double>(args, (x, y) => Math.Pow(x, y)) ??
+                Binary<Double[,], Double>(args, Matrix.Pow);
         }
 
         public static Object Mod(Object[] args)
@@ -47,42 +48,50 @@
 
         public static Object And(Object[] args)
         {
-            return Binary<Double, Double>(args, (x, y) => x != 0.0 && y != 0.0 ? 1.0 : 0.0);
+            return Binary<Double, Double>(args, (x, y) => x != 0.0 && y != 0.0 ? 1.0 : 0.0) ??
+                Binary<Double[,], Double[,]>(args, Matrix.And);
         }
 
         public static Object Or(Object[] args)
         {
-            return Binary<Double, Double>(args, (x, y) => x != 0.0 || y != 0.0 ? 1.0 : 0.0);
+            return Binary<Double, Double>(args, (x, y) => x != 0.0 || y != 0.0 ? 1.0 : 0.0) ??
+                Binary<Double[,], Double[,]>(args, Matrix.Or);
         }
 
         public static Object Eq(Object[] args)
         {
-            return Binary<Double, Double>(args, (x, y) => x == y ? 1.0 : 0.0);
+            return Binary<Double, Double>(args, (x, y) => x == y ? 1.0 : 0.0) ??
+                Binary<Double[,], Double[,]>(args, Matrix.AreEqual);
         }
 
         public static Object Neq(Object[] args)
         {
-            return Binary<Double, Double>(args, (x, y) => x != y ? 1.0 : 0.0);
+            return Binary<Double, Double>(args, (x, y) => x != y ? 1.0 : 0.0) ??
+                Binary<Double[,], Double[,]>(args, Matrix.AreNotEqual);
         }
 
         public static Object Gt(Object[] args)
         {
-            return Binary<Double, Double>(args, (x, y) => x > y ? 1.0 : 0.0);
+            return Binary<Double, Double>(args, (x, y) => x > y ? 1.0 : 0.0) ??
+                Binary<Double[,], Double[,]>(args, Matrix.IsGreaterThan);
         }
 
         public static Object Geq(Object[] args)
         {
-            return Binary<Double, Double>(args, (x, y) => x >= y ? 1.0 : 0.0);
+            return Binary<Double, Double>(args, (x, y) => x >= y ? 1.0 : 0.0) ??
+                Binary<Double[,], Double[,]>(args, Matrix.IsGreaterOrEqual);
         }
 
         public static Object Lt(Object[] args)
         {
-            return Binary<Double, Double>(args, (x, y) => x < y ? 1.0 : 0.0);
+            return Binary<Double, Double>(args, (x, y) => x < y ? 1.0 : 0.0) ??
+                Binary<Double[,], Double[,]>(args, Matrix.IsLessThan);
         }
 
         public static Object Leq(Object[] args)
         {
-            return Binary<Double, Double>(args, (x, y) => x <= y ? 1.0 : 0.0);
+            return Binary<Double, Double>(args, (x, y) => x <= y ? 1.0 : 0.0) ??
+                Binary<Double[,], Double[,]>(args, Matrix.IsLessOrEqual);
         }
 
         private static Object Binary<Tx, Ty>(Object[] args, Func<Tx, Ty, Object> f)

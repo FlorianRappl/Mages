@@ -1,11 +1,8 @@
-﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Mages.Core.Tests
+﻿namespace Mages.Core.Tests
 {
+    using NUnit.Framework;
+    using System;
+
     [TestFixture]
     public class OperationTests
     {
@@ -14,6 +11,13 @@ namespace Mages.Core.Tests
         {
             var result = Eval("2 + 3");
             Assert.AreEqual(5.0, result);
+        }
+
+        [Test]
+        public void BinaryPowerWithNumbersYieldsNumber()
+        {
+            var result = Eval("2^3");
+            Assert.AreEqual(8.0, result);
         }
 
         [Test]
