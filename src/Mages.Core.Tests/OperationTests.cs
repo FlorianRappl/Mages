@@ -61,7 +61,56 @@
             var result = Eval("[1,2;3,4]*[3;5]");
             CollectionAssert.AreEqual(new Double[,] { { 13 }, { 29 } }, (Double[,])result);
         }
-        
+
+        [Test]
+        public void BinaryAndWithNumbersYieldsBoolean()
+        {
+            var result = Eval("2 && 3");
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void BinaryAndWithBooleansYieldsBoolean()
+        {
+            var result = Eval("true && false");
+            Assert.AreEqual(false, result);
+        }
+
+        [Test]
+        public void BinaryOrWithBooleansYieldsBoolean()
+        {
+            var result = Eval("true || false");
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void BinaryAndWithMatricesYieldsMatrix()
+        {
+            var result = Eval("[1,0;0,0] && [1,1;1,0]");
+            CollectionAssert.AreEquivalent(new Double[,] { { 1.0, 0.0 }, { 0.0, 0.0 } }, (Double[,])result);
+        }
+
+        [Test]
+        public void BinaryOrWithMatricesYieldsMatrix()
+        {
+            var result = Eval("[1,0;0,0] || [1,1;1,0]");
+            CollectionAssert.AreEquivalent(new Double[,] { { 1.0, 1.0 }, { 1.0, 0.0 } }, (Double[,])result);
+        }
+
+        [Test]
+        public void BinaryEqWithNumbersYieldsBoolean()
+        {
+            var result = Eval("2 == 3");
+            Assert.AreEqual(false, result);
+        }
+
+        [Test]
+        public void BinaryNeqWithNumbersYieldsBoolean()
+        {
+            var result = Eval("2 ~= 3");
+            Assert.AreEqual(true, result);
+        }
+
         private static Object Eval(String source)
         {
             var engine = new Engine();
