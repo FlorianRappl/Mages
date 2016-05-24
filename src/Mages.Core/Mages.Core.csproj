@@ -96,6 +96,7 @@
     <Compile Include="Runtime\Converters\TypeConverterMap.cs" />
     <Compile Include="Runtime\Functions\ArithmeticFunction.cs" />
     <Compile Include="Runtime\Functions\ArrayFunction.cs" />
+    <Compile Include="Runtime\Functions\CatchFunction.cs" />
     <Compile Include="Runtime\Functions\ComparisonFunctions.cs" />
     <Compile Include="Runtime\Functions\Global.cs" />
     <Compile Include="Runtime\Functions\LogicalFunction.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="Runtime\Functions\RandFunction.cs" />
     <Compile Include="Runtime\Functions\ReducerFunction.cs" />
     <Compile Include="Runtime\Functions\StandardFunction.cs" />
+    <Compile Include="Runtime\Functions\ThrowFunction.cs" />
     <Compile Include="Runtime\Functions\TrigonometricFunctions.cs" />
     <Compile Include="Runtime\GlobalScope.cs" />
     <Compile Include="Runtime\Helpers.cs" />
@@ -114,6 +116,7 @@
     <Compile Include="Runtime\Stringify.cs" />
     <Compile Include="Runtime\UnaryOperators.cs" />
     <Compile Include="Runtime\VariableScope.cs" />
+    <Compile Include="Runtime\WrapperObject.cs" />
     <Compile Include="Source\ScannerExtensions.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="TextPosition.cs" />

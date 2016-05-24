@@ -45,6 +45,16 @@
         }
 
         /// <summary>
+        /// Invokes the function with a single function argument.
+        /// </summary>
+        /// <param name="function">The function.</param>
+        /// <returns>The return value.</returns>
+        public virtual Object Invoke(Function function)
+        {
+            return NotImplemented;
+        }
+
+        /// <summary>
         /// Invokes the function with a single object argument.
         /// </summary>
         /// <param name="obj">The dictionary.</param>
@@ -107,6 +117,10 @@
                 else if (argument is Double[,])
                 {
                     result = Invoke((Double[,])argument);
+                }
+                else if (argument is Function)
+                {
+                    result = Invoke((Function)argument);
                 }
 
                 if (Object.ReferenceEquals(NotImplemented, result))

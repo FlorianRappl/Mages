@@ -121,5 +121,15 @@
         /// Wraps the random function.
         /// </summary>
         public static readonly Function Rand = (new RandFunction()).Invoke;
+
+        /// <summary>
+        /// Contains the throw function.
+        /// </summary>
+        public static readonly Function Throw = (new ThrowFunction()).Invoke;
+
+        /// <summary>
+        /// Contains the catch function.
+        /// </summary>
+        public static readonly Function Catch = (new CatchFunction()).Invoke;
     }
 }

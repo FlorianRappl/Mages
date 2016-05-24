@@ -51,7 +51,9 @@
             { "min", ComparisonFunctions.Min },
             { "max", ComparisonFunctions.Max },
             { "sort", ComparisonFunctions.Sort },
-            { "reverse", ComparisonFunctions.Reverse }
+            { "reverse", ComparisonFunctions.Reverse },
+            { "throw", StandardFunctions.Throw },
+            { "catch", StandardFunctions.Catch }
         };
     }
 }
