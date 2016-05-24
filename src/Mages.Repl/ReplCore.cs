@@ -1,6 +1,6 @@
 ﻿namespace Mages.Repl
 {
-    using Core.Runtime;
+    using Mages.Core.Runtime;
     using Mages.Core;
     using System;
 
@@ -25,8 +25,16 @@
 
                 if (!String.IsNullOrEmpty(input))
                 {
-                    var result = _engine.Interpret(input);
-                    _interactivity.Write(Stringify.This(result));
+                    try
+                    {
+                        var result = _engine.Interpret(input);
+                        _interactivity.Info(result);
+                    }
+                    catch (Exception ex)
+                    {
+                        _interactivity.Error(ex.Message);
+                    }
+
                     _interactivity.Write(Environment.NewLine);
                 }
             }

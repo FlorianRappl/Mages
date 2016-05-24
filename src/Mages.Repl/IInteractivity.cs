@@ -7,5 +7,8 @@
         String Read();
 
         void Write(String output);
+
+        void Info(Object result);
+        void Error(string message);
     }
 }

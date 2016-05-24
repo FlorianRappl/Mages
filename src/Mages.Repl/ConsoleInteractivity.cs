@@ -1,5 +1,6 @@
 ﻿namespace Mages.Repl
 {
+    using Mages.Core.Runtime;
     using System;
 
     sealed class ConsoleInteractivity : IInteractivity, IDisposable
@@ -30,6 +31,29 @@
         private void ConsoleCancelled(Object sender, ConsoleCancelEventArgs e)
         {
             //e.Cancel = true;
+        }
+
+        public void Info(Object result)
+        {
+            if (result == null)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write("nothing");
+                Console.ResetColor();
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write(Stringify.This(result));
+                Console.ResetColor();
+            }
+        }
+
+        public void Error(String message)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write(message);
+            Console.ResetColor();
         }
     }
 }
