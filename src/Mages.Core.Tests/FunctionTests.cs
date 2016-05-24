@@ -76,6 +76,46 @@
             Assert.IsNull(result);
         }
 
+        [Test]
+        public void CreateMagesFunctionShouldBeClassicallyCallableWithRightTypes()
+        {
+            var foo = Eval("(x, y) => x * y + y") as Function;
+            var result = foo.Invoke(new Object[] { 2.0, 3.0 });
+            Assert.AreEqual(9.0, result);
+        }
+
+        [Test]
+        public void CreateMagesFunctionShouldNotBeClassicallyCallableWithoutRightTypes()
+        {
+            var foo = Eval("(x, y) => x * y + y") as Function;
+            var result = foo.Invoke(new Object[] { 2, 3 });
+            Assert.IsNull(result);
+        }
+
+        [Test]
+        public void CreateMagesFunctionShouldBeDirectlyCallableWithRightReturnType()
+        {
+            var foo = Eval("(x, y) => x * y + y") as Function;
+            var result = foo.Call<Double>(2, 3);
+            Assert.AreEqual(9.0, result);
+        }
+
+        [Test]
+        public void CreateMagesFunctionShouldBeDirectlyCallableWithWrongReturnType()
+        {
+            var foo = Eval("(x, y) => x * y + y") as Function;
+            var result = foo.Call<Boolean>(2, 3);
+            Assert.AreEqual(default(Boolean), result);
+        }
+
+        [Test]
+        public void CreateMagesFunctionShouldBeDirectlyCallableWithoutType()
+        {
+            var foo = Eval("(x, y) => x * y + y") as Function;
+            var result = foo.Call(2, 3);
+            Assert.AreEqual(9.0, result);
+        }
+
         private static Object Eval(String source)
         {
             var engine = new Engine();
