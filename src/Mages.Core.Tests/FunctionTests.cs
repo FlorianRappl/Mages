@@ -69,6 +69,13 @@
             CollectionAssert.AreEquivalent(new Double[,] { }, (Double[,])result);
         }
 
+        [Test]
+        public void CallAnUnknownFunctionShouldResultInNull()
+        {
+            var result = Eval("footemp()");
+            Assert.IsNull(result);
+        }
+
         private static Object Eval(String source)
         {
             var engine = new Engine();

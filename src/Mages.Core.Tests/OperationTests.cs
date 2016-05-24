@@ -14,6 +14,20 @@
         }
 
         [Test]
+        public void BinaryAddWithNumberAndUnknownVariableYieldsNull()
+        {
+            var result = Eval("2 + a");
+            Assert.IsNull(result);
+        }
+
+        [Test]
+        public void BinaryAddWithUnknownVariablesYieldsNull()
+        {
+            var result = Eval("a + b");
+            Assert.IsNull(result);
+        }
+
+        [Test]
         public void BinaryPowerWithNumbersYieldsNumber()
         {
             var result = Eval("2^3");

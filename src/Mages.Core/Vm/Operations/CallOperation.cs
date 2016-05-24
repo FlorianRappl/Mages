@@ -16,6 +16,7 @@
 
         public void Invoke(IExecutionContext context)
         {
+            var result = default(Object);
             var function = (Function)context.Pop();
 
             for (var i = 0; i < _arguments.Length; i++)
@@ -23,7 +24,12 @@
                 _arguments[i] = context.Pop();
             }
 
-            context.Push(function.Invoke(_arguments));
+            if (function != null)
+            {
+                result = function.Invoke(_arguments);
+            }
+
+            context.Push(result);
         }
     }
 }
