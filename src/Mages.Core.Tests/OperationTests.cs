@@ -125,6 +125,62 @@
             Assert.AreEqual(true, result);
         }
 
+        [Test]
+        public void MemberOperatorOnStringShouldYieldNothing()
+        {
+            var result = Eval("\"hallo\".test");
+            Assert.IsNull(result);
+        }
+
+        [Test]
+        public void MemberOperatorOnNumberShouldYieldNothing()
+        {
+            var result = Eval("(2.3).test");
+            Assert.IsNull(result);
+        }
+
+        [Test]
+        public void MemberOperatorOnBooleanShouldYieldNothing()
+        {
+            var result = Eval("(true).test");
+            Assert.IsNull(result);
+        }
+
+        [Test]
+        public void MemberOperatorOnMatrixShouldYieldNothing()
+        {
+            var result = Eval("[].test");
+            Assert.IsNull(result);
+        }
+
+        [Test]
+        public void MemberOperatorOnNothingShouldYieldNothing()
+        {
+            var result = Eval("foo.test");
+            Assert.IsNull(result);
+        }
+
+        [Test]
+        public void MemberOperatorOnFunctionShouldYieldNothing()
+        {
+            var result = Eval("(() => 2 + 3).test");
+            Assert.IsNull(result);
+        }
+
+        [Test]
+        public void MemberOperatorOnDictionaryLegitKeyShouldYieldValue()
+        {
+            var result = Eval("new { test: 2 + 3 }.test");
+            Assert.AreEqual(5.0, result);
+        }
+
+        [Test]
+        public void MemberOperatorOnDictionaryInvalidKeyShouldYieldNothing()
+        {
+            var result = Eval("new { foo: 2 + 3 }.bar");
+            Assert.IsNull(result);
+        }
+
         private static Object Eval(String source)
         {
             var engine = new Engine();

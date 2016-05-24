@@ -260,11 +260,11 @@
 
             if (_assigning)
             {
-                _operations.Add(new StoreOperation((ctx, val) => Helpers.SetProperty((IDictionary<String, Object>)ctx.Pop(), (String)ctx.Pop(), val)));
+                _operations.Add(SetOperation.Instance);
             }
             else
             {
-                _operations.Add(new LoadOperation(ctx => Helpers.GetProperty((IDictionary<String, Object>)ctx.Pop(), (String)ctx.Pop())));
+                _operations.Add(GetOperation.Instance);
             }
         }
 

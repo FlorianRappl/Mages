@@ -4,6 +4,9 @@
     using System;
     using System.Collections.Generic;
 
+    /// <summary>
+    /// Pushes a new function on the stack.
+    /// </summary>
     sealed class FuncOperation : IOperation
     {
         private readonly IOperation[] _operations;
