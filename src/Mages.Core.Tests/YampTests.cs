@@ -301,13 +301,13 @@
         [Test]
         public void ScalarTimesMatrix()
         {
-            Test("abs(2*[1,2;1,2])", 0.0);
+            Test("abs(2*[1,2;1,2])", Math.Sqrt(40.0));
         }
 
         [Test]
         public void SubtractMatrices()
         {
-            Test("abs([2,1;3,5]-[2,1;3,5]')", 4.0);
+            Test("abs([2,1;3,5]-[2,1;3,5]')", Math.Sqrt(8.0));
         }
 
         [Test]
