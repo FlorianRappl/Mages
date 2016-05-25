@@ -27,18 +27,21 @@
 
         public static Object RDiv(Object[] args)
         {
-            return Binary<Double, Double>(args, (x, y) => x / y);
+            return Binary<Double, Double>(args, (x, y) => x / y) ??
+                Binary<Double[,], Double>(args, Matrix.Divide);
         }
 
         public static Object LDiv(Object[] args)
         {
-            return Binary<Double, Double>(args, (x, y) => y / x);
+            return Binary<Double, Double>(args, (x, y) => y / x) ??
+                Binary<Double, Double[,]>(args, (y, x) => x.Divide(y));
         }
 
         public static Object Pow(Object[] args)
         {
             return Binary<Double, Double>(args, (x, y) => Math.Pow(x, y)) ??
-                Binary<Double[,], Double>(args, Matrix.Pow);
+                Binary<Double[,], Double>(args, Matrix.Pow) ??
+                Binary<Double, Double[,]>(args, Matrix.Pow);
         }
 
         public static Object Mod(Object[] args)

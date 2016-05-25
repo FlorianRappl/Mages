@@ -134,6 +134,11 @@
             return result;
         }
 
+        public static Double[,] Divide(this Double[,] a, Double b)
+        {
+            return a.Multiply(1.0 / b);
+        }
+
         public static Double[,] Transpose(this Double[,] matrix)
         {
             var rows = matrix.GetRows();
@@ -156,19 +161,37 @@
             return matrix.GetColumns() == matrix.GetRows();
         }
 
+        public static Double[,] Fill(this Double[,] matrix, Double value)
+        {
+            var rows = matrix.GetRows();
+            var cols = matrix.GetColumns();
+            var result = new Double[rows, cols];
+            var length = Math.Min(rows, cols);
+
+            for (var i = 0; i < rows; i++)
+            {
+                for (var j = 0; j < cols; j++)
+                {
+                    result[i, j] = value;
+                }
+            }
+
+            return result;
+        }
+
         public static Double[,] Identity(this Double[,] matrix)
         {
             var rows = matrix.GetRows();
             var cols = matrix.GetColumns();
-            var unit = new Double[rows, cols];
+            var result = new Double[rows, cols];
             var length = Math.Min(rows, cols);
 
             for (var i = 0; i < length; i++)
             {
-                unit[i, i] = 1.0;
+                result[i, i] = 1.0;
             }
 
-            return unit;
+            return result;
         }
 
         public static Double[,] Pow(this Double[,] matrix, Double value)
@@ -187,6 +210,23 @@
             }
 
             return null;
+        }
+
+        public static Double[,] Pow(this Double value, Double[,] matrix)
+        {
+            var result = matrix.Fill(value);
+            var rows = matrix.GetRows();
+            var cols = matrix.GetColumns();
+
+            for (var i = 0; i < rows; i++)
+            {
+                for (var j = 0; j < cols; j++)
+                {
+                    result[i, j] = Math.Pow(result[i, j], matrix[i, j]);
+                }
+            }
+
+            return result;
         }
 
         public static Double GetValue(this Double[,] matrix, Int32 i, Int32 j)
