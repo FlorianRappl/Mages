@@ -75,6 +75,40 @@
             Assert.AreEqual(-1.0, result2);
         }
 
+        [Test]
+        public void InitializeObjectAndAccessEntry()
+        {
+            var scope = Test("A = new { a: 4, b: 6 }; A.a", 4.0);
+            var obj = scope["A"] as IDictionary<String, Object>;
+
+            Assert.IsNotNull(obj);
+            Assert.AreEqual(4.0, obj["a"]);
+            Assert.AreEqual(6.0, obj["b"]);
+        }
+
+        [Test]
+        public void InitializeObjectAndChangeEntry()
+        {
+            var scope = Test("A = new { a: 4, b: 6 }; A.b = 7.0", 7.0);
+            var obj = scope["A"] as IDictionary<String, Object>;
+
+            Assert.IsNotNull(obj);
+            Assert.AreEqual(4.0, obj["a"]);
+            Assert.AreEqual(7.0, obj["b"]);
+        }
+
+        [Test]
+        public void InitializeObjectAndAddEntry()
+        {
+            var scope = Test("A = new { a: 4, b: 6 }; A.c = 9.0", 9.0);
+            var obj = scope["A"] as IDictionary<String, Object>;
+
+            Assert.IsNotNull(obj);
+            Assert.AreEqual(4.0, obj["a"]);
+            Assert.AreEqual(6.0, obj["b"]);
+            Assert.AreEqual(9.0, obj["c"]);
+        }
+
         private IDictionary<String, Object> Test(String sourceCode, Double expected, Double tolerance = 0.0)
         {
             var engine = new Engine();

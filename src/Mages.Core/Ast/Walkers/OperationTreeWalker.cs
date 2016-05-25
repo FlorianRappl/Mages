@@ -249,10 +249,13 @@
 
         void ITreeWalker.Visit(MemberExpression expression)
         {
+            var assigning = _assigning;
+            _assigning = false;
+
             expression.Member.Accept(this);
             expression.Object.Accept(this);
 
-            if (_assigning)
+            if (assigning)
             {
                 _operations.Add(SetOperation.Instance);
             }
@@ -260,6 +263,8 @@
             {
                 _operations.Add(GetOperation.Instance);
             }
+
+            _assigning = assigning;
         }
 
         void ITreeWalker.Visit(ParameterExpression expression)

@@ -6,9 +6,9 @@
     sealed class TypeConverterMap
     {
         private readonly List<TypeConverter> _converters = new List<TypeConverter>();
-        private readonly Dictionary<Type, HashSet<Type>> _categories = new Dictionary<Type, HashSet<Type>>();
+        private readonly Dictionary<Type, List<Type>> _categories = new Dictionary<Type, List<Type>>();
         private readonly Dictionary<Type, Dictionary<Type, Func<Object, Object>>> _cache = new Dictionary<Type, Dictionary<Type, Func<Object, Object>>>();
-        private readonly Func<Object, Object> _default = _ => null;
+        private readonly Func<Object, Object> _default = _ => _ as IDictionary<String, Object>;
         private readonly Func<Object, Object> _identity = _ => _;
 
         public TypeConverterMap()
@@ -55,14 +55,14 @@
             _converters.Add(TypeConverter.Create<Double[], Double[,]>(x => x.ToMatrix()));
             _converters.Add(TypeConverter.Create<List<Double>, Double[,]>(x => x.ToMatrix()));
 
-            _categories = new Dictionary<Type, HashSet<Type>>
+            _categories = new Dictionary<Type, List<Type>>
             {
-                { typeof(Double), new HashSet<Type> { typeof(Double), typeof(Single), typeof(Decimal), typeof(Byte), typeof(UInt16), typeof(UInt32), typeof(UInt64), typeof(Int16), typeof(Int32), typeof(Int64) } },
-                { typeof(Boolean), new HashSet<Type> { typeof(Boolean) } },
-                { typeof(String), new HashSet<Type> { typeof(String), typeof(Char) } },
-                { typeof(Double[,]), new HashSet<Type> { typeof(Double[,]), typeof(Double[]), typeof(List<Double>) } },
-                { typeof(Function), new HashSet<Type> { typeof(Function), typeof(Delegate) } },
-                { typeof(IDictionary<String, Object>), new HashSet<Type> { typeof(IDictionary<String, Object>), typeof(Object) } }
+                { typeof(Double), new List<Type> { typeof(Double), typeof(Single), typeof(Decimal), typeof(Byte), typeof(UInt16), typeof(UInt32), typeof(UInt64), typeof(Int16), typeof(Int32), typeof(Int64) } },
+                { typeof(Boolean), new List<Type> { typeof(Boolean) } },
+                { typeof(String), new List<Type> { typeof(String), typeof(Char) } },
+                { typeof(Double[,]), new List<Type> { typeof(Double[,]), typeof(Double[]), typeof(List<Double>) } },
+                { typeof(Function), new List<Type> { typeof(Function), typeof(Delegate) } },
+                { typeof(IDictionary<String, Object>), new List<Type> { typeof(IDictionary<String, Object>), typeof(Object) } }
             };
         }
 
@@ -70,9 +70,12 @@
         {
             foreach (var category in _categories)
             {
-                if (category.Value.Contains(type))
+                foreach (var value in category.Value)
                 {
-                    return category.Key;
+                    if (value.IsAssignableFrom(type))
+                    {
+                        return category.Key;
+                    }
                 }
             }
 

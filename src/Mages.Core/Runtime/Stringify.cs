@@ -105,7 +105,7 @@
             }
             else if (value is IDictionary<String, Object>)
             {
-                return This((Dictionary<String, Object>)value);
+                return This((IDictionary<String, Object>)value);
             }
             else if (value is Double[,])
             {
