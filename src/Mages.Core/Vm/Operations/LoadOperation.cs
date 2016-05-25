@@ -1,5 +1,6 @@
 ﻿namespace Mages.Core.Vm.Operations
 {
+    using Mages.Core.Runtime;
     using System;
 
     /// <summary>
@@ -7,16 +8,16 @@
     /// </summary>
     sealed class LoadOperation : IOperation
     {
-        private readonly Func<IExecutionContext, Object> _load;
+        private readonly String _name;
 
-        public LoadOperation(Func<IExecutionContext, Object> load)
+        public LoadOperation(String name)
         {
-            _load = load;
+            _name = name;
         }
 
         public void Invoke(IExecutionContext context)
         {
-            var value = _load.Invoke(context);
+            var value = context.Scope.GetProperty(_name);
             context.Push(value);
         }
     }

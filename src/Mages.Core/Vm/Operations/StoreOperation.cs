@@ -1,23 +1,24 @@
 ﻿namespace Mages.Core.Vm.Operations
 {
+    using Mages.Core.Runtime;
     using System;
 
     /// <summary>
-    /// Stores a value by placing it on the stack.
+    /// Stores the top-most element on the stack.
     /// </summary>
     sealed class StoreOperation : IOperation
     {
-        private readonly Action<IExecutionContext, Object> _store;
+        private readonly String _name;
 
-        public StoreOperation(Action<IExecutionContext, Object> store)
+        public StoreOperation(String name)
         {
-            _store = store;
+            _name = name;
         }
 
         public void Invoke(IExecutionContext context)
         {
             var value = context.Pop();
-            _store.Invoke(context, value);
+            context.Scope.SetProperty(_name, value);
             context.Push(value);
         }
     }

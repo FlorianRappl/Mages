@@ -102,7 +102,7 @@
         void ITreeWalker.Visit(ConstantExpression expression)
         {
             var constant = expression.Value;
-            _operations.Add(new LoadOperation(ctx => constant));
+            _operations.Add(new ConstOperation(constant));
         }
 
         void ITreeWalker.Visit(ArgumentsExpression expression)
@@ -186,8 +186,7 @@
 
         void ITreeWalker.Visit(ObjectExpression expression)
         {
-            var init = new LoadOperation(ctx => new Dictionary<String, Object>());
-            _operations.Add(init);
+            _operations.Add(NewObjOperation.Instance);
 
             foreach (var property in expression.Values)
             {
@@ -200,11 +199,7 @@
             expression.Name.Accept(this);
             expression.Value.Accept(this);
 
-            CallFunction(args =>
-            {
-                Helpers.SetProperty((IDictionary<String, Object>)args[2], (String)args[1], args[0]);
-                return args[2];
-            }, 3);
+            _operations.Add(InitObjOperation.Instance);
         }
 
         void ITreeWalker.Visit(MatrixExpression expression)
@@ -212,8 +207,7 @@
             var values = expression.Values;
             var rows = values.Length;
             var cols = rows > 0 ? values[0].Length : 0;
-            var init = new LoadOperation(ctx => new Double[rows, cols]);
-            _operations.Add(init);
+            _operations.Add(new NewMatOperation(rows, cols));
 
             for (var row = 0; row < rows; row++)
             {
@@ -250,7 +244,7 @@
         void ITreeWalker.Visit(IdentifierExpression expression)
         {
             var name = expression.Name;
-            _operations.Add(new LoadOperation(ctx => name));
+            _operations.Add(new ConstOperation(name));
         }
 
         void ITreeWalker.Visit(MemberExpression expression)
@@ -276,14 +270,8 @@
             {
                 var identifier = (VariableExpression)expressions[i];
                 var name = identifier.Name;
-                var index = i;
 
-                _operations.Add(new StoreOperation((ctx, val) =>
-                {
-                    var parameters = (Object[])val;
-                    var value = parameters.Length > index ? parameters[index] : null;
-                    ctx.Scope.SetProperty(name, value);
-                }));
+                _operations.Add(new ArgOperation(i, name));
             }
         }
 
@@ -293,11 +281,11 @@
 
             if (_assigning)
             {
-                _operations.Add(new StoreOperation((ctx, val) => ctx.Scope.SetProperty(name, val)));
+                _operations.Add(new StoreOperation(name));
             }
             else
             {
-                _operations.Add(new LoadOperation(ctx => ctx.Scope.GetProperty(name)));
+                _operations.Add(new LoadOperation(name));
             }
         }
 
@@ -326,7 +314,7 @@
 
         private void CallFunction(Function func, Int32 argumentCount)
         {
-            _operations.Add(new LoadOperation(ctx => func));
+            _operations.Add(new ConstOperation(func));
             _operations.Add(new CallOperation(argumentCount));
         }
 

@@ -146,12 +146,17 @@
     <Compile Include="Vm\ExecutionContext.cs" />
     <Compile Include="Vm\IExecutionContext.cs" />
     <Compile Include="Vm\IOperation.cs" />
+    <Compile Include="Vm\Operations\ArgOperation.cs" />
     <Compile Include="Vm\Operations\CallOperation.cs" />
+    <Compile Include="Vm\Operations\ConstOperation.cs" />
     <Compile Include="Vm\Operations\DecOperation.cs" />
     <Compile Include="Vm\Operations\FuncOperation.cs" />
     <Compile Include="Vm\Operations\GetOperation.cs" />
     <Compile Include="Vm\Operations\IncOperation.cs" />
+    <Compile Include="Vm\Operations\InitObjOperation.cs" />
     <Compile Include="Vm\Operations\LoadOperation.cs" />
+    <Compile Include="Vm\Operations\NewMatOperation.cs" />
+    <Compile Include="Vm\Operations\NewObjOperation.cs" />
     <Compile Include="Vm\Operations\SetOperation.cs" />
     <Compile Include="Vm\Operations\StoreOperation.cs" />
   </ItemGroup>
