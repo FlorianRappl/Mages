@@ -29,16 +29,22 @@
             return type == a || type == b;
         }
 
+        public static Boolean IsOneOf(this IToken token, TokenType a, TokenType b, TokenType c)
+        {
+            var type = token.Type;
+            return type == a || type == b || type == c;
+        }
+
         public static Boolean IsOneOf(this IToken token, TokenType a, TokenType b, TokenType c, TokenType d)
         {
             var type = token.Type;
             return type == a || type == b || type == c || type == d;
         }
 
-        public static Boolean IsOneOf(this IToken token, TokenType a, TokenType b, TokenType c, TokenType d, TokenType e, TokenType f)
+        public static Boolean IsOneOf(this IToken token, TokenType a, TokenType b, TokenType c, TokenType d, TokenType e, TokenType f, TokenType g)
         {
             var type = token.Type;
-            return type == a || type == b || type == c || type == d || type == e || type == f;
+            return type == a || type == b || type == c || type == d || type == e || type == f || type == g;
         }
 
         public static Boolean Is(this IToken token, String keyword)

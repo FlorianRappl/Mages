@@ -49,11 +49,31 @@
         }
 
         [Test]
+        public void ImplicitMultiplicationInvolvingIdentifiersAndKeywordConstantSeparatedBySpace()
+        {
+            var expr = "n pi".ToExpression();
+
+            AssertMultiplication<VariableExpression, ConstantExpression>(expr,
+                variable => variable.Name == "n",
+                variable => (Double)variable.Value == Math.PI);
+        }
+
+        [Test]
         public void ImplicitMultiplicationInvolvingNumberAndIdentifierNotSeparatedBySpace()
         {
             var expr = "2x".ToExpression();
 
             AssertMultiplication(expr, 2.0, "x");
+        }
+
+        [Test]
+        public void ImplicitMultiplicationInvolvingIntegerAndFunctionCallSeparatedBySpace()
+        {
+            var expr = "2 exp(1)".ToExpression();
+
+            AssertMultiplication<ConstantExpression, CallExpression>(expr,
+                constant => (Double)constant.Value == 2.0,
+                call => ((VariableExpression)call.Function).Name == "exp" && (Double)((ConstantExpression)call.Arguments.Arguments[0]).Value == 1.0);
         }
 
         [Test]

@@ -258,10 +258,11 @@
         {
             var x = ParsePower(tokens);
 
-            while (tokens.Current.IsOneOf(TokenType.Multiply, TokenType.Modulo, TokenType.LeftDivide, TokenType.RightDivide, TokenType.Number, TokenType.Identifier))
+            while (tokens.Current.IsOneOf(TokenType.Multiply, TokenType.Modulo, TokenType.LeftDivide, TokenType.RightDivide, TokenType.Number, TokenType.Identifier, TokenType.Keyword))
             {
-                var implicitMultiply = tokens.Current.IsEither(TokenType.Number, TokenType.Identifier);
-                var mode = implicitMultiply ? TokenType.Multiply : tokens.Current.Type;
+                var current = tokens.Current;
+                var implicitMultiply = current.IsOneOf(TokenType.Number, TokenType.Identifier, TokenType.Keyword);
+                var mode = implicitMultiply ? TokenType.Multiply : current.Type;
                 var y = ParsePower(implicitMultiply ? tokens : tokens.NextNonIgnorable());
                 x = ExpressionCreators.Binary[mode].Invoke(x, y);
             }
