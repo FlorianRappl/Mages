@@ -465,7 +465,7 @@
 
         private PropertyExpression ParseProperty(IEnumerator<IToken> tokens)
         {
-            var identifier = ParseIdentifier(tokens);
+            var identifier = ParseIdentifierOrString(tokens);
             var value = default(IExpression);
 
             if (tokens.Current.Type != TokenType.Colon)
@@ -559,6 +559,16 @@
             }
 
             return ParseInvalid(ErrorCode.IdentifierExpected, tokens);
+        }
+
+        private IExpression ParseIdentifierOrString(IEnumerator<IToken> tokens)
+        {
+            if (tokens.Current.Type == TokenType.Text)
+            {
+                return ParseString(tokens);
+            }
+
+            return ParseIdentifier(tokens);
         }
 
         private IExpression ParseKeywordConstant(IEnumerator<IToken> tokens)

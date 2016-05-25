@@ -8,7 +8,7 @@
     public class ObjectExpressionTests
     {
         [Test]
-        public void ObjectLiteralWithSingleKeyValue()
+        public void ObjectLiteralWithSingleIdentKeyValue()
         {
             var result = "new { key: value }".ToExpression();
 
@@ -26,6 +26,50 @@
             var value = (VariableExpression)property.Value;
 
             Assert.AreEqual("key", name.Name);
+            Assert.AreEqual("value", value.Name);
+        }
+
+        [Test]
+        public void ObjectLiteralWithSingleStringKeyValue()
+        {
+            var result = "new { \"key\": value }".ToExpression();
+
+            Assert.IsInstanceOf<ObjectExpression>(result);
+            var obj = (ObjectExpression)result;
+            Assert.AreEqual(1, obj.Values.Length);
+
+            var property = obj.Values[0] as PropertyExpression;
+
+            Assert.IsNotNull(property);
+            Assert.IsInstanceOf<ConstantExpression>(property.Name);
+            Assert.IsInstanceOf<VariableExpression>(property.Value);
+
+            var name = (ConstantExpression)property.Name;
+            var value = (VariableExpression)property.Value;
+
+            Assert.AreEqual("key", name.Value);
+            Assert.AreEqual("value", value.Name);
+        }
+
+        [Test]
+        public void ObjectLiteralWithSingleTextKeyValue()
+        {
+            var result = "new { \"this is my long key\": value }".ToExpression();
+
+            Assert.IsInstanceOf<ObjectExpression>(result);
+            var obj = (ObjectExpression)result;
+            Assert.AreEqual(1, obj.Values.Length);
+
+            var property = obj.Values[0] as PropertyExpression;
+
+            Assert.IsNotNull(property);
+            Assert.IsInstanceOf<ConstantExpression>(property.Name);
+            Assert.IsInstanceOf<VariableExpression>(property.Value);
+
+            var name = (ConstantExpression)property.Name;
+            var value = (VariableExpression)property.Value;
+
+            Assert.AreEqual("this is my long key", name.Value);
             Assert.AreEqual("value", value.Name);
         }
 

@@ -77,7 +77,7 @@ matrix ::= '[' space* rows? ']'
 The language also contains object literals. They are defined as:
 
 ```
-property ::= identifier space* colon space* expr space*
+property ::= (identifier | string) space* colon space* expr space*
 properties ::= property (comma space* property)* comma? space*
 object ::= 'new' space* '{' space* properties? '}'
 ```
