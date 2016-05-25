@@ -313,7 +313,7 @@
         [Test]
         public void MultiplyVectors()
         {
-            Test("[2,1,0]*[5;2;1]", 12.0);
+            Test("[2,1,0]*[5;2;1]", new Double[,] { { 12.0 } });
         }
 
         [Test]
@@ -343,7 +343,7 @@
         [Test]
         public void AdditionOfVectors()
         {
-            Test("([3, 2, 1] + [1, 2, 3])(2)", 4.0);
+            Test("[3, 2, 1] + [1, 2, 3]", new Double[,] { { 4.0, 4.0, 4.0 } });
         }
 
         [Test]
@@ -433,73 +433,73 @@
         [Test]
         public void EqualsFits()
         {
-            Test("1 == 1", 1.0);
+            Test("1 == 1", true);
         }
 
         [Test]
         public void EqualsFail()
         {
-            Test("1 == 0", 0.0);
+            Test("1 == 0", false);
         }
 
         [Test]
         public void NotEqualsFits()
         {
-            Test("1 ~= 0", 1.0);
+            Test("1 ~= 0", true);
         }
 
         [Test]
         public void NotEqualsFail()
         {
-            Test("1 ~= 1", 0.0);
+            Test("1 ~= 1", false);
         }
 
         [Test]
         public void AndFitsOne()
         {
-            Test("1 && 1", 1.0);
+            Test("1 && 1", true);
         }
 
         [Test]
         public void AndFailLeft()
         {
-            Test("1 && 0", 0.0);
+            Test("1 && 0", false);
         }
 
         [Test]
         public void AndFailRight()
         {
-            Test("0 && 1", 0.0);
+            Test("0 && 1", false);
         }
 
         [Test]
         public void AndFailsZero()
         {
-            Test("0 && 0", 0.0);
+            Test("0 && 0", false);
         }
 
         [Test]
         public void OrFitsOne()
         {
-            Test("1 || 1", 1.0);
+            Test("1 || 1", true);
         }
 
         [Test]
         public void OrFitsRight()
         {
-            Test("0 || 1", 1.0);
+            Test("0 || 1", true);
         }
 
         [Test]
         public void OrFailsZero()
         {
-            Test("0 || 0", 0.0);
+            Test("0 || 0", false);
         }
 
         [Test]
         public void OrFitsLeft()
         {
-            Test("1 || 0", 1.0);
+            Test("1 || 0", true);
         }
 
         [Test]
@@ -511,19 +511,19 @@
         [Test]
         public void Greater()
         {
-            Test("17>12", 1.0);
+            Test("17>12", true);
         }
 
         [Test]
         public void Smaller()
         {
-            Test("7<-1.5", 0.0);
+            Test("7<-1.5", false);
         }
 
         [Test]
         public void NegativeNumberEqualsNot()
         {
-            Test("3-i~=4", 1.0);
+            Test("3-1~=4", true);
         }
 
         [Test]
@@ -574,25 +574,27 @@
             Test("max([1,5,7,9,8])", 9.0);
         }
 
+        private Object Eval(String sourceCode)
+        {
+            var engine = new Engine();
+            return engine.Interpret(sourceCode);
+        }
+
+        private void Test(String sourceCode, Double[,] expected)
+        {
+            var result = (Double[,])Eval(sourceCode);
+            CollectionAssert.AreEquivalent(expected, result);
+        }
+
+        private void Test(String sourceCode, Boolean expected)
+        {
+            var result = (Boolean)Eval(sourceCode);
+            Assert.AreEqual(expected, result);
+        }
+
         private void Test(String sourceCode, Double expected, Double tolerance = 0.0)
         {
-            var hasError = false;
-            var validation = new ValidationContextMock(_ => hasError = true);
-            var operations = new List<IOperation>();
-            var statement = sourceCode.ToStatement();
-            var walker = new OperationTreeWalker(operations);
-            var scope = new Dictionary<String, Object>();
-
-            statement.Validate(validation);
-
-            Assert.IsFalse(hasError);
-
-            return;
-            statement.Accept(walker);
-            var context = new ExecutionContext(operations.ToArray(), scope);
-            context.Execute();
-            var result = (Double)context.Pop();
-
+            var result = (Double)Eval(sourceCode);
             Assert.AreEqual(expected, result, tolerance);
         }
 
