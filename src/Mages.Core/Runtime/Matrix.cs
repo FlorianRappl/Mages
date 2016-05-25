@@ -15,6 +15,23 @@
             return matrix.GetLength(1);
         }
 
+        public static Double Abs(Double[,] matrix)
+        {
+            var sum = 0.0;
+            var rows = matrix.GetRows();
+            var cols = matrix.GetColumns();
+
+            for (var i = 0; i < rows; i++)
+            {
+                for (var j = 0; j < cols; j++)
+                {
+                    sum += matrix[i ,j] * matrix[i, j];
+                }
+            }
+
+            return Math.Sqrt(sum);
+        }
+
         public static Boolean Fits(this Double[,] a, Double[,] b)
         {
             var rowsA = a.GetRows();

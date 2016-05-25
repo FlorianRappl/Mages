@@ -33,8 +33,18 @@
 
         public static Object Abs(Object[] args)
         {
-            var value = (Double)args[0];
-            return Math.Abs(value);
+            var value = args[0];
+
+            if (value is Double[,])
+            {
+                return Matrix.Abs((Double[,])value);
+            }
+            else if (value is Double)
+            {
+                return Math.Abs((Double)value);
+            }
+
+            return value;
         }
     }
 }
