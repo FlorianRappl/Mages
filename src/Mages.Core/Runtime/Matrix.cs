@@ -253,6 +253,11 @@
             }
         }
 
+        public static Double[,] And(this Double[,] a, Double b)
+        {
+            return a.And(a.Fill(b));
+        }
+
         public static Double[,] And(this Double[,] a, Double[,] b)
         {
             if (a.Fits(b))
@@ -273,6 +278,11 @@
             }
 
             return null;
+        }
+
+        public static Double[,] IsGreaterThan(this Double[,] a, Double b)
+        {
+            return a.IsGreaterThan(a.Fill(b));
         }
 
         public static Double[,] IsGreaterThan(this Double[,] a, Double[,] b)
@@ -297,6 +307,11 @@
             return null;
         }
 
+        public static Double[,] IsGreaterOrEqual(this Double[,] a, Double b)
+        {
+            return a.IsGreaterOrEqual(a.Fill(b));
+        }
+
         public static Double[,] IsGreaterOrEqual(this Double[,] a, Double[,] b)
         {
             if (a.Fits(b))
@@ -317,6 +332,11 @@
             }
 
             return null;
+        }
+
+        public static Double[,] AreNotEqual(this Double[,] a, Double b)
+        {
+            return a.AreNotEqual(a.Fill(b));
         }
 
         public static Double[,] AreNotEqual(this Double[,] a, Double[,] b)
@@ -341,6 +361,11 @@
             return null;
         }
 
+        public static Double[,] IsLessThan(this Double[,] a, Double b)
+        {
+            return a.IsLessThan(a.Fill(b));
+        }
+
         public static Double[,] IsLessThan(this Double[,] a, Double[,] b)
         {
             if (a.Fits(b))
@@ -361,6 +386,11 @@
             }
 
             return null;
+        }
+
+        public static Double[,] IsLessOrEqual(this Double[,] a, Double b)
+        {
+            return a.IsLessOrEqual(a.Fill(b));
         }
 
         public static Double[,] IsLessOrEqual(this Double[,] a, Double[,] b)
@@ -385,6 +415,11 @@
             return null;
         }
 
+        public static Double[,] AreEqual(this Double[,] a, Double b)
+        {
+            return a.AreEqual(a.Fill(b));
+        }
+
         public static Double[,] AreEqual(this Double[,] a, Double[,] b)
         {
             if (a.Fits(b))
@@ -405,6 +440,11 @@
             }
 
             return null;
+        }
+
+        public static Double[,] Or(this Double[,] a, Double b)
+        {
+            return a.Or(a.Fill(b));
         }
 
         public static Double[,] Or(this Double[,] a, Double[,] b)

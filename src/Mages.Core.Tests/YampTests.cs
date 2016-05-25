@@ -37,7 +37,7 @@
         [Test]
         public void LambdaExpressionWithMatrices()
         {
-            Test("((x, y) => x*y')([1,2,3],[1,2,3])", 14.0);
+            Test("((x, y) => x*y')([1,2,3],[1,2,3])", new Double[,] { { 14.0 } });
         }
 
         [Test]
