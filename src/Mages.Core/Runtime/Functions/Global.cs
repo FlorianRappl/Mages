@@ -53,7 +53,8 @@
             { "sort", ComparisonFunctions.Sort },
             { "reverse", ComparisonFunctions.Reverse },
             { "throw", StandardFunctions.Throw },
-            { "catch", StandardFunctions.Catch }
+            { "catch", StandardFunctions.Catch },
+            { "length", StandardFunctions.Length }
         };
     }
 }

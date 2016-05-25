@@ -131,5 +131,10 @@
         /// Contains the catch function.
         /// </summary>
         public static readonly Function Catch = (new CatchFunction()).Invoke;
+
+        /// <summary>
+        /// Contains the length function.
+        /// </summary>
+        public static readonly Function Length = (new LengthFunction()).Invoke;
     }
 }
