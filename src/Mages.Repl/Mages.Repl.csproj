@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsoleInteractivity.cs" />
+    <Compile Include="Functions\HelpFunction.cs" />
     <Compile Include="IInteractivity.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

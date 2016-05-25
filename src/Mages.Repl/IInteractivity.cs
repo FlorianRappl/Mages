@@ -9,6 +9,7 @@
         void Write(String output);
 
         void Info(Object result);
-        void Error(string message);
+
+        void Error(String message);
     }
 }

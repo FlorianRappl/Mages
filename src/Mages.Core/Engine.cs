@@ -5,7 +5,7 @@
     using Mages.Core.Vm;
     using System;
     using System.Collections.Generic;
-
+    using System.Reflection;
     /// <summary>
     /// Represents the central engine for any kind of evaluation.
     /// </summary>
@@ -58,6 +58,18 @@
         public IDictionary<String, Object> Globals
         {
             get { return _scope.Parent; }
+        }
+
+        /// <summary>
+        /// Gets the version of the engine.
+        /// </summary>
+        public String Version
+        {
+            get
+            {
+                var lib = Assembly.GetExecutingAssembly();
+                return lib.GetName().Version.ToString(3);
+            }
         }
 
         #endregion
