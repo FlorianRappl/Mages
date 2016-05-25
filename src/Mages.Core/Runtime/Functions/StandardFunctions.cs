@@ -10,7 +10,7 @@
         /// <summary>
         /// Wraps the Math.Sqrt function.
         /// </summary>
-        public static readonly Function Sqrt = (new ArithmeticFunction(x => Math.Sqrt(x))).Invoke;
+        public static readonly Function Sqrt = (new ArithmeticFunction(Math.Sqrt)).Invoke;
 
         /// <summary>
         /// Contains the factorial function.
@@ -50,27 +50,27 @@
         /// <summary>
         /// Wraps the Math.Ceiling function.
         /// </summary>
-        public static readonly Function Ceil = (new ArithmeticFunction(x => Math.Ceiling(x))).Invoke;
+        public static readonly Function Ceil = (new ArithmeticFunction(Math.Ceiling)).Invoke;
 
         /// <summary>
         /// Wraps the Math.Floor function.
         /// </summary>
-        public static readonly Function Floor = (new ArithmeticFunction(x => Math.Floor(x))).Invoke;
+        public static readonly Function Floor = (new ArithmeticFunction(Math.Floor)).Invoke;
 
         /// <summary>
         /// Wraps the Math.Round function.
         /// </summary>
-        public static readonly Function Round = (new ArithmeticFunction(x => Math.Round(x))).Invoke;
+        public static readonly Function Round = (new ArithmeticFunction(Math.Round)).Invoke;
 
         /// <summary>
         /// Wraps the Math.Exp function.
         /// </summary>
-        public static readonly Function Exp = (new ArithmeticFunction(x => Math.Exp(x))).Invoke;
+        public static readonly Function Exp = (new ArithmeticFunction(Math.Exp)).Invoke;
 
         /// <summary>
         /// Wraps the Math.Log function.
         /// </summary>
-        public static readonly Function Log = (new ArithmeticFunction(x => Math.Log(x))).Invoke;
+        public static readonly Function Log = (new ArithmeticFunction(Math.Log)).Invoke;
 
         /// <summary>
         /// Contains the add operator.
