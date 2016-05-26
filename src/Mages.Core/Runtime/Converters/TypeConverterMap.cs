@@ -8,7 +8,7 @@
         private readonly List<TypeConverter> _converters = new List<TypeConverter>();
         private readonly Dictionary<Type, List<Type>> _categories = new Dictionary<Type, List<Type>>();
         private readonly Dictionary<Type, Dictionary<Type, Func<Object, Object>>> _cache = new Dictionary<Type, Dictionary<Type, Func<Object, Object>>>();
-        private readonly Func<Object, Object> _default = _ => _ as IDictionary<String, Object>;
+        private readonly Func<Object, Object> _default = _ => _ != null ? _ as IDictionary<String, Object> ?? new WrapperObject(_) : _;
         private readonly Func<Object, Object> _identity = _ => _;
 
         public TypeConverterMap()
