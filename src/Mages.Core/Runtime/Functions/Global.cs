@@ -54,7 +54,8 @@
             { "reverse", ComparisonFunctions.Reverse },
             { "throw", StandardFunctions.Throw },
             { "catch", StandardFunctions.Catch },
-            { "length", StandardFunctions.Length }
+            { "length", StandardFunctions.Length },
+            { "sum", StandardFunctions.Sum }
         };
     }
 }

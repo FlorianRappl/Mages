@@ -136,5 +136,10 @@
         /// Contains the length function.
         /// </summary>
         public static readonly Function Length = (new LengthFunction()).Invoke;
+
+        /// <summary>
+        /// Contains the sum function.
+        /// </summary>
+        public static readonly Function Sum = new ReducerFunction((x, y) => x + y).Invoke;
     }
 }

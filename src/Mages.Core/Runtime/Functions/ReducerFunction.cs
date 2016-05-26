@@ -55,7 +55,7 @@
                 {
                     var element = matrix[i, 0];
 
-                    for (var j = 0; j < cols; j++)
+                    for (var j = 1; j < cols; j++)
                     {
                         element = _reducer.Invoke(element, matrix[i, j]);
                     }
