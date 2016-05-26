@@ -112,7 +112,7 @@ As the API will mostly consist of functions (and not of constants), helpers to i
 ```cs
 var engine = new Engine();
 var function = new Function(args => (Double)args.Length);
-engine.AddOrReplace("argsCount", function);
+engine.SetFunction("argsCount", function);
 var result = engine.Interpret("argsCount(1, true, [])"); // 3.0
 ```
 
@@ -123,7 +123,7 @@ Potentially, it is better to just use *any* kind of delegate and pass it in. For
 ```cs
 var engine = new Engine();
 var function = new Func<Double, String, Boolean>((n, str) => n == str.Length);
-engine.AddOrReplace("checkLength", function.Method, function.Target);
+engine.SetFunction("checkLength", function.Method, function.Target);
 var result = engine.Interpret("checkLength(2, \"hi\")"); // true
 ```
 
@@ -132,7 +132,7 @@ Now, in the former example all used types are MAGES compatible, however, we can 
 ```cs
 var engine = new Engine();
 var func = new Func<Int32, String, Char>((n, str) => str[n]);
-engine.AddOrReplace("getCharAt", func.Method, func.Target);
+engine.SetFunction("getCharAt", func.Method, func.Target);
 var result = engine.Interpret("getCharAt(2, \"hallo\")"); // "l"
 ```
 
