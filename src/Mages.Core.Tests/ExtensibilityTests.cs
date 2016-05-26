@@ -229,10 +229,26 @@
             var index = new Index();
             engine.SetConstant("foo", index);
 
-            engine.Interpret("foo.col = 2.8; foo.row = -9");
+            engine.Interpret("foo.col = 2.8; foo.row = -9;");
 
             Assert.AreEqual(2, index.col);
             Assert.AreEqual(0, index.row);
+        }
+
+        [Test]
+        public void GlobalIndexConstantPropertiesAndMethodsShouldWork()
+        {
+            var engine = new Engine();
+            var list = new List<String>();
+            engine.SetConstant("list", list);
+
+            var result = engine.Interpret("list.Add(\"one\");list.Add(\"two\");list.Insert(1, \"half\");list.Count");
+
+            Assert.AreEqual(3.0, result);
+            Assert.AreEqual(3, list.Count);
+            Assert.AreEqual("one", list[0]);
+            Assert.AreEqual("half", list[1]);
+            Assert.AreEqual("two", list[2]);
         }
 
         sealed class Point

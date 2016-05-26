@@ -8,9 +8,15 @@
 
     sealed class WrapperObject : IDictionary<String, Object>
     {
+        #region Fields
+
         private readonly Object _content;
         private readonly Dictionary<String, Object> _extend;
         private readonly Dictionary<String, BaseProxy> _proxy;
+
+        #endregion
+
+        #region ctor
 
         public WrapperObject(Object content)
         {
@@ -20,10 +26,18 @@
             GenerateProxies();
         }
 
+        #endregion
+
+        #region Properties
+
         public Object Content
         {
             get { return _content; }
         }
+
+        #endregion
+
+        #region IDictionary Implementation
 
         public Object this[String key]
         {
@@ -113,6 +127,10 @@
             return _extend.TryGetValue(key, out value);
         }
 
+        #endregion
+
+        #region Helpers
+
         private void TrySetValue(String key, Object value)
         {
             var proxy = default(BaseProxy);
@@ -158,6 +176,10 @@
                 _proxy.Add(method.Key, new MethodProxy(this, overloads));
             }
         }
+
+        #endregion
+
+        #region Proxy classes
 
         abstract class BaseProxy
         {
@@ -278,7 +300,7 @@
                 var target = _obj.Content;
                 var parameters = arguments.Select(m => m.GetType()).ToArray();
                 var flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.OptionalParamBinding | BindingFlags.InvokeMethod;
-                var method = Type.DefaultBinder.SelectMethod(flags, _methods, parameters, null);
+                var method = Type.DefaultBinder.SelectMethod(flags, _methods, parameters, null) ?? FindMethod(arguments, parameters);
                 var result = default(Object);
 
                 if (method != null)
@@ -293,6 +315,47 @@
 
                 return result;
             }
+
+            private MethodInfo FindMethod(Object[] arguments, Type[] currentParameters)
+            {
+                foreach (var method in _methods)
+                {
+                    var actualParameters = method.GetParameters();
+
+                    if (currentParameters.Length == actualParameters.Length)
+                    {
+                        var length = actualParameters.Length;
+                        var i = 0;
+
+                        while (i < length)
+                        {
+                            var source = currentParameters[i];
+                            var target = actualParameters[i].ParameterType;
+                            var converter = Helpers.Converters.FindConverter(source, target);
+                            var value = converter.Invoke(arguments[i]);
+
+                            if (value != null)
+                            {
+                                arguments[i] = value;
+                                i++;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+
+                        if (i == length)
+                        {
+                            return method;
+                        }
+                    }
+                }
+
+                return null;
+            }
         }
+
+        #endregion
     }
 }
