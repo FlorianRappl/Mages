@@ -6,6 +6,7 @@
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+
     /// <summary>
     /// Represents the central engine for any kind of evaluation.
     /// </summary>
@@ -21,15 +22,20 @@
         #region ctor
 
         /// <summary>
-        /// Creates a new engine with the specified elements. Otherwise default
-        /// elements are being used.
+        /// Creates a new engine with the specified configuration. Otherwise a
+        /// default configuration is used.
         /// </summary>
-        /// <param name="parser">The parser to use.</param>
-        /// <param name="scope">The context to use.</param>
-        public Engine(IParser parser = null, IDictionary<String, Object> scope = null)
+        /// <param name="configuration">The configuration to use.</param>
+        public Engine(Configuration configuration = null)
         {
-            _parser = parser ?? new ExpressionParser();
-            _scope = new GlobalScope(scope);
+            var cfg = configuration ?? Configuration.Default;
+            _parser = cfg.Parser ?? Configuration.Default.Parser;
+            _scope = new GlobalScope(cfg.Scope);
+
+            if (!cfg.IsEvalForbidden)
+            {
+                Globals["eval"] = new Function(Eval);
+            }
         }
 
         #endregion
@@ -105,6 +111,25 @@
             var context = new ExecutionContext(operations, _scope);
             context.Execute();
             return context.Pop();
+        }
+
+        #endregion
+
+        #region Helpers
+
+        private Object Eval(Object[] args)
+        {
+            if (args.Length == 1)
+            {
+                var source = args[0] as String;
+
+                if (source != null)
+                {
+                    return Interpret(source);
+                }
+            }
+
+            return null;
         }
 
         #endregion
