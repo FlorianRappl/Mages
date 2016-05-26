@@ -6,7 +6,10 @@
     using System.Linq;
     using System.Reflection;
 
-    sealed class WrapperObject : IDictionary<String, Object>
+    /// <summary>
+    /// Represents the object wrapper from MAGES.
+    /// </summary>
+    public sealed class WrapperObject : IDictionary<String, Object>
     {
         #region Fields
 
@@ -18,6 +21,10 @@
 
         #region ctor
 
+        /// <summary>
+        /// Creates a new wrapped object.
+        /// </summary>
+        /// <param name="content">The object to wrap.</param>
         public WrapperObject(Object content)
         {
             _content = content;
@@ -30,6 +37,9 @@
 
         #region Properties
 
+        /// <summary>
+        /// Gets the wrapped object (content).
+        /// </summary>
         public Object Content
         {
             get { return _content; }
@@ -39,6 +49,12 @@
 
         #region IDictionary Implementation
 
+        /// <summary>
+        /// Gets or sets the value of the underlying object or
+        /// the extension object.
+        /// </summary>
+        /// <param name="key">The name of the property.</param>
+        /// <returns>The value of the property.</returns>
         public Object this[String key]
         {
             get
@@ -50,70 +66,115 @@
             set { TrySetValue(key, value); }
         }
 
+        /// <summary>
+        /// Gets the number of properties of the underlying
+        /// object and the extension object.
+        /// </summary>
         public Int32 Count
         {
             get { return _extend.Count + _proxy.Count; }
         }
 
-        public Boolean IsReadOnly
+        Boolean ICollection<KeyValuePair<String, Object>>.IsReadOnly
         {
             get { return false; }
         }
 
+        /// <summary>
+        /// Gets all the keys from the extension object.
+        /// </summary>
         public ICollection<String> Keys
         {
             get { return _extend.Keys; }
         }
 
+        /// <summary>
+        /// Gets all the values from the extension object.
+        /// </summary>
         public ICollection<Object> Values
         {
             get { return _extend.Values; }
         }
 
-        public void Add(KeyValuePair<String, Object> item)
+        void ICollection<KeyValuePair<String, Object>>.Add(KeyValuePair<String, Object> item)
         {
             Add(item.Key, item.Value);
         }
 
+        /// <summary>
+        /// Sets the provided value at the provided property.
+        /// </summary>
+        /// <param name="key">The name of the property.</param>
+        /// <param name="value">The value to use.</param>
         public void Add(String key, Object value)
         {
             TrySetValue(key, value);
         }
 
+        /// <summary>
+        /// Resets the extension object.
+        /// </summary>
         public void Clear()
         {
             _extend.Clear();
         }
 
+        /// <summary>
+        /// Checks if the underlying object or the extension
+        /// object contains the given key.
+        /// </summary>
+        /// <param name="item">The item to check for.</param>
+        /// <returns>True if the key is used, otherwise false.</returns>
         public Boolean Contains(KeyValuePair<String, Object> item)
         {
             return ContainsKey(item.Key);
         }
 
+        /// <summary>
+        /// Checks if the underlying object or the extension
+        /// object contains the given key.
+        /// </summary>
+        /// <param name="key">The key to check for.</param>
+        /// <returns>True if the key is used, otherwise false.</returns>
         public Boolean ContainsKey(String key)
         {
             return _proxy.ContainsKey(key) || _extend.ContainsKey(key);
         }
 
-        public void CopyTo(KeyValuePair<String, Object>[] array, Int32 arrayIndex)
+        void ICollection<KeyValuePair<String, Object>>.CopyTo(KeyValuePair<String, Object>[] array, Int32 arrayIndex)
         {
         }
 
+        /// <summary>
+        /// Gets the enumerator over the elements of the extension.
+        /// </summary>
+        /// <returns>The extension's enumerator.</returns>
         public IEnumerator<KeyValuePair<String, Object>> GetEnumerator()
         {
             return _extend.GetEnumerator();
         }
 
-        public Boolean Remove(KeyValuePair<String, Object> item)
+        Boolean ICollection<KeyValuePair<String, Object>>.Remove(KeyValuePair<String, Object> item)
         {
             return Remove(item.Key);
         }
 
+        /// <summary>
+        /// Removes the item from the extension.
+        /// </summary>
+        /// <param name="key">The key of the item to be removed.</param>
+        /// <returns>True if it could be removed, otherwise false.</returns>
         public Boolean Remove(String key)
         {
             return _extend.Remove(key);
         }
 
+        /// <summary>
+        /// Tries to get the value from the given key.
+        /// </summary>
+        /// <param name="key">The name of the property.</param>
+        /// <param name="value">The resulting value.</param>
+        /// <returns>True if the value could be retrieved, otherwise false.</returns>
         public Boolean TryGetValue(String key, out Object value)
         {
             var proxy = default(BaseProxy);
