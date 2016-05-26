@@ -7,7 +7,7 @@
     {
         public static Boolean IsTrue(this Double value)
         {
-            return !value.IsFalse();
+            return value != 0.0;
         }
 
         public static Boolean IsFalse(this Double value)
@@ -17,7 +17,7 @@
 
         public static Boolean IsTrue(this String value)
         {
-            return !value.IsFalse();
+            return value.Length != 0;
         }
 
         public static Boolean IsFalse(this String value)
@@ -27,7 +27,7 @@
 
         public static Boolean IsTrue(this IDictionary<String, Object> value)
         {
-            return !value.IsFalse();
+            return value.Count != 0;
         }
 
         public static Boolean IsFalse(this IDictionary<String, Object> value)

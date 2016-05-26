@@ -7,6 +7,42 @@
 
     static class ConverterExtensions
     {
+        public static Object ToBoolean(this Object value)
+        {
+            if (value == null)
+            {
+                return false;
+            }
+            else if (value is Boolean == false)
+            {
+                var nval = value as Double?;
+                var sval = value as String;
+                var mval = value as Double[,];
+                var oval = value as IDictionary<String, Object>;
+
+                if (nval.HasValue)
+                {
+                    return nval.Value.ToBoolean();
+                }
+                else if (sval != null)
+                {
+                    return sval.ToBoolean();
+                }
+                else if (mval != null)
+                {
+                    return mval.ToBoolean();
+                }
+                else if (oval != null)
+                {
+                    return oval.ToBoolean();
+                }
+
+                return true;
+            }
+
+            return value;
+        }
+
         public static Boolean ToBoolean(this Double value)
         {
             return value != 0.0;
@@ -33,6 +69,28 @@
         public static Boolean ToBoolean(this IDictionary<String, Object> obj)
         {
             return obj.Count > 0;
+        }
+
+        public static Object ToNumber(this Object value)
+        {
+            if (value != null && value is Double == false)
+            {
+                var bval = value as Boolean?;
+                var sval = value as String;
+
+                if (bval.HasValue)
+                {
+                    return bval.Value.ToNumber();
+                }
+                else if (sval != null)
+                {
+                    return sval.ToNumber();
+                }
+
+                return null;
+            }
+
+            return value;
         }
 
         public static Double ToNumber(this Boolean value)
