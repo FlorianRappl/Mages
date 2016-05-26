@@ -137,3 +137,25 @@ var result = engine.Interpret("getCharAt(2, \"hallo\")"); // "l"
 ```
 
 In this example `Double` (the MAGES compatible type) gets automatically converted an integer. The result type (a `Char`) is automatically converted to a `String` as well.
+
+Similar to functions general objects can be exposed as well. Here MAGES offers the capability of denoting so-called constants, which may be shadowed by the user, but will actually never be overwritten from the user.
+
+```cs
+var engine = new Engine();
+var constant = Math.Sqrt(2.0);
+engine.SetConstant("sqrt2", constant);
+var result = engine.Interpret("sqrt2^2"); // 2.0
+```
+
+The described way is the preferred alternative to accessing the `Globals` object directly. The main problem with the `Globals` object has been indicated previously. Here no safety net is enabled to prevent MAGES incompatible objects from entering the system. Therefore, it is highly recommended to use the wrappers `SetFunction` and `SetConstant` to provide functions and constants.
+
+What if a constant is not good enough? What if users should be able to create multiple instances? Here a constructor function is the right answer. In the following example the `StringBuilder` class from .NET is exposed to MAGES via a constructor function.
+
+```cs
+var engine = new Engine();
+var function = new Func<StringBuilder>(() => new StringBuilder());
+engine.SetFunction("createStringBuilder", function);
+var result = engine.Interpret("createStringBuilder().Append(\"Hello\").Append(\" \").AppendLine(\"World!\").ToString()"); // "Hello World!\n"
+```
+
+In general such constructor functions are essential combined with features of MAGES such as the automatic wrapping of arbitrary objects.
