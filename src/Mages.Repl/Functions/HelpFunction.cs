@@ -18,7 +18,7 @@
         internal static void AddTo(Engine engine, IInteractivity interactivity)
         {
             var function = new HelpFunction(interactivity, engine.Globals);
-            engine.AddOrReplace("help", function.Invoke);
+            engine.SetFunction("help", function.Invoke);
         }
 
         public Object Invoke(Object[] arguments)
