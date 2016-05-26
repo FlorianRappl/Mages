@@ -38,11 +38,11 @@ M = factorial([1, 2, 3]) // [1, 2, 6]
 
 ### Absolute Value
 
-Works with numbers and matrices (applied to each value).
+Works with numbers and matrices (applied to the whole matrix, where the result is essentially the square root of the sum of all numbers squared).
 
 ```
 x = abs(-5) // 5
-M = abs([-1, 0, 1]) // [1, 0, 1]
+M = abs([-1, 0, 1]) // sqrt(2)
 ```
 
 ### Sign of Values
@@ -267,4 +267,46 @@ Works with two arguments.
 
 ```
 M = rand(3, 2) // a 3x2 matrix with numbers between 0 and 1
+```
+
+## General Functions
+
+### Length Determination
+
+Works with one argument, which could be anything.
+
+```
+x = length(true) // 1
+x = length("hello") // 5
+x = length(2.3) // 1
+x = length(new { a: 2, b: 3 }) // 2
+x = length([1, 2; 3, 4; 7, 0]) // 6
+```
+
+### Throwing Exceptions
+
+Works with one argument (a `string` providing an error message).
+
+```
+throw("Not implemented yet!");
+```
+
+### Catching Exceptions
+
+Works with one argument (a function being called without arguments).
+
+```
+f = () => throw("Error!");
+ans = catch(f);
+```
+
+The resulting object has two properties `value` and `error`. The former is used for the result of the operation (if successful), the latter is used for the exception message (if one occurred). Both are `undefined` (`null`) initially.
+
+### Evaluating Expressions
+
+The `Engine` instance itself can be used during evaluation (if not deactivated). Works with one `string` argument.
+
+```
+x = eval("2 + 3") // 5
+M = eval("[1,2,3] / 2") // [0.5, 1.0, 1.5]
 ```

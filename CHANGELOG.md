@@ -1,3 +1,12 @@
+# 0.3.0
+
+- Mixed operations work now
+- Included more functions, e.g., `catch` and `throw` functions
+- Integrated elementary matrix operations (#11)
+- Object transformation and wrapping (#9)
+- Added logical functions (#8)
+- Implemented comparison functions (#5)
+
 # 0.2.0
 
 - Added trigonometric function (#7)
