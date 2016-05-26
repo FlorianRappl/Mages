@@ -15,13 +15,13 @@
         {
             _converters.Add(TypeConverter.Create<Double, Single>(x => (Single)x));
             _converters.Add(TypeConverter.Create<Double, Decimal>(x => (Decimal)x));
-            _converters.Add(TypeConverter.Create<Double, Byte>(x => (Byte)x));
+            _converters.Add(TypeConverter.Create<Double, Byte>(x => (Byte)Math.Max(0, Math.Min(255, x))));
             _converters.Add(TypeConverter.Create<Double, Int16>(x => (Int16)x));
-            _converters.Add(TypeConverter.Create<Double, UInt16>(x => (UInt16)x));
+            _converters.Add(TypeConverter.Create<Double, UInt16>(x => (UInt16)Math.Max(0, x)));
             _converters.Add(TypeConverter.Create<Double, Int32>(x => (Int32)x));
-            _converters.Add(TypeConverter.Create<Double, UInt32>(x => (UInt32)x));
+            _converters.Add(TypeConverter.Create<Double, UInt32>(x => (UInt32)Math.Max(0, x)));
             _converters.Add(TypeConverter.Create<Double, Int64>(x => (Int64)x));
-            _converters.Add(TypeConverter.Create<Double, UInt64>(x => (UInt64)x));
+            _converters.Add(TypeConverter.Create<Double, UInt64>(x => (UInt64)Math.Max(0, x)));
             _converters.Add(TypeConverter.Create<Double, Boolean>(x => x.ToBoolean()));
             _converters.Add(TypeConverter.Create<Double, String>(x => Stringify.This(x)));
             _converters.Add(TypeConverter.Create<Double, Double[,]>(x => x.ToMatrix()));

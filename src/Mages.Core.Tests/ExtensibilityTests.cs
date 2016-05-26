@@ -209,10 +209,42 @@
             Assert.AreEqual(pt, wrapper.Content);
         }
 
+        [Test]
+        public void GlobalPointConstantShouldBeModifyable()
+        {
+            var engine = new Engine();
+            var pt = new Point { y = 7.0 };
+            engine.SetConstant("foo", pt);
+
+            var result = engine.Interpret("foo.x = 3; foo.y");
+
+            Assert.AreEqual(7.0, result);
+            Assert.AreEqual(3.0, pt.x);
+        }
+
+        [Test]
+        public void GlobalIndexConstantShouldBeModifyableDespiteIntegerTypes()
+        {
+            var engine = new Engine();
+            var index = new Index();
+            engine.SetConstant("foo", index);
+
+            engine.Interpret("foo.col = 2.8; foo.row = -9");
+
+            Assert.AreEqual(2, index.col);
+            Assert.AreEqual(0, index.row);
+        }
+
         sealed class Point
         {
             public Double x;
             public Double y;
+        }
+
+        sealed class Index
+        {
+            public Int32 col;
+            public UInt16 row;
         }
     }
 }
