@@ -56,7 +56,7 @@
 
         public static Double Factorial(this Double value)
         {
-            var result = Math.Sign(value);
+            var result = (Double)Math.Sign(value);
             var n = (Int32)Math.Floor(result * value);
 
             while (n > 0)

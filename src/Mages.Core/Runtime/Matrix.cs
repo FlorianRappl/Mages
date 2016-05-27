@@ -307,6 +307,23 @@
             return a.And(a.Fill(b));
         }
 
+        public static Double[,] ForEach(this Double[,] matrix, Func<Double, Double> apply)
+        {
+            var rows = matrix.GetRows();
+            var cols = matrix.GetColumns();
+            var result = new Double[rows, cols];
+
+            for (var i = 0; i < rows; i++)
+            {
+                for (var j = 0; j < cols; j++)
+                {
+                    result[i, j] = apply(matrix[i, j]);
+                }
+            }
+
+            return result;
+        }
+
         public static Double[,] And(this Double[,] a, Double[,] b)
         {
             if (a.Fits(b))
