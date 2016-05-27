@@ -2,6 +2,7 @@
 {
     using NUnit.Framework;
     using System;
+    using System.Collections.Generic;
 
     [TestFixture]
     public class FunctionTests
@@ -219,6 +220,16 @@
         {
             var result = Eval("[1,2,3;4,5,6](true)");
             Assert.IsNull(result);
+        }
+
+        [Test]
+        public void CallFunctionWithStatementsReturningObject()
+        {
+            var result = Eval("((x, y) => { var a = x + y; var b = x - y; new { a: a, b: b}; })(2, 3)");
+            var obj = result as IDictionary<String, Object>;
+            Assert.IsNotNull(obj);
+            Assert.AreEqual(5.0, obj["a"]);
+            Assert.AreEqual(-1.0, obj["b"]);
         }
 
         private static Object Eval(String source)
