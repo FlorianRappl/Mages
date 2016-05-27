@@ -179,9 +179,22 @@
 
         void ITreeWalker.Visit(CallExpression expression)
         {
+            var assigning = _assigning;
+            _assigning = false;
+
             expression.Arguments.Accept(this);
             expression.Function.Accept(this);
-            _operations.Add(new CallOperation(expression.Arguments.Count));
+
+            if (assigning)
+            {
+                _operations.Add(new SetcOperation(expression.Arguments.Count));
+            }
+            else
+            {
+                _operations.Add(new GetcOperation(expression.Arguments.Count));
+            }
+
+            _assigning = assigning;
         }
 
         void ITreeWalker.Visit(ObjectExpression expression)
@@ -234,7 +247,7 @@
             expression.Parameters.Accept(this);
             expression.Body.Accept(this);
             var operations = ExtractFrom(current);
-            _operations.Add(new FuncOperation(operations));
+            _operations.Add(new NewFuncOperation(operations));
         }
 
         void ITreeWalker.Visit(InvalidExpression expression)
@@ -257,11 +270,11 @@
 
             if (assigning)
             {
-                _operations.Add(SetOperation.Instance);
+                _operations.Add(SetpOperation.Instance);
             }
             else
             {
-                _operations.Add(GetOperation.Instance);
+                _operations.Add(GetpOperation.Instance);
             }
 
             _assigning = assigning;
@@ -286,11 +299,11 @@
 
             if (_assigning)
             {
-                _operations.Add(new StoreOperation(name));
+                _operations.Add(new SetsOperation(name));
             }
             else
             {
-                _operations.Add(new LoadOperation(name));
+                _operations.Add(new GetsOperation(name));
             }
         }
 
@@ -320,7 +333,7 @@
         private void CallFunction(Function func, Int32 argumentCount)
         {
             _operations.Add(new ConstOperation(func));
-            _operations.Add(new CallOperation(argumentCount));
+            _operations.Add(new GetcOperation(argumentCount));
         }
 
         private IOperation PopOperation()

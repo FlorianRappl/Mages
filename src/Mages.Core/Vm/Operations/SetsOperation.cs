@@ -6,11 +6,11 @@
     /// <summary>
     /// Stores the top-most element on the stack.
     /// </summary>
-    sealed class StoreOperation : IOperation
+    sealed class SetsOperation : IOperation
     {
         private readonly String _name;
 
-        public StoreOperation(String name)
+        public SetsOperation(String name)
         {
             _name = name;
         }

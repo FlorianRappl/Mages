@@ -7,11 +7,11 @@
     /// <summary>
     /// Takes two values from the stack and pushes the result.
     /// </summary>
-    sealed class GetOperation : IOperation
+    sealed class GetpOperation : IOperation
     {
-        public static readonly IOperation Instance = new GetOperation();
+        public static readonly IOperation Instance = new GetpOperation();
 
-        private GetOperation()
+        private GetpOperation()
         {
         }
 

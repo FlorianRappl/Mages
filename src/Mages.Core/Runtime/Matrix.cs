@@ -14,14 +14,14 @@
         {
             return matrix.GetLength(1);
         }
-        
-        public static Object Getter(this Double[,] matrix, Object[] arguments)
+
+        public static Boolean TryGetIndices(this Double[,] matrix, Object[] arguments, out Int32 i, out Int32 j)
         {
             var rows = matrix.GetRows();
             var cols = matrix.GetColumns();
             var n = 0;
-            var i = -1;
-            var j = -1;
+            i = -1;
+            j = -1;
 
             if (arguments.Length == 1 && arguments[0].TryGetIndex(out n))
             {
@@ -32,12 +32,31 @@
             {
             }
 
-            if (i >= 0 && j >= 0 && i < rows && j < cols)
+            return i >= 0 && j >= 0 && i < rows && j < cols;
+        }
+        
+        public static Object Getter(this Double[,] matrix, Object[] arguments)
+        {
+            var i = 0;
+            var j = 0;
+
+            if (matrix.TryGetIndices(arguments, out i, out j))
             {
                 return matrix[i, j];
             }
 
             return null;
+        }
+
+        public static void Setter(this Double[,] matrix, Object[] arguments, Object value)
+        {
+            var i = 0;
+            var j = 0;
+
+            if (matrix.TryGetIndices(arguments, out i, out j))
+            {
+                matrix[i, j] = value.ToNumber();
+            }
         }
 
         public static Double Abs(Double[,] matrix)

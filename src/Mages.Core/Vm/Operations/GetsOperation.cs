@@ -6,11 +6,11 @@
     /// <summary>
     /// Loads a value by placing it on the stack.
     /// </summary>
-    sealed class LoadOperation : IOperation
+    sealed class GetsOperation : IOperation
     {
         private readonly String _name;
 
-        public LoadOperation(String name)
+        public GetsOperation(String name)
         {
             _name = name;
         }

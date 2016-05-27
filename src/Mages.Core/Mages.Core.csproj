@@ -104,6 +104,7 @@
     <Compile Include="Runtime\Functions\LengthFunction.cs" />
     <Compile Include="Runtime\Functions\LogicalFunction.cs" />
     <Compile Include="Runtime\Functions\LogicalFunctions.cs" />
+    <Compile Include="Runtime\Functions\Procedure.cs" />
     <Compile Include="Runtime\Functions\RandFunction.cs" />
     <Compile Include="Runtime\Functions\ReducerFunction.cs" />
     <Compile Include="Runtime\Functions\StandardFunction.cs" />
@@ -151,18 +152,19 @@
     <Compile Include="Vm\IExecutionContext.cs" />
     <Compile Include="Vm\IOperation.cs" />
     <Compile Include="Vm\Operations\ArgOperation.cs" />
-    <Compile Include="Vm\Operations\CallOperation.cs" />
+    <Compile Include="Vm\Operations\GetcOperation.cs" />
     <Compile Include="Vm\Operations\ConstOperation.cs" />
     <Compile Include="Vm\Operations\DecOperation.cs" />
-    <Compile Include="Vm\Operations\FuncOperation.cs" />
-    <Compile Include="Vm\Operations\GetOperation.cs" />
+    <Compile Include="Vm\Operations\NewFuncOperation.cs" />
+    <Compile Include="Vm\Operations\GetpOperation.cs" />
     <Compile Include="Vm\Operations\IncOperation.cs" />
     <Compile Include="Vm\Operations\InitObjOperation.cs" />
-    <Compile Include="Vm\Operations\LoadOperation.cs" />
+    <Compile Include="Vm\Operations\GetsOperation.cs" />
+    <Compile Include="Vm\Operations\SetcOperation.cs" />
     <Compile Include="Vm\Operations\NewMatOperation.cs" />
     <Compile Include="Vm\Operations\NewObjOperation.cs" />
-    <Compile Include="Vm\Operations\SetOperation.cs" />
-    <Compile Include="Vm\Operations\StoreOperation.cs" />
+    <Compile Include="Vm\Operations\SetpOperation.cs" />
+    <Compile Include="Vm\Operations\SetsOperation.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

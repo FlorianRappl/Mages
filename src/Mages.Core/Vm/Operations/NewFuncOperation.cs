@@ -7,11 +7,11 @@
     /// <summary>
     /// Pushes a new function on the stack.
     /// </summary>
-    sealed class FuncOperation : IOperation
+    sealed class NewFuncOperation : IOperation
     {
         private readonly IOperation[] _operations;
 
-        public FuncOperation(IOperation[] operations)
+        public NewFuncOperation(IOperation[] operations)
         {
             _operations = operations;
         }

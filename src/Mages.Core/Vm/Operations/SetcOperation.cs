@@ -4,38 +4,34 @@
     using System;
 
     /// <summary>
-    /// Takes two objects from the stack and returns one.
+    /// Takes three objects from the stack and returns one.
     /// </summary>
-    sealed class CallOperation : IOperation
+    sealed class SetcOperation : IOperation
     {
         private readonly Object[] _arguments;
 
-        public CallOperation(Int32 length)
+        public SetcOperation(Int32 length)
         {
             _arguments = new Object[length];
         }
 
         public void Invoke(IExecutionContext context)
         {
-            var result = default(Object);
+            var value = context.Pop();
             var obj = context.Pop();
+            var function = default(Procedure);
 
             for (var i = 0; i < _arguments.Length; i++)
             {
                 _arguments[i] = context.Pop();
             }
 
-            if (obj != null)
+            if (obj != null && TypeFunctions.TryFindSetter(obj, out function))
             {
-                var function = obj as Function;
-
-                if (function != null || TypeFunctions.TryFindGetter(obj, out function))
-                {
-                    result = function.Invoke(_arguments);
-                }
+                function.Invoke(_arguments, value);
             }
 
-            context.Push(result);
+            context.Push(value);
         }
     }
 }

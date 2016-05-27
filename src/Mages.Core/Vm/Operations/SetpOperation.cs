@@ -7,11 +7,11 @@
     /// <summary>
     /// Takes three values from the stack and pushes one.
     /// </summary>
-    sealed class SetOperation : IOperation
+    sealed class SetpOperation : IOperation
     {
-        public static readonly IOperation Instance = new SetOperation();
+        public static readonly IOperation Instance = new SetpOperation();
 
-        private SetOperation()
+        private SetpOperation()
         {
         }
 
