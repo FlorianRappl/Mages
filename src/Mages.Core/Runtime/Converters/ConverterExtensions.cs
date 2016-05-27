@@ -178,5 +178,19 @@
 
             return list;
         }
+
+        public static Boolean TryGetIndex(this Object obj, out Int32 value)
+        {
+            if (obj is Double && ((Double)obj).IsInteger())
+            {
+                value = (Int32)(Double)obj;
+                return true;
+            }
+            else
+            {
+                value = -1;
+                return false;
+            }   
+        }
     }
 }

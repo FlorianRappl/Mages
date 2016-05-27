@@ -10,6 +10,29 @@
     {
         public static readonly TypeConverterMap Converters = new TypeConverterMap();
 
+        public static Object Getter(this String str, Object[] arguments)
+        {
+            var index = 0;
+
+            if (arguments.Length > 0 && arguments[0].TryGetIndex(out index) && index >= 0 && index < str.Length)
+            {
+                return new String(str[index], 1);
+            }
+
+            return null;
+        }
+
+        public static Object Getter(this IDictionary<String, Object> obj, Object[] arguments)
+        {
+            if (arguments.Length > 0)
+            {
+                var name = Stringify.This(arguments[0]);
+                return obj.GetProperty(name);
+            }
+
+            return null;
+        }
+
         public static void SetProperty(this IDictionary<String, Object> obj, String name, Object value)
         {
             obj[name] = value;

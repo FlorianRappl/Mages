@@ -109,6 +109,7 @@
     <Compile Include="Runtime\Functions\StandardFunction.cs" />
     <Compile Include="Runtime\Functions\ThrowFunction.cs" />
     <Compile Include="Runtime\Functions\TrigonometricFunctions.cs" />
+    <Compile Include="Runtime\Functions\TypeFunctions.cs" />
     <Compile Include="Runtime\GlobalScope.cs" />
     <Compile Include="Runtime\Helpers.cs" />
     <Compile Include="Runtime\Logic.cs" />

@@ -14,6 +14,31 @@
         {
             return matrix.GetLength(1);
         }
+        
+        public static Object Getter(this Double[,] matrix, Object[] arguments)
+        {
+            var rows = matrix.GetRows();
+            var cols = matrix.GetColumns();
+            var n = 0;
+            var i = -1;
+            var j = -1;
+
+            if (arguments.Length == 1 && arguments[0].TryGetIndex(out n))
+            {
+                j = n % cols;
+                i = n / cols;
+            }
+            else if (arguments.Length == 2 && arguments[0].TryGetIndex(out i) && arguments[1].TryGetIndex(out j))
+            {
+            }
+
+            if (i >= 0 && j >= 0 && i < rows && j < cols)
+            {
+                return matrix[i, j];
+            }
+
+            return null;
+        }
 
         public static Double Abs(Double[,] matrix)
         {

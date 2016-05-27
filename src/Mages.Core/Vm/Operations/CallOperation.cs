@@ -1,6 +1,6 @@
 ﻿namespace Mages.Core.Vm.Operations
 {
-    using Mages.Core.Runtime;
+    using Mages.Core.Runtime.Functions;
     using System;
 
     /// <summary>
@@ -29,7 +29,7 @@
             {
                 var function = obj as Function;
 
-                if (function != null)
+                if (function != null || TypeFunctions.TryFindGetter(obj, out function))
                 {
                     result = function.Invoke(_arguments);
                 }
