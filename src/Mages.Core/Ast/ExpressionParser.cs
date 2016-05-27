@@ -18,7 +18,16 @@
 
         public IStatement ParseStatement(IEnumerator<IToken> tokens)
         {
-            tokens.NextNonIgnorable();
+            return ParseNextStatement(tokens.NextNonIgnorable());
+        }
+
+        public IExpression ParseExpression(IEnumerator<IToken> tokens)
+        {
+            return ParseAssignment(tokens.NextNonIgnorable());
+        }
+
+        private IStatement ParseNextStatement(IEnumerator<IToken> tokens)
+        {
             var current = tokens.Current;
 
             if (current.Is(Keywords.Var))
@@ -33,11 +42,6 @@
             {
                 return ParseSimpleStatement(tokens);
             }
-        }
-
-        public IExpression ParseExpression(IEnumerator<IToken> tokens)
-        {
-            return ParseAssignment(tokens.NextNonIgnorable());
         }
 
         private SimpleStatement ParseSimpleStatement(IEnumerator<IToken> tokens)
@@ -63,7 +67,7 @@
 
             while (current.IsNeither(TokenType.CloseScope, TokenType.End))
             {
-                var statement = ParseStatement(tokens);
+                var statement = ParseNextStatement(tokens);
                 statements.Add(statement);
                 current = tokens.Current;
 
@@ -109,6 +113,7 @@
             if (tokens.Current.Type == TokenType.OpenScope)
             {
                 body = ParseBlockStatement(tokens);
+                tokens.NextNonIgnorable();
             }
             else
             {

@@ -202,6 +202,14 @@
             Assert.AreEqual(17.3, obj["true"]);
         }
 
+        [Test]
+        public void FunctionLocalVariableRemainsLocal()
+        {
+            var scope = Test("(() => { var x = 5; x + 9; })()", 14.0);
+
+            Assert.AreEqual(0, scope.Count);
+        }
+
         private IDictionary<String, Object> Test(String sourceCode, Double expected, Double tolerance = 0.0)
         {
             var engine = new Engine();
