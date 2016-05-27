@@ -57,7 +57,7 @@
                 Binary<Double[,], Double[,]>(args, Matrix.And) ??
                 Binary<Double[,], Double>(args, Matrix.And) ??
                 Binary<Double, Double[,]>(args, (y, x) => x.And(y)) ??
-                TryConvert(And, args[0].ToBoolean(), args[1].ToBoolean());
+                (args[0].ToBoolean() && args[1].ToBoolean());
         }
 
         public static Object Or(Object[] args)
@@ -67,7 +67,7 @@
                 Binary<Double[,], Double[,]>(args, Matrix.Or) ??
                 Binary<Double[,], Double>(args, Matrix.Or) ??
                 Binary<Double, Double[,]>(args, (y, x) => x.Or(y)) ??
-                TryConvert(Or, args[0].ToBoolean(), args[1].ToBoolean());
+                (args[0].ToBoolean() || args[1].ToBoolean());
         }
 
         public static Object Eq(Object[] args)
@@ -96,7 +96,7 @@
                 Binary<Double[,], Double[,]>(args, Matrix.IsGreaterThan) ??
                 Binary<Double[,], Double>(args, Matrix.IsGreaterThan) ??
                 Binary<Double, Double[,]>(args, (y, x) => x.IsGreaterThan(y)) ??
-                TryConvert(Gt, args[0].ToNumber(), args[1].ToNumber());
+                (args[0].ToNumber() > args[1].ToNumber());
         }
 
         public static Object Geq(Object[] args)
@@ -105,7 +105,7 @@
                 Binary<Double[,], Double[,]>(args, Matrix.IsGreaterOrEqual) ??
                 Binary<Double[,], Double>(args, Matrix.IsGreaterOrEqual) ??
                 Binary<Double, Double[,]>(args, (y, x) => x.IsGreaterOrEqual(y)) ??
-                TryConvert(Geq, args[0].ToNumber(), args[1].ToNumber());
+                (args[0].ToNumber() >= args[1].ToNumber());
         }
 
         public static Object Lt(Object[] args)
@@ -114,7 +114,7 @@
                 Binary<Double[,], Double[,]>(args, Matrix.IsLessThan) ??
                 Binary<Double[,], Double>(args, Matrix.IsLessThan) ??
                 Binary<Double, Double[,]>(args, (y, x) => x.IsLessThan(y)) ??
-                TryConvert(Lt, args[0].ToNumber(), args[1].ToNumber());
+                (args[0].ToNumber() < args[1].ToNumber());
         }
 
         public static Object Leq(Object[] args)
@@ -123,17 +123,7 @@
                 Binary<Double[,], Double[,]>(args, Matrix.IsLessOrEqual) ??
                 Binary<Double[,], Double>(args, Matrix.IsLessOrEqual) ??
                 Binary<Double, Double[,]>(args, (y, x) => x.IsLessOrEqual(y)) ??
-                TryConvert(Leq, args[0].ToNumber(), args[1].ToNumber());
-        }
-
-        private static Object TryConvert(Function op, Object a, Object b)
-        {
-            if (a != null && b != null)
-            {
-                return op.Invoke(new[] { a, b });
-            }
-
-            return null;
+                (args[0].ToNumber() <= args[1].ToNumber());
         }
 
         private static Object Binary<Tx, Ty>(Object[] args, Func<Tx, Ty, Object> f)

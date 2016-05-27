@@ -7,13 +7,13 @@
 
     static class ConverterExtensions
     {
-        public static Object ToBoolean(this Object value)
+        public static Boolean ToBoolean(this Object value)
         {
-            if (value == null)
+            if (value is Boolean)
             {
-                return false;
+                return (Boolean)value;
             }
-            else if (value is Boolean == false)
+            else if (value != null)
             {
                 var nval = value as Double?;
                 var sval = value as String;
@@ -40,7 +40,7 @@
                 return true;
             }
 
-            return value;
+            return false;
         }
 
         public static Boolean ToBoolean(this Double value)
@@ -71,9 +71,13 @@
             return obj.Count > 0;
         }
 
-        public static Object ToNumber(this Object value)
+        public static Double ToNumber(this Object value)
         {
-            if (value != null && value is Double == false)
+            if (value is Double)
+            {
+                return (Double)value;
+            }
+            else if (value != null)
             {
                 var bval = value as Boolean?;
                 var sval = value as String;
@@ -86,11 +90,9 @@
                 {
                     return sval.ToNumber();
                 }
-
-                return null;
             }
 
-            return value;
+            return Double.NaN;
         }
 
         public static Double ToNumber(this Boolean value)
@@ -98,13 +100,13 @@
             return value ? 1.0 : 0.0;
         }
 
-        public static Object ToNumber(this String value)
+        public static Double ToNumber(this String value)
         {
             var result = default(Double);
 
             if (!Double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out result))
             {
-                return null;
+                return Double.NaN;
             }
 
             return result;
