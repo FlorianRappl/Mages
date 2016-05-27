@@ -109,6 +109,58 @@
             Assert.AreEqual(9.0, obj["c"]);
         }
 
+        [Test]
+        public void SetMatrixEntryWithValidValueAndSingleIndexAfterCreatingIt()
+        {
+            var scope = Test("A = [1,2;3,4]; A(1) = 0.0", 0.0);
+            var obj = scope["A"] as Double[,];
+
+            Assert.IsNotNull(obj);
+            Assert.AreEqual(1.0, obj[0, 0]);
+            Assert.AreEqual(0.0, obj[0, 1]);
+            Assert.AreEqual(3.0, obj[1, 0]);
+            Assert.AreEqual(4.0, obj[1, 1]);
+        }
+
+        [Test]
+        public void SetMatrixEntryWithValidValueAfterCreatingIt()
+        {
+            var scope = Test("A = [1,2;3,4]; A(1,1) = 0.0", 0.0);
+            var obj = scope["A"] as Double[,];
+
+            Assert.IsNotNull(obj);
+            Assert.AreEqual(1.0, obj[0, 0]);
+            Assert.AreEqual(2.0, obj[0, 1]);
+            Assert.AreEqual(3.0, obj[1, 0]);
+            Assert.AreEqual(0.0, obj[1, 1]);
+        }
+
+        [Test]
+        public void SetMatrixEntryWithInvalidValueAfterCreatingIt()
+        {
+            var scope = Test("A = [1,2;3,4]; A(1,1) = \"hi there\"; A(0,0)", 1.0);
+            var obj = scope["A"] as Double[,];
+
+            Assert.IsNotNull(obj);
+            Assert.AreEqual(1.0, obj[0, 0]);
+            Assert.AreEqual(2.0, obj[0, 1]);
+            Assert.AreEqual(3.0, obj[1, 0]);
+            Assert.AreEqual(Double.NaN, obj[1, 1]);
+        }
+
+        [Test]
+        public void SetMatrixEntryWithConvertedStringValueAfterCreatingIt()
+        {
+            var scope = Test("A = [1,2;3,4]; A(1,1) = \"23\"; A(1, 0)", 3.0);
+            var obj = scope["A"] as Double[,];
+
+            Assert.IsNotNull(obj);
+            Assert.AreEqual(1.0, obj[0, 0]);
+            Assert.AreEqual(2.0, obj[0, 1]);
+            Assert.AreEqual(3.0, obj[1, 0]);
+            Assert.AreEqual(23.0, obj[1, 1]);
+        }
+
         private IDictionary<String, Object> Test(String sourceCode, Double expected, Double tolerance = 0.0)
         {
             var engine = new Engine();
