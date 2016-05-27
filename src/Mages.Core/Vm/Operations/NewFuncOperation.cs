@@ -36,7 +36,7 @@
 
             public Object Invoke(Object[] arguments)
             {
-                var scope = new VariableScope(_parentScope);
+                var scope = new LocalScope(_parentScope);
                 var ctx = new ExecutionContext(_operations, scope);
                 ctx.Push(arguments);
                 ctx.Execute();

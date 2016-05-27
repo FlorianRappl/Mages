@@ -120,7 +120,7 @@
     <Compile Include="Runtime\Functions\StandardFunctions.cs" />
     <Compile Include="Runtime\Stringify.cs" />
     <Compile Include="Runtime\UnaryOperators.cs" />
-    <Compile Include="Runtime\VariableScope.cs" />
+    <Compile Include="Runtime\LocalScope.cs" />
     <Compile Include="Runtime\WrapperObject.cs" />
     <Compile Include="Source\ScannerExtensions.cs" />
     <Compile Include="StringExtensions.cs" />

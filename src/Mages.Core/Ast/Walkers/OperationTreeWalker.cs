@@ -12,7 +12,7 @@
     /// <summary>
     /// Represents the walker to create operations.
     /// </summary>
-    public class OperationTreeWalker : ITreeWalker
+    public sealed class OperationTreeWalker : ITreeWalker
     {
         #region Operator Mappings
 

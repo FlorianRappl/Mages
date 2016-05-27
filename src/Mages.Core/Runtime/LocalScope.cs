@@ -3,9 +3,9 @@
     using System;
     using System.Collections.Generic;
 
-    sealed class VariableScope : BaseScope
+    sealed class LocalScope : BaseScope
     {
-        public VariableScope(IDictionary<String, Object> parent)
+        public LocalScope(IDictionary<String, Object> parent)
             : base(new Dictionary<String, Object>(), parent)
         {
         }

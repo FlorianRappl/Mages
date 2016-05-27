@@ -9,7 +9,7 @@
     /// <summary>
     /// Represents the walker to gather symbol information.
     /// </summary>
-    public class SymbolTreeWalker : ITreeWalker
+    public sealed class SymbolTreeWalker : ITreeWalker
     {
         #region Fields
 
