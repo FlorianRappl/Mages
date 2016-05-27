@@ -362,7 +362,7 @@
                 var target = _obj.Content;
                 var parameters = arguments.Select(m => m.GetType()).ToArray();
                 var flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.OptionalParamBinding | BindingFlags.InvokeMethod;
-                var method = Type.DefaultBinder.SelectMethod(flags, _methods, parameters, null) ?? FindMethod(arguments, parameters);
+                var method = Type.DefaultBinder.SelectMethod(flags, _methods, parameters, null) ?? _methods.Find(arguments, parameters);
                 var result = default(Object);
 
                 if (method != null)
@@ -375,47 +375,9 @@
                     return _obj;
                 }
 
-                return result;
+                return Helpers.WrapObject(result);
             }
 
-            private MethodInfo FindMethod(Object[] arguments, Type[] currentParameters)
-            {
-                foreach (var method in _methods)
-                {
-                    var actualParameters = method.GetParameters();
-
-                    if (currentParameters.Length == actualParameters.Length)
-                    {
-                        var length = actualParameters.Length;
-                        var i = 0;
-
-                        while (i < length)
-                        {
-                            var source = currentParameters[i];
-                            var target = actualParameters[i].ParameterType;
-                            var converter = Helpers.Converters.FindConverter(source, target);
-                            var value = converter.Invoke(arguments[i]);
-
-                            if (value != null)
-                            {
-                                arguments[i] = value;
-                                i++;
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
-
-                        if (i == length)
-                        {
-                            return method;
-                        }
-                    }
-                }
-
-                return null;
-            }
         }
 
         #endregion

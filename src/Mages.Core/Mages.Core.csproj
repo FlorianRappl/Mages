@@ -118,6 +118,7 @@
     <Compile Include="Runtime\PrimeNumber.cs" />
     <Compile Include="Runtime\Range.cs" />
     <Compile Include="Runtime\Functions\StandardFunctions.cs" />
+    <Compile Include="Runtime\ReflectionExtensions.cs" />
     <Compile Include="Runtime\Stringify.cs" />
     <Compile Include="Runtime\UnaryOperators.cs" />
     <Compile Include="Runtime\LocalScope.cs" />
