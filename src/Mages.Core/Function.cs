@@ -1,6 +1,7 @@
 ﻿namespace Mages.Core
 {
-    using Runtime;
+    using Mages.Core.Runtime;
+    using Mages.Core.Runtime.Converters;
     using System;
 
     /// <summary>
@@ -32,7 +33,7 @@
                 if (argument != null)
                 {
                     var from = argument.GetType();
-                    var type = from.Narrow();
+                    var type = from.FindPrimitive();
                     var converter = Helpers.Converters.FindConverter(from, type);
                     arguments[i] = converter.Invoke(argument);
                 }

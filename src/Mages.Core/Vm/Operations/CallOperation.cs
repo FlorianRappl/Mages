@@ -1,5 +1,6 @@
 ﻿namespace Mages.Core.Vm.Operations
 {
+    using Mages.Core.Runtime;
     using System;
 
     /// <summary>
@@ -17,16 +18,21 @@
         public void Invoke(IExecutionContext context)
         {
             var result = default(Object);
-            var function = (Function)context.Pop();
+            var obj = context.Pop();
 
             for (var i = 0; i < _arguments.Length; i++)
             {
                 _arguments[i] = context.Pop();
             }
 
-            if (function != null)
+            if (obj != null)
             {
-                result = function.Invoke(_arguments);
+                var function = obj as Function;
+
+                if (function != null)
+                {
+                    result = function.Invoke(_arguments);
+                }
             }
 
             context.Push(result);

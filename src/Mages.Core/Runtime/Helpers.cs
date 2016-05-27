@@ -35,11 +35,6 @@
             return result;
         }
 
-        public static Type Narrow(this Type type)
-        {
-            return Converters.FindPrimitiveOf(type);
-        }
-
         public static Function WrapFunction(Delegate func)
         {
             return WrapFunction(func.Method, func.Target);
@@ -49,7 +44,7 @@
         {
             var parameterConverters = method.GetParameters().Select(m => Converters.FindConverter(m.ParameterType)).ToArray();
             var returnType = method.ReturnType;
-            var returnConverter = Converters.FindConverter(returnType, returnType.Narrow());
+            var returnConverter = Converters.FindConverter(returnType, returnType.FindPrimitive());
             return new Function(args =>
             {
                 if (args.Length >= parameterConverters.Length)
@@ -70,7 +65,7 @@
         public static Object WrapObject(Object value)
         {
             var type = value.GetType();
-            var primitive = Converters.FindPrimitiveOf(type);
+            var primitive = type.FindPrimitive();
             var converter = Converters.FindConverter(type, primitive);
             return converter.Invoke(value);
         }

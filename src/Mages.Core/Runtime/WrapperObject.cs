@@ -1,5 +1,6 @@
 ﻿namespace Mages.Core.Runtime
 {
+    using Mages.Core.Runtime.Converters;
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -275,7 +276,7 @@
                     return _obj;
                 }
 
-                return Convert(value, value.GetType().Narrow());
+                return Convert(value, value.GetType().FindPrimitive());
             }
         }
 
