@@ -33,6 +33,15 @@
             return null;
         }
 
+        public static void Setter(this IDictionary<String, Object> obj, Object[] arguments, Object value)
+        {
+            if (arguments.Length > 0)
+            {
+                var name = Stringify.This(arguments[0]);
+                obj.SetProperty(name, value);
+            }
+        }
+
         public static void SetProperty(this IDictionary<String, Object> obj, String name, Object value)
         {
             obj[name] = value;

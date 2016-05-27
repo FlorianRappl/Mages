@@ -113,52 +113,93 @@
         public void SetMatrixEntryWithValidValueAndSingleIndexAfterCreatingIt()
         {
             var scope = Test("A = [1,2;3,4]; A(1) = 0.0", 0.0);
-            var obj = scope["A"] as Double[,];
+            var mat = scope["A"] as Double[,];
 
-            Assert.IsNotNull(obj);
-            Assert.AreEqual(1.0, obj[0, 0]);
-            Assert.AreEqual(0.0, obj[0, 1]);
-            Assert.AreEqual(3.0, obj[1, 0]);
-            Assert.AreEqual(4.0, obj[1, 1]);
+            Assert.IsNotNull(mat);
+            Assert.AreEqual(1.0, mat[0, 0]);
+            Assert.AreEqual(0.0, mat[0, 1]);
+            Assert.AreEqual(3.0, mat[1, 0]);
+            Assert.AreEqual(4.0, mat[1, 1]);
         }
 
         [Test]
         public void SetMatrixEntryWithValidValueAfterCreatingIt()
         {
             var scope = Test("A = [1,2;3,4]; A(1,1) = 0.0", 0.0);
-            var obj = scope["A"] as Double[,];
+            var mat = scope["A"] as Double[,];
 
-            Assert.IsNotNull(obj);
-            Assert.AreEqual(1.0, obj[0, 0]);
-            Assert.AreEqual(2.0, obj[0, 1]);
-            Assert.AreEqual(3.0, obj[1, 0]);
-            Assert.AreEqual(0.0, obj[1, 1]);
+            Assert.IsNotNull(mat);
+            Assert.AreEqual(1.0, mat[0, 0]);
+            Assert.AreEqual(2.0, mat[0, 1]);
+            Assert.AreEqual(3.0, mat[1, 0]);
+            Assert.AreEqual(0.0, mat[1, 1]);
         }
 
         [Test]
         public void SetMatrixEntryWithInvalidValueAfterCreatingIt()
         {
             var scope = Test("A = [1,2;3,4]; A(1,1) = \"hi there\"; A(0,0)", 1.0);
-            var obj = scope["A"] as Double[,];
+            var mat = scope["A"] as Double[,];
 
-            Assert.IsNotNull(obj);
-            Assert.AreEqual(1.0, obj[0, 0]);
-            Assert.AreEqual(2.0, obj[0, 1]);
-            Assert.AreEqual(3.0, obj[1, 0]);
-            Assert.AreEqual(Double.NaN, obj[1, 1]);
+            Assert.IsNotNull(mat);
+            Assert.AreEqual(1.0, mat[0, 0]);
+            Assert.AreEqual(2.0, mat[0, 1]);
+            Assert.AreEqual(3.0, mat[1, 0]);
+            Assert.AreEqual(Double.NaN, mat[1, 1]);
         }
 
         [Test]
         public void SetMatrixEntryWithConvertedStringValueAfterCreatingIt()
         {
             var scope = Test("A = [1,2;3,4]; A(1,1) = \"23\"; A(1, 0)", 3.0);
-            var obj = scope["A"] as Double[,];
+            var mat = scope["A"] as Double[,];
+
+            Assert.IsNotNull(mat);
+            Assert.AreEqual(1.0, mat[0, 0]);
+            Assert.AreEqual(2.0, mat[0, 1]);
+            Assert.AreEqual(3.0, mat[1, 0]);
+            Assert.AreEqual(23.0, mat[1, 1]);
+        }
+
+        [Test]
+        public void SetObjectWithValueAfterCreatingIt()
+        {
+            var scope = Test("A = new {}; A(\"a\") = 5", 5.0);
+            var obj = scope["A"] as IDictionary<String, Object>;
 
             Assert.IsNotNull(obj);
-            Assert.AreEqual(1.0, obj[0, 0]);
-            Assert.AreEqual(2.0, obj[0, 1]);
-            Assert.AreEqual(3.0, obj[1, 0]);
-            Assert.AreEqual(23.0, obj[1, 1]);
+            Assert.AreEqual(5.0, obj["a"]);
+        }
+
+        [Test]
+        public void ModifyObjectWithValueAfterCreatingIt()
+        {
+            var scope = Test("A = new { a: 0 }; A(\"a\") = \"test\"; A(\"b\") = 17.3", 17.3);
+            var obj = scope["A"] as IDictionary<String, Object>;
+
+            Assert.IsNotNull(obj);
+            Assert.AreEqual("test", obj["a"]);
+            Assert.AreEqual(17.3, obj["b"]);
+        }
+
+        [Test]
+        public void SetObjectWithNumericIndexAfterCreatingIt()
+        {
+            var scope = Test("A = new { }; A(2) = 17.3", 17.3);
+            var obj = scope["A"] as IDictionary<String, Object>;
+
+            Assert.IsNotNull(obj);
+            Assert.AreEqual(17.3, obj["2"]);
+        }
+
+        [Test]
+        public void SetObjectWithBooleanIndexAfterCreatingIt()
+        {
+            var scope = Test("A = new { }; A(true) = 17.3", 17.3);
+            var obj = scope["A"] as IDictionary<String, Object>;
+
+            Assert.IsNotNull(obj);
+            Assert.AreEqual(17.3, obj["true"]);
         }
 
         private IDictionary<String, Object> Test(String sourceCode, Double expected, Double tolerance = 0.0)
