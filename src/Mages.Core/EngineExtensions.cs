@@ -56,5 +56,29 @@
         {
             engine.Globals[name] = Helpers.WrapObject(value);
         }
+
+        /// <summary>
+        /// Adds or replaces a type represented as the MAGES primitive. This exposes all static
+        /// methods and its constructors via the given name.
+        /// </summary>
+        /// <typeparam name="T">The type to expose.</typeparam>
+        /// <param name="engine">The engine.</param>
+        /// <param name="name">The name of the constant to add or replace.</param>
+        public static void SetStatic<T>(this Engine engine, String name)
+        {
+            engine.SetStatic(name, typeof(T));
+        }
+
+        /// <summary>
+        /// Adds or replaces a type represented as the MAGES primitive. This exposes all static
+        /// methods and its constructors via the given name.
+        /// </summary>
+        /// <param name="engine">The engine.</param>
+        /// <param name="name">The name of the constant to add or replace.</param>
+        /// <param name="type">The type to expose.</param>
+        public static void SetStatic(this Engine engine, String name, Type type)
+        {
+            engine.Globals[name] = Helpers.Expose(type);
+        }
     }
 }
