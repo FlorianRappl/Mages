@@ -151,6 +151,7 @@
     <Compile Include="Vm\ExecutionContext.cs" />
     <Compile Include="Vm\IExecutionContext.cs" />
     <Compile Include="Vm\IOperation.cs" />
+    <Compile Include="Vm\Operations\AddsOperation.cs" />
     <Compile Include="Vm\Operations\ArgOperation.cs" />
     <Compile Include="Vm\Operations\GetcOperation.cs" />
     <Compile Include="Vm\Operations\ConstOperation.cs" />

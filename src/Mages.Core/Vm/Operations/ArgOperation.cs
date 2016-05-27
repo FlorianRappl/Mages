@@ -1,6 +1,5 @@
 ﻿namespace Mages.Core.Vm.Operations
 {
-    using Mages.Core.Runtime;
     using System;
 
     /// <summary>
@@ -21,7 +20,7 @@
         {
             var parameters = (Object[])context.Pop();
             var value = parameters.Length > _index ? parameters[_index] : null;
-            context.Scope.SetProperty(_name, value);
+            context.Scope.Add(_name, value);
             context.Push(parameters);
         }
     }

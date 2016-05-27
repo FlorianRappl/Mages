@@ -58,6 +58,7 @@
 
         private readonly List<IOperation> _operations;
         private Boolean _assigning;
+        private Boolean _declaring;
 
         #endregion
 
@@ -71,6 +72,7 @@
         {
             _operations = operations;
             _assigning = false;
+            _declaring = false;
         }
 
         #endregion
@@ -92,7 +94,9 @@
 
         void ITreeWalker.Visit(VarStatement statement)
         {
+            _declaring = true;
             statement.Assignment.Accept(this);
+            _declaring = false;
         }
 
         void ITreeWalker.Visit(EmptyExpression expression)
@@ -299,7 +303,14 @@
 
             if (_assigning)
             {
-                _operations.Add(new SetsOperation(name));
+                if (_declaring)
+                {
+                    _operations.Add(new AddsOperation(name));
+                }
+                else
+                {
+                    _operations.Add(new SetsOperation(name));
+                }
             }
             else
             {

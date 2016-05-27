@@ -6,8 +6,8 @@
 
     abstract class BaseScope : IDictionary<String, Object>
     {
-        private readonly IDictionary<String, Object> _scope;
-        private readonly IDictionary<String, Object> _parent;
+        protected readonly IDictionary<String, Object> _scope;
+        protected readonly IDictionary<String, Object> _parent;
 
         public BaseScope(IDictionary<String, Object> scope, IDictionary<String, Object> parent)
         {
@@ -23,7 +23,7 @@
         public Object this[String key]
         {
             get { return _scope[key]; }
-            set { _scope[key] = value; }
+            set { SetValue(key, value); }
         }
 
         public Int32 Count
@@ -94,6 +94,8 @@
         {
             return _scope.TryGetValue(key, out value) || _parent.TryGetValue(key, out value);
         }
+
+        protected abstract void SetValue(String key, Object value);
 
         IEnumerator IEnumerable.GetEnumerator()
         {

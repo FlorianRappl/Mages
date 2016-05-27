@@ -10,5 +10,10 @@
             : base(scope ?? new Dictionary<String, Object>(), new Dictionary<String, Object>(Global.Mapping))
         {
         }
+
+        protected override void SetValue(String key, Object value)
+        {
+            _scope[key] = value;
+        }
     }
 }

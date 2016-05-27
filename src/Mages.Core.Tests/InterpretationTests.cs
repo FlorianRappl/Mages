@@ -218,6 +218,15 @@
             Assert.AreEqual(0, scope.Count);
         }
 
+        [Test]
+        public void FunctionGlobalAssignmentChangesScope()
+        {
+            var scope = Test("(x => { y = 5; x + y })(2)", 7.0);
+
+            Assert.AreEqual(1, scope.Count);
+            Assert.AreEqual(5.0, scope["y"]);
+        }
+
         private IDictionary<String, Object> Test(String sourceCode, Double expected, Double tolerance = 0.0)
         {
             var engine = new Engine();

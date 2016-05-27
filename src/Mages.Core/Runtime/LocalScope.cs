@@ -9,5 +9,17 @@
             : base(new Dictionary<String, Object>(), parent)
         {
         }
+
+        protected override void SetValue(String key, Object value)
+        {
+            if (_scope.ContainsKey(key))
+            {
+                _scope[key] = value;
+            }
+            else
+            {
+                _parent[key] = value;
+            }
+        }
     }
 }
