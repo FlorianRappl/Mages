@@ -22,7 +22,7 @@
 
         public override Object Invoke(Double[,] matrix)
         {
-            return (Double)(matrix.GetRows() * matrix.GetColumns());
+            return (Double)(matrix.GetCount());
         }
 
         public override Object Invoke(Function function)

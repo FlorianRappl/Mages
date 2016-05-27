@@ -251,6 +251,31 @@
             Assert.AreEqual("two", list[2]);
         }
 
+        [Test]
+        public void GlobalPropertyTestSetPropertyShouldWork()
+        {
+            var engine = new Engine();
+            var pt = new PropertyTest();
+            engine.SetConstant("prop", pt);
+
+            engine.Interpret("prop.test = \"Hi!\"");
+
+            Assert.AreEqual("Hi!", pt.test);
+        }
+
+        [Test]
+        public void GlobalPropertyTestGetPropertyShouldWork()
+        {
+            var engine = new Engine();
+            var pt = new PropertyTest();
+            pt.test = "Ho!";
+            engine.SetConstant("prop", pt);
+
+            var result = engine.Interpret("prop.test");
+
+            Assert.AreEqual("Ho!", result);
+        }
+
         sealed class Point
         {
             public Double x;
@@ -261,6 +286,11 @@
         {
             public Int32 col;
             public UInt16 row;
+        }
+
+        sealed class PropertyTest
+        {
+            public String test { get; set; }
         }
     }
 }

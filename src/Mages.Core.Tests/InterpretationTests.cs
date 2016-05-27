@@ -210,6 +210,14 @@
             Assert.AreEqual(0, scope.Count);
         }
 
+        [Test]
+        public void FunctionLocalVariableRemainsLocalAndDoesNotRequireTrailingSemicolon()
+        {
+            var scope = Test("((x, y) => { var z = 5; x + y + z })(2, 3)", 10.0);
+
+            Assert.AreEqual(0, scope.Count);
+        }
+
         private IDictionary<String, Object> Test(String sourceCode, Double expected, Double tolerance = 0.0)
         {
             var engine = new Engine();

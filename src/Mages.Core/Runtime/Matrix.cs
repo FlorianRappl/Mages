@@ -15,6 +15,11 @@
             return matrix.GetLength(1);
         }
 
+        public static Int32 GetCount(this Double[,] matrix)
+        {
+            return matrix.GetLength(0) * matrix.GetLength(1);
+        }
+
         public static Boolean TryGetIndices(this Double[,] matrix, Object[] arguments, out Int32 i, out Int32 j)
         {
             var rows = matrix.GetRows();
