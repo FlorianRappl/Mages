@@ -102,7 +102,7 @@
             var value2 = (ConstantExpression)property2.Value;
 
             Assert.AreEqual("two", name2.Name);
-            Assert.AreEqual(0.0, (Double)value2.Value);
+            Assert.AreEqual(false, (Boolean)value2.Value);
 
             var name3 = (IdentifierExpression)property3.Name;
             var value3 = (BinaryExpression.Multiply)property3.Value;

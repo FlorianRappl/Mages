@@ -111,7 +111,7 @@
         internal sealed class BooleanConstant : ConstantExpression
         {
             public BooleanConstant(Boolean value, ITextRange range)
-                : base(value ? 1.0 : 0.0, range.Start, range.End)
+                : base(value, range.Start, range.End)
             {
             }
         }
