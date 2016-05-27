@@ -1,6 +1,7 @@
 ﻿namespace Mages.Core.Tests
 {
     using Mages.Core.Ast.Expressions;
+    using Mages.Core.Ast.Statements;
     using NUnit.Framework;
 
     [TestFixture]
@@ -16,7 +17,11 @@
             var fx = (FunctionExpression)result;
             Assert.AreEqual(0, fx.Parameters.Expressions.Length);
 
-            Assert.IsInstanceOf<ObjectExpression>(fx.Body);
+            Assert.IsInstanceOf<SimpleStatement>(fx.Body);
+
+            var body = (SimpleStatement)fx.Body;
+
+            Assert.IsInstanceOf<ObjectExpression>(body.Expression);
         }
 
         [Test]
@@ -29,9 +34,13 @@
             var fx = (FunctionExpression)result;
 
             Assert.AreEqual(0, fx.Parameters.Expressions.Length);
-            Assert.IsInstanceOf<BinaryExpression.Multiply>(fx.Body);
 
-            var multiply = (BinaryExpression)fx.Body;
+            Assert.IsInstanceOf<SimpleStatement>(fx.Body);
+
+            var body = (SimpleStatement)fx.Body;
+            Assert.IsInstanceOf<BinaryExpression.Multiply>(body.Expression);
+
+            var multiply = (BinaryExpression)body.Expression;
 
             Assert.IsInstanceOf<ConstantExpression>(multiply.LValue);
             Assert.IsInstanceOf<ConstantExpression>(multiply.RValue);
@@ -51,7 +60,10 @@
             var x = (VariableExpression)fx.Parameters.Expressions[0];
             Assert.AreEqual("x", x.Name);
 
-            Assert.IsInstanceOf<ObjectExpression>(fx.Body);
+            Assert.IsInstanceOf<SimpleStatement>(fx.Body);
+
+            var body = (SimpleStatement)fx.Body;
+            Assert.IsInstanceOf<ObjectExpression>(body.Expression);
         }
 
         [Test]
@@ -71,7 +83,10 @@
             var y = (VariableExpression)fx.Parameters.Expressions[1];
             Assert.AreEqual("y", y.Name);
 
-            Assert.IsInstanceOf<ObjectExpression>(fx.Body);
+            Assert.IsInstanceOf<SimpleStatement>(fx.Body);
+
+            var body = (SimpleStatement)fx.Body;
+            Assert.IsInstanceOf<ObjectExpression>(body.Expression);
         }
 
         [Test]
@@ -94,7 +109,10 @@
             var abc = (VariableExpression)fx.Parameters.Expressions[2];
             Assert.AreEqual("abc", abc.Name);
 
-            Assert.IsInstanceOf<ObjectExpression>(fx.Body);
+            Assert.IsInstanceOf<SimpleStatement>(fx.Body);
+
+            var body = (SimpleStatement)fx.Body;
+            Assert.IsInstanceOf<ObjectExpression>(body.Expression);
         }
 
         [Test]
@@ -111,7 +129,10 @@
             var underscore = (VariableExpression)fx.Parameters.Expressions[0];
             Assert.AreEqual("_", underscore.Name);
 
-            Assert.IsInstanceOf<ObjectExpression>(fx.Body);
+            Assert.IsInstanceOf<SimpleStatement>(fx.Body);
+
+            var body = (SimpleStatement)fx.Body;
+            Assert.IsInstanceOf<ObjectExpression>(body.Expression);
         }
     }
 }

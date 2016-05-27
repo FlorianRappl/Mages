@@ -9,7 +9,7 @@
 
         private readonly AbstractScope _scope;
         private readonly ParameterExpression _parameters;
-        private readonly IExpression _body;
+        private readonly IStatement _body;
 
         #endregion
 
@@ -18,7 +18,7 @@
         /// <summary>
         /// Creates a new function expression.
         /// </summary>
-        public FunctionExpression(AbstractScope scope, ParameterExpression parameters, IExpression body)
+        public FunctionExpression(AbstractScope scope, ParameterExpression parameters, IStatement body)
             : base(parameters.Start, parameters.End)
         {
             _scope = scope;
@@ -49,7 +49,7 @@
         /// <summary>
         /// Gets the body to use.
         /// </summary>
-        public IExpression Body
+        public IStatement Body
         {
             get { return _body; }
         }

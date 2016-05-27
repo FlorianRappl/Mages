@@ -103,8 +103,19 @@
 
         private FunctionExpression ParseFunction(ParameterExpression parameters, IEnumerator<IToken> tokens)
         {
+            var body = default(IStatement);
             _scopes.PushNew();
-            var body = ParseAssignment(tokens);
+
+            if (tokens.Current.Type == TokenType.OpenScope)
+            {
+                body = ParseBlockStatement(tokens);
+            }
+            else
+            {
+                var expr = ParseAssignment(tokens);
+                body = new SimpleStatement(expr, expr.End);
+            }
+
             var scope = _scopes.PopCurrent();
             return new FunctionExpression(scope, parameters, body);
         }
