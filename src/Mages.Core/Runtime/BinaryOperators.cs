@@ -57,6 +57,8 @@
                 Binary<Double[,], Double[,]>(args, Matrix.And) ??
                 Binary<Double[,], Double>(args, Matrix.And) ??
                 Binary<Double, Double[,]>(args, (y, x) => x.And(y)) ??
+                Binary<Double[,], Boolean>(args, (x, y) => x.And(y.ToNumber())) ??
+                Binary<Boolean, Double[,]>(args, (y, x) => x.And(y.ToNumber())) ??
                 (args[0].ToBoolean() && args[1].ToBoolean());
         }
 
@@ -67,6 +69,8 @@
                 Binary<Double[,], Double[,]>(args, Matrix.Or) ??
                 Binary<Double[,], Double>(args, Matrix.Or) ??
                 Binary<Double, Double[,]>(args, (y, x) => x.Or(y)) ??
+                Binary<Double[,], Boolean>(args, (x, y) => x.Or(y.ToNumber())) ??
+                Binary<Boolean, Double[,]>(args, (y, x) => x.Or(y.ToNumber())) ??
                 (args[0].ToBoolean() || args[1].ToBoolean());
         }
 
@@ -77,6 +81,8 @@
                 Binary<Double[,], Double[,]>(args, Matrix.AreEqual) ??
                 Binary<Double[,], Double>(args, Matrix.AreEqual) ??
                 Binary<Double, Double[,]>(args, (y, x) => x.AreEqual(y)) ??
+                Binary<Double[,], Boolean>(args, (x, y) => x.AreEqual(y.ToNumber())) ??
+                Binary<Boolean, Double[,]>(args, (y, x) => x.AreEqual(y.ToNumber())) ??
                 Binary<Object, Object>(args, (x, y) => Object.ReferenceEquals(x, y));
         }
 
@@ -87,6 +93,8 @@
                 Binary<Double[,], Double[,]>(args, Matrix.AreNotEqual) ??
                 Binary<Double[,], Double>(args, Matrix.AreNotEqual) ??
                 Binary<Double, Double[,]>(args, (y, x) => x.AreNotEqual(y)) ??
+                Binary<Double[,], Boolean>(args, (x, y) => x.AreNotEqual(y.ToNumber())) ??
+                Binary<Boolean, Double[,]>(args, (y, x) => x.AreNotEqual(y.ToNumber())) ??
                 Binary<Object, Object>(args, (x, y) => !Object.ReferenceEquals(x, y));
         }
 
@@ -95,7 +103,7 @@
             return Binary<Double, Double>(args, (x, y) => x > y) ??
                 Binary<Double[,], Double[,]>(args, Matrix.IsGreaterThan) ??
                 Binary<Double[,], Double>(args, Matrix.IsGreaterThan) ??
-                Binary<Double, Double[,]>(args, (y, x) => x.IsGreaterThan(y)) ??
+                Binary<Double, Double[,]>(args, (y, x) => x.IsLessThan(y)) ??
                 (args[0].ToNumber() > args[1].ToNumber());
         }
 
@@ -104,7 +112,7 @@
             return Binary<Double, Double>(args, (x, y) => x >= y) ??
                 Binary<Double[,], Double[,]>(args, Matrix.IsGreaterOrEqual) ??
                 Binary<Double[,], Double>(args, Matrix.IsGreaterOrEqual) ??
-                Binary<Double, Double[,]>(args, (y, x) => x.IsGreaterOrEqual(y)) ??
+                Binary<Double, Double[,]>(args, (y, x) => x.IsLessOrEqual(y)) ??
                 (args[0].ToNumber() >= args[1].ToNumber());
         }
 
@@ -113,7 +121,7 @@
             return Binary<Double, Double>(args, (x, y) => x < y) ??
                 Binary<Double[,], Double[,]>(args, Matrix.IsLessThan) ??
                 Binary<Double[,], Double>(args, Matrix.IsLessThan) ??
-                Binary<Double, Double[,]>(args, (y, x) => x.IsLessThan(y)) ??
+                Binary<Double, Double[,]>(args, (y, x) => x.IsGreaterThan(y)) ??
                 (args[0].ToNumber() < args[1].ToNumber());
         }
 
@@ -122,7 +130,7 @@
             return Binary<Double, Double>(args, (x, y) => x <= y) ??
                 Binary<Double[,], Double[,]>(args, Matrix.IsLessOrEqual) ??
                 Binary<Double[,], Double>(args, Matrix.IsLessOrEqual) ??
-                Binary<Double, Double[,]>(args, (y, x) => x.IsLessOrEqual(y)) ??
+                Binary<Double, Double[,]>(args, (y, x) => x.IsGreaterOrEqual(y)) ??
                 (args[0].ToNumber() <= args[1].ToNumber());
         }
 

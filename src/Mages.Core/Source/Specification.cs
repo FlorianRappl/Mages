@@ -55,17 +55,6 @@
         }
 
         /// <summary>
-        /// Determines if the given character is a alphanumeric character (0-9a-zA-z).
-        /// </summary>
-        /// <param name="character">The character to examine.</param>
-        /// <returns>The result of the test.</returns>
-        [DebuggerStepThrough]
-        public static Boolean IsAlphanumericAscii(this Int32 character)
-        {
-            return IsDigit(character) || IsUppercaseAscii(character) || IsLowercaseAscii(character);
-        }
-
-        /// <summary>
         /// Determines if the given character is a hexadecimal (0-9a-fA-F).
         /// </summary>
         /// <param name="character">The character to examine.</param>
@@ -74,29 +63,6 @@
         public static Boolean IsHex(this Int32 character)
         {
             return IsDigit(character) || (character >= 0x41 && character <= 0x46) || (character >= 0x61 && character <= 0x66);
-        }
-
-        /// <summary>
-        /// Gets if the character is actually a non-ascii character.
-        /// </summary>
-        /// <param name="character">The character to examine.</param>
-        /// <returns>The result of the test.</returns>
-        [DebuggerStepThrough]
-        public static Boolean IsNonAscii(this Int32 character)
-        {
-            return character >= 0x80;
-        }
-
-        /// <summary>
-        /// Gets if the character is actually a non-printable (special) character.
-        /// </summary>
-        /// <param name="character">The character to examine.</param>
-        /// <returns>The result of the test.</returns>
-        [DebuggerStepThrough]
-        public static Boolean IsNonPrintable(this Int32 character)
-        {
-            return (character >= 0x0 && character <= 0x8) || (character >= 0xe && character <= 0x1f) || 
-                (character >= 0x7f && character <= 0x9f);
         }
 
         /// <summary>

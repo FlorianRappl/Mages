@@ -105,10 +105,38 @@
         }
 
         [Test]
+        public void BinaryAndWithMatrixAndDoubleYieldsMatrix()
+        {
+            var result = Eval("[1,0;0,0] && 1");
+            CollectionAssert.AreEquivalent(new Double[,] { { 1.0, 0.0 }, { 0.0, 0.0 } }, (Double[,])result);
+        }
+
+        [Test]
+        public void BinaryAndWithMatrixAndBooleanYieldsMatrix()
+        {
+            var result = Eval("[1,0;0,0] && true");
+            CollectionAssert.AreEquivalent(new Double[,] { { 1.0, 0.0 }, { 0.0, 0.0 } }, (Double[,])result);
+        }
+
+        [Test]
         public void BinaryOrWithMatricesYieldsMatrix()
         {
             var result = Eval("[1,0;0,0] || [1,1;1,0]");
             CollectionAssert.AreEquivalent(new Double[,] { { 1.0, 1.0 }, { 1.0, 0.0 } }, (Double[,])result);
+        }
+
+        [Test]
+        public void BinaryEqWithMatrixAndDoubleYieldsMatrix()
+        {
+            var result = Eval("[1,2;3,4] == 3");
+            CollectionAssert.AreEquivalent(new Double[,] { { 0.0, 0.0 }, { 1.0, 0.0 } }, (Double[,])result);
+        }
+
+        [Test]
+        public void BinaryEqWithMatricesYieldsMatrix()
+        {
+            var result = Eval("[1,2;3,4] == [2,3;4,4]");
+            CollectionAssert.AreEquivalent(new Double[,] { { 0.0, 0.0 }, { 0.0, 1.0 } }, (Double[,])result);
         }
 
         [Test]
@@ -123,6 +151,62 @@
         {
             var result = Eval("2 ~= 3");
             Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void BinaryNeqWithMatricesYieldsMatrix()
+        {
+            var result = Eval("[1,2;3,4] ~= [2,3;4,4]");
+            CollectionAssert.AreEquivalent(new Double[,] { { 1.0, 1.0 }, { 1.0, 0.0 } }, (Double[,])result);
+        }
+
+        [Test]
+        public void BinaryGeqWithMatricesYieldsMatrix()
+        {
+            var result = Eval("[1,2;3,4] >= [2,3;4,4]");
+            CollectionAssert.AreEquivalent(new Double[,] { { 0.0, 0.0 }, { 0.0, 1.0 } }, (Double[,])result);
+        }
+
+        [Test]
+        public void BinaryGtWithMatricesYieldsMatrix()
+        {
+            var result = Eval("[1,2;3,4] > [2,3;4,4]");
+            CollectionAssert.AreEquivalent(new Double[,] { { 0.0, 0.0 }, { 0.0, 0.0 } }, (Double[,])result);
+        }
+
+        [Test]
+        public void BinaryLtWithMatricesYieldsMatrix()
+        {
+            var result = Eval("[1,2;3,4] < [2,3;4,4]");
+            CollectionAssert.AreEquivalent(new Double[,] { { 1.0, 1.0 }, { 1.0, 0.0 } }, (Double[,])result);
+        }
+
+        [Test]
+        public void BinaryLtWithDoubleAndMatrixYieldsMatrix()
+        {
+            var result = Eval("3 < [2,3;4,4]");
+            CollectionAssert.AreEquivalent(new Double[,] { { 0.0, 0.0 }, { 1.0, 1.0 } }, (Double[,])result);
+        }
+
+        [Test]
+        public void BinaryGtWithDoubleAndMatrixYieldsMatrix()
+        {
+            var result = Eval("4 > [2,3;4,4]");
+            CollectionAssert.AreEquivalent(new Double[,] { { 1.0, 1.0 }, { 0.0, 0.0 } }, (Double[,])result);
+        }
+
+        [Test]
+        public void BinaryGeqWithDoubleAndMatrixYieldsMatrix()
+        {
+            var result = Eval("4 >= [2,3;4,4]");
+            CollectionAssert.AreEquivalent(new Double[,] { { 1.0, 1.0 }, { 1.0, 1.0 } }, (Double[,])result);
+        }
+
+        [Test]
+        public void BinaryNeqWithMatrixAndDoubleYieldsMatrix()
+        {
+            var result = Eval("[1,2;3,4] ~= 3");
+            CollectionAssert.AreEquivalent(new Double[,] { { 1.0, 1.0 }, { 0.0, 1.0 } }, (Double[,])result);
         }
 
         [Test]
