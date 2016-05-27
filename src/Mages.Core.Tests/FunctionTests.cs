@@ -172,6 +172,55 @@
             Assert.IsNull(result);
         }
 
+        [Test]
+        public void CallMatrixWithSingleIntegerArgumentYieldsValue()
+        {
+            var result = Eval("[1,2,3;4,5,6](4)");
+            Assert.AreEqual(5.0, result);
+        }
+
+        [Test]
+        public void CallMatrixWithTwoIntegerArgumentsYieldsValue()
+        {
+            var result = Eval("[1,2,3;4,5,6](1,1)");
+            Assert.AreEqual(5.0, result);
+        }
+
+        [Test]
+        public void CallMatrixWithSingleOutOfBoundsArgumentYieldsNothing()
+        {
+            var result = Eval("[1,2,3;4,5,6](9)");
+            Assert.IsNull(result);
+        }
+
+        [Test]
+        public void CallMatrixWithSecondOutOfBoundsArgumentYieldsNothing()
+        {
+            var result = Eval("[1,2,3;4,5,6](1,3)");
+            Assert.IsNull(result);
+        }
+
+        [Test]
+        public void CallMatrixWithFirstOutOfBoundsArgumentYieldsNothing()
+        {
+            var result = Eval("[1,2,3;4,5,6](3,1)");
+            Assert.IsNull(result);
+        }
+
+        [Test]
+        public void CallMatrixWithStringArgumentYieldsNothing()
+        {
+            var result = Eval("[1,2,3;4,5,6](\"0\")");
+            Assert.IsNull(result);
+        }
+
+        [Test]
+        public void CallMatrixWithBooleanArgumentYieldsNothing()
+        {
+            var result = Eval("[1,2,3;4,5,6](true)");
+            Assert.IsNull(result);
+        }
+
         private static Object Eval(String source)
         {
             var engine = new Engine();
