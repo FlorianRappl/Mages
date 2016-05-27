@@ -265,6 +265,139 @@
             Assert.IsNull(result);
         }
 
+        [Test]
+        public void NotWithBooleanIsOpposite()
+        {
+            var result = Eval("~false");
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void NotWithNullIsTrue()
+        {
+            var result = Eval("~null");
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void NotWithDoubleIsFalseIfNotZero()
+        {
+            var result = Eval("~0.1");
+            Assert.AreEqual(false, result);
+        }
+
+        [Test]
+        public void NotWithDoubleIsTrueIfZero()
+        {
+            var result = Eval("~0.0");
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void NotWithEmptyStringIsTrue()
+        {
+            var result = Eval("~\"\"");
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void NotWithNonEmptyStringIsFalse()
+        {
+            var result = Eval("~\"Foo\"");
+            Assert.AreEqual(false, result);
+        }
+
+        [Test]
+        public void NotWithFunctionIsFalse()
+        {
+            var result = Eval("~(() => 5)");
+            Assert.AreEqual(false, result);
+        }
+
+        [Test]
+        public void NotWithMatrixIsLogicMatrix()
+        {
+            var result = Eval("~[0, 1; 4, 7]");
+            CollectionAssert.AreEquivalent(new Double[,] { { 1.0, 0.0 }, { 0.0, 0.0 } }, (Double[,])result);
+        }
+
+        [Test]
+        public void PositiveWithMatrixIsIdentity()
+        {
+            var result = Eval("+[0, 1; 4, 7]");
+            CollectionAssert.AreEquivalent(new Double[,] { { 0.0, 1.0 }, { 4.0, 7.0 } }, (Double[,])result);
+        }
+
+        [Test]
+        public void PositiveWithBooleanConvertsToNumber()
+        {
+            var result = Eval("+true");
+            Assert.AreEqual(1.0, result);
+        }
+
+        [Test]
+        public void PositiveWithStringConvertsToNumber()
+        {
+            var result = Eval("+\"123\"");
+            Assert.AreEqual(123.0, result);
+        }
+
+        [Test]
+        public void PositiveWithStringIsNaNIfNoNumber()
+        {
+            var result = Eval("+\"foo\"");
+            Assert.AreEqual(Double.NaN, result);
+        }
+
+        [Test]
+        public void PositiveWithObjectIsNaN()
+        {
+            var result = Eval("+new {}");
+            Assert.AreEqual(Double.NaN, result);
+        }
+
+        [Test]
+        public void PositiveWithFunctionIsNaN()
+        {
+            var result = Eval("+(() => 5)");
+            Assert.AreEqual(Double.NaN, result);
+        }
+
+        [Test]
+        public void PositiveWithNullIsNaN()
+        {
+            var result = Eval("+null");
+            Assert.AreEqual(Double.NaN, result);
+        }
+
+        [Test]
+        public void AbsWithNullIsNaN()
+        {
+            var result = Eval("abs(null)");
+            Assert.AreEqual(Double.NaN, result);
+        }
+
+        [Test]
+        public void AbsWithStringTriesToUseNumber()
+        {
+            var result = Eval("abs(\"-199\")");
+            Assert.AreEqual(199.0, result);
+        }
+
+        [Test]
+        public void AbsWithInvalidStringIsNaN()
+        {
+            var result = Eval("abs(\"baz\")");
+            Assert.AreEqual(Double.NaN, result);
+        }
+
+        [Test]
+        public void AbsWithMatrixReturnsL2Norm()
+        {
+            var result = Eval("abs([2,2;2,2])");
+            Assert.AreEqual(4.0, result);
+        }
+
         private static Object Eval(String source)
         {
             var engine = new Engine();
