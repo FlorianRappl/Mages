@@ -116,6 +116,62 @@
             Assert.AreEqual(9.0, result);
         }
 
+        [Test]
+        public void CallStringWithValidIndexYieldsStringWithSingleCharacter()
+        {
+            var result = Eval("\"test\"(2)");
+            Assert.AreEqual("s", result);
+        }
+
+        [Test]
+        public void CallStringWithIndexOutOfRangeYieldsNothing()
+        {
+            var result = Eval("\"test\"(4)");
+            Assert.IsNull(result);
+        }
+
+        [Test]
+        public void CallStringWithInvalidIndexYieldsNothing()
+        {
+            var result = Eval("\"test\"(\"1\")");
+            Assert.IsNull(result);
+        }
+
+        [Test]
+        public void CallStringWithNegativeIndexYieldsNothing()
+        {
+            var result = Eval("\"test\"(-1)");
+            Assert.IsNull(result);
+        }
+
+        [Test]
+        public void CallObjectWithValidNameYieldsValue()
+        {
+            var result = Eval("new { a: 29 }(\"a\")");
+            Assert.AreEqual(29.0, result);
+        }
+
+        [Test]
+        public void CallObjectWithUnknownNameYieldsNothing()
+        {
+            var result = Eval("new { a: 29 }(\"b\")");
+            Assert.IsNull(result);
+        }
+
+        [Test]
+        public void CallObjectWithWithNonStringYieldsValue()
+        {
+            var result = Eval("new { \"2\": 29 }(2)");
+            Assert.AreEqual(29.0, result);
+        }
+
+        [Test]
+        public void CallEmptyObjectWithUnknownNameYieldsNothing()
+        {
+            var result = Eval("new { }(\"Test\")");
+            Assert.IsNull(result);
+        }
+
         private static Object Eval(String source)
         {
             var engine = new Engine();
