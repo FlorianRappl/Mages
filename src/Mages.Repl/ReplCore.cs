@@ -13,9 +13,9 @@
         {
             _interactivity = interactivity;
             _engine = new Engine();
-            HelpFunction.AddTo(_engine, interactivity);
-            ProcessObject.AddTo(_engine, interactivity);
-            SpawnFunction.AddTo(_engine, interactivity);
+            HelpFunction.AddTo(_engine);
+            ProcessObject.AddTo(_engine);
+            SpawnFunction.AddTo(_engine);
         }
 
         public void Run()

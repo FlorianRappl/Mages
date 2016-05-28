@@ -8,7 +8,7 @@
 
     sealed class SpawnFunction
     {
-        internal static void AddTo(Engine engine, IInteractivity interactivity)
+        internal static void AddTo(Engine engine)
         {
             engine.SetFunction("spawn", SpawnFunction.Invoke);
         }
