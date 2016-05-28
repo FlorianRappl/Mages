@@ -1,6 +1,9 @@
 ﻿namespace Mages.Core.Runtime
 {
+    using Mages.Core.Runtime.Proxies;
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
 
     static class ReflectionExtensions
@@ -42,6 +45,48 @@
             }
 
             return null;
+        }
+
+        public static Dictionary<String, BaseProxy> GetStaticProxies(this Type type, WrapperObject target)
+        {
+            var proxies = new Dictionary<String, BaseProxy>();
+            var ctors = type.GetConstructors();
+
+            if (ctors.Length > 0)
+            {
+                proxies.Add("create", new ConstructorProxy(target, ctors));
+            }
+
+            return proxies;
+        }
+
+        public static Dictionary<String, BaseProxy> GetMemberProxies(this Type type, WrapperObject target)
+        {
+            var proxies = new Dictionary<String, BaseProxy>();
+            var fields = type.GetFields();
+            var properties = type.GetProperties();
+            var methods = type.GetMethods();
+
+            foreach (var field in fields)
+            {
+                proxies.Add(field.Name, new FieldProxy(target, field));
+            }
+
+            foreach (var property in properties)
+            {
+                if (property.GetIndexParameters().Length == 0)
+                {
+                    proxies.Add(property.Name, new PropertyProxy(target, property));
+                }
+            }
+
+            foreach (var method in methods.Where(m => !m.IsSpecialName).GroupBy(m => m.Name))
+            {
+                var overloads = method.ToArray();
+                proxies.Add(method.Key, new MethodProxy(target, overloads));
+            }
+
+            return proxies;
         }
     }
 }

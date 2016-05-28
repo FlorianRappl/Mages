@@ -7,7 +7,7 @@
     {
         private readonly List<TypeConverter> _converters = new List<TypeConverter>();
         private readonly Dictionary<Type, Dictionary<Type, Func<Object, Object>>> _cache = new Dictionary<Type, Dictionary<Type, Func<Object, Object>>>();
-        private readonly Func<Object, Object> _default = _ => _ != null ? _ as IDictionary<String, Object> ?? new WrapperObject(_) : _;
+        private readonly Func<Object, Object> _default = ConvertToObj;
         private readonly Func<Object, Object> _identity = _ => _;
 
         public TypeConverterMap()
@@ -40,6 +40,7 @@
 
             _converters.Add(TypeConverter.Create<IDictionary<String, Object>, String>(x => Stringify.This(x)));
             _converters.Add(TypeConverter.Create<IDictionary<String, Object>, Boolean>(x => x.ToBoolean()));
+            _converters.Add(TypeConverter.Create<IDictionary<String, Object>, Double>(x => x.ToNumber()));
 
             _converters.Add(TypeConverter.Create<Single, Double>(x => (Double)x));
             _converters.Add(TypeConverter.Create<Int16, Double>(x => (Double)x));
@@ -121,6 +122,12 @@
             }
 
             return mapping;
+        }
+
+        private static Object ConvertToObj(Object value)
+        {
+            return value as IDictionary<String, Object> ??
+                WrapperObject.CreateFor(value);
         }
     }
 }

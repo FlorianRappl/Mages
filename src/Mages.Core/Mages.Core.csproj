@@ -116,6 +116,11 @@
     <Compile Include="Runtime\Logic.cs" />
     <Compile Include="Runtime\Matrix.cs" />
     <Compile Include="Runtime\PrimeNumber.cs" />
+    <Compile Include="Runtime\Proxies\BaseProxy.cs" />
+    <Compile Include="Runtime\Proxies\ConstructorProxy.cs" />
+    <Compile Include="Runtime\Proxies\FieldProxy.cs" />
+    <Compile Include="Runtime\Proxies\MethodProxy.cs" />
+    <Compile Include="Runtime\Proxies\PropertyProxy.cs" />
     <Compile Include="Runtime\Range.cs" />
     <Compile Include="Runtime\Functions\StandardFunctions.cs" />
     <Compile Include="Runtime\ReflectionExtensions.cs" />

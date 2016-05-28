@@ -1,11 +1,9 @@
 ﻿namespace Mages.Core.Runtime
 {
-    using Mages.Core.Runtime.Converters;
+    using Mages.Core.Runtime.Proxies;
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
 
     /// <summary>
     /// Represents the object wrapper from MAGES.
@@ -15,23 +13,60 @@
         #region Fields
 
         private readonly Object _content;
-        private readonly Dictionary<String, Object> _extend;
-        private readonly Dictionary<String, BaseProxy> _proxy;
+        private readonly Type _type;
+        private readonly Dictionary<String, Object> _extends;
+        private readonly Dictionary<String, BaseProxy> _proxies;
 
         #endregion
 
         #region ctor
 
         /// <summary>
-        /// Creates a new wrapped object.
+        /// Creates a new wrapped instance object.
         /// </summary>
         /// <param name="content">The object to wrap.</param>
         public WrapperObject(Object content)
         {
             _content = content;
-            _extend = new Dictionary<String, Object>();
-            _proxy = new Dictionary<String, BaseProxy>();
-            GenerateProxies();
+            _type = content.GetType();
+            _extends = new Dictionary<String, Object>();
+            _proxies = _type.GetMemberProxies(this);
+        }
+
+        /// <summary>
+        /// Creates a new wrapped static object.
+        /// </summary>
+        /// <param name="type">The type to wrap.</param>
+        public WrapperObject(Type type)
+        {
+            _type = type;
+            _content = null;
+            _extends = new Dictionary<String, Object>();
+            _proxies = type.GetStaticProxies(this);
+        }
+
+        #endregion
+
+        #region Create
+
+        /// <summary>
+        /// Creates a wrapper object for the given value.
+        /// </summary>
+        /// <param name="value">The value to inspect.</param>
+        /// <returns>The wrapper or null dependent on the value.</returns>
+        public static WrapperObject CreateFor(Object value)
+        {
+            var result = default(WrapperObject);
+
+            if (value != null)
+            {
+                var type = value as Type;
+                result = type != null ? 
+                    new WrapperObject(type) : 
+                    new WrapperObject(value);
+            }
+
+            return result;
         }
 
         #endregion
@@ -39,11 +74,19 @@
         #region Properties
 
         /// <summary>
-        /// Gets the wrapped object (content).
+        /// Gets the wrapped object if instance bound.
         /// </summary>
         public Object Content
         {
             get { return _content; }
+        }
+
+        /// <summary>
+        /// Gets the type that is wrapped (instance or static).
+        /// </summary>
+        public Type Type
+        {
+            get { return _type; }
         }
 
         #endregion
@@ -73,7 +116,7 @@
         /// </summary>
         public Int32 Count
         {
-            get { return _extend.Count + _proxy.Count; }
+            get { return _extends.Count + _proxies.Count; }
         }
 
         Boolean ICollection<KeyValuePair<String, Object>>.IsReadOnly
@@ -86,7 +129,7 @@
         /// </summary>
         public ICollection<String> Keys
         {
-            get { return _extend.Keys; }
+            get { return _extends.Keys; }
         }
 
         /// <summary>
@@ -94,7 +137,7 @@
         /// </summary>
         public ICollection<Object> Values
         {
-            get { return _extend.Values; }
+            get { return _extends.Values; }
         }
 
         void ICollection<KeyValuePair<String, Object>>.Add(KeyValuePair<String, Object> item)
@@ -117,7 +160,7 @@
         /// </summary>
         public void Clear()
         {
-            _extend.Clear();
+            _extends.Clear();
         }
 
         /// <summary>
@@ -139,7 +182,7 @@
         /// <returns>True if the key is used, otherwise false.</returns>
         public Boolean ContainsKey(String key)
         {
-            return _proxy.ContainsKey(key) || _extend.ContainsKey(key);
+            return _proxies.ContainsKey(key) || _extends.ContainsKey(key);
         }
 
         void ICollection<KeyValuePair<String, Object>>.CopyTo(KeyValuePair<String, Object>[] array, Int32 arrayIndex)
@@ -152,7 +195,7 @@
         /// <returns>The extension's enumerator.</returns>
         public IEnumerator<KeyValuePair<String, Object>> GetEnumerator()
         {
-            return _extend.GetEnumerator();
+            return _extends.GetEnumerator();
         }
 
         Boolean ICollection<KeyValuePair<String, Object>>.Remove(KeyValuePair<String, Object> item)
@@ -167,7 +210,7 @@
         /// <returns>True if it could be removed, otherwise false.</returns>
         public Boolean Remove(String key)
         {
-            return _extend.Remove(key);
+            return _extends.Remove(key);
         }
 
         /// <summary>
@@ -180,13 +223,13 @@
         {
             var proxy = default(BaseProxy);
 
-            if (_proxy.TryGetValue(key, out proxy))
+            if (_proxies.TryGetValue(key, out proxy))
             {
                 value = proxy.Value;
                 return true;
             }
 
-            return _extend.TryGetValue(key, out value);
+            return _extends.TryGetValue(key, out value);
         }
 
         #endregion
@@ -197,187 +240,19 @@
         {
             var proxy = default(BaseProxy);
             
-            if (_proxy.TryGetValue(key, out proxy))
+            if (_proxies.TryGetValue(key, out proxy))
             {
                 proxy.Value = value;
             }
             else
             {
-                _extend[key] = value;
+                _extends[key] = value;
             }
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
-        }
-
-        private void GenerateProxies()
-        {
-            var type = _content.GetType();
-            var fields = type.GetFields();
-            var properties = type.GetProperties();
-            var methods = type.GetMethods();
-
-            foreach (var field in fields)
-            {
-                _proxy.Add(field.Name, new FieldProxy(this, field));
-            }
-
-            foreach (var property in properties)
-            {
-                if (property.GetIndexParameters().Length == 0)
-                {
-                    _proxy.Add(property.Name, new PropertyProxy(this, property));
-                }
-            }
-
-            foreach (var method in methods.Where(m => !m.IsSpecialName).GroupBy(m => m.Name))
-            {
-                var overloads = method.ToArray();
-                _proxy.Add(method.Key, new MethodProxy(this, overloads));
-            }
-        }
-
-        #endregion
-
-        #region Proxy classes
-
-        abstract class BaseProxy
-        {
-            protected readonly WrapperObject _obj;
-
-            public BaseProxy(WrapperObject obj)
-            {
-                _obj = obj;
-            }
-
-            public Object Value
-            {
-                get { return Convert(GetValue()); }
-                set { SetValue(value); }
-            }
-
-            protected abstract void SetValue(Object value);
-
-            protected abstract Object GetValue();
-
-            protected Object Convert(Object value, Type target)
-            {
-                var source = value.GetType();
-                var converter = Helpers.Converters.FindConverter(source, target);
-                return converter.Invoke(value);
-            }
-
-            private Object Convert(Object value)
-            {
-                if (Object.ReferenceEquals(value, _obj.Content))
-                {
-                    return _obj;
-                }
-
-                return Convert(value, value.GetType().FindPrimitive());
-            }
-        }
-
-        sealed class FieldProxy : BaseProxy
-        {
-            private readonly FieldInfo _field;
-
-            public FieldProxy(WrapperObject obj, FieldInfo field)
-                : base(obj)
-            {
-                _field = field;
-            }
-
-            protected override Object GetValue()
-            {
-                var target = _obj.Content;
-                return _field.GetValue(target);
-            }
-
-            protected override void SetValue(Object value)
-            {
-                var target = _obj.Content;
-                var result = Convert(value, _field.FieldType);
-                _field.SetValue(target, result);
-            }
-        }
-
-        sealed class PropertyProxy : BaseProxy
-        {
-            private readonly PropertyInfo _property;
-
-            public PropertyProxy(WrapperObject obj, PropertyInfo property)
-                : base(obj)
-            {
-                _property = property;
-            }
-
-            protected override Object GetValue()
-            {
-                if (_property.CanRead)
-                {
-                    var target = _obj.Content;
-                    return _property.GetValue(target, null);
-                }
-
-                return null;
-            }
-
-            protected override void SetValue(Object value)
-            {
-                if (_property.CanWrite)
-                {
-                    var target = _obj.Content;
-                    var result = Convert(value, _property.PropertyType);
-                    _property.SetValue(target, result, null);
-                }
-            }
-        }
-
-        sealed class MethodProxy : BaseProxy
-        {
-            private readonly MethodInfo[] _methods;
-            private readonly Function _proxy;
-
-            public MethodProxy(WrapperObject obj, MethodInfo[] methods)
-                : base(obj)
-            {
-                _methods = methods;
-                _proxy = new Function(Invoke);
-            }
-
-            protected override Object GetValue()
-            {
-                return _proxy;
-            }
-
-            protected override void SetValue(Object value)
-            {
-            }
-
-            private Object Invoke(Object[] arguments)
-            {
-                var target = _obj.Content;
-                var parameters = arguments.Select(m => m.GetType()).ToArray();
-                var flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.OptionalParamBinding | BindingFlags.InvokeMethod;
-                var method = Type.DefaultBinder.SelectMethod(flags, _methods, parameters, null) ?? _methods.Find(arguments, parameters);
-                var result = default(Object);
-
-                if (method != null)
-                {
-                    result = method.Invoke(target, arguments);
-                }
-
-                if (Object.ReferenceEquals(result, target))
-                {
-                    return _obj;
-                }
-
-                return Helpers.WrapObject(result);
-            }
-
         }
 
         #endregion

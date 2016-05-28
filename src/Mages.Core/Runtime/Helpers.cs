@@ -69,26 +69,7 @@
 
         public static Object Expose(Type type)
         {
-            var obj = new Dictionary<String, Object>();
-            var creators = type.GetConstructors();
-
-            if (creators.Length > 0)
-            {
-                obj["create"] = new Function(args =>
-                {
-                    var types = args.Select(m => m.GetType()).ToArray();
-                    var ctor = creators.Find(args, types) as ConstructorInfo;
-
-                    if (ctor != null)
-                    {
-                        return WrapObject(ctor.Invoke(args));
-                    }
-
-                    return null;
-                });
-            }
-
-            return obj;
+            return new WrapperObject(type);
         }
 
         public static Function WrapFunction(Delegate func)
