@@ -15,6 +15,7 @@
             _engine = new Engine();
             HelpFunction.AddTo(_engine, interactivity);
             ProcessObject.AddTo(_engine, interactivity);
+            SpawnFunction.AddTo(_engine, interactivity);
         }
 
         public void Run()
