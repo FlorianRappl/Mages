@@ -4,15 +4,15 @@
     using System.Linq;
     using System.Reflection;
 
-    sealed class MethodProxy : BaseProxy
+    sealed class IndexProxy : BaseProxy
     {
-        private readonly MethodInfo[] _methods;
+        private readonly PropertyInfo[] _properties;
         private readonly Function _proxy;
 
-        public MethodProxy(WrapperObject obj, MethodInfo[] methods)
+        public IndexProxy(WrapperObject obj, PropertyInfo[] properties)
             : base(obj)
         {
-            _methods = methods;
+            _properties = properties;
             _proxy = new Function(Invoke);
         }
 
@@ -28,8 +28,7 @@
         private Object Invoke(Object[] arguments)
         {
             var parameters = arguments.Select(m => m.GetType()).ToArray();
-            var flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.OptionalParamBinding | BindingFlags.InvokeMethod;
-            var method = Type.DefaultBinder.SelectMethod(flags, _methods, parameters, null) ?? _methods.Find(arguments, parameters);
+            var method = _properties.Where(m => m.CanRead).Select(m => m.GetGetMethod()).Find(arguments, parameters);
             var result = default(Object);
 
             if (method != null)

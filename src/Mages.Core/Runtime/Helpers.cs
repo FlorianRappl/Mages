@@ -80,8 +80,6 @@
         public static Function WrapFunction(MethodInfo method, Object target)
         {
             var parameterConverters = method.GetParameters().Select(m => Converters.FindConverter(m.ParameterType)).ToArray();
-            var returnType = method.ReturnType;
-            var returnConverter = Converters.FindConverter(returnType, returnType.FindPrimitive());
             return new Function(args =>
             {
                 if (args.Length >= parameterConverters.Length)
@@ -91,8 +89,7 @@
                         args[i] = parameterConverters[i].Invoke(args[i]);
                     }
 
-                    var result = method.Invoke(target, args);
-                    return returnConverter.Invoke(result);
+                    return method.Call(target, args);
                 }
 
                 return null;

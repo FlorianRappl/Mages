@@ -32,7 +32,7 @@
 
             if (ctor != null)
             {
-                return Helpers.WrapObject(ctor.Invoke(arguments));
+                return ctor.Call(arguments);
             }
 
             return null;

@@ -8,7 +8,51 @@
 
     static class ReflectionExtensions
     {
-        public static MethodBase Find(this MethodBase[] methods, Object[] arguments, Type[] currentParameters)
+        public static Object Call(this MethodBase method, Object target, Object[] arguments)
+        {
+            try
+            {
+                return Helpers.WrapObject(method.Invoke(target, arguments));
+            }
+            catch (TargetInvocationException ex)
+            {
+                throw ex.InnerException;
+            }
+        }
+
+        public static Object Call(this ConstructorInfo ctor, Object[] arguments)
+        {
+            try
+            {
+                return Helpers.WrapObject(ctor.Invoke(arguments));
+            } 
+            catch (TargetInvocationException ex)
+            {
+                throw ex.InnerException;
+            }
+        }
+
+        public static Object Call(this MethodBase method, WrapperObject obj, Object[] arguments)
+        {
+            try
+            {
+                var target = obj.Content;
+                var result = method.Invoke(target, arguments);
+
+                if (Object.ReferenceEquals(result, target))
+                {
+                    return obj;
+                }
+
+                return Helpers.WrapObject(result);
+            }
+            catch (TargetInvocationException ex)
+            {
+                throw ex.InnerException;
+            }
+        }
+
+        public static MethodBase Find(this IEnumerable<MethodBase> methods, Object[] arguments, Type[] currentParameters)
         {
             foreach (var method in methods)
             {
@@ -54,7 +98,7 @@
 
             if (ctors.Length > 0)
             {
-                proxies.Add("create", new ConstructorProxy(target, ctors));
+                proxies["create"] = new ConstructorProxy(target, ctors);
             }
 
             return proxies;
@@ -63,6 +107,7 @@
         public static Dictionary<String, BaseProxy> GetMemberProxies(this Type type, WrapperObject target)
         {
             var proxies = new Dictionary<String, BaseProxy>();
+            var indices = new List<PropertyInfo>();
             var fields = type.GetFields();
             var properties = type.GetProperties();
             var methods = type.GetMethods();
@@ -78,6 +123,15 @@
                 {
                     proxies.Add(property.Name, new PropertyProxy(target, property));
                 }
+                else
+                {
+                    indices.Add(property);
+                }
+            }
+
+            if (indices.Count > 0)
+            {
+                proxies["at"] = new IndexProxy(target, indices.ToArray());
             }
 
             foreach (var method in methods.Where(m => !m.IsSpecialName).GroupBy(m => m.Name))

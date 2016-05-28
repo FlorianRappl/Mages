@@ -119,6 +119,7 @@
     <Compile Include="Runtime\Proxies\BaseProxy.cs" />
     <Compile Include="Runtime\Proxies\ConstructorProxy.cs" />
     <Compile Include="Runtime\Proxies\FieldProxy.cs" />
+    <Compile Include="Runtime\Proxies\IndexProxy.cs" />
     <Compile Include="Runtime\Proxies\MethodProxy.cs" />
     <Compile Include="Runtime\Proxies\PropertyProxy.cs" />
     <Compile Include="Runtime\Range.cs" />
