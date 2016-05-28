@@ -13,7 +13,7 @@
         {
             Parser = new ExpressionParser(),
             Scope = null,
-            IsEvalForbidden = false
+            IsEvalForbidden = false,
         };
 
         /// <summary>

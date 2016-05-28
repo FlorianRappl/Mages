@@ -198,16 +198,16 @@
         }
 
         [Test]
-        public void AddingAPointConstantShouldBeConvertedToAWrapperAndUnwrapped()
+        public void AddingAPointConstantShouldBeConvertedToAWrapper()
         {
             var engine = new Engine();
             var pt = new Point();
             engine.SetConstant("foo", pt);
 
-            var result = engine.Interpret("foo");
+            var result = engine.Interpret("foo") as WrapperObject;
 
-            Assert.IsInstanceOf<Point>(result);
-            Assert.AreEqual(pt, result);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(pt, result.Content);
         }
 
         [Test]
@@ -283,8 +283,11 @@
             var engine = new Engine();
             engine.SetStatic<List<Object>>().WithName("Array");
 
-            var result = engine.Interpret("x = Array.create(); x.add(\"one\");x.add(\"two\");x.insert(1, \"half\");x.add(x.count);x.add(x.at(0)); x");
-            var list = result as List<Object>;
+            var result = engine.Interpret("x = Array.create(); x.add(\"one\");x.add(\"two\");x.insert(1, \"half\");x.add(x.count);x.add(x.at(0)); x") as WrapperObject;
+
+            Assert.IsNotNull(result);
+
+            var list = result.Content as List<Object>;
 
             Assert.IsNotNull(list);
             Assert.AreEqual(5, list.Count);
