@@ -59,8 +59,8 @@
         }
 
         /// <summary>
-        /// Adds or replaces a type represented as the MAGES primitive. This exposes
-        /// all static methods and its constructors via the name of the type.
+        /// Exposes all static methods and the type's constructors in the object
+        /// that can be freely placed.
         /// </summary>
         /// <typeparam name="T">The type to expose.</typeparam>
         /// <param name="engine">The engine.</param>
@@ -70,8 +70,8 @@
         }
 
         /// <summary>
-        /// Adds or replaces a type represented as the MAGES primitive. This exposes
-        /// all static methods and its constructors via the name of the type.
+        /// Exposes all static methods and the type's constructors in the object
+        /// that can be freely placed.
         /// </summary>
         /// <param name="engine">The engine.</param>
         /// <param name="type">The type to expose.</param>
@@ -83,12 +83,13 @@
         }
 
         /// <summary>
-        /// Adds or replaces the names of the types from the assembly represented as
-        /// MAGES primitives.
+        /// Exposes all types in the assembly that satisfy the optional condition
+        /// in an object that can be freely placed.
         /// </summary>
         /// <param name="engine">The engine.</param>
         /// <param name="lib">The library containing the types to expose.</param>
-        public static IPlacement SetStatic(this Engine engine, Assembly lib)
+        /// <param name="shouldInclude">The optional inclusion checker.</param>
+        public static IPlacement SetStatic(this Engine engine, Assembly lib, Predicate<Type> shouldInclude = null)
         {
             var types = lib.GetTypes();
             var libNameParts = lib.GetName().Name.Split(new[] { '.', ',', ' ', '-', '+' }, StringSplitOptions.RemoveEmptyEntries);
@@ -97,16 +98,20 @@
 
             foreach (var type in types)
             {
-                var name = Helpers.FindName(obj.Keys, type);
-                var value = Helpers.Expose(type);
-                obj[name] = value;
+                if (shouldInclude == null || shouldInclude.Invoke(type))
+                {
+                    var name = Helpers.FindName(obj.Keys, type);
+                    var value = Helpers.Expose(type);
+                    obj[name] = value;
+                }
             }
 
             return new Placement(engine, libName, obj);
         }
 
         /// <summary>
-        /// Adds or replaces the types from the list represented as MAGES primitives.
+        /// Exposes all types in an object that can be freely placed. Here no
+        /// default name is given.
         /// </summary>
         /// <param name="engine">The engine.</param>
         /// <param name="types">The types to include.</param>
