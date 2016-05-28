@@ -19,12 +19,16 @@
         /// </summary>
         /// <typeparam name="T">The type of service to set.</typeparam>
         /// <param name="service">The service to register.</param>
-        public static void Register<T>(T service)
+        /// <returns>The optional lifetime controlling instance.</returns>
+        public static IDisposable Register<T>(T service)
         {
             if (service != null && !_container.Contains(service))
             {
                 _container.Add(service);
+                return new ServiceLifeTime(service);
             }
+
+            return null;
         }
 
         /// <summary>
@@ -91,6 +95,21 @@
                 {
                     yield return (T)service;
                 }
+            }
+        }
+
+        sealed class ServiceLifeTime : IDisposable
+        {
+            private Object _service;
+
+            public ServiceLifeTime(Object service)
+            {
+                _service = service;
+            }
+
+            public void Dispose()
+            {
+                Container.Unregister(_service);
             }
         }
     }

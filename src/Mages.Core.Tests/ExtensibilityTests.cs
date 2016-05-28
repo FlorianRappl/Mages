@@ -1,10 +1,13 @@
 ﻿namespace Mages.Core.Tests
 {
     using Mages.Core.Runtime;
+    using Mages.Core.Tests.Mocks;
     using NUnit.Framework;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
+    using System.Text;
 
     [TestFixture]
     public class ExtensibilityTests
@@ -290,6 +293,73 @@
             Assert.AreEqual("two", list[2]);
             Assert.AreEqual(3.0, list[3]);
             Assert.AreEqual("one", list[4]);
+        }
+
+        [Test]
+        public void ProvideStringBuilderWithoutNameShouldYieldNormalName()
+        {
+            var engine = new Engine();
+            engine.SetStatic<StringBuilder>();
+
+            var result = engine.Interpret("sb = StringBuilder.create(); sb.append(\"foo\").append(\"bar\"); sb.toString()");
+
+            Assert.AreEqual("foobar", result);
+        }
+
+        [Test]
+        public void ContainerLifeTimeIsControlledCorrectlyExplicitly()
+        {
+            var foo = new PropertyTest();
+
+            var lifetime = Container.Register(foo);
+            Assert.AreEqual(foo, Container.GetService<PropertyTest>());
+            lifetime.Dispose();
+            Assert.IsNull(Container.GetService<PropertyTest>());
+        }
+
+        [Test]
+        public void ContainerLifeTimeIsControlledCorrectlyImplicitly()
+        {
+            var foo = new PropertyTest();
+
+            using (Container.Register(foo))
+            {
+                Assert.AreEqual(foo, Container.GetService<PropertyTest>());
+            }
+
+            Assert.IsNull(Container.GetService<PropertyTest>());
+        }
+
+        [Test]
+        public void ContainerLifeTimeIsControlledCorrectlyExternally()
+        {
+            var foo = new PropertyTest();
+
+            Container.Register(foo);
+            Assert.AreEqual(foo, Container.GetService<PropertyTest>());
+            Container.Unregister(foo);
+            Assert.IsNull(Container.GetService<PropertyTest>());
+        }
+
+        [Test]
+        public void NamesAreTakenFromTheCustomNameSelector()
+        {
+            var engine = new Engine();
+            var service = new NameSelectorMock(member =>
+            {
+                if (member is Type) return "foo";
+                if (member is MethodInfo) return member.Name.ToUpper();
+                if (member is ConstructorInfo) return "New";
+                return member.Name;
+            });
+
+            using (Container.Register(service))
+            {
+                engine.SetStatic<StringBuilder>();
+                var result = engine.Interpret("sb = foo.New(); sb.APPEND(\"foo\").APPEND(\"bar\"); sb.TOSTRING()");
+
+                Assert.AreEqual("foobar", result);
+            }
         }
 
         sealed class Point

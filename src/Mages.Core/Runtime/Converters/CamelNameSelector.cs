@@ -48,11 +48,11 @@
                 if (str.Length > 1)
                 {
                     var words = str.Split(new [] { '-' }, StringSplitOptions.RemoveEmptyEntries);
-                    var result = words[0].ToLower();
+                    var result = String.Concat(words[0].Substring(0, 1).ToLowerInvariant(), words[0].Substring(1));
 
                     for (var i = 1; i < words.Length; i++)
                     {
-                        result = String.Concat(result, words[i].Substring(0, 1).ToUpper(), words[i].Substring(1));
+                        result = String.Concat(result, words[i].Substring(0, 1).ToUpperInvariant(), words[i].Substring(1));
                     }
 
                     return result;
