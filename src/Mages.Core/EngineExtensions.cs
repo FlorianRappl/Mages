@@ -59,6 +59,29 @@
 
         /// <summary>
         /// Adds or replaces a type represented as the MAGES primitive. This exposes all static
+        /// methods and its constructors via the name of the type.
+        /// </summary>
+        /// <typeparam name="T">The type to expose.</typeparam>
+        /// <param name="engine">The engine.</param>
+        public static void SetStatic<T>(this Engine engine)
+        {
+            engine.SetStatic(typeof(T));
+        }
+
+        /// <summary>
+        /// Adds or replaces a type represented as the MAGES primitive. This exposes all static
+        /// methods and its constructors via the name of the type.
+        /// </summary>
+        /// <param name="engine">The engine.</param>
+        /// <param name="type">The type to expose.</param>
+        public static void SetStatic(this Engine engine, Type type)
+        {
+            var name = Helpers.FindName(engine.Globals.Keys, type);
+            engine.SetStatic(name, type);
+        }
+
+        /// <summary>
+        /// Adds or replaces a type represented as the MAGES primitive. This exposes all static
         /// methods and its constructors via the given name.
         /// </summary>
         /// <typeparam name="T">The type to expose.</typeparam>

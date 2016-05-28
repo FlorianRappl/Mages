@@ -32,7 +32,7 @@
 
             if (ctor != null)
             {
-                return ctor.Call(arguments);
+                return ctor.Call(_obj, arguments);
             }
 
             return null;

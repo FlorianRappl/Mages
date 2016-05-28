@@ -72,6 +72,12 @@
             return new WrapperObject(type);
         }
 
+        public static String FindName(IEnumerable<String> names, MemberInfo member)
+        {
+            var selector = Container.GetService<INameSelector>(CamelNameSelector.Instance);
+            return selector.Select(names, member);
+        }
+
         public static Function WrapFunction(Delegate func)
         {
             return WrapFunction(func.Method, func.Target);
@@ -80,6 +86,7 @@
         public static Function WrapFunction(MethodInfo method, Object target)
         {
             var parameterConverters = method.GetParameters().Select(m => Converters.FindConverter(m.ParameterType)).ToArray();
+
             return new Function(args =>
             {
                 if (args.Length >= parameterConverters.Length)
@@ -107,6 +114,18 @@
             }
 
             return null;
+        }
+
+        public static Object Unwrap(Object value)
+        {
+            var wrapped = value as WrapperObject;
+
+            if (wrapped != null)
+            {
+                return wrapped.Content ?? wrapped.Type;
+            }
+
+            return value;
         }
     }
 }

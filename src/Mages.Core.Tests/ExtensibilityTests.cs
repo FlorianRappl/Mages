@@ -195,7 +195,7 @@
         }
 
         [Test]
-        public void AddingAPointConstantShouldBeConvertedToAWrapper()
+        public void AddingAPointConstantShouldBeConvertedToAWrapperAndUnwrapped()
         {
             var engine = new Engine();
             var pt = new Point();
@@ -203,10 +203,8 @@
 
             var result = engine.Interpret("foo");
 
-            Assert.IsInstanceOf<WrapperObject>(result);
-
-            var wrapper = (WrapperObject)result;
-            Assert.AreEqual(pt, wrapper.Content);
+            Assert.IsInstanceOf<Point>(result);
+            Assert.AreEqual(pt, result);
         }
 
         [Test]
@@ -242,7 +240,7 @@
             var list = new List<String>();
             engine.SetConstant("list", list);
 
-            var result = engine.Interpret("list.Add(\"one\");list.Add(\"two\");list.Insert(1, \"half\");list.Count");
+            var result = engine.Interpret("list.add(\"one\");list.add(\"two\");list.insert(1, \"half\");list.count");
 
             Assert.AreEqual(3.0, result);
             Assert.AreEqual(3, list.Count);
@@ -274,6 +272,24 @@
             var result = engine.Interpret("prop.test");
 
             Assert.AreEqual("Ho!", result);
+        }
+
+        [Test]
+        public void ProvideSimpleArrayClassShouldWork()
+        {
+            var engine = new Engine();
+            engine.SetStatic<List<Object>>("Array");
+
+            var result = engine.Interpret("x = Array.create(); x.add(\"one\");x.add(\"two\");x.insert(1, \"half\");x.add(x.count);x.add(x.at(0)); x");
+            var list = result as List<Object>;
+
+            Assert.IsNotNull(list);
+            Assert.AreEqual(5, list.Count);
+            Assert.AreEqual("one", list[0]);
+            Assert.AreEqual("half", list[1]);
+            Assert.AreEqual("two", list[2]);
+            Assert.AreEqual(3.0, list[3]);
+            Assert.AreEqual("one", list[4]);
         }
 
         sealed class Point

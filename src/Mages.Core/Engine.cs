@@ -110,7 +110,7 @@
             var operations = statements.MakeRunnable();
             var context = new ExecutionContext(operations, _scope);
             context.Execute();
-            return context.Pop();
+            return Helpers.Unwrap(context.Pop());
         }
 
         #endregion

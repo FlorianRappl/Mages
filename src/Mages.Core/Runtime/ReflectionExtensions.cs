@@ -1,5 +1,6 @@
 ﻿namespace Mages.Core.Runtime
 {
+    using Mages.Core.Runtime.Converters;
     using Mages.Core.Runtime.Proxies;
     using System;
     using System.Collections.Generic;
@@ -20,7 +21,7 @@
             }
         }
 
-        public static Object Call(this ConstructorInfo ctor, Object[] arguments)
+        public static Object Call(this ConstructorInfo ctor, WrapperObject obj, Object[] arguments)
         {
             try
             {
@@ -95,10 +96,12 @@
         {
             var proxies = new Dictionary<String, BaseProxy>();
             var ctors = type.GetConstructors();
+            var selector = Container.GetService<INameSelector>(CamelNameSelector.Instance);
 
             if (ctors.Length > 0)
             {
-                proxies["create"] = new ConstructorProxy(target, ctors);
+                var name = selector.Select(proxies.Keys, ctors[0]);
+                proxies[name] = new ConstructorProxy(target, ctors);
             }
 
             return proxies;
@@ -111,17 +114,20 @@
             var fields = type.GetFields();
             var properties = type.GetProperties();
             var methods = type.GetMethods();
+            var selector = Container.GetService<INameSelector>(CamelNameSelector.Instance);
 
             foreach (var field in fields)
             {
-                proxies.Add(field.Name, new FieldProxy(target, field));
+                var name = selector.Select(proxies.Keys, field);
+                proxies.Add(name, new FieldProxy(target, field));
             }
 
             foreach (var property in properties)
             {
                 if (property.GetIndexParameters().Length == 0)
                 {
-                    proxies.Add(property.Name, new PropertyProxy(target, property));
+                    var name = selector.Select(proxies.Keys, property);
+                    proxies.Add(name, new PropertyProxy(target, property));
                 }
                 else
                 {
@@ -131,13 +137,15 @@
 
             if (indices.Count > 0)
             {
-                proxies["at"] = new IndexProxy(target, indices.ToArray());
+                var name = selector.Select(proxies.Keys, indices[0]);
+                proxies[name] = new IndexProxy(target, indices.ToArray());
             }
 
             foreach (var method in methods.Where(m => !m.IsSpecialName).GroupBy(m => m.Name))
             {
                 var overloads = method.ToArray();
-                proxies.Add(method.Key, new MethodProxy(target, overloads));
+                var name = selector.Select(proxies.Keys, overloads[0]);
+                proxies.Add(name, new MethodProxy(target, overloads));
             }
 
             return proxies;

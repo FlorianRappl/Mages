@@ -84,6 +84,9 @@
     <Compile Include="Configuration.cs" />
     <Compile Include="EngineExtensions.cs" />
     <Compile Include="Function.cs" />
+    <Compile Include="Runtime\Container.cs" />
+    <Compile Include="Runtime\Converters\CamelNameSelector.cs" />
+    <Compile Include="Runtime\Converters\INameSelector.cs" />
     <Compile Include="ITextRange.cs" />
     <Compile Include="Keywords.cs" />
     <Compile Include="ParseError.cs" />
@@ -93,6 +96,7 @@
     <Compile Include="Runtime\BaseScope.cs" />
     <Compile Include="Runtime\BinaryOperators.cs" />
     <Compile Include="Runtime\Converters\ConverterExtensions.cs" />
+    <Compile Include="Runtime\Converters\StandardConverters.cs" />
     <Compile Include="Runtime\Converters\TypeCategories.cs" />
     <Compile Include="Runtime\Converters\TypeConverter.cs" />
     <Compile Include="Runtime\Converters\TypeConverterMap.cs" />
