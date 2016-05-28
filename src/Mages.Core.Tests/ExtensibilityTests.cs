@@ -281,7 +281,7 @@
         public void ProvideSimpleArrayClassShouldWork()
         {
             var engine = new Engine();
-            engine.SetStatic<List<Object>>("Array");
+            engine.SetStatic<List<Object>>().WithName("Array");
 
             var result = engine.Interpret("x = Array.create(); x.add(\"one\");x.add(\"two\");x.insert(1, \"half\");x.add(x.count);x.add(x.at(0)); x");
             var list = result as List<Object>;
@@ -299,7 +299,7 @@
         public void ProvideStringBuilderWithoutNameShouldYieldNormalName()
         {
             var engine = new Engine();
-            engine.SetStatic<StringBuilder>();
+            engine.SetStatic<StringBuilder>().WithDefaultName();
 
             var result = engine.Interpret("sb = StringBuilder.create(); sb.append(\"foo\").append(\"bar\"); sb.toString()");
 
@@ -355,11 +355,33 @@
 
             using (Container.Register(service))
             {
-                engine.SetStatic<StringBuilder>();
+                engine.SetStatic<StringBuilder>().WithDefaultName();
                 var result = engine.Interpret("sb = foo.New(); sb.APPEND(\"foo\").APPEND(\"bar\"); sb.TOSTRING()");
 
                 Assert.AreEqual("foobar", result);
             }
+        }
+
+        [Test]
+        public void ProvideMethodsFromStaticClassByScattering()
+        {
+            var engine = new Engine();
+            engine.SetStatic(typeof(Functions)).Scattered();
+
+            var result = engine.Interpret("foo() + bar()");
+
+            Assert.AreEqual("foo0bar1", result);
+        }
+
+        [Test]
+        public void ProvideMethodsFromStaticClassByNamespaceObject()
+        {
+            var engine = new Engine();
+            engine.SetStatic(typeof(Functions)).WithName("baz");
+
+            var result = engine.Interpret("baz.foo() + baz.bar()");
+
+            Assert.AreEqual("foo0bar1", result);
         }
 
         sealed class Point
@@ -377,6 +399,19 @@
         sealed class PropertyTest
         {
             public String test { get; set; }
+        }
+
+        static class Functions
+        {
+            public static String Foo()
+            {
+                return "foo0";
+            }
+
+            public static String Bar()
+            {
+                return "bar1";
+            }
         }
     }
 }

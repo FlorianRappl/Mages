@@ -67,7 +67,7 @@
             return result;
         }
 
-        public static Object Expose(Type type)
+        public static WrapperObject Expose(Type type)
         {
             return new WrapperObject(type);
         }

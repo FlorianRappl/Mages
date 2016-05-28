@@ -4,6 +4,7 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// Represents the object wrapper from MAGES.
@@ -195,7 +196,7 @@
         /// <returns>The extension's enumerator.</returns>
         public IEnumerator<KeyValuePair<String, Object>> GetEnumerator()
         {
-            return _extends.GetEnumerator();
+            return _extends.Concat(_proxies.Select(m => new KeyValuePair<String, Object>(m.Key, m.Value.Value))).GetEnumerator();
         }
 
         Boolean ICollection<KeyValuePair<String, Object>>.Remove(KeyValuePair<String, Object> item)

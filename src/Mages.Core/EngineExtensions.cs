@@ -2,6 +2,7 @@
 {
     using Mages.Core.Runtime;
     using System;
+    using System.Collections.Generic;
     using System.Reflection;
 
     /// <summary>
@@ -21,8 +22,8 @@
         }
 
         /// <summary>
-        /// Adds or replaces a function represented as a general delegate by wrapping it as
-        /// a function with the given name.
+        /// Adds or replaces a function represented as a general delegate by wrapping
+        /// it as a function with the given name.
         /// </summary>
         /// <param name="engine">The engine.</param>
         /// <param name="name">The name of the function to add or replace.</param>
@@ -33,8 +34,8 @@
         }
 
         /// <summary>
-        /// Adds or replaces a function represented as a reflected method info by wrapping it
-        /// as a function with the given name.
+        /// Adds or replaces a function represented as a reflected method info by
+        /// wrapping it as a function with the given name.
         /// </summary>
         /// <param name="engine">The engine.</param>
         /// <param name="name">The name of the function to add or replace.</param>
@@ -46,8 +47,8 @@
         }
 
         /// <summary>
-        /// Adds or replaces an object represented as the MAGES primitive. This is either directly
-        /// the given value or a wrapper around it.
+        /// Adds or replaces an object represented as the MAGES primitive. This is
+        /// either directly the given value or a wrapper around it.
         /// </summary>
         /// <param name="engine">The engine.</param>
         /// <param name="name">The name of the constant to add or replace.</param>
@@ -58,50 +59,106 @@
         }
 
         /// <summary>
-        /// Adds or replaces a type represented as the MAGES primitive. This exposes all static
-        /// methods and its constructors via the name of the type.
+        /// Adds or replaces a type represented as the MAGES primitive. This exposes
+        /// all static methods and its constructors via the name of the type.
         /// </summary>
         /// <typeparam name="T">The type to expose.</typeparam>
         /// <param name="engine">The engine.</param>
-        public static void SetStatic<T>(this Engine engine)
+        public static IPlacement SetStatic<T>(this Engine engine)
         {
-            engine.SetStatic(typeof(T));
+            return engine.SetStatic(typeof(T));
         }
 
         /// <summary>
-        /// Adds or replaces a type represented as the MAGES primitive. This exposes all static
-        /// methods and its constructors via the name of the type.
+        /// Adds or replaces a type represented as the MAGES primitive. This exposes
+        /// all static methods and its constructors via the name of the type.
         /// </summary>
         /// <param name="engine">The engine.</param>
         /// <param name="type">The type to expose.</param>
-        public static void SetStatic(this Engine engine, Type type)
+        public static IPlacement SetStatic(this Engine engine, Type type)
         {
             var name = Helpers.FindName(engine.Globals.Keys, type);
-            engine.SetStatic(name, type);
+            var obj = Helpers.Expose(type);
+            return new Placement(engine, name, obj);
         }
 
         /// <summary>
-        /// Adds or replaces a type represented as the MAGES primitive. This exposes all static
-        /// methods and its constructors via the given name.
+        /// Adds or replaces the names of the types from the assembly represented as
+        /// MAGES primitives.
         /// </summary>
-        /// <typeparam name="T">The type to expose.</typeparam>
         /// <param name="engine">The engine.</param>
-        /// <param name="name">The name of the constant to add or replace.</param>
-        public static void SetStatic<T>(this Engine engine, String name)
+        /// <param name="lib">The library containing the types to expose.</param>
+        public static IPlacement SetStatic(this Engine engine, Assembly lib)
         {
-            engine.SetStatic(name, typeof(T));
+            var types = lib.GetTypes();
+            var libNameParts = lib.GetName().Name.Split(new[] { '.', ',', ' ', '-', '+' }, StringSplitOptions.RemoveEmptyEntries);
+            var libName = String.Join(String.Empty, libNameParts);
+            var obj = new Dictionary<String, Object>();
+
+            foreach (var type in types)
+            {
+                var name = Helpers.FindName(obj.Keys, type);
+                var value = Helpers.Expose(type);
+                obj[name] = value;
+            }
+
+            return new Placement(engine, libName, obj);
         }
 
         /// <summary>
-        /// Adds or replaces a type represented as the MAGES primitive. This exposes all static
-        /// methods and its constructors via the given name.
+        /// Adds or replaces the types from the list represented as MAGES primitives.
         /// </summary>
         /// <param name="engine">The engine.</param>
-        /// <param name="name">The name of the constant to add or replace.</param>
-        /// <param name="type">The type to expose.</param>
-        public static void SetStatic(this Engine engine, String name, Type type)
+        /// <param name="types">The types to include.</param>
+        public static IPlacement SetStatic(this Engine engine, IEnumerable<Type> types)
         {
-            engine.Globals[name] = Helpers.Expose(type);
+            var obj = new Dictionary<String, Object>();
+
+            foreach (var type in types)
+            {
+                var name = Helpers.FindName(obj.Keys, type);
+                var value = Helpers.Expose(type);
+                obj[name] = value;
+            }
+
+            return new Placement(engine, null, obj);
+        }
+
+        sealed class Placement : IPlacement
+        {
+            private readonly Engine _engine;
+            private readonly String _name;
+            private readonly IDictionary<String, Object> _obj;
+
+            public Placement(Engine engine, String name, IDictionary<String, Object> obj)
+            {
+                _engine = engine;
+                _name = name;
+                _obj = obj;
+            }
+
+            public void WithName(String name)
+            {
+                if (String.IsNullOrEmpty(name))
+                {
+                    throw new ArgumentException("The given name has to be non-empty.", "name");
+                }
+
+                _engine.Globals[name] = _obj;
+            }
+
+            public void WithDefaultName()
+            {
+                WithName(_name);
+            }
+
+            public void Scattered()
+            {
+                foreach (var item in _obj)
+                {
+                    _engine.Globals[item.Key] = item.Value;
+                }
+            }
         }
     }
 }

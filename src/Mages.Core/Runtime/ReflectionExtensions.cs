@@ -96,13 +96,16 @@
         {
             var proxies = new Dictionary<String, BaseProxy>();
             var ctors = type.GetConstructors();
+            var flags = BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy;
+            var fields = type.GetFields(flags);
+            var properties = type.GetProperties(flags);
+            var methods = type.GetMethods(flags);
             var selector = Container.GetService<INameSelector>(CamelNameSelector.Instance);
 
-            if (ctors.Length > 0)
-            {
-                var name = selector.Select(proxies.Keys, ctors[0]);
-                proxies[name] = new ConstructorProxy(target, ctors);
-            }
+            fields.AddToProxy(target, proxies, selector);
+            properties.AddToProxy(target, proxies, selector);
+            methods.AddToProxy(target, proxies, selector);
+            ctors.AddToProxy(target, proxies, selector);
 
             return proxies;
         }
@@ -110,17 +113,39 @@
         public static Dictionary<String, BaseProxy> GetMemberProxies(this Type type, WrapperObject target)
         {
             var proxies = new Dictionary<String, BaseProxy>();
-            var indices = new List<PropertyInfo>();
             var fields = type.GetFields();
             var properties = type.GetProperties();
             var methods = type.GetMethods();
             var selector = Container.GetService<INameSelector>(CamelNameSelector.Instance);
 
+            fields.AddToProxy(target, proxies, selector);
+            properties.AddToProxy(target, proxies, selector);
+            methods.AddToProxy(target, proxies, selector);
+
+            return proxies;
+        }
+
+        private static void AddToProxy(this ConstructorInfo[] constructors, WrapperObject target, IDictionary<String, BaseProxy> proxies, INameSelector selector)
+        {
+            if (constructors.Length > 0)
+            {
+                var name = selector.Select(proxies.Keys, constructors[0]);
+                proxies[name] = new ConstructorProxy(target, constructors);
+            }
+        }
+
+        private static void AddToProxy(this FieldInfo[] fields, WrapperObject target, IDictionary<String, BaseProxy> proxies, INameSelector selector)
+        {
             foreach (var field in fields)
             {
                 var name = selector.Select(proxies.Keys, field);
                 proxies.Add(name, new FieldProxy(target, field));
             }
+        }
+
+        private static void AddToProxy(this PropertyInfo[] properties, WrapperObject target, IDictionary<String, BaseProxy> proxies, INameSelector selector)
+        {
+            var indices = new List<PropertyInfo>();
 
             foreach (var property in properties)
             {
@@ -140,15 +165,16 @@
                 var name = selector.Select(proxies.Keys, indices[0]);
                 proxies[name] = new IndexProxy(target, indices.ToArray());
             }
+        }
 
+        private static void AddToProxy(this MethodInfo[] methods, WrapperObject target, IDictionary<String, BaseProxy> proxies, INameSelector selector)
+        {
             foreach (var method in methods.Where(m => !m.IsSpecialName).GroupBy(m => m.Name))
             {
                 var overloads = method.ToArray();
                 var name = selector.Select(proxies.Keys, overloads[0]);
                 proxies.Add(name, new MethodProxy(target, overloads));
             }
-
-            return proxies;
         }
     }
 }
