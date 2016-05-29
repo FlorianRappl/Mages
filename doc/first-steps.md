@@ -155,10 +155,70 @@ What if a constant is not good enough? What if users should be able to create mu
 var engine = new Engine();
 var function = new Func<StringBuilder>(() => new StringBuilder());
 engine.SetFunction("createStringBuilder", function);
-var result = engine.Interpret("createStringBuilder().Append(\"Hello\").Append(\" \").AppendLine(\"World!\").ToString()"); // "Hello World!\n"
+var result = engine.Interpret("createStringBuilder().append(\"Hello\").append(\" \").appendLine(\"World!\").toString()"); // "Hello World!\n"
 ```
 
 In general such constructor functions are essential combined with features of MAGES such as the automatic wrapping of arbitrary objects. There is, however, an even better way to provide such constructor functions.
 
 ## Exposing .NET Types
 
+MAGES makes it easy to expose existing .NET types via the `SetStatic` extension method. Let's start with a simple example:
+
+```cs
+var engine = new Engine();
+engine.SetStatic<System.Text.StringBuilder>().WithDefaultName();
+var result = engine.Interpret("StringBuilder.create().append(\"foo\").appendLine("\bar\").toString()"); // "foobar\n"
+```
+
+Compared with the code above this seems rather straight forward and trivial. So what exactly is happening here? First, we are exposing the .NET type `System.Text.StringBuilder` with its default name. In contrast to the previously mentioned extension methods the `SetStatic` does not expose the result directly. Instead, we need to tell MAGES how to expose it. In this case we go for the standard way, which would be by its original name ("StringBuilder"). Two other ways also exist, which will be discussed later.
+
+By convention the constructors are exposed via the `create` method. From this point on the code is equivalent to the one above. Again the underlying .NET type (a `StringBuilder` instance) has been exposed. A legit question would be: Why are the names different?
+
+MAGES comes with the ability to expose .NET types in a API coherent manner. Therefore, every field / property / method / ... name is transformed by a centralized service, an implementation of the `INameSelector` interface. By default the `CamelNameSelector` is used, however, we could replace it if we want to. This name selector changes all .NET names from *PascalCase* to *camcelCase*.
+
+So let's expose something else - how about some kind of array?
+
+```cs
+var engine = new Engine();
+engine.SetStatic<System.Collections.Generic.List<System.Object>>().WithName("Array");
+var result = engine.Interpret("list = Array.create(); list.add(\"foo\"); list.add(2 + 5); list.insert(1, true); list.at(2)"); // 7
+```
+
+This time we've decided to expose the `List<Object>` type. However, the default name would be inpossible to access; if it would be legit at all. Instead, we've decided to give it a custom name - "Array". We can now use the static `Array` object to create (wrapped) instances of `List<Object>`. In this case we name the instance `list`. Finally everything behaves as we've seen before. There is just one new thing here: The `at` function does not exist as such on the .NET `List<Object>`.
+
+MAGES exposes .NET indexers via a convention called the `at` function. This convention, as with the others, can be changed by providing a custom `INameSelector` implementation.
+
+Finally, we can use the `SetStatic` extension method to expose whole collections of functions (or other objects). Let's say we want to expose some functions, e.g.,
+
+```cs
+static class MyMath
+{
+	public static Double Cot(Double x)
+	{
+		return Math.Cos(x) / Math.Sin(x);
+	}
+
+	public static Double Arccot(Double x)
+	{
+		return Math.Atan(1.0 / x);
+	}
+}
+```
+
+What we could do is (since the class above is `static` we cannot use it with generics, but fortunately there is an overload that accepts a `Type` argument)
+
+```cs
+var engine = new Engine();
+engine.SetStatic(typeof(MyMath)).WithName("mm");
+var result = engine.Interpret("mm.arccot(mm.cot(pi))"); // approx. 0
+```
+
+This, however, has essentially placed all these functions in a kind of "namespace" (as its a runtime object its not exactly a namespace of course, however, from the code's perspective it could be regarded as such). What if we want to expose all these functions *directly*, i.e., *globally*? Here the third option comes into play:
+
+```cs
+var engine = new Engine();
+engine.SetStatic(typeof(MyMath)).Scattered();
+var result = engine.Interpret("arccot(cot(1))"); // 1
+```
+
+Using `Scattered` the object is decomposed and inserted into the global API layer.

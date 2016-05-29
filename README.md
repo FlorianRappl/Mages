@@ -37,14 +37,23 @@ var func = engine.Interpret("(x, y) => x * y + 3 * sqrt(x)") as Mages.Core.Funct
 var result = func.Invoke(new Object[] { 4.0, 3.0 }); // 18.0
 ```
 
+Or even simpler (details are explained in the [getting started](doc/first-steps.md) document):
+
+```cs
+var func = engine.Interpret("(x, y) => x * y + 3 * sqrt(x)") as Mages.Core.Function;
+var result = func.Call(4, 3); // 18.0
+```
+
 These are just some of the more basic examples. More information can be found in the documentation.
 
 ### Documentation
 
 The documentation is given in form of Markdown documents being placed in the *doc* folder of this repository. The following links are worth checking out:
 
-* [Documentation of the MAGES syntax](doc/syntax.md)
+* [First steps](doc/first-steps.md)
+* [Syntax documentation](doc/syntax.md)
 * [Included functions](doc/functions.md)
+* [Type system](doc/types.md)
 * [Performance evaluations](doc/performance.md)
 * [Contribution guidelines](doc/contributing.md)
 
