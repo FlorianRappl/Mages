@@ -158,4 +158,7 @@ engine.SetFunction("createStringBuilder", function);
 var result = engine.Interpret("createStringBuilder().Append(\"Hello\").Append(\" \").AppendLine(\"World!\").ToString()"); // "Hello World!\n"
 ```
 
-In general such constructor functions are essential combined with features of MAGES such as the automatic wrapping of arbitrary objects.
+In general such constructor functions are essential combined with features of MAGES such as the automatic wrapping of arbitrary objects. There is, however, an even better way to provide such constructor functions.
+
+## Exposing .NET Types
+
