@@ -1,9 +1,12 @@
 ﻿namespace Mages.Core
 {
+    using Mages.Core.Ast;
+    using Mages.Core.Ast.Expressions;
     using Mages.Core.Runtime;
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+    using System.Linq;
 
     /// <summary>
     /// A collection of useful extensions for the engine.
@@ -127,6 +130,32 @@
             }
 
             return new Placement(engine, null, obj);
+        }
+
+        /// <summary>
+        /// Finds the missing symbols (if any) in the given source.
+        /// </summary>
+        /// <param name="engine">The engine.</param>
+        /// <param name="source">The source code to inspect.</param>
+        /// <returns>The variable expressions pointing to the missing symbols.</returns>
+        public static IEnumerable<VariableExpression> FindMissingSymbols(this Engine engine, String source)
+        {
+            var parser = engine.Parser;
+            var ast = parser.ParseStatements(source);
+            var symbols = ast.ToBlock().FindMissingSymbols();
+
+            for (var i = symbols.Count - 1; i >= 0; i--)
+            {
+                var symbol = symbols[i];
+                var name = symbol.Name;
+
+                if (engine.Scope.ContainsKey(name) || engine.Globals.ContainsKey(name))
+                {
+                    symbols.RemoveAt(i);
+                }
+            }
+
+            return symbols;
         }
 
         sealed class Placement : IPlacement
