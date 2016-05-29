@@ -223,16 +223,8 @@
                 for (var col = 0; col < cols; col++)
                 {
                     var value = values[row][col];
-                    var i = row;
-                    var j = col;
                     value.Accept(this);
-
-                    CallFunction(args =>
-                    {
-                        var matrix = (Double[,])args[1];
-                        matrix.SetValue(i, j, (Double)args[0]);
-                        return matrix;
-                    }, 2);
+                    _operations.Add(new InitMatOperation(row, col));
                 }
             }
         }

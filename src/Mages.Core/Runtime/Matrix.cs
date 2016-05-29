@@ -20,24 +20,24 @@
             return matrix.GetLength(0) * matrix.GetLength(1);
         }
 
-        public static Boolean TryGetIndices(this Double[,] matrix, Object[] arguments, out Int32 i, out Int32 j)
+        public static Boolean TryGetIndices(this Double[,] matrix, Object[] arguments, out Int32 row, out Int32 col)
         {
             var rows = matrix.GetRows();
             var cols = matrix.GetColumns();
             var n = 0;
-            i = -1;
-            j = -1;
+            row = -1;
+            col = -1;
 
             if (arguments.Length == 1 && arguments[0].TryGetIndex(out n))
             {
-                j = n % cols;
-                i = n / cols;
+                col = n % cols;
+                row = n / cols;
             }
-            else if (arguments.Length == 2 && arguments[0].TryGetIndex(out i) && arguments[1].TryGetIndex(out j))
+            else if (arguments.Length == 2 && arguments[0].TryGetIndex(out row) && arguments[1].TryGetIndex(out col))
             {
             }
 
-            return i >= 0 && j >= 0 && i < rows && j < cols;
+            return row >= 0 && col >= 0 && row < rows && col < cols;
         }
         
         public static Object Getter(this Double[,] matrix, Object[] arguments)
@@ -278,27 +278,27 @@
             return result;
         }
 
-        public static Double GetValue(this Double[,] matrix, Int32 i, Int32 j)
+        public static Double GetValue(this Double[,] matrix, Int32 row, Int32 col)
         {
             var rows = matrix.GetRows();
             var cols = matrix.GetColumns();
 
-            if (i >= 0 && i < rows && j >= 0 && j < cols)
+            if (row >= 0 && row < rows && col >= 0 && col < cols)
             {
-                return matrix[i, j];
+                return matrix[row, col];
             }
 
             return 0.0;
         }
 
-        public static void SetValue(this Double[,] matrix, Int32 i, Int32 j, Double value)
+        public static void SetValue(this Double[,] matrix, Int32 row, Int32 col, Double value)
         {
             var rows = matrix.GetRows();
             var cols = matrix.GetColumns();
 
-            if (i >= 0 && i < rows && j >= 0 && j < cols)
+            if (row >= 0 && row < rows && col >= 0 && col < cols)
             {
-                matrix[i, j] = value;
+                matrix[row, col] = value;
             }
         }
 

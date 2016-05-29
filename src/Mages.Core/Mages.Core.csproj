@@ -169,6 +169,7 @@
     <Compile Include="Vm\Operations\GetcOperation.cs" />
     <Compile Include="Vm\Operations\ConstOperation.cs" />
     <Compile Include="Vm\Operations\DecOperation.cs" />
+    <Compile Include="Vm\Operations\InitMatOperation.cs" />
     <Compile Include="Vm\Operations\NewFuncOperation.cs" />
     <Compile Include="Vm\Operations\GetpOperation.cs" />
     <Compile Include="Vm\Operations\IncOperation.cs" />
