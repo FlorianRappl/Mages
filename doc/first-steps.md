@@ -174,7 +174,7 @@ Compared with the code above this seems rather straight forward and trivial. So 
 
 By convention the constructors are exposed via the `create` method. From this point on the code is equivalent to the one above. Again the underlying .NET type (a `StringBuilder` instance) has been exposed. A legit question would be: Why are the names different?
 
-MAGES comes with the ability to expose .NET types in a API coherent manner. Therefore, every field / property / method / ... name is transformed by a centralized service, an implementation of the `INameSelector` interface. By default the `CamelNameSelector` is used, however, we could replace it if we want to. This name selector changes all .NET names from *PascalCase* to *camcelCase*.
+MAGES comes with the ability to expose .NET types in a API coherent manner. Therefore, every field / property / method / ... name is transformed by a centralized service, an implementation of the `INameSelector` interface. By default the `CamelNameSelector` is used, however, we could replace it if we want to. This name selector changes all .NET names from *PascalCase* to *camelCase*.
 
 So let's expose something else - how about some kind of array?
 
@@ -184,7 +184,7 @@ engine.SetStatic<System.Collections.Generic.List<System.Object>>().WithName("Arr
 var result = engine.Interpret("list = Array.create(); list.add(\"foo\"); list.add(2 + 5); list.insert(1, true); list.at(2)"); // 7
 ```
 
-This time we've decided to expose the `List<Object>` type. However, the default name would be inpossible to access; if it would be legit at all. Instead, we've decided to give it a custom name - "Array". We can now use the static `Array` object to create (wrapped) instances of `List<Object>`. In this case we name the instance `list`. Finally everything behaves as we've seen before. There is just one new thing here: The `at` function does not exist as such on the .NET `List<Object>`.
+This time we've decided to expose the `List<Object>` type. However, the default name would be impossible to access; if it would be legit at all. Instead, we've decided to give it a custom name - "Array". We can now use the static `Array` object to create (wrapped) instances of `List<Object>`. In this case we name the instance `list`. Finally everything behaves as we've seen before. There is just one new thing here: The `at` function does not exist as such on the .NET `List<Object>`.
 
 MAGES exposes .NET indexers via a convention called the `at` function. This convention, as with the others, can be changed by providing a custom `INameSelector` implementation.
 
