@@ -1,3 +1,12 @@
+# 0.4.0
+
+- Extended operators (binary and unary)
+- Improved VM for performance gain
+- Allow block statements in functions (#14)
+- Expose API via `SetStatic` (#13)
+- Include type functions (#12)
+- Provide more user documentation (#10)
+
 # 0.3.0
 
 - Mixed operations work now
