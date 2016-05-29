@@ -152,24 +152,16 @@
 
         void ITreeWalker.Visit(RangeExpression expression)
         {
-            var autoStep = expression.Step is EmptyExpression;
+            var hasStep = expression.Step is EmptyExpression == false;
 
-            if (!autoStep)
+            if (hasStep)
             {
                 expression.Step.Accept(this);
             }
 
             expression.To.Accept(this);
             expression.From.Accept(this);
-
-            if (autoStep)
-            {
-                CallFunction(args => Range.Create((Double)args[0], (Double)args[1]), 2);
-            }
-            else
-            {
-                CallFunction(args => Range.Create((Double)args[0], (Double)args[1], (Double)args[2]), 3);
-            }
+            _operations.Add(new RangeOperation(hasStep));
         }
 
         void ITreeWalker.Visit(ConditionalExpression expression)

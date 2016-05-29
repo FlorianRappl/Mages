@@ -6,7 +6,13 @@
     {
         public static Double[,] Create(Double from, Double to)
         {
-            var step = Math.Sign(to - from);
+            var step = Double.NaN;
+
+            if (!Double.IsNaN(from) && !Double.IsNaN(to))
+            {
+                step = Math.Sign(to - from);
+            }
+
             return Create(from, to, step);
         }
 
@@ -14,7 +20,7 @@
         {
             var count = (to - from) / step;
 
-            if (count < 0)
+            if (count < 0 || Double.IsNaN(count))
             {
                 count = 0;
             }
