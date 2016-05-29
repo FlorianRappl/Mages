@@ -39,7 +39,7 @@
                 }
             }
 
-            return Helpers.Unwrap(function.Invoke(arguments));
+            return function.Invoke(arguments);
         }
 
         /// <summary>
