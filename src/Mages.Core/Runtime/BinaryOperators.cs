@@ -9,7 +9,9 @@
         {
             return Binary<Double, Double>(args, (x, y) => x + y) ??
                 Binary<Double[,], Double[,]>(args, Matrix.Add) ??
-                Binary<String, String>(args, String.Concat);
+                Binary<String, String>(args, String.Concat) ??
+                Binary<Object, String>(args, (x, y) => String.Concat(Stringify.This(x), y)) ??
+                Binary<String, Object>(args, (x, y) => String.Concat(x, Stringify.This(y)));
         }
 
         public static Object Sub(Object[] args)

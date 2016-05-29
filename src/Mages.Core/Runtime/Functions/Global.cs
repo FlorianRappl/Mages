@@ -57,7 +57,8 @@
             { "length", StandardFunctions.Length },
             { "sum", StandardFunctions.Sum },
             { "any", LogicalFunctions.Any },
-            { "all", LogicalFunctions.All }
+            { "all", LogicalFunctions.All },
+            { "stringify", Stringify.Method },
         };
     }
 }

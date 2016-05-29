@@ -10,6 +10,11 @@
     public static class Stringify
     {
         /// <summary>
+        /// Contains the stringify function.
+        /// </summary>
+        public static readonly Function Method = new Function(args => This(args.Length > 0 ? args[0] : null));
+
+        /// <summary>
         /// Converts the number to a string.
         /// </summary>
         public static String This(Double value)

@@ -73,6 +73,7 @@
             {
                 var bval = value as Boolean?;
                 var sval = value as String;
+                var mval = value as Double[,];
 
                 if (bval.HasValue)
                 {
@@ -81,6 +82,10 @@
                 else if (sval != null)
                 {
                     return sval.ToNumber();
+                }
+                else if (mval != null)
+                {
+                    return mval.ToNumber();
                 }
             }
 
@@ -104,14 +109,14 @@
             return result;
         }
 
-        public static Object ToNumber(this Double[,] matrix)
+        public static Double ToNumber(this Double[,] matrix)
         {
             if (matrix.GetRows() == 1 && matrix.GetColumns() == 1)
             {
                 return matrix[0, 0];
             }
 
-            return null;
+            return Double.NaN;
         }
 
         public static Double[,] ToMatrix(this Double value)
