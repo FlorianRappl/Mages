@@ -1,5 +1,6 @@
 ﻿namespace Mages.Core.Runtime.Functions
 {
+    using Mages.Core.Runtime.Converters;
     using System;
 
     /// <summary>
@@ -26,5 +27,33 @@
         /// Wraps the Double.IsInfinity function.
         /// </summary>
         public static readonly Function IsInfty = new LogicalFunction(Double.IsInfinity).Invoke;
+
+        /// <summary>
+        /// Contains the any function.
+        /// </summary>
+        public static readonly Function Any = new Function(args =>
+        {
+            if (args.Length > 0)
+            {
+                var matrix = args[0] as Double[,];
+                return matrix != null ? matrix.AnyTrue() : args[0].ToBoolean();
+            }
+
+            return false;
+        });
+
+        /// <summary>
+        /// Contains the all function.
+        /// </summary>
+        public static readonly Function All = new Function(args =>
+        {
+            if (args.Length > 0)
+            {
+                var matrix = args[0] as Double[,];
+                return matrix != null ? matrix.AllTrue() : args[0].ToBoolean();
+            }
+
+            return false;
+        });
     }
 }

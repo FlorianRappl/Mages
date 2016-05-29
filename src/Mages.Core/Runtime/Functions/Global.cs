@@ -55,7 +55,9 @@
             { "throw", StandardFunctions.Throw },
             { "catch", StandardFunctions.Catch },
             { "length", StandardFunctions.Length },
-            { "sum", StandardFunctions.Sum }
+            { "sum", StandardFunctions.Sum },
+            { "any", LogicalFunctions.Any },
+            { "all", LogicalFunctions.All }
         };
     }
 }

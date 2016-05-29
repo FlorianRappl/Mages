@@ -52,7 +52,7 @@
 
         public static Object And(Object[] args)
         {
-            return Binary<Double, Double>(args, (x, y) => x.IsTrue() && y.IsTrue()) ??
+            return Binary<Double, Double>(args, (x, y) => x.ToBoolean() && y.ToBoolean()) ??
                 Binary<Boolean, Boolean>(args, (x, y) => x && y) ??
                 Binary<Double[,], Double[,]>(args, Matrix.And) ??
                 Binary<Double[,], Double>(args, Matrix.And) ??
@@ -64,7 +64,7 @@
 
         public static Object Or(Object[] args)
         {
-            return Binary<Double, Double>(args, (x, y) => x.IsTrue() || y.IsTrue()) ??
+            return Binary<Double, Double>(args, (x, y) => x.ToBoolean() || y.ToBoolean()) ??
                 Binary<Boolean, Boolean>(args, (x, y) => x || y) ??
                 Binary<Double[,], Double[,]>(args, Matrix.Or) ??
                 Binary<Double[,], Double>(args, Matrix.Or) ??

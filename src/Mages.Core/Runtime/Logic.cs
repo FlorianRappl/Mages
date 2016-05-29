@@ -1,20 +1,10 @@
 ﻿namespace Mages.Core.Runtime
 {
+    using Mages.Core.Runtime.Converters;
     using System;
-    using System.Collections.Generic;
 
     static class Logic
     {
-        public static Boolean IsTrue(this Double value)
-        {
-            return value != 0.0;
-        }
-
-        public static Boolean IsFalse(this Double value)
-        {
-            return value == 0.0;
-        }
-
         public static Boolean IsPrime(this Double value)
         {
             if (value.IsInteger())
@@ -28,6 +18,40 @@
         public static Boolean IsInteger(this Double value)
         {
             return Math.Truncate(value) == value;
+        }
+
+        public static Boolean AnyTrue(this Double[,] matrix)
+        {
+            var rows = matrix.GetRows();
+            var cols = matrix.GetColumns();
+            var res = false;
+
+            for (var i = 0; i < rows; i++)
+            {
+                for (var j = 0; !res && j < cols; j++)
+                {
+                    res = matrix[i, j].ToBoolean();
+                }
+            }
+
+            return res;
+        }
+
+        public static Boolean AllTrue(this Double[,] matrix)
+        {
+            var rows = matrix.GetRows();
+            var cols = matrix.GetColumns();
+            var res = true;
+
+            for (var i = 0; i < rows; i++)
+            {
+                for (var j = 0; res && j < cols; j++)
+                {
+                    res = matrix[i, j].ToBoolean();
+                }
+            }
+
+            return res;
         }
     }
 }

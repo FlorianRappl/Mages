@@ -45,7 +45,7 @@
 
         public static Boolean ToBoolean(this Double value)
         {
-            return value != 0.0;
+            return value != 0.0;;
         }
 
         public static Boolean ToBoolean(this String value)
@@ -55,15 +55,7 @@
 
         public static Boolean ToBoolean(this Double[,] matrix)
         {
-            foreach (var value in matrix)
-            {
-                if (value != 0.0)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return matrix.AnyTrue();
         }
 
         public static Boolean ToBoolean(this IDictionary<String, Object> obj)
