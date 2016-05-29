@@ -178,7 +178,7 @@
             expression.Primary.Accept(this);
             expression.Condition.Accept(this);
 
-            CallFunction(args => Logic.IsTrue((Double)args[0]) ? args[1] : args[2], 3);
+            _operations.Add(CondOperation.Instance);
         }
 
         void ITreeWalker.Visit(CallExpression expression)

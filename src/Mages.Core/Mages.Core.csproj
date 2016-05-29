@@ -165,6 +165,7 @@
     <Compile Include="Vm\IOperation.cs" />
     <Compile Include="Vm\Operations\AddsOperation.cs" />
     <Compile Include="Vm\Operations\ArgOperation.cs" />
+    <Compile Include="Vm\Operations\CondOperation.cs" />
     <Compile Include="Vm\Operations\GetcOperation.cs" />
     <Compile Include="Vm\Operations\ConstOperation.cs" />
     <Compile Include="Vm\Operations\DecOperation.cs" />
