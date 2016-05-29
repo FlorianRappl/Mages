@@ -398,6 +398,109 @@
             Assert.AreEqual(4.0, result);
         }
 
+        [Test]
+        public void AnyWithCompletelyNonZeroMatrixIsTrue()
+        {
+            var result = Eval("any([2,2;2,2])");
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void AnyWithCompletelyZeroMatrixIsFalse()
+        {
+            var result = Eval("any([0,0,0])");
+            Assert.AreEqual(false, result);
+        }
+
+        [Test]
+        public void AnyWithOneAndZeroMatrixIsTrue()
+        {
+            var result = Eval("any([0,1;0,0])");
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void AllWithCompletelyNonZeroMatrixIsTrue()
+        {
+            var result = Eval("all([2,2;2,2])");
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void AllWithCompletelyZeroMatrixIsFalse()
+        {
+            var result = Eval("all([0,0,0])");
+            Assert.AreEqual(false, result);
+        }
+
+        [Test]
+        public void AllWithOneAndZeroMatrixIsFalse()
+        {
+            var result = Eval("all([0,1;0,0])");
+            Assert.AreEqual(false, result);
+        }
+
+        [Test]
+        public void RangeWithValidToAndFromAutoStep()
+        {
+            var result = Eval("1:3") as Double[,];
+            Assert.IsNotNull(result);
+            Assert.AreEqual(3, result.Length);
+            Assert.AreEqual(1.0, result[0, 0]);
+            Assert.AreEqual(2.0, result[0, 1]);
+            Assert.AreEqual(3.0, result[0, 2]);
+        }
+
+        [Test]
+        public void RangeWithInvalidToAndValidFromAutoStep()
+        {
+            var result = Eval("1:\"3k\"") as Double[,];
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Length);
+        }
+
+        [Test]
+        public void RangeWithValidToAndInvalidFromAutoStep()
+        {
+            var result = Eval("\"3k\":1") as Double[,];
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Length);
+        }
+
+        [Test]
+        public void RangeWithValidToAndFromAndStep()
+        {
+            var result = Eval("1:2:3") as Double[,];
+            Assert.IsNotNull(result);
+            Assert.AreEqual(2, result.Length);
+            Assert.AreEqual(1.0, result[0, 0]);
+            Assert.AreEqual(3.0, result[0, 1]);
+        }
+
+        [Test]
+        public void RangeWithValidToAndInvalidFromAndValidStep()
+        {
+            var result = Eval("\"foo\":2:3") as Double[,];
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Length);
+        }
+
+        [Test]
+        public void RangeWithValidToAndFromAndInvalidStep()
+        {
+            var result = Eval("1:\"foo\":3") as Double[,];
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Length);
+        }
+
+        [Test]
+        public void RangeWithInvalidToAndValidFromAndValidStep()
+        {
+            var result = Eval("1:2:\"foo\"") as Double[,];
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Length);
+        }
+
         private static Object Eval(String source)
         {
             var engine = new Engine();

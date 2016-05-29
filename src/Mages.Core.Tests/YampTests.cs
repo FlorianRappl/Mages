@@ -337,8 +337,7 @@
         [Test]
         public void SubtractionOfVectors()
         {
-            return;//TODO Enable once #12 is impl.
-            Test("([3, 2, 1] - [1, 2, 3])(3)", -2.0);
+            Test("([3, 2, 1] - [1, 2, 3])(2)", -2.0);
         }
 
         [Test]
@@ -350,15 +349,13 @@
         [Test]
         public void TwoDimensionalIndex()
         {
-            return;//TODO Enable once #12 is impl.
-            Test("[1,2,3;4,5,6;7,8,9](2,3)", 6.0);
+            Test("[1,2,3;4,5,6;7,8,9](1,2)", 6.0);
         }
 
         [Test]
         public void SineOfMatrix()
         {
-            return;//TODO Enable once #12 is impl.
-            Test("-sin([1,2,3])(2)", -Math.Sin(2));
+            Test("-sin([1,2,3])(1)", -Math.Sin(2));
         }
 
         [Test]
@@ -370,8 +367,7 @@
         [Test]
         public void TransposeMatrix()
         {
-            return;//TODO Enable once #12 is impl.
-            Test("([1, 2; 3, 4]')(2,1)", 2.0);
+            Test("([1, 2; 3, 4]')(1,0)", 2.0);
         }
 
         [Test]
