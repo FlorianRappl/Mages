@@ -680,6 +680,62 @@
             Assert.IsNaN(result[0, 2]);
         }
 
+        [Test]
+        public void ReducerStandardFunctionsAreCurried()
+        {
+            var result = Eval("sum() == sum");
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void ArrayStandardFunctionsAreCurried()
+        {
+            var result = Eval("sort() == sort");
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void LogicalStandardFunctionsAreCurried()
+        {
+            var result = Eval("isprime() == isprime");
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void TrigonometricStandardFunctionsAreCurried()
+        {
+            var result = Eval("sin() == sin");
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void ArithmeticStandardFunctionsAreCurried()
+        {
+            var result = Eval("sqrt() == sqrt");
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void ComparisonStandardFunctionsAreCurried()
+        {
+            var result = Eval("equals() == equals");
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void OperatorStandardFunctionsAreCurried()
+        {
+            var result = Eval("add() == add");
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void UseCurriedAddOperatorFunction()
+        {
+            var result = Eval("add(2)(3)");
+            Assert.AreEqual(5.0, result);
+        }
+
         private static Object Eval(String source)
         {
             var engine = new Engine();
