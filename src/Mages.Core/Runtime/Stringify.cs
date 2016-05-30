@@ -12,7 +12,12 @@
         /// <summary>
         /// Contains the stringify function.
         /// </summary>
-        public static readonly Function Method = new Function(args => This(args.Length > 0 ? args[0] : null));
+        public static readonly Function Default = new Function(args => This(args.Length > 0 ? args[0] : null));
+
+        /// <summary>
+        /// Contains the JSON function.
+        /// </summary>
+        public static readonly Function Json = new Function(args => AsJson(args.Length > 0 ? args[0] : null));
 
         /// <summary>
         /// Converts the number to a string.
@@ -130,6 +135,99 @@
             }
 
             return "(unknown)";
+        }
+
+        /// <summary>
+        /// Converts the given MAGES object to a JSON string.
+        /// </summary>
+        /// <param name="value">The object to represent.</param>
+        /// <returns>The string representation.</returns>
+        public static String AsJson(Object value)
+        {
+            if (value == null)
+            {
+                return "null";
+            }
+            else if (value is Function)
+            {
+                return AsJson("[Function]");
+            }
+            else if (value is IDictionary<String, Object>)
+            {
+                return AsJson((IDictionary<String, Object>)value);
+            }
+            else if (value is Double[,])
+            {
+                return AsJson((Double[,])value);
+            }
+            else if (value is String)
+            {
+                return AsJson((String)value);
+            }
+            else if (value is Double)
+            {
+                return This((Double)value);
+            }
+            else if (value is Boolean)
+            {
+                return This((Boolean)value);
+            }
+
+            return "undefined";
+        }
+
+        public static String AsJson(String str)
+        {
+            var escaped = str.Replace("\"", "\\\"");
+            return String.Concat("\"", escaped, "\"");
+        }
+
+        public static String AsJson(IDictionary<String, Object> obj)
+        {
+            var sb = StringBuilderPool.Pull();
+            sb.AppendLine("{");
+
+            foreach (var item in obj)
+            {
+                var key = AsJson(item.Key);
+                var value = AsJson(item.Value);
+
+                if (value.Contains(Environment.NewLine))
+                {
+                    var lines = value.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                    value = String.Join(Environment.NewLine + "  ", lines);
+                }
+
+                sb.Append("  ").Append(key).Append(": ").AppendLine(value);
+            }
+
+            sb.Append('}');
+            return sb.Stringify();
+        }
+
+        public static String AsJson(Double[,] matrix)
+        {
+            var sb = StringBuilderPool.Pull();
+            var rows = matrix.GetRows();
+            var cols = matrix.GetColumns();
+            sb.Append('[');
+
+            for (var i = 0; i < rows; i++)
+            {
+                if (i > 0) sb.Append(", ");
+                sb.Append('[');
+
+                for (var j = 0; j < cols; j++)
+                {
+                    if (j > 0) sb.Append(", ");
+                    sb.Append(This(matrix[i, j]));
+                }
+
+                sb.Append(']');
+            }
+
+            sb.Append(']');
+            return sb.Stringify();
         }
     }
 }

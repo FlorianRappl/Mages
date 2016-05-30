@@ -58,7 +58,8 @@
             { "sum", StandardFunctions.Sum },
             { "any", LogicalFunctions.Any },
             { "all", LogicalFunctions.All },
-            { "stringify", Stringify.Method },
+            { "stringify", Stringify.Default },
+            { "json", Stringify.Json },
         };
     }
 }
