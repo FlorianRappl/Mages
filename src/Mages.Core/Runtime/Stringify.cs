@@ -141,7 +141,7 @@
         /// Converts the given MAGES object to a JSON string.
         /// </summary>
         /// <param name="value">The object to represent.</param>
-        /// <returns>The string representation.</returns>
+        /// <returns>The JSON representation.</returns>
         public static String AsJson(Object value)
         {
             if (value == null)
@@ -176,12 +176,22 @@
             return "undefined";
         }
 
+        /// <summary>
+        /// Converts the given string object to a JSON string.
+        /// </summary>
+        /// <param name="str">The string to represent.</param>
+        /// <returns>The JSON representation.</returns>
         public static String AsJson(String str)
         {
             var escaped = str.Replace("\"", "\\\"");
             return String.Concat("\"", escaped, "\"");
         }
 
+        /// <summary>
+        /// Converts the given dictionary object to a JSON string.
+        /// </summary>
+        /// <param name="obj">The object to represent.</param>
+        /// <returns>The JSON representation.</returns>
         public static String AsJson(IDictionary<String, Object> obj)
         {
             var sb = StringBuilderPool.Pull();
@@ -205,6 +215,11 @@
             return sb.Stringify();
         }
 
+        /// <summary>
+        /// Converts the given matrix to a JSON string.
+        /// </summary>
+        /// <param name="matrix">The matrix to represent.</param>
+        /// <returns>The JSON representation.</returns>
         public static String AsJson(Double[,] matrix)
         {
             var sb = StringBuilderPool.Pull();
