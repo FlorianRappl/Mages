@@ -59,10 +59,10 @@
             {
                 if (row.Length != columns)
                 {
-                    //TODO column mismatch error
+                    var error = new ParseError(ErrorCode.MatrixColumnsDiscrepency, this);
+                    context.Report(error);
+                    break;
                 }
-
-                row.Validate(context);
             }
         }
 

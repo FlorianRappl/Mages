@@ -56,13 +56,10 @@
         {
             foreach (var expression in _expressions)
             {
-                if (expression is IdentifierExpression)
+                if (expression is VariableExpression == false)
                 {
-                    _expressions.Validate(context);
-                }
-                else
-                {
-                    //TODO Report error
+                    var error = new ParseError(ErrorCode.IdentifierExpected, expression);
+                    context.Report(error);
                 }
             }
         }

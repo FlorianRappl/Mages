@@ -46,10 +46,6 @@
         /// <param name="context">The validator to report errors to.</param>
         public void Validate(IValidationContext context)
         {
-            foreach (var statement in _statements)
-            {
-                statement.Validate(context);
-            }
         }
 
         /// <summary>

@@ -2,7 +2,6 @@
 {
     using Mages.Core.Ast.Expressions;
     using Mages.Core.Ast.Statements;
-    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -40,11 +39,17 @@
         void ITreeWalker.Visit(BlockStatement statement)
         {
             statement.Validate(this);
+
+            foreach (var child in statement.Statements)
+            {
+                child.Accept(this);
+            }
         }
 
         void ITreeWalker.Visit(SimpleStatement statement)
         {
             statement.Validate(this);
+            statement.Expression.Accept(this);
         }
 
         void ITreeWalker.Visit(EmptyExpression expression)
@@ -60,61 +65,97 @@
         void ITreeWalker.Visit(ArgumentsExpression expression)
         {
             expression.Validate(this);
+
+            foreach (var argument in expression.Arguments)
+            {
+                argument.Accept(this);
+            }
         }
 
         void ITreeWalker.Visit(AssignmentExpression expression)
         {
             expression.Validate(this);
+            expression.Variable.Accept(this);
+            expression.Value.Accept(this);
         }
 
         void ITreeWalker.Visit(BinaryExpression expression)
         {
             expression.Validate(this);
+            expression.LValue.Accept(this);
+            expression.RValue.Accept(this);
         }
 
         void ITreeWalker.Visit(PreUnaryExpression expression)
         {
             expression.Validate(this);
+            expression.Value.Accept(this);
         }
 
         void ITreeWalker.Visit(PostUnaryExpression expression)
         {
             expression.Validate(this);
+            expression.Value.Accept(this);
         }
 
         void ITreeWalker.Visit(RangeExpression expression)
         {
             expression.Validate(this);
+            expression.From.Accept(this);
+            expression.Step.Accept(this);
+            expression.To.Accept(this);
         }
 
         void ITreeWalker.Visit(ConditionalExpression expression)
         {
             expression.Validate(this);
+            expression.Condition.Accept(this);
+            expression.Primary.Accept(this);
+            expression.Secondary.Accept(this);
         }
 
         void ITreeWalker.Visit(CallExpression expression)
         {
             expression.Validate(this);
+            expression.Function.Accept(this);
+            expression.Arguments.Accept(this);
         }
 
         void ITreeWalker.Visit(ObjectExpression expression)
         {
             expression.Validate(this);
+
+            foreach (var value in expression.Values)
+            {
+                value.Accept(this);
+            }
         }
 
         void ITreeWalker.Visit(PropertyExpression expression)
         {
             expression.Validate(this);
+            expression.Name.Accept(this);
+            expression.Value.Accept(this);
         }
 
         void ITreeWalker.Visit(MatrixExpression expression)
         {
             expression.Validate(this);
+
+            foreach (var row in expression.Values)
+            {
+                foreach (var value in row)
+                {
+                    value.Accept(this);
+                }
+            }
         }
 
         void ITreeWalker.Visit(FunctionExpression expression)
         {
             expression.Validate(this);
+            expression.Parameters.Accept(this);
+            expression.Body.Accept(this);
         }
 
         void ITreeWalker.Visit(InvalidExpression expression)
@@ -130,11 +171,18 @@
         void ITreeWalker.Visit(MemberExpression expression)
         {
             expression.Validate(this);
+            expression.Object.Accept(this);
+            expression.Member.Accept(this);
         }
 
         void ITreeWalker.Visit(ParameterExpression expression)
         {
             expression.Validate(this);
+            
+            foreach (var parameter in expression.Expressions)
+            {
+                parameter.Accept(this);
+            }
         }
 
         void ITreeWalker.Visit(VariableExpression expression)

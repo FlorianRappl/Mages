@@ -78,24 +78,11 @@
                 var error = new ParseError(ErrorCode.RangeStartRequired, _from);
                 context.Report(error);
             }
-            else
-            {
-                _from.Validate(context);
-            }
-
-            if (_step is EmptyExpression == false)
-            {
-                _step.Validate(context);
-            }
 
             if (_to is EmptyExpression)
             {
                 var error = new ParseError(ErrorCode.RangeEndRequired, _to);
                 context.Report(error);
-            }
-            else
-            {
-                _to.Validate(context);
             }
         }
 

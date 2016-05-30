@@ -11,7 +11,7 @@
     /// <summary>
     /// Represents the walker to create operations.
     /// </summary>
-    public sealed class OperationTreeWalker : ITreeWalker
+    public sealed class OperationTreeWalker : ITreeWalker, IValidationContext
     {
         #region Operator Mappings
 
@@ -80,6 +80,8 @@
 
         void ITreeWalker.Visit(BlockStatement block)
         {
+            block.Validate(this);
+
             foreach (var statement in block.Statements)
             {
                 statement.Accept(this);
@@ -88,29 +90,34 @@
 
         void ITreeWalker.Visit(SimpleStatement statement)
         {
+            statement.Validate(this);
             statement.Expression.Accept(this);
         }
 
         void ITreeWalker.Visit(VarStatement statement)
         {
             _declaring = true;
+            statement.Validate(this);
             statement.Assignment.Accept(this);
             _declaring = false;
         }
 
         void ITreeWalker.Visit(EmptyExpression expression)
         {
+            expression.Validate(this);
         }
 
         void ITreeWalker.Visit(ConstantExpression expression)
         {
             var constant = expression.Value;
+            expression.Validate(this);
             _operations.Add(new ConstOperation(constant));
         }
 
         void ITreeWalker.Visit(ArgumentsExpression expression)
         {
             var arguments = expression.Arguments;
+            expression.Validate(this);
 
             for (var i = arguments.Length - 1; i >= 0; i--)
             {
@@ -121,6 +128,7 @@
         void ITreeWalker.Visit(AssignmentExpression expression)
         {
             _assigning = true;
+            expression.Validate(this);
             expression.Variable.Accept(this);
             _assigning = false;
             var store = ExtractLast();
@@ -131,6 +139,7 @@
         void ITreeWalker.Visit(BinaryExpression expression)
         {
             var action = default(Action<OperationTreeWalker, BinaryExpression>);
+            expression.Validate(this);
             BinaryOperatorMapping.TryGetValue(expression.Operator, out action);
             action.Invoke(this, expression);
         }
@@ -138,6 +147,7 @@
         void ITreeWalker.Visit(PreUnaryExpression expression)
         {
             var action = default(Action<OperationTreeWalker, PreUnaryExpression>);
+            expression.Validate(this);
             PreUnaryOperatorMapping.TryGetValue(expression.Operator, out action);
             action.Invoke(this, expression);
         }
@@ -145,6 +155,7 @@
         void ITreeWalker.Visit(PostUnaryExpression expression)
         {
             var action = default(Action<OperationTreeWalker, PostUnaryExpression>);
+            expression.Validate(this);
             PostUnaryOperatorMapping.TryGetValue(expression.Operator, out action);
             action.Invoke(this, expression);
         }
@@ -152,6 +163,7 @@
         void ITreeWalker.Visit(RangeExpression expression)
         {
             var hasStep = expression.Step is EmptyExpression == false;
+            expression.Validate(this);
 
             if (hasStep)
             {
@@ -165,6 +177,7 @@
 
         void ITreeWalker.Visit(ConditionalExpression expression)
         {
+            expression.Validate(this);
             expression.Secondary.Accept(this);
             expression.Primary.Accept(this);
             expression.Condition.Accept(this);
@@ -177,6 +190,7 @@
             var assigning = _assigning;
             _assigning = false;
 
+            expression.Validate(this);
             expression.Arguments.Accept(this);
             expression.Function.Accept(this);
 
@@ -194,6 +208,7 @@
 
         void ITreeWalker.Visit(ObjectExpression expression)
         {
+            expression.Validate(this);
             _operations.Add(NewObjOperation.Instance);
 
             foreach (var property in expression.Values)
@@ -204,6 +219,7 @@
 
         void ITreeWalker.Visit(PropertyExpression expression)
         {
+            expression.Validate(this);
             expression.Name.Accept(this);
             expression.Value.Accept(this);
 
@@ -215,6 +231,7 @@
             var values = expression.Values;
             var rows = values.Length;
             var cols = rows > 0 ? values[0].Length : 0;
+            expression.Validate(this);
             _operations.Add(new NewMatOperation(rows, cols));
 
             for (var row = 0; row < rows; row++)
@@ -231,6 +248,7 @@
         void ITreeWalker.Visit(FunctionExpression expression)
         {
             var current = _operations.Count;
+            expression.Validate(this);
             expression.Parameters.Accept(this);
             expression.Body.Accept(this);
             var operations = ExtractFrom(current);
@@ -239,11 +257,13 @@
 
         void ITreeWalker.Visit(InvalidExpression expression)
         {
+            expression.Validate(this);
         }
 
         void ITreeWalker.Visit(IdentifierExpression expression)
         {
             var name = expression.Name;
+            expression.Validate(this);
             _operations.Add(new ConstOperation(name));
         }
 
@@ -252,6 +272,7 @@
             var assigning = _assigning;
             _assigning = false;
 
+            expression.Validate(this);
             expression.Member.Accept(this);
             expression.Object.Accept(this);
 
@@ -270,6 +291,7 @@
         void ITreeWalker.Visit(ParameterExpression expression)
         {
             var expressions = expression.Expressions;
+            expression.Validate(this);
 
             for (var i = 0; i < expressions.Length; i++)
             {
@@ -283,6 +305,7 @@
         void ITreeWalker.Visit(VariableExpression expression)
         {
             var name = expression.Name;
+            expression.Validate(this);
 
             if (_assigning)
             {
@@ -299,6 +322,15 @@
             {
                 _operations.Add(new GetsOperation(name));
             }
+        }
+
+        #endregion
+
+        #region Error Reporting
+
+        void IValidationContext.Report(ParseError error)
+        {
+            throw new ParseException(error);
         }
 
         #endregion

@@ -80,19 +80,11 @@
                 var error = new ParseError(ErrorCode.LeftOperandRequired, LValue);
                 context.Report(error);
             }
-            else
-            {
-                _left.Validate(context);
-            }
 
             if (_right is EmptyExpression)
             {
                 var error = new ParseError(ErrorCode.RightOperandRequired, RValue);
                 context.Report(error);
-            }
-            else
-            {
-                _right.Validate(context);
             }
         }
 

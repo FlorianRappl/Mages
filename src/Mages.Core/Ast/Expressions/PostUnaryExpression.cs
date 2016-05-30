@@ -70,10 +70,6 @@
                 var error = new ParseError(ErrorCode.OperandRequired, _value);
                 context.Report(error);
             }
-            else
-            {
-                _value.Validate(context);
-            }
         }
 
         #endregion
@@ -110,10 +106,6 @@
                     var error = new ParseError(ErrorCode.IncrementOperand, Value);
                     context.Report(error);
                 }
-                else
-                {
-                    base.Validate(context);
-                }
             }
         }
 
@@ -130,10 +122,6 @@
                 {
                     var error = new ParseError(ErrorCode.DecrementOperand, Value);
                     context.Report(error);
-                }
-                else
-                {
-                    base.Validate(context);
                 }
             }
         }

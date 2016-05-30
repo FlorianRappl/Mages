@@ -83,17 +83,17 @@
         /// <param name="context">The validator to report errors to.</param>
         public void Validate(IValidationContext context)
         {
-            if (Variable.IsAssignable)
-            {
-                Variable.Validate(context);
-            }
-            else
+            if (!Variable.IsAssignable)
             {
                 var error = new ParseError(ErrorCode.AssignableExpected, Variable);
                 context.Report(error);
             }
 
-            Value.Validate(context);
+            if (Value is EmptyExpression)
+            {
+                var error = new ParseError(ErrorCode.AssignmentValueRequired, Value);
+                context.Report(error);
+            }
         }
 
         #endregion

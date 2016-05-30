@@ -162,5 +162,15 @@
         /// </summary>
         [Description("An expected colon has not been found.")]
         ColonExpected,
+        /// <summary>
+        /// See description.
+        /// </summary>
+        [Description("The assignment operator requires a valid value.")]
+        AssignmentValueRequired,
+        /// <summary>
+        /// See description.
+        /// </summary>
+        [Description("A matrix cannot host rows with different number of columns.")]
+        MatrixColumnsDiscrepency,
     }
 }

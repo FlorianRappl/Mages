@@ -44,7 +44,6 @@
         /// <param name="context">The validator to report errors to.</param>
         public void Validate(IValidationContext context)
         {
-            _expression.Validate(context);
         }
 
         /// <summary>

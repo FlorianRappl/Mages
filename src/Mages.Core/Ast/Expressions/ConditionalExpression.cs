@@ -73,9 +73,6 @@
         /// <param name="context">The validator to report errors to.</param>
         public void Validate(IValidationContext context)
         {
-            _condition.Validate(context);
-            _primary.Validate(context);
-            _secondary.Validate(context);
         }
 
         #endregion

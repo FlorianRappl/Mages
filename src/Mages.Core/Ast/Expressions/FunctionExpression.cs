@@ -73,8 +73,6 @@
         /// <param name="context">The validator to report errors to.</param>
         public void Validate(IValidationContext context)
         {
-            _parameters.Validate(context);
-            _body.Validate(context);
         }
 
         #endregion

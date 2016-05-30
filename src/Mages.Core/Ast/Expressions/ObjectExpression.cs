@@ -53,10 +53,6 @@
         /// <param name="context">The validator to report errors to.</param>
         public void Validate(IValidationContext context)
         {
-            foreach (var value in _values)
-            {
-                value.Validate(context);
-            }
         }
 
         #endregion

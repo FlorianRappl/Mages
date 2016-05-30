@@ -59,7 +59,6 @@
             else
             {
                 //TODO Check against variable name (should be first / only 'var' with that name in the _current_ scope)
-                assignment.Validate(context);
             }
         }
 
