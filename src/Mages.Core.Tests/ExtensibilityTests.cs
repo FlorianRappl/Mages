@@ -90,6 +90,28 @@
         }
 
         [Test]
+        public void AddingANewMethodHasAutoCurryActivatedYieldsRightResult()
+        {
+            var engine = new Engine();
+            var func = new Func<Double, Double, Double, Double>((x, y, z) => x + 2 * y + 3 * z);
+            engine.SetFunction("foo", func.Method, func.Target);
+
+            var result = engine.Interpret("foo()(1)(2)(3)");
+            Assert.AreEqual(14.0, result);
+        }
+
+        [Test]
+        public void AddingANewMethodHasAutoCurryActivatedIsEqual()
+        {
+            var engine = new Engine();
+            var func = new Func<Double, Double, Double, Double>((x, y, z) => x + 2 * y + 3 * z);
+            engine.SetFunction("foo", func.Method, func.Target);
+
+            var result = engine.Interpret("foo() == foo");
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
         public void ReplacingAnExistingFunctionOverwrites()
         {
             var engine = new Engine();
@@ -387,6 +409,50 @@
             Assert.AreEqual("foo0bar1", result);
         }
 
+        [Test]
+        public void ProvideMethodsFromStaticClassProvideCurryingCapabilities()
+        {
+            var engine = new Engine();
+            engine.SetStatic(typeof(Functions)).Scattered();
+
+            var result = engine.Interpret("xyz()(1)(2)(3)");
+
+            Assert.AreEqual(14.0, result);
+        }
+
+        [Test]
+        public void ProvideConstructorFromClassHasCurryCapabilityFourSteps()
+        {
+            var engine = new Engine();
+            engine.SetStatic(typeof(CtorSample)).WithName("Type");
+
+            var result = engine.Interpret("Type.create()(1)(2)(3).value");
+
+            Assert.AreEqual(32.0, result);
+        }
+
+        [Test]
+        public void ProviderConstructorFromClassHasCurryCapabilityTwoSteps()
+        {
+            var engine = new Engine();
+            engine.SetStatic(typeof(CtorSample)).WithName("Type");
+
+            var result = engine.Interpret("x = Type.create(1, 2)(3); x.value");
+
+            Assert.AreEqual(32.0, result);
+        }
+
+        [Test]
+        public void ProvideIndexerFromClassHasCurryCapability()
+        {
+            var engine = new Engine();
+            engine.SetStatic(typeof(CtorSample)).WithName("Type");
+
+            var result = engine.Interpret("x = Type.create(1, 2)(3); x.at()(3)(\"hi\")");
+
+            Assert.AreEqual(5.0, result);
+        }
+
         sealed class Point
         {
             public Double x;
@@ -414,6 +480,30 @@
             public static String Bar()
             {
                 return "bar1";
+            }
+
+            public static Double Xyz(Double x, Double y, Double z)
+            {
+                return x + 2 * y + 3 * z;
+            }
+        }
+
+        public class CtorSample
+        {
+            public CtorSample(Double x, Double y, Double z)
+            {
+                Value = x + y * y + z * z * z;
+            }
+
+            public Double this[Int32 x, String y]
+            {
+                get { return x + y.Length; }
+            }
+
+            public Double Value
+            {
+                get;
+                private set;
             }
         }
     }

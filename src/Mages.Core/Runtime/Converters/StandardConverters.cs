@@ -49,6 +49,7 @@
             TypeConverter.Create<Char, String>(x => x.ToString()),
             TypeConverter.Create<Double[], Double[,]>(x => x.ToMatrix()),
             TypeConverter.Create<List<Double>, Double[,]>(x => x.ToMatrix()),
+            TypeConverter.Create<Delegate, Function>(Helpers.WrapFunction)
         };
 
         public static readonly Func<Object, Object> Identity = _ => _;

@@ -53,15 +53,28 @@
             }
         }
 
+        public static Int32 MaxParameters(this IEnumerable<MethodBase> methods)
+        {
+            var mp = 0;
+
+            foreach (var method in methods)
+            {
+                mp = Math.Max(method.GetParameters().Length, mp);
+            }
+
+            return mp;
+        }
+
         public static MethodBase Find(this IEnumerable<MethodBase> methods, Object[] arguments, Type[] currentParameters)
         {
             foreach (var method in methods)
             {
                 var actualParameters = method.GetParameters();
+                var length = actualParameters.Length;
+                var values = new Object[length];
 
-                if (currentParameters.Length == actualParameters.Length)
+                if (currentParameters.Length == length)
                 {
-                    var length = actualParameters.Length;
                     var i = 0;
 
                     while (i < length)
@@ -69,21 +82,19 @@
                         var source = currentParameters[i];
                         var target = actualParameters[i].ParameterType;
                         var converter = Helpers.Converters.FindConverter(source, target);
-                        var value = converter.Invoke(arguments[i]);
+                        values[i] = converter.Invoke(arguments[i]);
 
-                        if (value != null)
-                        {
-                            arguments[i] = value;
-                            i++;
-                        }
-                        else
+                        if (values[i] == null)
                         {
                             break;
                         }
+
+                        i++;
                     }
 
                     if (i == length)
                     {
+                        values.CopyTo(arguments, 0);
                         return method;
                     }
                 }

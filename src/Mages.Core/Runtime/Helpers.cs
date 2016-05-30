@@ -1,6 +1,7 @@
 ﻿namespace Mages.Core.Runtime
 {
     using Mages.Core.Runtime.Converters;
+    using Mages.Core.Runtime.Functions;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -92,21 +93,26 @@
         public static Function WrapFunction(MethodInfo method, Object target)
         {
             var parameterConverters = method.GetParameters().Select(m => Converters.FindConverter(m.ParameterType)).ToArray();
-
-            return new Function(args =>
+            var f = default(Function);
+            
+            f = new Function(args =>
             {
-                if (args.Length >= parameterConverters.Length)
+                var result = Curry.Min(parameterConverters.Length, f, args);
+
+                if (result == null)
                 {
                     for (var i = 0; i < parameterConverters.Length; i++)
                     {
                         args[i] = parameterConverters[i].Invoke(args[i]);
                     }
 
-                    return method.Call(target, args);
+                    result = method.Call(target, args);
                 }
 
-                return null;
+                return result;
             });
+
+            return f;
         }
 
         public static Object WrapObject(Object value)
