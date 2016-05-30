@@ -253,6 +253,41 @@
             Assert.AreEqual(37.0, result);
         }
 
+        [Test]
+        public void VariableArgumentsWithImpliedArgsWithoutNaming()
+        {
+            var result = Eval("f = ()=>length(args); f(1,2,3,\"hi\", true)");
+            Assert.AreEqual(5.0, result);
+        }
+
+        [Test]
+        public void VariableArgumentsWithImpliedArgsDespiteNamedArguments()
+        {
+            var result = Eval("f = (a,b)=>length(args); f(\"hi\", true)");
+            Assert.AreEqual(2.0, result);
+        }
+
+        [Test]
+        public void VariableArgumentsAccessWorks()
+        {
+            var result = Eval("f = ()=>args(2); f(\"hi\", true, 42)");
+            Assert.AreEqual(42.0, result);
+        }
+
+        [Test]
+        public void VariableArgumentsNotExposedIfArgumentsNamedAccordingly()
+        {
+            var result = Eval("f = (args)=>length(args); f(1, 2, 3, 4)");
+            Assert.AreEqual(1.0, result);
+        }
+
+        [Test]
+        public void VariableArgumentsOverwrittenIfLocalVariableExists()
+        {
+            var result = Eval("f = ()=>{ var args = 1; length(args); }; f(1, 2, 3, 4)");
+            Assert.AreEqual(1.0, result);
+        }
+
         private static Object Eval(String source)
         {
             var engine = new Engine();

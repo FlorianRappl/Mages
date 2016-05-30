@@ -17,7 +17,16 @@
         public void Invoke(IExecutionContext context)
         {
             var value = context.Pop();
-            context.Scope.Add(_name, value);
+
+            if (context.Scope.ContainsKey(_name))
+            {
+                context.Scope[_name] = value;
+            }
+            else
+            {
+                context.Scope.Add(_name, value);
+            }
+
             context.Push(value);
         }
     }
