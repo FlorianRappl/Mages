@@ -81,6 +81,7 @@
     <Compile Include="Ast\Statements\VarStatement.cs" />
     <Compile Include="Ast\Walkers\OperationTreeWalker.cs" />
     <Compile Include="Ast\Walkers\SymbolTreeWalker.cs" />
+    <Compile Include="Ast\Walkers\ValidationTreeWalker.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="EngineExtensions.cs" />
     <Compile Include="Function.cs" />
@@ -175,6 +176,7 @@
     <Compile Include="Vm\Operations\IncOperation.cs" />
     <Compile Include="Vm\Operations\InitObjOperation.cs" />
     <Compile Include="Vm\Operations\GetsOperation.cs" />
+    <Compile Include="Vm\Operations\PopOperation.cs" />
     <Compile Include="Vm\Operations\RangeOperation.cs" />
     <Compile Include="Vm\Operations\SetcOperation.cs" />
     <Compile Include="Vm\Operations\NewMatOperation.cs" />
