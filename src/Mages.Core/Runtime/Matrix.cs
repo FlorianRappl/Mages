@@ -324,11 +324,6 @@
             }
         }
 
-        public static Double[,] And(this Double[,] a, Double b)
-        {
-            return a.And(a.Fill(b));
-        }
-
         public static Double[,] ForEach(this Double[,] matrix, Func<Double, Double> apply)
         {
             var rows = matrix.GetRows();
@@ -344,6 +339,62 @@
             }
 
             return result;
+        }
+
+        public static Object Reduce(this Double[,] matrix, Func<Double, Double, Double> reducer)
+        {
+            var rows = matrix.GetRows();
+            var cols = matrix.GetColumns();
+
+            if (rows == 1 && cols == 1)
+            {
+                return matrix[0, 0];
+            }
+            else if (rows == 1)
+            {
+                var element = matrix[0, 0];
+
+                for (var i = 1; i < cols; i++)
+                {
+                    element = reducer.Invoke(element, matrix[0, i]);
+                }
+
+                return element;
+            }
+            else if (cols == 1)
+            {
+                var element = matrix[0, 0];
+
+                for (var i = 1; i < rows; i++)
+                {
+                    element = reducer.Invoke(element, matrix[i, 0]);
+                }
+
+                return element;
+            }
+            else
+            {
+                var result = new Double[rows, 1];
+
+                for (var i = 0; i < rows; i++)
+                {
+                    var element = matrix[i, 0];
+
+                    for (var j = 1; j < cols; j++)
+                    {
+                        element = reducer.Invoke(element, matrix[i, j]);
+                    }
+
+                    result[i, 0] = element;
+                }
+
+                return result;
+            }
+        }
+
+        public static Double[,] And(this Double[,] a, Double b)
+        {
+            return a.And(a.Fill(b));
         }
 
         public static Double[,] And(this Double[,] a, Double[,] b)

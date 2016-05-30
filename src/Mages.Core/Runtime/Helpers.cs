@@ -9,6 +9,7 @@
     static class Helpers
     {
         public static readonly TypeConverterMap Converters = new TypeConverterMap();
+        private static readonly Object[] Empty = new Object[0];
 
         public static Object Getter(this String str, Object[] arguments)
         {
@@ -52,6 +53,11 @@
             var value = default(Object);
             obj.TryGetValue(name, out value);
             return value;
+        }
+
+        public static Double Sign(this Double value)
+        {
+            return (Double)Math.Sign(value);
         }
 
         public static Double Factorial(this Double value)
@@ -126,6 +132,26 @@
             }
 
             return value;
+        }
+
+        public static Object SafeExecute(Function function)
+        {
+            var result = new Dictionary<String, Object>
+            {
+                { "value", null },
+                { "error", null }
+            };
+
+            try
+            {
+                result["value"] = function.Invoke(Empty);
+            }
+            catch (Exception ex)
+            {
+                result["error"] = ex.Message;
+            }
+
+            return result;
         }
     }
 }

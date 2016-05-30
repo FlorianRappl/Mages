@@ -36,11 +36,11 @@
             statement.Validate(this);
         }
 
-        void ITreeWalker.Visit(BlockStatement statement)
+        void ITreeWalker.Visit(BlockStatement block)
         {
-            statement.Validate(this);
+            block.Validate(this);
 
-            foreach (var child in statement.Statements)
+            foreach (var child in block.Statements)
             {
                 child.Accept(this);
             }
