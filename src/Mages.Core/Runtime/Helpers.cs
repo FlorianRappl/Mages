@@ -56,6 +56,18 @@
             return value;
         }
 
+        public static IDictionary<String, Object> ToArrayObject(this Object[] arguments)
+        {
+            var obj = new Dictionary<String, Object>();
+
+            for (var i = 0; i < arguments.Length; i++)
+            {
+                obj[i.ToString()] = arguments[i];
+            }
+
+            return obj;
+        }
+
         public static Double Sign(this Double value)
         {
             return (Double)Math.Sign(value);
@@ -74,23 +86,23 @@
             return result;
         }
 
-        public static WrapperObject Expose(Type type)
+        public static WrapperObject Expose(this Type type)
         {
             return new WrapperObject(type);
         }
 
-        public static String FindName(IEnumerable<String> names, MemberInfo member)
+        public static String FindName(this IEnumerable<String> names, MemberInfo member)
         {
             var selector = Container.GetService<INameSelector>(CamelNameSelector.Instance);
             return selector.Select(names, member);
         }
 
-        public static Function WrapFunction(Delegate func)
+        public static Function WrapFunction(this Delegate func)
         {
             return WrapFunction(func.Method, func.Target);
         }
 
-        public static Function WrapFunction(MethodInfo method, Object target)
+        public static Function WrapFunction(this MethodInfo method, Object target)
         {
             var parameterConverters = method.GetParameters().Select(m => Converters.FindConverter(m.ParameterType)).ToArray();
             var f = default(Function);
@@ -115,7 +127,7 @@
             return f;
         }
 
-        public static Object WrapObject(Object value)
+        public static Object WrapObject(this Object value)
         {
             if (value != null)
             {
@@ -128,7 +140,7 @@
             return null;
         }
 
-        public static Object Unwrap(Object value)
+        public static Object Unwrap(this Object value)
         {
             var wrapped = value as WrapperObject;
 

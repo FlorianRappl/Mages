@@ -13,7 +13,7 @@
         {
             try
             {
-                return Helpers.WrapObject(method.Invoke(target, arguments));
+                return method.Invoke(target, arguments).WrapObject();
             }
             catch (TargetInvocationException ex)
             {
@@ -25,7 +25,7 @@
         {
             try
             {
-                return Helpers.WrapObject(ctor.Invoke(arguments));
+                return ctor.Invoke(arguments).WrapObject();
             } 
             catch (TargetInvocationException ex)
             {
@@ -45,7 +45,7 @@
                     return obj;
                 }
 
-                return Helpers.WrapObject(result);
+                return result.WrapObject();
             }
             catch (TargetInvocationException ex)
             {

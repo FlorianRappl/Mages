@@ -33,7 +33,7 @@
         /// <param name="function">The function to be wrapped.</param>
         public static void SetFunction(this Engine engine, String name, Delegate function)
         {
-            engine.Globals[name] = Helpers.WrapFunction(function);
+            engine.Globals[name] = function.WrapFunction();
         }
 
         /// <summary>
@@ -46,7 +46,7 @@
         /// <param name="target">The optional target object of the method.</param>
         public static void SetFunction(this Engine engine, String name, MethodInfo method, Object target = null)
         {
-            engine.Globals[name] = Helpers.WrapFunction(method, target);
+            engine.Globals[name] = method.WrapFunction(target);
         }
 
         /// <summary>
@@ -58,7 +58,7 @@
         /// <param name="value">The value to interact with.</param>
         public static void SetConstant(this Engine engine, String name, Object value)
         {
-            engine.Globals[name] = Helpers.WrapObject(value);
+            engine.Globals[name] = value.WrapObject();
         }
 
         /// <summary>
@@ -80,8 +80,8 @@
         /// <param name="type">The type to expose.</param>
         public static IPlacement SetStatic(this Engine engine, Type type)
         {
-            var name = Helpers.FindName(engine.Globals.Keys, type);
-            var obj = Helpers.Expose(type);
+            var name = engine.Globals.Keys.FindName(type);
+            var obj = type.Expose();
             return new Placement(engine, name, obj);
         }
 
@@ -103,8 +103,8 @@
             {
                 if (shouldInclude == null || shouldInclude.Invoke(type))
                 {
-                    var name = Helpers.FindName(obj.Keys, type);
-                    var value = Helpers.Expose(type);
+                    var name = obj.Keys.FindName(type);
+                    var value = type.Expose();
                     obj[name] = value;
                 }
             }
@@ -124,8 +124,8 @@
 
             foreach (var type in types)
             {
-                var name = Helpers.FindName(obj.Keys, type);
-                var value = Helpers.Expose(type);
+                var name = obj.Keys.FindName(type);
+                var value = type.Expose();
                 obj[name] = value;
             }
 
