@@ -8,11 +8,11 @@
     /// </summary>
     sealed class SetcOperation : IOperation
     {
-        private readonly Object[] _arguments;
+        private readonly Int32 _length;
 
         public SetcOperation(Int32 length)
         {
-            _arguments = new Object[length];
+            _length = length;
         }
 
         public void Invoke(IExecutionContext context)
@@ -20,15 +20,16 @@
             var value = context.Pop();
             var obj = context.Pop();
             var function = default(Procedure);
+            var arguments = new Object[_length];
 
-            for (var i = 0; i < _arguments.Length; i++)
+            for (var i = 0; i < arguments.Length; i++)
             {
-                _arguments[i] = context.Pop();
+                arguments[i] = context.Pop();
             }
 
             if (obj != null && TypeFunctions.TryFindSetter(obj, out function))
             {
-                function.Invoke(_arguments, value);
+                function.Invoke(arguments, value);
             }
 
             context.Push(value);

@@ -20,16 +20,16 @@
             { "~", (walker, expr) => walker.Handle(expr, StandardFunctions.Not) },
             { "+", (walker, expr) => walker.Handle(expr, StandardFunctions.Positive) },
             { "-", (walker, expr) => walker.Handle(expr, StandardFunctions.Negative) },
-            { "++", (walker, expr) => walker.Increment(expr.Value, false) },
-            { "--", (walker, expr) => walker.Decrement(expr.Value, false) }
+            { "++", (walker, expr) => walker.Place(IncOperation.Instance, expr.Value, false) },
+            { "--", (walker, expr) => walker.Place(DecOperation.Instance, expr.Value, false) }
         };
 
         private static readonly Dictionary<String, Action<OperationTreeWalker, PostUnaryExpression>> PostUnaryOperatorMapping = new Dictionary<String, Action<OperationTreeWalker, PostUnaryExpression>>
         {
             { "!", (walker, expr) => walker.Handle(expr, StandardFunctions.Factorial) },
             { "'", (walker, expr) => walker.Handle(expr, StandardFunctions.Transpose) },
-            { "++", (walker, expr) => walker.Increment(expr.Value, true) },
-            { "--", (walker, expr) => walker.Decrement(expr.Value, true) }
+            { "++", (walker, expr) => walker.Place(IncOperation.Instance, expr.Value, true) },
+            { "--", (walker, expr) => walker.Place(DecOperation.Instance, expr.Value, true) }
         };
 
         private static readonly Dictionary<String, Action<OperationTreeWalker, BinaryExpression>> BinaryOperatorMapping = new Dictionary<String, Action<OperationTreeWalker, BinaryExpression>>
@@ -123,7 +123,7 @@
             _assigning = true;
             expression.Variable.Accept(this);
             _assigning = false;
-            var store = PopOperation();
+            var store = ExtractLast();
             expression.Value.Accept(this);
             _operations.Add(store);
         }
@@ -330,7 +330,7 @@
             _operations.Add(new GetcOperation(argumentCount));
         }
 
-        private IOperation PopOperation()
+        private IOperation ExtractLast()
         {
             var index = _operations.Count - 1;
             var operation = _operations[index];
@@ -353,22 +353,25 @@
             return operations;
         }
 
-        private void Decrement(IExpression expr, Boolean postOperation)
+        private void Place(IOperation operation, IExpression expr, Boolean postOperation)
         {
-            expr.Accept(this);
-            _assigning = true;
-            expr.Accept(this);
-            _assigning = false;
-            _operations.Add(new DecOperation(PopOperation(), postOperation));
-        }
+            if (postOperation)
+            {
+                expr.Accept(this);
+            }
 
-        private void Increment(IExpression expr, Boolean postOperation)
-        {
-            expr.Accept(this);
             _assigning = true;
             expr.Accept(this);
             _assigning = false;
-            _operations.Add(new IncOperation(PopOperation(), postOperation));
+            var store = ExtractLast();
+            expr.Accept(this);
+            _operations.Add(operation);
+            _operations.Add(store);
+
+            if (postOperation)
+            {
+                _operations.Add(PopOperation.Instance);
+            }
         }
 
         #endregion
