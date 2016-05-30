@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents a function call.
     /// </summary>
-    public sealed class CallExpression : ComputingExpression, IExpression
+    public sealed class CallExpression : AssignableExpression, IExpression
     {
         #region Fields
 

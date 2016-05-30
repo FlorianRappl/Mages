@@ -101,7 +101,7 @@
 
             public override void Validate(IValidationContext context)
             {
-                if (Value is VariableExpression == false)
+                if (Value is AssignableExpression == false)
                 {
                     var error = new ParseError(ErrorCode.IncrementOperand, Value);
                     context.Report(error);
@@ -118,7 +118,7 @@
 
             public override void Validate(IValidationContext context)
             {
-                if (Value is VariableExpression == false)
+                if (Value is AssignableExpression == false)
                 {
                     var error = new ParseError(ErrorCode.DecrementOperand, Value);
                     context.Report(error);
