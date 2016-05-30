@@ -43,6 +43,7 @@
         public static Object Pow(Object[] args)
         {
             return Binary<Double, Double>(args, (x, y) => Math.Pow(x, y)) ??
+                Binary<Double[,], Double[,]>(args, Matrix.Pow) ??
                 Binary<Double[,], Double>(args, Matrix.Pow) ??
                 Binary<Double, Double[,]>(args, Matrix.Pow);
         }

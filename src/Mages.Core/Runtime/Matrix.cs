@@ -243,6 +243,28 @@
             return result;
         }
 
+        public static Double[,] Pow(this Double[,] a, Double[,] b)
+        {
+            if (a.Fits(b))
+            {
+                var rows = a.GetRows();
+                var cols = a.GetColumns();
+                var result = new Double[rows, cols];
+
+                for (var i = 0; i < rows; i++)
+                {
+                    for (var j = 0; j < cols; j++)
+                    {
+                        result[i, j] = Math.Pow(a[i, j], b[i, j]);
+                    }
+                }
+
+                return result;
+            }
+
+            return null;
+        }
+
         public static Double[,] Pow(this Double[,] matrix, Double value)
         {
             if (value.IsInteger() && matrix.IsSquare())
