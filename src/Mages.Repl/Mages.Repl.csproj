@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsoleInteractivity.cs" />
+    <Compile Include="ErrorCodeExtensions.cs" />
     <Compile Include="Functions\HelpFunction.cs" />
     <Compile Include="Functions\ProcessObject.cs" />
     <Compile Include="Functions\SpawnFunction.cs" />

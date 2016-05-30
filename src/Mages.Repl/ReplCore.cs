@@ -40,6 +40,10 @@
                         var result = _engine.Interpret(input);
                         _interactivity.Info(result);
                     }
+                    catch (ParseException ex)
+                    {
+                        Display(ex.Error, input);
+                    }
                     catch (Exception ex)
                     {
                         _interactivity.Error(ex.Message);
@@ -78,6 +82,31 @@
                 _interactivity.Info(logoLine);
                 _interactivity.Write(Environment.NewLine);
             }
+        }
+
+        private void Display(ParseError error, String source)
+        {
+            var start = error.Start.Index - 1;
+            var end = error.End.Index - 1;
+
+            if (end == start)
+            {
+                end++;
+            }
+
+            var range = 80;
+            var message = error.Code.GetMessage();
+            var middle = (end + start) / 2;
+            var ss = Math.Max(middle - range / 2, 0);
+            var se = Math.Min(middle + range / 2, source.Length);
+            var snippet = source.Substring(ss, se - ss);
+            _interactivity.Error(snippet);
+            _interactivity.Error(Environment.NewLine);
+            _interactivity.Error(new String(' ', start - ss));
+            _interactivity.Error(new String('^', end - start));
+            _interactivity.Error(Environment.NewLine);
+            _interactivity.Error("Error: ");
+            _interactivity.Error(message);
         }
     }
 }
