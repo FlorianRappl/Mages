@@ -1,8 +1,6 @@
 ﻿namespace Mages.Core.Tests
 {
     using Mages.Core.Ast.Walkers;
-    using Mages.Core.Tests.Mocks;
-    using Mages.Core.Vm;
     using NUnit.Framework;
     using System;
     using System.Collections.Generic;
@@ -612,12 +610,11 @@
 
         private Boolean Validate(String sourceCode)
         {
-            var hasError = false;
-            var validation = new ValidationContextMock(_ => hasError = true);
+            var errors = new List<ParseError>();
+            var walker = new ValidationTreeWalker(errors);
             var statement = sourceCode.ToStatement();
-
-            statement.Validate(validation);
-            return hasError;
+            statement.Accept(walker);
+            return errors.Count > 0;
         }
     }
 }

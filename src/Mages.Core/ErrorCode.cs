@@ -75,12 +75,12 @@
         /// <summary>
         /// See description.
         /// </summary>
-        [Description("The increment operand has to be a valid identifier.")]
+        [Description("The increment operand has to be a valid assignable expression.")]
         IncrementOperand,
         /// <summary>
         /// See description.
         /// </summary>
-        [Description("The decrement operand has to be a valid identifier.")]
+        [Description("The decrement operand has to be a valid assignable expression.")]
         DecrementOperand,
         /// <summary>
         /// See description.
