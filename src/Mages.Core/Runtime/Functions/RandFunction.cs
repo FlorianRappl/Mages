@@ -4,12 +4,8 @@
 
     sealed class RandFunction
     {
-        private readonly Random _random;
-
-        public RandFunction()
-        {
-            _random = new Random();
-        }
+        [ThreadStatic]
+        private static Random _random;
 
         public Object Invoke(Object[] arguments)
         {
@@ -25,6 +21,11 @@
             {
                 rows = ToInteger(arguments[0]);
                 cols = ToInteger(arguments[1]);
+            }
+
+            if (_random == null)
+            {
+                _random = new Random();
             }
 
             rows = Math.Max(1, rows);
