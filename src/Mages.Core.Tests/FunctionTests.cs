@@ -232,6 +232,27 @@
             Assert.AreEqual(-1.0, obj["b"]);
         }
 
+        [Test]
+        public void CustomFunctionShouldBeCurried4Times()
+        {
+            var result = Eval("f = (x,y,z)=>x+y^2+z^3; f()(1)(2)(3)");
+            Assert.AreEqual(32.0, result);
+        }
+
+        [Test]
+        public void CustomFunctionShouldBeCurriedEqualToOriginal()
+        {
+            var result = Eval("f = (x,y,z)=>x+y^2+z^3; f() == f");
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void CustomFunctionShouldBeCurried2Times()
+        {
+            var result = Eval("f = (x,y,z)=>x+y^2+z^3; f(1)(3,3)");
+            Assert.AreEqual(37.0, result);
+        }
+
         private static Object Eval(String source)
         {
             var engine = new Engine();

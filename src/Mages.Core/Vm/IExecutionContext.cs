@@ -9,9 +9,14 @@
     public interface IExecutionContext
     {
         /// <summary>
-        /// Gets or sets the position of the previous statement.
+        /// Gets or sets the position of the previous operation.
         /// </summary>
         Int32 Position { get; set; }
+
+        /// <summary>
+        /// Gets the position of the last operation.
+        /// </summary>
+        Int32 End { get; }
 
         /// <summary>
         /// Gets the currently used execution scope.

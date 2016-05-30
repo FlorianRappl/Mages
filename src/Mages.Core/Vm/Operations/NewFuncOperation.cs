@@ -20,24 +20,32 @@
         {
             var parentScope = context.Scope;
             var function = new InternalFunction(parentScope, _operations);
-            context.Push(new Function(function.Invoke));
+            context.Push(function.Pointer);
         }
 
         sealed class InternalFunction
         {
             private readonly IDictionary<String, Object> _parentScope;
             private readonly IOperation[] _operations;
+            private readonly Function _pointer;
 
             public InternalFunction(IDictionary<String, Object> parentScope, IOperation[] operations)
             {
                 _parentScope = parentScope;
                 _operations = operations;
+                _pointer = new Function(Invoke);
+            }
+
+            public Function Pointer
+            {
+                get { return _pointer; }
             }
 
             public Object Invoke(Object[] arguments)
             {
                 var scope = new LocalScope(_parentScope);
                 var ctx = new ExecutionContext(_operations, scope);
+                ctx.Push(_pointer);
                 ctx.Push(arguments);
                 ctx.Execute();
                 return ctx.Pop();

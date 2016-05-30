@@ -1,5 +1,6 @@
 ﻿namespace Mages.Core.Vm.Operations
 {
+    using Mages.Core.Runtime.Functions;
     using System;
 
     /// <summary>
@@ -19,9 +20,24 @@
         public void Invoke(IExecutionContext context)
         {
             var parameters = (Object[])context.Pop();
-            var value = parameters.Length > _index ? parameters[_index] : null;
-            context.Scope.Add(_name, value);
-            context.Push(parameters);
+
+            if (parameters.Length == 0)
+            {
+                context.Stop();
+            }
+            else if (parameters.Length == _index)
+            {
+                var function = (Function)context.Pop();
+                var value = Curry.Min(_index + 1, function, parameters);
+                context.Push(value);
+                context.Stop();
+            }
+            else
+            {
+                var value = parameters[_index];
+                context.Scope.Add(_name, value);
+                context.Push(parameters);
+            }
         }
     }
 }
