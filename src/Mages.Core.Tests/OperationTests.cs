@@ -501,6 +501,90 @@
             Assert.AreEqual(0, result.Length);
         }
 
+        [Test]
+        public void PreIncrementWithVariableShouldWork()
+        {
+            var result = Eval("x = 2; ++x");
+            Assert.AreEqual(3.0, result);
+        }
+
+        [Test]
+        public void PostIncrementWithVariableShouldWork()
+        {
+            var result = Eval("x = 2; x++");
+            Assert.AreEqual(2.0, result);
+        }
+
+        [Test]
+        public void PreDoubleIncrementWithVariableShouldWork()
+        {
+            var result = Eval("x = 2; ++x; ++x");
+            Assert.AreEqual(4.0, result);
+        }
+
+        [Test]
+        public void PostDoubleIncrementWithVariableShouldWork()
+        {
+            var result = Eval("x = 2; x++; x++");
+            Assert.AreEqual(3.0, result);
+        }
+
+        [Test]
+        public void PreIncrementWithMatrixElementShouldWork()
+        {
+            var result = Eval("x = [1,2,3]; ++x(0)");
+            Assert.AreEqual(2.0, result);
+        }
+
+        [Test]
+        public void PostIncrementWithMatrixElementShouldWork()
+        {
+            var result = Eval("x = [1,2,3]; x(2)++");
+            Assert.AreEqual(3.0, result);
+        }
+
+        [Test]
+        public void PreDoubleIncrementWithMatrixElementShouldWork()
+        {
+            var result = Eval("x = [1,5,3]; ++x(1); ++x(1)");
+            Assert.AreEqual(7.0, result);
+        }
+
+        [Test]
+        public void PostDoubleIncrementWithMatrixElementShouldWork()
+        {
+            var result = Eval("x = [1,2,3]; x(1)++; x(1)++");
+            Assert.AreEqual(3.0, result);
+        }
+
+        [Test]
+        public void PreIncrementWithObjectValueShouldWork()
+        {
+            var result = Eval("x = new { a: \"hi\", b: 7 }; ++x.b");
+            Assert.AreEqual(8.0, result);
+        }
+
+        [Test]
+        public void PostIncrementWithObjectValueShouldWork()
+        {
+            var result = Eval("x = new { a: \"hi\", b: 7 }; x.b++");
+            Assert.AreEqual(7.0, result);
+        }
+
+        [Test]
+        public void PreDoubleIncrementWithObjectValueShouldWork()
+        {
+            var result = Eval("x = new { a: \"hi\", b: 7 }; ++x.b; ++x.b");
+            Assert.AreEqual(9.0, result);
+        }
+
+        [Test]
+        public void PostDoubleIncrementWithObjectValueShouldWork()
+        {
+            var result = Eval("x = new { a: \"hi\", b: 7 }; x.b++; x.b++");
+            Assert.AreEqual(8.0, result);
+        }
+
         private static Object Eval(String source)
         {
             var engine = new Engine();
