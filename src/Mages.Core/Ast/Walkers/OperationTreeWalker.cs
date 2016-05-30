@@ -300,6 +300,8 @@
 
                 _operations.Add(new ArgOperation(i, name));
             }
+
+            _operations.Add(ArgsOperation.Instance);
         }
 
         void ITreeWalker.Visit(VariableExpression expression)
