@@ -585,6 +585,101 @@
             Assert.AreEqual(8.0, result);
         }
 
+        [Test]
+        public void PreDecrementWithVariableShouldWork()
+        {
+            var result = Eval("x = 2; --x");
+            Assert.AreEqual(1.0, result);
+        }
+
+        [Test]
+        public void PostDecrementWithVariableShouldWork()
+        {
+            var result = Eval("x = 2; x--");
+            Assert.AreEqual(2.0, result);
+        }
+
+        [Test]
+        public void PreDoubleDecrementWithVariableShouldWork()
+        {
+            var result = Eval("x = 2; --x; --x");
+            Assert.AreEqual(0.0, result);
+        }
+
+        [Test]
+        public void PostDoubleDecrementWithVariableShouldWork()
+        {
+            var result = Eval("x = 2; x--; x--");
+            Assert.AreEqual(1.0, result);
+        }
+
+        [Test]
+        public void PreDecrementWithMatrixElementShouldWork()
+        {
+            var result = Eval("x = [1,2,3]; --x(0)");
+            Assert.AreEqual(0.0, result);
+        }
+
+        [Test]
+        public void PostDecrementWithMatrixElementShouldWork()
+        {
+            var result = Eval("x = [1,2,3]; x(2)--");
+            Assert.AreEqual(3.0, result);
+        }
+
+        [Test]
+        public void PreDoubleDecrementWithMatrixElementShouldWork()
+        {
+            var result = Eval("x = [1,5,3]; --x(1); --x(1)");
+            Assert.AreEqual(3.0, result);
+        }
+
+        [Test]
+        public void PostDoubleDecrementWithMatrixElementShouldWork()
+        {
+            var result = Eval("x = [1,2,3]; x(1)--; x(1)--");
+            Assert.AreEqual(1.0, result);
+        }
+
+        [Test]
+        public void PreDecrementWithObjectValueShouldWork()
+        {
+            var result = Eval("x = new { a: \"hi\", b: 7 }; --x.b");
+            Assert.AreEqual(6.0, result);
+        }
+
+        [Test]
+        public void PostDecrementWithObjectValueShouldWork()
+        {
+            var result = Eval("x = new { a: \"hi\", b: 7 }; x.b--");
+            Assert.AreEqual(7.0, result);
+        }
+
+        [Test]
+        public void PreDoubleDecrementWithObjectValueShouldWork()
+        {
+            var result = Eval("x = new { a: \"hi\", b: 7 }; --x.b; --x.b");
+            Assert.AreEqual(5.0, result);
+        }
+
+        [Test]
+        public void PostDoubleDecrementWithObjectValueShouldWork()
+        {
+            var result = Eval("x = new { a: \"hi\", b: 7 }; x.b--; x.b--");
+            Assert.AreEqual(6.0, result);
+        }
+
+        [Test]
+        public void InitMatrixWithNonExistingValuesYieldsNaN()
+        {
+            var result = Eval("[a, b, c]") as Double[,];
+            Assert.IsNotNull(result);
+            Assert.AreEqual(3, result.Length);
+            Assert.IsNaN(result[0, 0]);
+            Assert.IsNaN(result[0, 1]);
+            Assert.IsNaN(result[0, 2]);
+        }
+
         private static Object Eval(String source)
         {
             var engine = new Engine();

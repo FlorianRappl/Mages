@@ -1,6 +1,7 @@
 ﻿namespace Mages.Core.Vm.Operations
 {
     using Mages.Core.Runtime;
+    using Mages.Core.Runtime.Converters;
     using System;
 
     sealed class InitMatOperation : IOperation
@@ -16,7 +17,7 @@
 
         public void Invoke(IExecutionContext context)
         {
-            var value = (Double)context.Pop();
+            var value = context.Pop().ToNumber();
             var matrix = (Double[,])context.Pop();
             matrix.SetValue(_row, _col, value);
             context.Push(matrix);
