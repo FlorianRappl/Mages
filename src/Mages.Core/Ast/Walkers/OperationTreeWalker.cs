@@ -89,6 +89,7 @@
             }
         }
 
+
         void ITreeWalker.Visit(SimpleStatement statement)
         {
             statement.Validate(this);
@@ -107,11 +108,13 @@
         {
             statement.Validate(this);
             statement.Expression.Accept(this);
+            _operations.Add(RetOperation.Instance);
         }
 
         void ITreeWalker.Visit(EmptyExpression expression)
         {
             expression.Validate(this);
+            _operations.Add(ConstOperation.Null);
         }
 
         void ITreeWalker.Visit(ConstantExpression expression)

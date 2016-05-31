@@ -227,6 +227,27 @@
             Assert.AreEqual(5.0, scope["y"]);
         }
 
+        [Test]
+        public void FunctionReturnStatementWithPayloadPreventsFurtherEvaluation()
+        {
+            Test("(x => { var y = 5; return x + y; 2 * y })(2)", 7.0);
+        }
+
+        [Test]
+        public void FunctionReturnStatementWithoutPayloadPreventsFurtherEvaluation()
+        {
+            var scope = Test("y = (x => { var y = 5; return; 2 * y })(2); 0.0", 0.0);
+
+            Assert.AreEqual(1, scope.Count);
+            Assert.IsNull(scope["y"]);
+        }
+
+        [Test]
+        public void GlobalReturnStatementStopsEvaluation()
+        {
+            Test("x = 5; y = 10; return x + y; return x * y", 15.0);
+        }
+
         private IDictionary<String, Object> Test(String sourceCode, Double expected, Double tolerance = 0.0)
         {
             var engine = new Engine();

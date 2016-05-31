@@ -9,6 +9,11 @@
     {
         private readonly Object _constant;
 
+        /// <summary>
+        /// Contains a const operation pushing null on the stack.
+        /// </summary>
+        public static readonly IOperation Null = new ConstOperation(null);
+
         public ConstOperation(Object constant)
         {
             _constant = constant;
