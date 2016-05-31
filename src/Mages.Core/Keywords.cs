@@ -79,6 +79,11 @@
         public static readonly String Break = "break";
 
         /// <summary>
+        /// The continue keyword.
+        /// </summary>
+        public static readonly String Continue = "continue";
+
+        /// <summary>
         /// The yield keyword.
         /// </summary>
         public static readonly String Yield = "yield";
@@ -135,6 +140,7 @@
             If,
             Else,
             Break,
+            Continue,
             Yield,
             Async,
             Await,
