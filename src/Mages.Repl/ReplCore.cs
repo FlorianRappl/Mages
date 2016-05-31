@@ -3,6 +3,7 @@
     using Mages.Core;
     using Mages.Repl.Functions;
     using System;
+    using Tutorial;
 
     sealed class ReplCore
     {
@@ -16,9 +17,32 @@
             ReplFunctions.Integrate(_engine);
         }
 
+        public void Run(String content)
+        {
+            Evaluate(content, false);
+        }
+
         public void Run()
         {
             Startup();
+            Loop();
+            Teardown();
+        }
+
+        public void Tutorial()
+        {
+            Startup();
+
+            _interactivity.IsPromptShown = false;
+            _interactivity.Write("Welcome to MAGES! Press ENTER to continue or anything else to start an interactive tutorial ...");
+            var runTutorial = !String.IsNullOrEmpty(_interactivity.Read());
+            _interactivity.IsPromptShown = true;
+
+            if (runTutorial)
+            {
+                Tutorials.RunAll(_interactivity, _engine.Scope, input => Evaluate(input, true));
+            }
+
             Loop();
             Teardown();
         }
@@ -33,22 +57,7 @@
 
                 if (!String.IsNullOrEmpty(input))
                 {
-                    try
-                    {
-                        var result = _engine.Interpret(input);
-                        _interactivity.Info(result);
-                        _engine.Scope["ans"] = result;
-                    }
-                    catch (ParseException ex)
-                    {
-                        Display(ex.Error, input);
-                    }
-                    catch (Exception ex)
-                    {
-                        _interactivity.Error(ex.Message);
-                    }
-
-                    _interactivity.Write(Environment.NewLine);
+                    Evaluate(input, true);
                 }
             }
             while (input != null);
@@ -81,6 +90,30 @@
                 _interactivity.Info(logoLine);
                 _interactivity.Write(Environment.NewLine);
             }
+        }
+
+        private void Evaluate(String content, Boolean showOutput)
+        {
+            try
+            {
+                var result = _engine.Interpret(content);
+
+                if (showOutput)
+                {
+                    _interactivity.Info(result);
+                    _engine.Scope["ans"] = result;
+                }
+            }
+            catch (ParseException ex)
+            {
+                Display(ex.Error, content);
+            }
+            catch (Exception ex)
+            {
+                _interactivity.Error(ex.Message);
+            }
+
+            _interactivity.Write(Environment.NewLine);
         }
 
         private void Display(ParseError error, String source)

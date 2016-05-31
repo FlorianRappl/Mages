@@ -4,7 +4,11 @@
 
     interface IInteractivity
     {
+        Boolean IsPromptShown { get; set; }
+
         String Read();
+
+        void WritePrompt();
 
         void Write(String output);
 

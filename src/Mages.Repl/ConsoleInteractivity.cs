@@ -8,6 +8,20 @@
         public ConsoleInteractivity()
         {
             Console.CancelKeyPress += ConsoleCancelled;
+            IsPromptShown = true;
+        }
+
+        public Boolean IsPromptShown
+        {
+            get;
+            set;
+        }
+
+        public void WritePrompt()
+        {
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.Write("SWM> ");
+            Console.ResetColor();
         }
 
         public void Write(String output)
@@ -17,9 +31,11 @@
 
         public String Read()
         {
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
-            Console.Write("SWM> ");
-            Console.ResetColor();
+            if (IsPromptShown)
+            {
+                WritePrompt();
+            }
+
             return Console.ReadLine();
         }
 

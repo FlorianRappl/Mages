@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCompany("Polytrope")]
 [assembly: AssemblyProduct("Mages")]
 [assembly: AssemblyCopyright("Copyright © 2016, Florian Rappl")]
+[assembly: AssemblyMetadata("SquirrelAwareVersion", "1")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
