@@ -14,6 +14,7 @@
             Parser = new ExpressionParser(),
             Scope = null,
             IsEvalForbidden = false,
+            IsEngineExposed = false,
         };
 
         /// <summary>
@@ -38,6 +39,15 @@
         /// Gets or sets if the eval function is disallowed.
         /// </summary>
         public Boolean IsEvalForbidden
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets if the engine itself is exposed.
+        /// </summary>
+        public Boolean IsEngineExposed
         {
             get;
             set;

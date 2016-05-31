@@ -6,7 +6,6 @@
     using System;
     using System.Collections.Generic;
     using System.Reflection;
-    using System.Linq;
 
     /// <summary>
     /// A collection of useful extensions for the engine.
@@ -156,6 +155,20 @@
             }
 
             return symbols;
+        }
+
+        internal static void Apply(this Engine engine, Configuration configuration)
+        {
+            if (!configuration.IsEvalForbidden)
+            {
+                var func = new Func<String, Object>(engine.Interpret);
+                engine.SetFunction("eval", func);
+            }
+
+            if (configuration.IsEngineExposed)
+            {
+                engine.SetConstant("engine", engine);
+            }
         }
 
         sealed class Placement : IPlacement

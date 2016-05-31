@@ -31,11 +31,7 @@
             var cfg = configuration ?? Configuration.Default;
             _parser = cfg.Parser ?? Configuration.Default.Parser;
             _scope = new GlobalScope(cfg.Scope);
-
-            if (!cfg.IsEvalForbidden)
-            {
-                Globals["eval"] = new Function(Eval);
-            }
+            this.Apply(cfg);
         }
 
         #endregion
@@ -111,25 +107,6 @@
             var context = new ExecutionContext(operations, _scope);
             context.Execute();
             return context.Pop();
-        }
-
-        #endregion
-
-        #region Helpers
-
-        private Object Eval(Object[] args)
-        {
-            if (args.Length == 1)
-            {
-                var source = args[0] as String;
-
-                if (source != null)
-                {
-                    return Interpret(source);
-                }
-            }
-
-            return null;
         }
 
         #endregion
