@@ -33,7 +33,8 @@
 
                     if (reference.IsAlive && (builder = reference.Target as StringBuilder) != null)
                     {
-                        return builder.Clear();
+                        builder.Length = 0;
+                        return builder;
                     }
                 }
                 
