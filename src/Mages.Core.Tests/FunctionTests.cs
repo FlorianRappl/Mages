@@ -380,6 +380,13 @@
             Assert.IsInstanceOf<String>(result);
         }
 
+        [Test]
+        public void FunctionWorkWithLexicalCaptures()
+        {
+            var result = Eval("var f = () => { var a = 5; return () => a; }; var a = 3; var g = f(); g()");
+            Assert.AreEqual(5.0, result);
+        }
+
         private static Object Eval(String source)
         {
             var engine = new Engine();

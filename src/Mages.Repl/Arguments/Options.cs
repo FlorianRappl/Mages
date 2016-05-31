@@ -20,6 +20,9 @@
         [Option("squirrel-install", Required = false)]
         public String InstallVersion { get; set; }
 
+        [Option("update", HelpText = "Checks for an application update.", Required = false)]
+        public Boolean IsUpdating { get; set; }
+
         [Value(0, HelpText = "The script file to use.", Required = false)]
         public String ScriptFile { get; set; }
     }

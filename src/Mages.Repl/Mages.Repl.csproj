@@ -101,7 +101,8 @@
     <Compile Include="Functions\Helpers.cs" />
     <Compile Include="Functions\ReplObject.cs" />
     <Compile Include="IInteractivity.cs" />
-    <Compile Include="Installer\Actions.cs" />
+    <Compile Include="Provisioning\Installer.cs" />
+    <Compile Include="Provisioning\Updater.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReplCore.cs" />

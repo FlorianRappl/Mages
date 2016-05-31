@@ -12,6 +12,7 @@
 
 #addin "Cake.FileHelpers"
 #addin "Octokit"
+#addin "Cake.Squirrel"
 using Octokit;
 
 var target = Argument("target", "Default");
@@ -148,6 +149,37 @@ Task("Publish-Package")
                 ApiKey = apiKey 
             });
         }
+    });
+
+Task("Create-Installer")
+    .IsDependentOn("Copy-Files")
+    .WithCriteria(() => isRunningOnWindows)
+    .Does(() => {
+        var nuspec = GetFiles("./src/Mages.Repl.Installer/Mages.nuspec").First();
+        var pattern = String.Format("bin\\{0}\\**\\*", configuration);
+        var packageDir = nuspec.GetDirectory() + ("/bin/" + configuration);
+        CopyDirectory(binDir, packageDir);
+
+        NuGetPack(nuspec, new NuGetPackSettings
+        {
+            Version = version,
+            BasePath = nuspec.GetDirectory(),
+            OutputDirectory = packageDir,
+            Symbols = false,
+            Files = new [] { new NuSpecContent { Source = pattern, Target = "lib/net45" } }
+        });
+
+        var package = (packageDir + "/") + File("Mages." + version + ".nupkg");
+
+        Squirrel(package, new SquirrelSettings
+        {
+            Silent = true,
+            NoMsi = true,
+            ReleaseDirectory = windowsDir,
+            SetupIcon = GetFiles("./src/Mages.Repl.Installer/mages.ico").First().FullPath
+        });
+
+        DeleteFile(package);
     });
     
 Task("Publish-Release")

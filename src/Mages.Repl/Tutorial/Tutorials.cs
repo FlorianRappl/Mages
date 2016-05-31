@@ -94,14 +94,14 @@
         {
             return new List<ITutorialSnippet>
             {
-                new StandardSnippet(scope => { var value = scope["ans"]; return value is Double && ((Double)value) == 2.0 * Math.PI; })
+                new StandardSnippet<Double>((ans, scope) => ans == 2.0 * Math.PI)
                 {
                     Description = "Simple arithmetic expressions are simple with Mages. Take for instance an addition. You only need to enter the two operands and the plus operator.",
                     ExampleCommand = "2 + 3",
                     Hints = new[] {
-                        "We need to enter three parts: Number, operator, identifier.",
+                        "We need to enter three parts: Number, operator, and identifier.",
                         "The number is 2, the operator is *.",
-                        "PI is given by typing pi"
+                        "PI is given by typing `pi`"
                     },
                     Solution = "2 * pi",
                     Task = "Compute two times PI, where PI is a mathematical constant, representing the ratio of a circle's circumference to its diameter. PI is given by typing pi.",

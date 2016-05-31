@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using CommandLine.Text;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("Mages.Repl")]
@@ -6,8 +7,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Polytrope")]
 [assembly: AssemblyProduct("Mages")]
-[assembly: AssemblyCopyright("Copyright © 2016, Florian Rappl")]
+[assembly: AssemblyCopyright("Copyright (c) 2016, Florian Rappl")]
 [assembly: AssemblyMetadata("SquirrelAwareVersion", "1")]
+[assembly: AssemblyLicense("The MIT License (MIT)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]

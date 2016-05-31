@@ -3,11 +3,11 @@
     using System;
     using System.Collections.Generic;
 
-    sealed class StandardSnippet : ITutorialSnippet
+    sealed class StandardSnippet<T> : ITutorialSnippet
     {
-        private readonly Predicate<IDictionary<String, Object>> _checker;
+        private readonly Func<T, IDictionary<String, Object>, Boolean> _checker;
 
-        public StandardSnippet(Predicate<IDictionary<String, Object>> checker)
+        public StandardSnippet(Func<T, IDictionary<String, Object>, Boolean> checker)
         {
             _checker = checker;
         }
@@ -50,7 +50,8 @@
 
         public Boolean Check(IDictionary<String, Object> scope)
         {
-            return _checker.Invoke(scope);
+            var value = scope["ans"];
+            return value is T ? _checker.Invoke((T)value, scope) : false;
         }
     }
 }
