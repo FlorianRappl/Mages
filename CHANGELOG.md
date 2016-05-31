@@ -1,11 +1,14 @@
 # 0.5.0
 
 - Source code validation (#21)
+- `return` statement (#18)
+- Lists via `list` function (#17)
 - Variable arguments collected in `args` (#16)
 - Auto currying for functions (#15)
 - Refactored standard functions
 - Fixed increment and decrement operators
 - Thread-safe operations
+- REPL improvements
 
 # 0.4.0
 

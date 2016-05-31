@@ -140,7 +140,7 @@ multiplication ::= explicit_multiplication | implicit_multiplication
 Furthermore, two types of unary operations exist:
 
 ```
-left_unary_operator ::= '+' | '-' | '~' | '++' | '--'
+left_unary_operator ::= '+' | '-' | '~' | '&' | '++' | '--'
 right_unary_operator ::= '!' | ''' | '++' | '--'
 pre_unary ::= left_unary_operator space* expr
 post_unary ::= expr space* right_unary_operator
@@ -171,6 +171,12 @@ Introducing a new (local) variable can then be defined by the `var_stmt` stateme
 var_stmt ::= 'var' space+ assignment
 ```
 
+It may make sense to stop the current execution block (global or function-scoped) at a specific point. To achieve this a new statement has been introduced. This is the return statement as known from many other programming languages.
+
+```
+ret_stmt ::= 'return' (space+ expr)?
+```
+
 Variables live in their local scope. Scopes are implicitely created by functions or by a block statement:
 
 ```
@@ -180,6 +186,6 @@ block_stmt ::= '{' space* stmt* space* '}'
 Statements are generally given by the following construct:
 
 ```
-stmt ::= (expr | var_stmt | block_stmt) space* ';'
+stmt ::= (expr | var_stmt | ret_stmt | block_stmt) space* ';'
 ```
 
