@@ -30,6 +30,7 @@
             { TokenType.Negate, (p, x) => new PreUnaryExpression.Not(p, x) },
             { TokenType.Increment, (p, x) => new PreUnaryExpression.Increment(p, x) },
             { TokenType.Decrement, (p, x) => new PreUnaryExpression.Decrement(p, x) },
+            { TokenType.Type, (p, x) => new PreUnaryExpression.Type(p, x) },
         };
 
         public static readonly Dictionary<TokenType, Func<IExpression, TextPosition, PostUnaryExpression>> PostUnary = new Dictionary<TokenType, Func<IExpression, TextPosition, PostUnaryExpression>>

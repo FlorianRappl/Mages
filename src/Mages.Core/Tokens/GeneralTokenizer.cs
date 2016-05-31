@@ -133,7 +133,7 @@
                         return new OperatorToken(TokenType.And, "&&", start, scanner.Position);
                     }
 
-                    break;
+                    return new OperatorToken(TokenType.Type, "&", start);
                 case CharacterTable.QuestionMark:
                     return new OperatorToken(TokenType.Condition, "?", start);
                 case CharacterTable.SingleQuotationMark:

@@ -736,6 +736,27 @@
             Assert.AreEqual(5.0, result);
         }
 
+        [Test]
+        public void TypeOperatorOnNullYieldsUndefined()
+        {
+            var result = Eval("&null");
+            Assert.AreEqual("Undefined", result);
+        }
+
+        [Test]
+        public void TypeOperatorOnResultOfTypeOperatorYieldsString()
+        {
+            var result = Eval("& &null");
+            Assert.AreEqual("String", result);
+        }
+
+        [Test]
+        public void TypeOperatorOnMatrixYieldsMatrix()
+        {
+            var result = Eval("&[1, 2, 3]");
+            Assert.AreEqual("Matrix", result);
+        }
+
         private static Object Eval(String source)
         {
             var engine = new Engine();

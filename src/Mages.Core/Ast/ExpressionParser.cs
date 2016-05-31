@@ -329,6 +329,7 @@
                 case TokenType.Negate:
                 case TokenType.Decrement:
                 case TokenType.Increment:
+                case TokenType.Type:
                     var expr = ParseUnary(tokens.NextNonIgnorable());
                     return ExpressionCreators.PreUnary[mode].Invoke(current.Start, expr);
             }

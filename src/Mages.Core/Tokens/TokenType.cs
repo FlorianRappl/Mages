@@ -158,6 +158,10 @@
         /// </summary>
         Lambda = 38,
         /// <summary>
+        /// Type operator.
+        /// </summary>
+        Type = 39,
+        /// <summary>
         /// Semicolon symbol.
         /// </summary>
         SemiColon = 0xff,

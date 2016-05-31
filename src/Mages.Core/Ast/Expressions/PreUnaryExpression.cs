@@ -100,6 +100,14 @@
             }
         }
 
+        internal sealed class Type : PreUnaryExpression
+        {
+            public Type(TextPosition start, IExpression value)
+                : base(start, value, "&")
+            {
+            }
+        }
+
         internal sealed class Increment : PreUnaryExpression
         {
             public Increment(TextPosition start, IExpression value)

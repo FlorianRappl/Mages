@@ -20,6 +20,7 @@
             { "~", (walker, expr) => walker.Handle(expr, StandardOperators.Not) },
             { "+", (walker, expr) => walker.Handle(expr, StandardOperators.Positive) },
             { "-", (walker, expr) => walker.Handle(expr, StandardOperators.Negative) },
+            { "&", (walker, expr) => walker.Handle(expr, StandardOperators.Type) },
             { "++", (walker, expr) => walker.Place(IncOperation.Instance, expr.Value, false) },
             { "--", (walker, expr) => walker.Place(DecOperation.Instance, expr.Value, false) }
         };
