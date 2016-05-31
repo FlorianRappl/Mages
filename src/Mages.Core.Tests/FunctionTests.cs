@@ -372,6 +372,14 @@
             Assert.AreEqual(true, result);
         }
 
+        [Test]
+        public void RecursiveObjectShouldNotCrashJson()
+        {
+            var result = Eval("x = new {}; x.y = x; json(x)");
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<String>(result);
+        }
+
         private static Object Eval(String source)
         {
             var engine = new Engine();

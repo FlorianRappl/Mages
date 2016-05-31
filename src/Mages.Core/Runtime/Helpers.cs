@@ -88,7 +88,7 @@
 
         public static WrapperObject Expose(this Type type)
         {
-            return new WrapperObject(type);
+            return WrapperObject.CreateFor(type);
         }
 
         public static String FindName(this IEnumerable<String> names, MemberInfo member)

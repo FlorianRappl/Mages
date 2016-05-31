@@ -144,36 +144,8 @@
         /// <returns>The JSON representation.</returns>
         public static String AsJson(Object value)
         {
-            if (value == null)
-            {
-                return "null";
-            }
-            else if (value is Function)
-            {
-                return AsJson("[Function]");
-            }
-            else if (value is IDictionary<String, Object>)
-            {
-                return AsJson((IDictionary<String, Object>)value);
-            }
-            else if (value is Double[,])
-            {
-                return AsJson((Double[,])value);
-            }
-            else if (value is String)
-            {
-                return AsJson((String)value);
-            }
-            else if (value is Double)
-            {
-                return This((Double)value);
-            }
-            else if (value is Boolean)
-            {
-                return This((Boolean)value);
-            }
-
-            return "undefined";
+            var serializer = new JsonSerializer();
+            return serializer.Serialize(value);
         }
 
         /// <summary>
@@ -185,34 +157,6 @@
         {
             var escaped = str.Replace("\"", "\\\"");
             return String.Concat("\"", escaped, "\"");
-        }
-
-        /// <summary>
-        /// Converts the given dictionary object to a JSON string.
-        /// </summary>
-        /// <param name="obj">The object to represent.</param>
-        /// <returns>The JSON representation.</returns>
-        public static String AsJson(IDictionary<String, Object> obj)
-        {
-            var sb = StringBuilderPool.Pull();
-            sb.AppendLine("{");
-
-            foreach (var item in obj)
-            {
-                var key = AsJson(item.Key);
-                var value = AsJson(item.Value);
-
-                if (value.Contains(Environment.NewLine))
-                {
-                    var lines = value.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-                    value = String.Join(Environment.NewLine + "  ", lines);
-                }
-
-                sb.Append("  ").Append(key).Append(": ").AppendLine(value);
-            }
-
-            sb.Append('}');
-            return sb.Stringify();
         }
 
         /// <summary>

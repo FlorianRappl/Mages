@@ -12,7 +12,7 @@
     public sealed class WrapperObject : IDictionary<String, Object>
     {
         #region Fields
-
+        
         private readonly Object _content;
         private readonly Type _type;
         private readonly Dictionary<String, Object> _extends;
@@ -26,7 +26,7 @@
         /// Creates a new wrapped instance object.
         /// </summary>
         /// <param name="content">The object to wrap.</param>
-        public WrapperObject(Object content)
+        private WrapperObject(Object content)
         {
             _content = content;
             _type = content.GetType();
@@ -38,7 +38,7 @@
         /// Creates a new wrapped static object.
         /// </summary>
         /// <param name="type">The type to wrap.</param>
-        public WrapperObject(Type type)
+        private WrapperObject(Type type)
         {
             _type = type;
             _content = null;
@@ -62,9 +62,7 @@
             if (value != null)
             {
                 var type = value as Type;
-                result = type != null ? 
-                    new WrapperObject(type) : 
-                    new WrapperObject(value);
+                result = type != null ? new WrapperObject(type) : new WrapperObject(value);
             }
 
             return result;
