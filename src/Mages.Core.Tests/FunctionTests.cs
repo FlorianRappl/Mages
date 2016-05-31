@@ -316,6 +316,62 @@
             Assert.AreEqual(2.0, result);
         }
 
+        [Test]
+        public void TypeOfNothingIsUndefined()
+        {
+            var result = Eval("type(null)");
+            Assert.AreEqual("Undefined", result);
+        }
+
+        [Test]
+        public void TypeOfMatrixIsMatrix()
+        {
+            var result = Eval("type([])");
+            Assert.AreEqual("Matrix", result);
+        }
+
+        [Test]
+        public void TypeOfDictionaryIsObject()
+        {
+            var result = Eval("type(new {})");
+            Assert.AreEqual("Object", result);
+        }
+
+        [Test]
+        public void TypeOfStringIsString()
+        {
+            var result = Eval("type(\"\")");
+            Assert.AreEqual("String", result);
+        }
+
+        [Test]
+        public void TypeOfBooleanIsBoolean()
+        {
+            var result = Eval("type(true)");
+            Assert.AreEqual("Boolean", result);
+        }
+
+        [Test]
+        public void TypeOfDoubleIsNumber()
+        {
+            var result = Eval("type(2.3)");
+            Assert.AreEqual("Number", result);
+        }
+
+        [Test]
+        public void TypeOfDelegateIsFunction()
+        {
+            var result = Eval("type(() => {})");
+            Assert.AreEqual("Function", result);
+        }
+
+        [Test]
+        public void TypeIsCurriedForZeroArguments()
+        {
+            var result = Eval("type() == type");
+            Assert.AreEqual(true, result);
+        }
+
         private static Object Eval(String source)
         {
             var engine = new Engine();
