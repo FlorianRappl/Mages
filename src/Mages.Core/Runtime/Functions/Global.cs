@@ -60,6 +60,7 @@
             { "all", StandardFunctions.All },
             { "stringify", Stringify.Default },
             { "json", Stringify.Json },
+            { "list", StandardFunctions.List },
         };
     }
 }

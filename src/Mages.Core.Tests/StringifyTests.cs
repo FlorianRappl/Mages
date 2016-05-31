@@ -98,10 +98,10 @@
             var dbl = 2.8;
             var thread = Thread.CurrentThread;
             var culture = thread.CurrentUICulture;
-            thread.CurrentUICulture = new CultureInfo("de-de");
+            thread.CurrentCulture = new CultureInfo("de-de");
             Assert.AreEqual("2,8", dbl.ToString());
             Assert.AreEqual("2.8", Stringify.This(dbl));
-            thread.CurrentUICulture = culture;
+            thread.CurrentCulture = culture;
         }
     }
 }

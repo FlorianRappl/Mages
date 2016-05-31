@@ -339,5 +339,10 @@
                 If.Is<Double[,]>(args, x => x.AllTrue()) ??
                 args[0].ToBoolean();
         });
+
+        /// <summary>
+        /// Contains the list function.
+        /// </summary>
+        public static readonly Function List = new Function(Helpers.ToArrayObject);
     }
 }
