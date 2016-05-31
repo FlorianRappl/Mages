@@ -13,9 +13,7 @@
         {
             _interactivity = interactivity;
             _engine = new Engine(configuration);
-            HelpFunction.AddTo(_engine);
-            ProcessObject.AddTo(_engine);
-            SpawnFunction.AddTo(_engine);
+            ReplFunctions.Integrate(_engine);
         }
 
         public void Run()
@@ -39,6 +37,7 @@
                     {
                         var result = _engine.Interpret(input);
                         _interactivity.Info(result);
+                        _engine.Scope["ans"] = result;
                     }
                     catch (ParseException ex)
                     {

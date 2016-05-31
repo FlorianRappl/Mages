@@ -44,9 +44,10 @@
   <ItemGroup>
     <Compile Include="ConsoleInteractivity.cs" />
     <Compile Include="ErrorCodeExtensions.cs" />
-    <Compile Include="Functions\HelpFunction.cs" />
     <Compile Include="Functions\ProcessObject.cs" />
-    <Compile Include="Functions\SpawnFunction.cs" />
+    <Compile Include="Functions\ReplFunctions.cs" />
+    <Compile Include="Functions\Helpers.cs" />
+    <Compile Include="Functions\ReplObject.cs" />
     <Compile Include="IInteractivity.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,6 +1,5 @@
 ﻿namespace Mages.Repl.Functions
 {
-    using Mages.Core;
     using System;
     using System.Diagnostics;
 
@@ -41,12 +40,6 @@
         public Int32 threads
         {
             get { return _process.Threads.Count; }
-        }
-
-        internal static void AddTo(Engine engine)
-        {
-            var process = new ProcessObject();
-            engine.SetConstant("process", process);
         }
     }
 }
