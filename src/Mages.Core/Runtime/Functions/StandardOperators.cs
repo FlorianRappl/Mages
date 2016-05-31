@@ -109,5 +109,10 @@
         /// Wraps the Math.Abs function.
         /// </summary>
         public static readonly Function Abs = new Function(UnaryOperators.Abs);
+
+        /// <summary>
+        /// Contains the type operator.
+        /// </summary>
+        public static readonly Function Type = new Function(UnaryOperators.Type);
     }
 }

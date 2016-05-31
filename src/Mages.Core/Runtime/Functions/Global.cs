@@ -8,10 +8,11 @@
         public static readonly IDictionary<String, Object> Mapping = new Dictionary<String, Object>
         {
             { "abs", StandardOperators.Abs },
-            { "factorial", StandardOperators.Factorial },
-            { "negative", StandardOperators.Negative },
             { "not", StandardOperators.Not },
+            { "type", StandardOperators.Type },
+            { "factorial", StandardOperators.Factorial },
             { "positive", StandardOperators.Positive },
+            { "negative", StandardOperators.Negative },
             { "transpose", StandardOperators.Transpose },
             { "pow", StandardOperators.Pow },
             { "add", StandardOperators.Add },

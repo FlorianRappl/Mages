@@ -3,7 +3,7 @@
     using Mages.Core.Runtime.Converters;
     using Mages.Core.Runtime.Functions;
     using System;
-
+    using System.Collections.Generic;
     static class UnaryOperators
     {
         public static Object Not(Object[] args)
@@ -50,6 +50,18 @@
             return Curry.MinOne(StandardOperators.Abs, args) ??
                 If.Is<Double[,]>(args, x => Matrix.Abs(x)) ??
                 Math.Abs(args[0].ToNumber());
+        }
+
+        public static Object Type(Object[] args)
+        {
+            return Curry.MinOne(StandardOperators.Type, args) ??
+                If.Is<Double>(args, x => "Number") ??
+                If.Is<String>(args, x => "String") ??
+                If.Is<Boolean>(args, x => "Boolean") ??
+                If.Is<Double[,]>(args, x => "Matrix") ??
+                If.Is<Function>(args, x => "Function") ??
+                If.Is<IDictionary<String, Object>>(args, x => "Object") ??
+                "Undefined";
         }
     }
 }

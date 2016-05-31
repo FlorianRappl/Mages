@@ -97,6 +97,9 @@
                 If.Is<Double, Double[,]>(args, (y, x) => x.AreEqual(y)) ??
                 If.Is<Double[,], Boolean>(args, (x, y) => x.AreEqual(y.ToNumber())) ??
                 If.Is<Boolean, Double[,]>(args, (y, x) => x.AreEqual(y.ToNumber())) ??
+                If.Is<String, String>(args, (x, y) => x.Equals(y)) ??
+                If.Is<String, Object>(args, (x, y) => x.Equals(Stringify.This(y))) ??
+                If.Is<Object, String>(args, (y, x) => x.Equals(Stringify.This(y))) ??
                 If.Is<Object, Object>(args, (x, y) => Object.ReferenceEquals(x, y));
         }
 
@@ -110,6 +113,9 @@
                 If.Is<Double, Double[,]>(args, (y, x) => x.AreNotEqual(y)) ??
                 If.Is<Double[,], Boolean>(args, (x, y) => x.AreNotEqual(y.ToNumber())) ??
                 If.Is<Boolean, Double[,]>(args, (y, x) => x.AreNotEqual(y.ToNumber())) ??
+                If.Is<String, String>(args, (x, y) => !x.Equals(y)) ??
+                If.Is<String, Object>(args, (x, y) => !x.Equals(Stringify.This(y))) ??
+                If.Is<Object, String>(args, (y, x) => !x.Equals(Stringify.This(y))) ??
                 If.Is<Object, Object>(args, (x, y) => !Object.ReferenceEquals(x, y));
         }
 
