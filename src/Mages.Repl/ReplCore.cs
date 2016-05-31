@@ -9,10 +9,10 @@
         private readonly IInteractivity _interactivity;
         private readonly Engine _engine;
 
-        public ReplCore(IInteractivity interactivity)
+        public ReplCore(IInteractivity interactivity, Configuration configuration)
         {
             _interactivity = interactivity;
-            _engine = new Engine();
+            _engine = new Engine(configuration);
             HelpFunction.AddTo(_engine);
             ProcessObject.AddTo(_engine);
             SpawnFunction.AddTo(_engine);
