@@ -113,6 +113,11 @@
             statement.Assignment.Accept(this);
         }
 
+        void ITreeWalker.Visit(ReturnStatement statement)
+        {
+            statement.Expression.Accept(this);
+        }
+
         void ITreeWalker.Visit(EmptyExpression expression)
         {
         }

@@ -103,6 +103,12 @@
             _declaring = false;
         }
 
+        void ITreeWalker.Visit(ReturnStatement statement)
+        {
+            statement.Validate(this);
+            statement.Expression.Accept(this);
+        }
+
         void ITreeWalker.Visit(EmptyExpression expression)
         {
             expression.Validate(this);

@@ -3,6 +3,7 @@
     using Mages.Core.Ast.Expressions;
     using Mages.Core.Ast.Statements;
     using System.Collections.Generic;
+    using System;
 
     /// <summary>
     /// Represents the walker to validate the AST.
@@ -47,6 +48,12 @@
         }
 
         void ITreeWalker.Visit(SimpleStatement statement)
+        {
+            statement.Validate(this);
+            statement.Expression.Accept(this);
+        }
+
+        void ITreeWalker.Visit(ReturnStatement statement)
         {
             statement.Validate(this);
             statement.Expression.Accept(this);

@@ -23,8 +23,14 @@
         /// <summary>
         /// Visits the given statement.
         /// </summary>
-        /// <param name="statement">simple statement.</param>
+        /// <param name="statement">Simple statement.</param>
         void Visit(SimpleStatement statement);
+
+        /// <summary>
+        /// Visits the given statement.
+        /// </summary>
+        /// <param name="statement">Return statement.</param>
+        void Visit(ReturnStatement statement);
 
         /// <summary>
         /// Visits the given expression.

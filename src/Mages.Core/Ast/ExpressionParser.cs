@@ -30,18 +30,23 @@
         {
             var current = tokens.Current;
 
-            if (current.Is(Keywords.Var))
+            if (current.Type == TokenType.Keyword)
             {
-                return ParseVarStatement(tokens);
+                if (current.Is(Keywords.Var))
+                {
+                    return ParseVarStatement(tokens);
+                }
+                else if (current.Is(Keywords.Return))
+                {
+                    return ParseReturnStatement(tokens);
+                }
             }
             else if (current.Type == TokenType.OpenScope)
             {
                 return ParseBlockStatement(tokens);
             }
-            else
-            {
-                return ParseSimpleStatement(tokens);
-            }
+
+            return ParseSimpleStatement(tokens);
         }
 
         private SimpleStatement ParseSimpleStatement(IEnumerator<IToken> tokens)
@@ -49,6 +54,14 @@
             var expr = ParseAssignment(tokens);
             var end = tokens.Current.End;
             return new SimpleStatement(expr, end);
+        }
+
+        private IStatement ParseReturnStatement(IEnumerator<IToken> tokens)
+        {
+            var start = tokens.Current.Start;
+            var expr = ParseAssignment(tokens.NextNonIgnorable());
+            var end = tokens.Current.End;
+            return new ReturnStatement(expr, start, end);
         }
 
         private IStatement ParseVarStatement(IEnumerator<IToken> tokens)
