@@ -288,6 +288,34 @@
             Assert.AreEqual(1.0, result);
         }
 
+        [Test]
+        public void EmptyListYieldsZeroEntries()
+        {
+            var result = Eval("length(list())");
+            Assert.AreEqual(0.0, result);
+        }
+
+        [Test]
+        public void ListWithFourDifferentEntries()
+        {
+            var result = Eval("length(list(1, true, [1,2,3], new { }))");
+            Assert.AreEqual(4.0, result);
+        }
+
+        [Test]
+        public void ListWithOneEntryIndexGetAccessor()
+        {
+            var result = Eval("list(new { a : 5 })(0).a");
+            Assert.AreEqual(5.0, result);
+        }
+
+        [Test]
+        public void ListWithOneEntryAddNewEntryWithIndexSetAccessor()
+        {
+            var result = Eval("l = list(false); l(1) = \"foo\"; length(l)");
+            Assert.AreEqual(2.0, result);
+        }
+
         private static Object Eval(String source)
         {
             var engine = new Engine();
