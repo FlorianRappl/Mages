@@ -183,9 +183,24 @@ Variables live in their local scope. Scopes are implicitely created by functions
 block_stmt ::= '{' space* stmt* space* '}'
 ```
 
+For having loops the `while` keyword has been introduced. Statements are then built as follows:
+
+```
+while_stmt ::= 'while' space* '(' space* expr space* ')' space* stmt
+```
+
+Loops can be controlled via two special statements:
+
+```
+break_stmt ::= 'break'
+cont_stmt ::= 'continue'
+```
+
+These statements are unique in that sense, that their validation is not only dependent on the syntax rules defined here, but also of the context in which they are used. They require a loop to be controlled, hence they need to be nested within at least one loop. They always control the loop, which is the closest ancestor from the AST point of view.
+
 Statements are generally given by the following construct:
 
 ```
-stmt ::= (expr | var_stmt | ret_stmt | block_stmt) space* ';'
+stmt ::= (expr | var_stmt | ret_stmt | block_stmt | while_stmt | break_stmt | cont_stmt) space* ';'
 ```
 
