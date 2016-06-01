@@ -1,9 +1,10 @@
-![MAGES Logo](https://raw.githubusercontent.com/FlorianRappl/Mages/devel/logo.png)
+![MAGES Logo](https://raw.githubusercontent.com/FlorianRappl/Mages/master/logo.png)
 
 # MAGES
 
-[![Nuget count](https://img.shields.io/nuget/v/MAGES.svg?style=flat-square)](https://www.nuget.org/packages/MAGES/)
-[![Issues open](https://img.shields.io/github/issues/FlorianRappl/MAGES.svg?style=flat-square)](https://github.com/FlorianRappl/MAGES/issues)
+[![AppVeyor CI](https://img.shields.io/appveyor/ci/FlorianRappl/Mages/master.svg?style=flat-square)](https://ci.appveyor.com/project/FlorianRappl/Mages)
+[![Nuget count](https://img.shields.io/nuget/v/MAGES.svg?style=flat-square)](https://www.nuget.org/packages/Mages/)
+[![Issues open](https://img.shields.io/github/issues/FlorianRappl/MAGES.svg?style=flat-square)](https://github.com/FlorianRappl/Mages/issues)
 
 ## Mages: Another Generalized Expression Simplifier
 

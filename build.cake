@@ -28,6 +28,7 @@ var version = releaseNotes.Version.ToString();
 var buildDir = Directory("./src/Mages.Core/bin") + Directory(configuration);
 var buildResultDir = Directory("./bin") + Directory(version);
 var nugetRoot = buildResultDir + Directory("nuget");
+var installerRoot = buildResultDir + Directory("installer");
 
 // Initialization
 // ----------------------------------------
@@ -55,8 +56,24 @@ Task("Restore-Packages")
         NuGetRestore("./src/Mages.sln");
     });
 
+Task("Update-Assembly-Version")
+    .Does(() =>
+    {
+        var file = Directory("./src") + File("SharedAssemblyInfo.cs");
+
+        CreateAssemblyInfo(file, new AssemblyInfoSettings
+        {
+            Product = "Mages",
+            Version = version,
+            FileVersion = version,
+            Company = "Polytrope",
+            Copyright = String.Format("Copyright (c) {0}, Florian Rappl", DateTime.Now.Year)
+        });
+    });
+
 Task("Build")
     .IsDependentOn("Restore-Packages")
+    .IsDependentOn("Update-Assembly-Version")
     .Does(() =>
     {
         if (isRunningOnWindows)
@@ -158,7 +175,6 @@ Task("Create-Installer")
         var nuspec = GetFiles("./src/Mages.Repl.Installer/Mages.nuspec").First();
         var pattern = String.Format("bin\\{0}\\**\\*", configuration);
         var packageDir = nuspec.GetDirectory() + ("/bin/" + configuration);
-        CopyDirectory(binDir, packageDir);
 
         NuGetPack(nuspec, new NuGetPackSettings
         {
@@ -175,7 +191,7 @@ Task("Create-Installer")
         {
             Silent = true,
             NoMsi = true,
-            ReleaseDirectory = windowsDir,
+            ReleaseDirectory = installerRoot,
             SetupIcon = GetFiles("./src/Mages.Repl.Installer/mages.ico").First().FullPath
         });
 
