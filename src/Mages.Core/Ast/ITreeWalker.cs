@@ -33,6 +33,12 @@
         void Visit(ReturnStatement statement);
 
         /// <summary>
+        /// Visits the given statement.
+        /// </summary>
+        /// <param name="statement">Continue statement.</param>
+        void Visit(ContinueStatement statement);
+
+        /// <summary>
         /// Visits the given expression.
         /// </summary>
         /// <param name="expression">Empty expression.</param>

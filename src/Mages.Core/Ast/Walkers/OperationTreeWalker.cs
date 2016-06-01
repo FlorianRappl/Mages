@@ -111,6 +111,11 @@
             _operations.Add(RetOperation.Instance);
         }
 
+        void ITreeWalker.Visit(ContinueStatement statement)
+        {
+            statement.Validate(this);
+        }
+
         void ITreeWalker.Visit(EmptyExpression expression)
         {
             expression.Validate(this);

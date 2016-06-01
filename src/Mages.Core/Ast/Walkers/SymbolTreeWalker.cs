@@ -118,6 +118,10 @@
             statement.Expression.Accept(this);
         }
 
+        void ITreeWalker.Visit(ContinueStatement statement)
+        {
+        }
+
         void ITreeWalker.Visit(EmptyExpression expression)
         {
         }

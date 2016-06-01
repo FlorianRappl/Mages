@@ -40,6 +40,10 @@
                 {
                     return ParseReturnStatement(tokens);
                 }
+                else if (current.Is(Keywords.Continue))
+                {
+                    return ParseContinueStatement(tokens);
+                }
             }
             else if (current.Type == TokenType.OpenScope)
             {
@@ -62,6 +66,14 @@
             var expr = ParseAssignment(tokens.NextNonIgnorable());
             var end = tokens.Current.End;
             return new ReturnStatement(expr, start, end);
+        }
+
+        private IStatement ParseContinueStatement(IEnumerator<IToken> tokens)
+        {
+            var start = tokens.Current.Start;
+            var expr = ParseAssignment(tokens.NextNonIgnorable());
+            var end = tokens.Current.End;
+            return new ContinueStatement(expr, start, end);
         }
 
         private IStatement ParseVarStatement(IEnumerator<IToken> tokens)

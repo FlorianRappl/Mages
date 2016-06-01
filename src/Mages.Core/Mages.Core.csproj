@@ -80,6 +80,7 @@
     <Compile Include="Ast\StatementExtensions.cs" />
     <Compile Include="Ast\Statements\BaseStatement.cs" />
     <Compile Include="Ast\Statements\BlockStatement.cs" />
+    <Compile Include="Ast\Statements\ContinueStatement.cs" />
     <Compile Include="Ast\Statements\ReturnStatement.cs" />
     <Compile Include="Ast\Statements\SimpleStatement.cs" />
     <Compile Include="Ast\Statements\VarStatement.cs" />

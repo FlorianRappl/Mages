@@ -1,11 +1,12 @@
 ﻿namespace Mages.Core.Tests
 {
+    using Ast.Walkers;
     using Mages.Core.Ast;
     using Mages.Core.Ast.Expressions;
     using Mages.Core.Ast.Statements;
     using NUnit.Framework;
     using System;
-
+    using System.Collections.Generic;
     [TestFixture]
     public class StatementTests
     {
@@ -60,6 +61,40 @@
             var return1 = (statements[0] as ReturnStatement).Expression as ConstantExpression;
 
             Assert.IsNotNull(return1);
+        }
+
+        [Test]
+        public void ParseOneContinueStatementWithoutPayload()
+        {
+            var source = "continue";
+            var parser = new ExpressionParser();
+            var errors = new List<ParseError>();
+            var validator = new ValidationTreeWalker(errors);
+            var statements = parser.ParseStatements(source);
+
+            Assert.AreEqual(1, statements.Count);
+            Assert.IsInstanceOf<ContinueStatement>(statements[0]);
+
+            statements[0].Validate(validator);
+
+            Assert.AreEqual(0, errors.Count);
+        }
+
+        [Test]
+        public void ParseOneContinueStatementWithPayloadShouldContainErrors()
+        {
+            var source = "continue 2+3";
+            var parser = new ExpressionParser();
+            var errors = new List<ParseError>();
+            var validator = new ValidationTreeWalker(errors);
+            var statements = parser.ParseStatements(source);
+
+            Assert.AreEqual(1, statements.Count);
+            Assert.IsInstanceOf<ContinueStatement>(statements[0]);
+
+            statements[0].Validate(validator);
+
+            Assert.AreEqual(1, errors.Count);
         }
 
         [Test]
