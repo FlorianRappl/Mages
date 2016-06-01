@@ -57,6 +57,7 @@
         #region Fields
 
         private readonly List<IOperation> _operations;
+        private readonly Stack<LoopInfo> _loops;
         private Boolean _assigning;
         private Boolean _declaring;
 
@@ -71,6 +72,7 @@
         public OperationTreeWalker(List<IOperation> operations)
         {
             _operations = operations;
+            _loops = new Stack<LoopInfo>();
             _assigning = false;
             _declaring = false;
         }
@@ -119,7 +121,9 @@
             _operations.Add(SkipOperation.Instance);
             var jump = _operations.Count;
             _operations.Add(null);
+            _loops.Push(new LoopInfo { Break = jump, Continue = start });
             statement.Body.Accept(this);
+            _loops.Pop();
             _operations.Add(new JumpOperation(start - 1));
             var end = _operations.Count;
             _operations[jump] = new JumpOperation(end - 1);
@@ -128,13 +132,15 @@
         void ITreeWalker.Visit(BreakStatement statement)
         {
             statement.Validate(this);
-            //TODO
+            var position = _loops.Peek().Break - 1;
+            _operations.Add(new JumpOperation(position));
         }
 
         void ITreeWalker.Visit(ContinueStatement statement)
         {
             statement.Validate(this);
-            //TODO
+            var position = _loops.Peek().Continue - 1;
+            _operations.Add(new JumpOperation(position));
         }
 
         void ITreeWalker.Visit(EmptyExpression expression)
@@ -442,6 +448,16 @@
             {
                 _operations.Add(PopOperation.Instance);
             }
+        }
+
+        #endregion
+
+        #region Loop
+
+        struct LoopInfo
+        {
+            public Int32 Continue;
+            public Int32 Break;
         }
 
         #endregion
