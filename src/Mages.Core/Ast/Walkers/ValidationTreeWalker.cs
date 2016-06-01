@@ -52,6 +52,11 @@
             statement.Validate(this);
         }
 
+        void ITreeWalker.Visit(BreakStatement statement)
+        {
+            statement.Validate(this);
+        }
+
         void ITreeWalker.Visit(SimpleStatement statement)
         {
             statement.Validate(this);

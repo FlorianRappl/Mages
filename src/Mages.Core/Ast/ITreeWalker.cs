@@ -39,6 +39,12 @@
         void Visit(ContinueStatement statement);
 
         /// <summary>
+        /// Visits the given statement.
+        /// </summary>
+        /// <param name="statement">Break statement.</param>
+        void Visit(BreakStatement statement);
+
+        /// <summary>
         /// Visits the given expression.
         /// </summary>
         /// <param name="expression">Empty expression.</param>

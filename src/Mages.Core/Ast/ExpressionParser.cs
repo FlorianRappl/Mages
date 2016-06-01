@@ -40,6 +40,10 @@
                 {
                     return ParseReturnStatement(tokens);
                 }
+                else if (current.Is(Keywords.Break))
+                {
+                    return ParseBreakStatement(tokens);
+                }
                 else if (current.Is(Keywords.Continue))
                 {
                     return ParseContinueStatement(tokens);
@@ -74,6 +78,14 @@
             var expr = ParseAssignment(tokens.NextNonIgnorable());
             var end = tokens.Current.End;
             return new ContinueStatement(expr, start, end);
+        }
+
+        private IStatement ParseBreakStatement(IEnumerator<IToken> tokens)
+        {
+            var start = tokens.Current.Start;
+            var expr = ParseAssignment(tokens.NextNonIgnorable());
+            var end = tokens.Current.End;
+            return new BreakStatement(expr, start, end);
         }
 
         private IStatement ParseVarStatement(IEnumerator<IToken> tokens)

@@ -111,9 +111,16 @@
             _operations.Add(RetOperation.Instance);
         }
 
+        void ITreeWalker.Visit(BreakStatement statement)
+        {
+            statement.Validate(this);
+            //TODO
+        }
+
         void ITreeWalker.Visit(ContinueStatement statement)
         {
             statement.Validate(this);
+            //TODO
         }
 
         void ITreeWalker.Visit(EmptyExpression expression)

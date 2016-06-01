@@ -64,6 +64,40 @@
         }
 
         [Test]
+        public void ParseOneBreakStatementWithoutPayload()
+        {
+            var source = "break";
+            var parser = new ExpressionParser();
+            var errors = new List<ParseError>();
+            var validator = new ValidationTreeWalker(errors);
+            var statements = parser.ParseStatements(source);
+
+            Assert.AreEqual(1, statements.Count);
+            Assert.IsInstanceOf<BreakStatement>(statements[0]);
+
+            statements[0].Validate(validator);
+
+            Assert.AreEqual(0, errors.Count);
+        }
+
+        [Test]
+        public void ParseOneBreakStatementWithPayloadShouldContainErrors()
+        {
+            var source = "break true";
+            var parser = new ExpressionParser();
+            var errors = new List<ParseError>();
+            var validator = new ValidationTreeWalker(errors);
+            var statements = parser.ParseStatements(source);
+
+            Assert.AreEqual(1, statements.Count);
+            Assert.IsInstanceOf<BreakStatement>(statements[0]);
+
+            statements[0].Validate(validator);
+
+            Assert.AreEqual(1, errors.Count);
+        }
+
+        [Test]
         public void ParseOneContinueStatementWithoutPayload()
         {
             var source = "continue";

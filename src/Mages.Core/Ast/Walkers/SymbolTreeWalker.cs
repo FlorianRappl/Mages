@@ -118,6 +118,10 @@
             statement.Expression.Accept(this);
         }
 
+        void ITreeWalker.Visit(BreakStatement statement)
+        {
+        }
+
         void ITreeWalker.Visit(ContinueStatement statement)
         {
         }
