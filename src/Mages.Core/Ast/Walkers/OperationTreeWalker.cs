@@ -111,6 +111,20 @@
             _operations.Add(RetOperation.Instance);
         }
 
+        void ITreeWalker.Visit(WhileStatement statement)
+        {
+            statement.Validate(this);
+            var start = _operations.Count;
+            statement.Condition.Accept(this);
+            _operations.Add(SkipOperation.Instance);
+            var jump = _operations.Count;
+            _operations.Add(null);
+            statement.Body.Accept(this);
+            _operations.Add(new JumpOperation(start - 1));
+            var end = _operations.Count;
+            _operations[jump] = new JumpOperation(end - 1);
+        }
+
         void ITreeWalker.Visit(BreakStatement statement)
         {
             statement.Validate(this);

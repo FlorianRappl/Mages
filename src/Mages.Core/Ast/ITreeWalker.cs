@@ -35,6 +35,12 @@
         /// <summary>
         /// Visits the given statement.
         /// </summary>
+        /// <param name="statement">While statement.</param>
+        void Visit(WhileStatement statement);
+
+        /// <summary>
+        /// Visits the given statement.
+        /// </summary>
         /// <param name="statement">Continue statement.</param>
         void Visit(ContinueStatement statement);
 

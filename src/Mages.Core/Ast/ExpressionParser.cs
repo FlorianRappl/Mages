@@ -40,6 +40,10 @@
                 {
                     return ParseReturnStatement(tokens);
                 }
+                else if (current.Is(Keywords.While))
+                {
+                    return ParseWhileStatement(tokens);
+                }
                 else if (current.Is(Keywords.Break))
                 {
                     return ParseBreakStatement(tokens);
@@ -62,6 +66,36 @@
             var expr = ParseAssignment(tokens);
             var end = tokens.Current.End;
             return new SimpleStatement(expr, end);
+        }
+
+        private IStatement ParseWhileStatement(IEnumerator<IToken> tokens)
+        {
+            var start = tokens.Current.Start;
+            var condition = default(IExpression);
+            var body = default(IStatement);
+
+            if (tokens.NextNonIgnorable().Current.Type == TokenType.OpenGroup)
+            {
+                condition = ParseAssignment(tokens.NextNonIgnorable());
+
+                if (tokens.Current.Type != TokenType.CloseGroup)
+                {
+                    var invalid = new InvalidExpression(ErrorCode.BracketNotTerminated, tokens.Current);
+                    body = new SimpleStatement(invalid, tokens.Current.End);
+                }
+                else
+                {
+                    body = ParseNextStatement(tokens.NextNonIgnorable());
+                }
+            }
+            else
+            {
+                condition = new InvalidExpression(ErrorCode.OpenGroupExpected, tokens.Current);
+                body = new SimpleStatement(new EmptyExpression(tokens.Current.Start), tokens.Current.End);
+            }
+
+            var end = tokens.Current.End;
+            return new WhileStatement(condition, body, start, end);
         }
 
         private IStatement ParseReturnStatement(IEnumerator<IToken> tokens)

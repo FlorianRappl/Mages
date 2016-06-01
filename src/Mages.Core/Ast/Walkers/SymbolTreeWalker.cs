@@ -113,6 +113,12 @@
             statement.Assignment.Accept(this);
         }
 
+        void ITreeWalker.Visit(WhileStatement statement)
+        {
+            statement.Condition.Accept(this);
+            statement.Body.Accept(this);
+        }
+
         void ITreeWalker.Visit(ReturnStatement statement)
         {
             statement.Expression.Accept(this);

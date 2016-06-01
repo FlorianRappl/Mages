@@ -47,6 +47,13 @@
             }
         }
 
+        void ITreeWalker.Visit(WhileStatement statement)
+        {
+            statement.Validate(this);
+            statement.Condition.Accept(this);
+            statement.Body.Accept(this);
+        }
+
         void ITreeWalker.Visit(ContinueStatement statement)
         {
             statement.Validate(this);

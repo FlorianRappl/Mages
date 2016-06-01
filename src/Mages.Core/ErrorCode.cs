@@ -172,5 +172,10 @@
         /// </summary>
         [Description("A matrix cannot host rows with different number of columns.")]
         MatrixColumnsDiscrepency,
+        /// <summary>
+        /// See description.
+        /// </summary>
+        [Description("An open group has been expected ( '(' ).")]
+        OpenGroupExpected,
     }
 }

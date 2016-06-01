@@ -85,6 +85,7 @@
     <Compile Include="Ast\Statements\ReturnStatement.cs" />
     <Compile Include="Ast\Statements\SimpleStatement.cs" />
     <Compile Include="Ast\Statements\VarStatement.cs" />
+    <Compile Include="Ast\Statements\WhileStatement.cs" />
     <Compile Include="Ast\Walkers\OperationTreeWalker.cs" />
     <Compile Include="Ast\Walkers\SymbolTreeWalker.cs" />
     <Compile Include="Ast\Walkers\ValidationTreeWalker.cs" />
@@ -174,6 +175,7 @@
     <Compile Include="Vm\Operations\ConstOperation.cs" />
     <Compile Include="Vm\Operations\DecOperation.cs" />
     <Compile Include="Vm\Operations\InitMatOperation.cs" />
+    <Compile Include="Vm\Operations\JumpOperation.cs" />
     <Compile Include="Vm\Operations\NewFuncOperation.cs" />
     <Compile Include="Vm\Operations\GetpOperation.cs" />
     <Compile Include="Vm\Operations\IncOperation.cs" />
@@ -187,6 +189,7 @@
     <Compile Include="Vm\Operations\NewObjOperation.cs" />
     <Compile Include="Vm\Operations\SetpOperation.cs" />
     <Compile Include="Vm\Operations\SetsOperation.cs" />
+    <Compile Include="Vm\Operations\SkipOperation.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
