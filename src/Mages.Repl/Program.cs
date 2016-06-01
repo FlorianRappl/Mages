@@ -2,41 +2,22 @@
 {
     using CommandLine;
     using Mages.Core;
-    using Mages.Repl.Arguments;
-    using Mages.Repl.Provisioning;
     using System;
+    using System.Diagnostics;
     using System.IO;
 
     static class Program
     {
-        static void Main(String[] arguments)
+        internal static void Main(String[] arguments)
         {
             Parser.Default.ParseArguments<Options>(arguments).WithParsed(Run);
         }
 
         private static void Run(Options options)
         {
-            if (!String.IsNullOrEmpty(options.UpdatedVersion))
+            if (options.IsUpdating)
             {
-                Installer.CreateCmdFile(options.UpdatedVersion);
-            }
-            else if (!String.IsNullOrEmpty(options.UninstallVersion))
-            {
-                Installer.RemoveShortcut();
-                Installer.RemoveFromPath();
-            }
-            else if (!String.IsNullOrEmpty(options.ObsoleteVersion))
-            {
-            }
-            else if (!String.IsNullOrEmpty(options.InstallVersion))
-            {
-                Installer.CreateCmdFile(options.InstallVersion);
-                Installer.CreateShortcut();
-                Installer.AddToPath();
-            }
-            else if (options.IsUpdating)
-            {
-                Updater.PerformUpdate();
+                Process.Start("mages.installer.exe", "--update");
             }
             else
             {
@@ -53,10 +34,10 @@
                     var content = File.ReadAllText(options.ScriptFile);
                     repl.Run(content);
                 }
-                //else if (options.IsFirstRun)
-                //{
-                //    repl.Tutorial();
-                //}
+                else if (options.IsTutorial)
+                {
+                    repl.Tutorial();
+                }
                 else
                 {
                     repl.Run();

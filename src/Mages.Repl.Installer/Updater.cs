@@ -1,4 +1,4 @@
-﻿namespace Mages.Repl.Provisioning
+﻿namespace Mages.Repl.Installer
 {
     using Squirrel;
     using System;

@@ -34,16 +34,11 @@
             Startup();
 
             _interactivity.IsPromptShown = false;
-            _interactivity.Write("Welcome to MAGES! Press ENTER to continue or anything else to start an interactive tutorial ...");
-            var runTutorial = !String.IsNullOrEmpty(_interactivity.Read());
+            _interactivity.Write("Welcome to MAGES! Press ENTER to to start the interactive tutorial ...");
+            _interactivity.Read();
             _interactivity.IsPromptShown = true;
-
-            if (runTutorial)
-            {
-                Tutorials.RunAll(_interactivity, _engine.Scope, input => Evaluate(input, true));
-            }
-
-            Loop();
+            Tutorials.RunAll(_interactivity, _engine.Scope, input => Evaluate(input, true));
+            
             Teardown();
         }
 

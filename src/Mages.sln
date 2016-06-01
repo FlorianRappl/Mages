@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Core", "Mages.Core\Mages.Core.csproj", "{B0698A2A-BFE9-4568-9055-82302F325452}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Repl", "Mages.Repl\Mages.Repl.csproj", "{027A32F7-4411-4083-AA01-0550EEA0E5A3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Core.Performance", "Mages.Core.Performance\Mages.Core.Performance.csproj", "{15B324FD-3EE3-467A-BDDA-A6F571FEA4C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Repl.Installer", "Mages.Repl.Installer\Mages.Repl.Installer.csproj", "{2239BDD1-07B4-44B0-A6DB-ED4C69B8797C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{15B324FD-3EE3-467A-BDDA-A6F571FEA4C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15B324FD-3EE3-467A-BDDA-A6F571FEA4C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15B324FD-3EE3-467A-BDDA-A6F571FEA4C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2239BDD1-07B4-44B0-A6DB-ED4C69B8797C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2239BDD1-07B4-44B0-A6DB-ED4C69B8797C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2239BDD1-07B4-44B0-A6DB-ED4C69B8797C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2239BDD1-07B4-44B0-A6DB-ED4C69B8797C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,11 +1,11 @@
-﻿namespace Mages.Repl.Provisioning
+﻿namespace Mages.Repl.Installer
 {
     using System;
     using System.IO;
     using System.Linq;
     using System.Security;
 
-    static class Installer
+    static class Actions
     {
         public static void CreateCmdFile(String version)
         {

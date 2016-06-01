@@ -1,4 +1,4 @@
-﻿namespace Mages.Repl.Arguments
+﻿namespace Mages.Repl.Installer
 {
     using CommandLine;
     using System;
@@ -20,10 +20,7 @@
         [Option("squirrel-install", Required = false)]
         public String InstallVersion { get; set; }
 
-        [Option("update", HelpText = "Checks for an application update.", Required = false)]
+        [Option("update", Required = false)]
         public Boolean IsUpdating { get; set; }
-
-        [Value(0, HelpText = "The script file to use.", Required = false)]
-        public String ScriptFile { get; set; }
     }
 }
