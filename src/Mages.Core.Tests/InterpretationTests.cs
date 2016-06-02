@@ -278,6 +278,18 @@
             Test("n = 5; while (n > 0) { n = 0; break; n = 1; }n", 0.0);
         }
 
+        [Test]
+        public void WhileStatementWorksWithoutTrailingSemicolon()
+        {
+            Test("n = 0; while (n == 0) { n = 1 }n", 1.0);
+        }
+
+        [Test]
+        public void WhileStatementBodySkippedWorks()
+        {
+            Test("n = 0; while (false) { n = 1 }n", 0.0);
+        }
+
         private static IDictionary<String, Object> Test(String sourceCode, Double expected, Double tolerance = 0.0)
         {
             var engine = new Engine();
