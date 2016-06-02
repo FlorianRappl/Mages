@@ -1,5 +1,7 @@
 ﻿namespace Mages.Core.Ast.Statements
 {
+    using Mages.Core.Ast.Expressions;
+
     /// <summary>
     /// Represents a while statement.
     /// </summary>
@@ -67,6 +69,11 @@
         /// <param name="context">The validator to report errors to.</param>
         public void Validate(IValidationContext context)
         {
+            if (_body.IsEmpty())
+            {
+                var error = new ParseError(ErrorCode.ExpressionExpected, _body);
+                context.Report(error);
+            }
         }
 
         #endregion

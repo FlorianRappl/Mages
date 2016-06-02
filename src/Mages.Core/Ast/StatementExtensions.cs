@@ -4,6 +4,7 @@
     using Mages.Core.Ast.Statements;
     using Mages.Core.Ast.Walkers;
     using Mages.Core.Vm;
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -69,6 +70,18 @@
             var walker = new OperationTreeWalker(operations);
             statements.ToBlock().Accept(walker);
             return operations.ToArray();
+        }
+
+        /// <summary>
+        /// Checks if the given statement is a simple statement containing
+        /// an empty expression.
+        /// </summary>
+        /// <param name="statement">The statement.</param>
+        /// <returns>True if the statement is empty, otherwise false.</returns>
+        public static Boolean IsEmpty(this IStatement statement)
+        {
+            var simple = statement as SimpleStatement;
+            return simple != null && simple.Expression is EmptyExpression;
         }
     }
 }

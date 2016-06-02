@@ -248,7 +248,37 @@
             Test("x = 5; y = 10; return x + y; return x * y", 15.0);
         }
 
-        private IDictionary<String, Object> Test(String sourceCode, Double expected, Double tolerance = 0.0)
+        [Test]
+        public void WhileStatementWorksFineWithBodyDedicatedPreIncrement()
+        {
+            Test("i = 0; n = 0; while (i < 5) { n = i + n; ++i; } n + i", 15.0);
+        }
+
+        [Test]
+        public void WhileStatementWorksFineWithBodyMixedPostIncrement()
+        {
+            Test("i = 0; n = 0; while (i < 6) { n = i++ + n; } n + i", 21.0);
+        }
+
+        [Test]
+        public void WhileStatementWorksFineWithConditionPostIncrement()
+        {
+            Test("i = 0; n = 0; while (i++ < 5) { n = i + n; } n + i", 21.0);
+        }
+
+        [Test]
+        public void WhileStatementWorksFineWithContinue()
+        {
+            Test("n = 0; while (n < 1) { n = 1; continue; n = 0; }n", 1.0);
+        }
+
+        [Test]
+        public void WhileStatementWorksFineWithBreak()
+        {
+            Test("n = 5; while (n > 0) { n = 0; break; n = 1; }n", 0.0);
+        }
+
+        private static IDictionary<String, Object> Test(String sourceCode, Double expected, Double tolerance = 0.0)
         {
             var engine = new Engine();
             var result = engine.Interpret(sourceCode) as Double?;

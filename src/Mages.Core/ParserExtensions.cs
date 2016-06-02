@@ -61,7 +61,7 @@
                 var statement = parser.ParseStatement(tokens);
                 statements.Add(statement);
             }
-            while (tokens.Current.Type == TokenType.SemiColon);
+            while (tokens.Current.IsEither(TokenType.SemiColon, TokenType.CloseScope));
 
             return statements;
         }
