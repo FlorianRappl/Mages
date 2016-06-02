@@ -2,8 +2,8 @@
 {
     using Mages.Core.Ast.Expressions;
     using Mages.Core.Ast.Statements;
-    using System.Collections.Generic;
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Represents the walker to validate the AST.
@@ -13,6 +13,7 @@
         #region Fields
 
         private readonly List<ParseError> _errors;
+        private readonly Stack<BreakableStatement> _loops;
 
         #endregion
 
@@ -26,6 +27,16 @@
         public ValidationTreeWalker(List<ParseError> errors)
         {
             _errors = errors;
+            _loops = new Stack<BreakableStatement>();
+        }
+
+        #endregion
+
+        #region Properties
+
+        Boolean IValidationContext.IsInLoop
+        {
+            get { return _loops.Count != 0 && _loops.Peek() != null; }
         }
 
         #endregion
@@ -51,7 +62,9 @@
         {
             statement.Validate(this);
             statement.Condition.Accept(this);
+            _loops.Push(statement);
             statement.Body.Accept(this);
+            _loops.Pop();
         }
 
         void ITreeWalker.Visit(ContinueStatement statement)
@@ -179,7 +192,9 @@
         {
             expression.Validate(this);
             expression.Parameters.Accept(this);
+            _loops.Push(null);
             expression.Body.Accept(this);
+            _loops.Pop();
         }
 
         void ITreeWalker.Visit(InvalidExpression expression)

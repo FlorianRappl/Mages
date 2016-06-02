@@ -46,6 +46,12 @@
         /// <param name="context">The validator to report errors to.</param>
         public void Validate(IValidationContext context)
         {
+            if (!context.IsInLoop)
+            {
+                var error = new ParseError(ErrorCode.LoopMissing, this);
+                context.Report(error);
+            }
+
             if (_expression is EmptyExpression == false)
             {
                 var error = new ParseError(ErrorCode.TerminatorExpected, _expression);

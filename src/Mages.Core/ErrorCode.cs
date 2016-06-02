@@ -182,5 +182,10 @@
         /// </summary>
         [Description("An open group has been expected ( '(' ).")]
         OpenGroupExpected,
+        /// <summary>
+        /// See description.
+        /// </summary>
+        [Description("The statement requires an enclosing loop.")]
+        LoopMissing,
     }
 }

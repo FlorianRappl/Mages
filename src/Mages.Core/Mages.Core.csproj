@@ -80,6 +80,7 @@
     <Compile Include="Ast\StatementExtensions.cs" />
     <Compile Include="Ast\Statements\BaseStatement.cs" />
     <Compile Include="Ast\Statements\BlockStatement.cs" />
+    <Compile Include="Ast\Statements\BreakableStatement.cs" />
     <Compile Include="Ast\Statements\BreakStatement.cs" />
     <Compile Include="Ast\Statements\ContinueStatement.cs" />
     <Compile Include="Ast\Statements\ReturnStatement.cs" />

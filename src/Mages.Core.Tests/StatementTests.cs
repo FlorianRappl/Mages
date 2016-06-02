@@ -77,7 +77,8 @@
 
             statements[0].Validate(validator);
 
-            Assert.AreEqual(0, errors.Count);
+            Assert.AreEqual(1, errors.Count);
+            Assert.AreEqual(ErrorCode.LoopMissing, errors[0].Code);
         }
 
         [Test]
@@ -94,7 +95,9 @@
 
             statements[0].Validate(validator);
 
-            Assert.AreEqual(1, errors.Count);
+            Assert.AreEqual(2, errors.Count);
+            Assert.AreEqual(ErrorCode.LoopMissing, errors[0].Code);
+            Assert.AreEqual(ErrorCode.TerminatorExpected, errors[1].Code);
         }
 
         [Test]
@@ -111,7 +114,8 @@
 
             statements[0].Validate(validator);
 
-            Assert.AreEqual(0, errors.Count);
+            Assert.AreEqual(1, errors.Count);
+            Assert.AreEqual(ErrorCode.LoopMissing, errors[0].Code);
         }
 
         [Test]
@@ -128,7 +132,9 @@
 
             statements[0].Validate(validator);
 
-            Assert.AreEqual(1, errors.Count);
+            Assert.AreEqual(2, errors.Count);
+            Assert.AreEqual(ErrorCode.LoopMissing, errors[0].Code);
+            Assert.AreEqual(ErrorCode.TerminatorExpected, errors[1].Code);
         }
 
         [Test]

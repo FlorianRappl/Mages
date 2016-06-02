@@ -79,6 +79,15 @@
 
         #endregion
 
+        #region Properties
+
+        Boolean IValidationContext.IsInLoop
+        {
+            get { return _loops.Count > 0 && _loops.Peek().Break != 0; }
+        }
+
+        #endregion
+
         #region Visitors
 
         void ITreeWalker.Visit(BlockStatement block)
@@ -292,7 +301,9 @@
             var current = _operations.Count;
             expression.Validate(this);
             expression.Parameters.Accept(this);
+            _loops.Push(default(LoopInfo));
             expression.Body.Accept(this);
+            _loops.Pop();
             var operations = ExtractFrom(current);
             _operations.Add(new NewFuncOperation(operations));
         }

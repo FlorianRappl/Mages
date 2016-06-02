@@ -1,20 +1,17 @@
 ﻿namespace Mages.Core.Ast.Statements
 {
-    using Mages.Core.Ast.Expressions;
-
     /// <summary>
     /// Represents a while statement.
     /// </summary>
-    public sealed class WhileStatement : BaseStatement, IStatement
+    public sealed class WhileStatement : BreakableStatement, IStatement
     {
         #region Fields
 
         private readonly IExpression _condition;
-        private readonly IStatement _body;
 
         #endregion
 
-        #region
+        #region ctor
 
         /// <summary>
         /// Creates a new while statement.
@@ -24,10 +21,9 @@
         /// <param name="start">The start position.</param>
         /// <param name="end">The end position.</param>
         public WhileStatement(IExpression condition, IStatement body, TextPosition start, TextPosition end)
-            : base(start, end)
+            : base(body, start, end)
         {
             _condition = condition;
-            _body = body;
         }
 
         #endregion
@@ -42,14 +38,6 @@
             get { return _condition; }
         }
 
-        /// <summary>
-        /// Gets the stored body.
-        /// </summary>
-        public IStatement Body
-        {
-            get { return _body; }
-        }
-
         #endregion
 
         #region Methods
@@ -61,19 +49,6 @@
         public void Accept(ITreeWalker visitor)
         {
             visitor.Visit(this);
-        }
-
-        /// <summary>
-        /// Validates the expression with the given context.
-        /// </summary>
-        /// <param name="context">The validator to report errors to.</param>
-        public void Validate(IValidationContext context)
-        {
-            if (_body.IsEmpty())
-            {
-                var error = new ParseError(ErrorCode.ExpressionExpected, _body);
-                context.Report(error);
-            }
         }
 
         #endregion
