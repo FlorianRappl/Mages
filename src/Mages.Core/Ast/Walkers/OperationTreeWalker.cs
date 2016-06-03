@@ -128,14 +128,27 @@
             var start = _operations.Count;
             statement.Condition.Accept(this);
             _operations.Add(SkipOperation.Instance);
-            var jump = _operations.Count;
-            _operations.Add(null);
+            var jump = InsertMarker();
             _loops.Push(new LoopInfo { Break = jump, Continue = start });
             statement.Body.Accept(this);
             _loops.Pop();
             _operations.Add(new JumpOperation(start - 1));
             var end = _operations.Count;
             _operations[jump] = new JumpOperation(end - 1);
+        }
+
+        void ITreeWalker.Visit(IfStatement statement)
+        {
+            statement.Validate(this);
+            statement.Condition.Accept(this);
+            _operations.Add(SkipOperation.Instance);
+            var jumpToElse = InsertMarker();
+            statement.Primary.Accept(this);
+            var jumpToEnd = InsertMarker();
+            statement.Secondary.Accept(this);
+            var end = _operations.Count;
+            _operations[jumpToElse] = new JumpOperation(jumpToEnd);
+            _operations[jumpToEnd] = new JumpOperation(end - 1);
         }
 
         void ITreeWalker.Visit(BreakStatement statement)
@@ -391,6 +404,13 @@
         #endregion
 
         #region Helpers
+
+        private Int32 InsertMarker()
+        {
+            var marker = _operations.Count;
+            _operations.Add(null);
+            return marker;
+        }
 
         private void Handle(BinaryExpression expression, Function function)
         {

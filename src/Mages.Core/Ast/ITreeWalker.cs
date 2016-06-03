@@ -41,6 +41,12 @@
         /// <summary>
         /// Visits the given statement.
         /// </summary>
+        /// <param name="statement">If statement.</param>
+        void Visit(IfStatement statement);
+
+        /// <summary>
+        /// Visits the given statement.
+        /// </summary>
         /// <param name="statement">Continue statement.</param>
         void Visit(ContinueStatement statement);
 

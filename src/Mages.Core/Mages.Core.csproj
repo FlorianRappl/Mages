@@ -83,6 +83,7 @@
     <Compile Include="Ast\Statements\BreakableStatement.cs" />
     <Compile Include="Ast\Statements\BreakStatement.cs" />
     <Compile Include="Ast\Statements\ContinueStatement.cs" />
+    <Compile Include="Ast\Statements\IfStatement.cs" />
     <Compile Include="Ast\Statements\ReturnStatement.cs" />
     <Compile Include="Ast\Statements\SimpleStatement.cs" />
     <Compile Include="Ast\Statements\VarStatement.cs" />
