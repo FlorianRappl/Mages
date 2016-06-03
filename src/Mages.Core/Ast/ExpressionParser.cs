@@ -32,34 +32,43 @@
 
             if (current.Type == TokenType.Keyword)
             {
-                if (current.Is(Keywords.Var))
-                {
-                    return ParseVarStatement(tokens);
-                }
-                else if (current.Is(Keywords.Return))
-                {
-                    return ParseReturnStatement(tokens);
-                }
-                else if (current.Is(Keywords.While))
-                {
-                    return ParseWhileStatement(tokens);
-                }
-                else if (current.Is(Keywords.If))
-                {
-                    return ParseIfStatement(tokens);
-                }
-                else if (current.Is(Keywords.Break))
-                {
-                    return ParseBreakStatement(tokens);
-                }
-                else if (current.Is(Keywords.Continue))
-                {
-                    return ParseContinueStatement(tokens);
-                }
+                return ParseKeywordStatement(tokens);
             }
             else if (current.Type == TokenType.OpenScope)
             {
                 return ParseBlockStatement(tokens);
+            }
+
+            return ParseSimpleStatement(tokens);
+        }
+
+        private IStatement ParseKeywordStatement(IEnumerator<IToken> tokens)
+        {
+            var current = tokens.Current;
+
+            if (current.Is(Keywords.Var))
+            {
+                return ParseVarStatement(tokens);
+            }
+            else if (current.Is(Keywords.Return))
+            {
+                return ParseReturnStatement(tokens);
+            }
+            else if (current.Is(Keywords.While))
+            {
+                return ParseWhileStatement(tokens);
+            }
+            else if (current.Is(Keywords.If))
+            {
+                return ParseIfStatement(tokens);
+            }
+            else if (current.Is(Keywords.Break))
+            {
+                return ParseBreakStatement(tokens);
+            }
+            else if (current.Is(Keywords.Continue))
+            {
+                return ParseContinueStatement(tokens);
             }
 
             return ParseSimpleStatement(tokens);
@@ -151,6 +160,13 @@
                 }
             }
 
+            if (current.Type != TokenType.CloseScope)
+            {
+                var invalid = new InvalidExpression(ErrorCode.BlockNotTerminated, current);
+                var statement = new SimpleStatement(invalid, current.End);
+                statements.Add(statement);
+            }
+
             var end = tokens.Current.End;
             return new BlockStatement(statements.ToArray(), start, end);
         }
@@ -165,7 +181,7 @@
                 return new SimpleStatement(invalid, token.End);
             }
 
-            return ParseNextStatement(tokens.NextNonIgnorable());
+            return ParseStatement(tokens);
         }
 
         private List<IExpression> ParseExpressions(IEnumerator<IToken> tokens)
@@ -237,7 +253,7 @@
 
             if (mode == TokenType.Assignment)
             {
-                var y = ParseExpression(tokens);
+                var y = ParseAssignment(tokens.NextNonIgnorable());
                 return new AssignmentExpression(x, y);
             }
             else if (mode == TokenType.Lambda)
@@ -596,7 +612,7 @@
             }
             else
             {
-                value = ParseExpression(tokens);
+                value = ParseAssignment(tokens.NextNonIgnorable());
             }
 
             return new PropertyExpression(identifier, value);

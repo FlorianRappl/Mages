@@ -74,7 +74,7 @@
                 if (String.IsNullOrEmpty(rest))
                     break;
 
-                input += rest;
+                input = String.Concat(input, Environment.NewLine, rest);
             }
 
             Evaluate(input, true);
@@ -108,6 +108,8 @@
         {
             var start = error.Start.Index - 1;
             var end = error.End.Index - 1;
+            var lines = source.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+            source = String.Join(" ", lines).Replace('\t', ' ');
 
             if (end == start)
             {
