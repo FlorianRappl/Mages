@@ -19,9 +19,9 @@
         }
 
         [Test]
-        public void EmptyWhileStatementShouldNotThrowException()
+        public void BareWhileStatementShouldNotThrowException()
         {
-            var stmt = "while () {}".ToStatement();
+            var stmt = "while true {}".ToStatement();
             Assert.IsInstanceOf<WhileStatement>(stmt);
             IsInvalid(stmt);
         }

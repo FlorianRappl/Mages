@@ -68,14 +68,12 @@
         {
             var source = "break";
             var parser = new ExpressionParser();
-            var errors = new List<ParseError>();
-            var validator = new ValidationTreeWalker(errors);
             var statements = parser.ParseStatements(source);
 
             Assert.AreEqual(1, statements.Count);
             Assert.IsInstanceOf<BreakStatement>(statements[0]);
 
-            statements[0].Validate(validator);
+            var errors = Validate(statements);
 
             Assert.AreEqual(1, errors.Count);
             Assert.AreEqual(ErrorCode.LoopMissing, errors[0].Code);
@@ -86,14 +84,12 @@
         {
             var source = "break true";
             var parser = new ExpressionParser();
-            var errors = new List<ParseError>();
-            var validator = new ValidationTreeWalker(errors);
             var statements = parser.ParseStatements(source);
 
             Assert.AreEqual(1, statements.Count);
             Assert.IsInstanceOf<BreakStatement>(statements[0]);
 
-            statements[0].Validate(validator);
+            var errors = Validate(statements);
 
             Assert.AreEqual(2, errors.Count);
             Assert.AreEqual(ErrorCode.LoopMissing, errors[0].Code);
@@ -105,14 +101,12 @@
         {
             var source = "continue";
             var parser = new ExpressionParser();
-            var errors = new List<ParseError>();
-            var validator = new ValidationTreeWalker(errors);
             var statements = parser.ParseStatements(source);
 
             Assert.AreEqual(1, statements.Count);
             Assert.IsInstanceOf<ContinueStatement>(statements[0]);
 
-            statements[0].Validate(validator);
+            var errors = Validate(statements);
 
             Assert.AreEqual(1, errors.Count);
             Assert.AreEqual(ErrorCode.LoopMissing, errors[0].Code);
@@ -123,18 +117,79 @@
         {
             var source = "continue 2+3";
             var parser = new ExpressionParser();
-            var errors = new List<ParseError>();
-            var validator = new ValidationTreeWalker(errors);
             var statements = parser.ParseStatements(source);
 
             Assert.AreEqual(1, statements.Count);
             Assert.IsInstanceOf<ContinueStatement>(statements[0]);
 
-            statements[0].Validate(validator);
+            var errors = Validate(statements);
 
             Assert.AreEqual(2, errors.Count);
             Assert.AreEqual(ErrorCode.LoopMissing, errors[0].Code);
             Assert.AreEqual(ErrorCode.TerminatorExpected, errors[1].Code);
+        }
+
+        [Test]
+        public void ParseEmptyIfStatementShouldBeFine()
+        {
+            var source = "if () {}";
+            var parser = new ExpressionParser();
+            var statements = parser.ParseStatements(source);
+
+            Assert.AreEqual(2, statements.Count);
+            Assert.IsInstanceOf<IfStatement>(statements[0]);
+
+            var errors = Validate(statements);
+
+            Assert.AreEqual(0, errors.Count);
+        }
+
+        [Test]
+        public void ParseIfStatementWithNoStatementsShouldBeFine()
+        {
+            var source = "if (true) {}";
+            var parser = new ExpressionParser();
+            var statements = parser.ParseStatements(source);
+
+            Assert.AreEqual(2, statements.Count);
+            Assert.IsInstanceOf<IfStatement>(statements[0]);
+            Assert.IsInstanceOf<BlockStatement>(((IfStatement)statements[0]).Primary);
+
+            var errors = Validate(statements);
+
+            Assert.AreEqual(0, errors.Count);
+        }
+
+        [Test]
+        public void ParseIfStatementWithSingleStatementsShouldBeFine()
+        {
+            var source = "if (true) n = 2 + 3";
+            var parser = new ExpressionParser();
+            var statements = parser.ParseStatements(source);
+
+            Assert.AreEqual(1, statements.Count);
+            Assert.IsInstanceOf<IfStatement>(statements[0]);
+            Assert.IsInstanceOf<SimpleStatement>(((IfStatement)statements[0]).Primary);
+
+            var errors = Validate(statements);
+
+            Assert.AreEqual(0, errors.Count);
+        }
+
+        [Test]
+        public void ParseIfStatementWithComposedConditionAndSingleStatementInBlockShouldBeFine()
+        {
+            var source = "if (a + b + c == d / 2) { n = k }";
+            var parser = new ExpressionParser();
+            var statements = parser.ParseStatements(source);
+
+            Assert.AreEqual(2, statements.Count);
+            Assert.IsInstanceOf<IfStatement>(statements[0]);
+            Assert.IsInstanceOf<BlockStatement>(((IfStatement)statements[0]).Primary);
+
+            var errors = Validate(statements);
+
+            Assert.AreEqual(0, errors.Count);
         }
 
         [Test]
@@ -155,6 +210,16 @@
             Assert.IsNotNull(return1);
 
             Assert.AreEqual("x", assignment1.VariableName);
+        }
+
+        private static List<ParseError> Validate(List<IStatement> statements)
+        {
+            var errors = new List<ParseError>();
+            var validator = new ValidationTreeWalker(errors);
+
+            statements.ToBlock().Accept(validator);
+
+            return errors;
         }
     }
 }
