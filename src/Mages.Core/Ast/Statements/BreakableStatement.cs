@@ -1,5 +1,7 @@
 ﻿namespace Mages.Core.Ast.Statements
 {
+    using System;
+
     /// <summary>
     /// Represents a breakable statement.
     /// </summary>
@@ -28,6 +30,14 @@
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Gets the statement container status.
+        /// </summary>
+        public Boolean IsContainer
+        {
+            get { return _body.IsContainer; }
+        }
 
         /// <summary>
         /// Gets the stored body.

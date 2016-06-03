@@ -1,5 +1,7 @@
 ﻿namespace Mages.Core.Ast.Statements
 {
+    using System;
+
     /// <summary>
     /// Represents a simple statement containing an expression.
     /// </summary>
@@ -25,6 +27,14 @@
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Gets the statement container status.
+        /// </summary>
+        public Boolean IsContainer
+        {
+            get { return false; }
+        }
 
         /// <summary>
         /// Gets the contained expression.

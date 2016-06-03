@@ -1,5 +1,6 @@
 ﻿namespace Mages.Core.Ast.Statements
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -27,6 +28,14 @@
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Gets the statement container status.
+        /// </summary>
+        public Boolean IsContainer
+        {
+            get { return true; }
+        }
 
         /// <summary>
         /// Gets the contained statements.

@@ -3,28 +3,28 @@
     using System;
 
     /// <summary>
-    /// Represents a return statement.
+    /// Represents an else statement.
     /// </summary>
-    public sealed class ReturnStatement : BaseStatement, IStatement
+    public sealed class ElseStatement : BaseStatement, IStatement
     {
         #region Fields
 
-        private readonly IExpression _expression;
+        private readonly IStatement _body;
 
         #endregion
 
         #region ctor
 
         /// <summary>
-        /// Creates a new return statement with the given payload.
+        /// Creates a new else statement.
         /// </summary>
-        /// <param name="expression">The payload to transport.</param>
+        /// <param name="body">The body to carry.</param>
         /// <param name="start">The start position.</param>
         /// <param name="end">The end position.</param>
-        public ReturnStatement(IExpression expression, TextPosition start, TextPosition end)
+        public ElseStatement(IStatement body, TextPosition start, TextPosition end)
             : base(start, end)
         {
-            _expression = expression;
+            _body = body;
         }
 
         #endregion
@@ -36,15 +36,15 @@
         /// </summary>
         public Boolean IsContainer
         {
-            get { return false; }
+            get { return _body.IsContainer; }
         }
 
         /// <summary>
-        /// Gets the stored payload.
+        /// Gets the body.
         /// </summary>
-        public IExpression Expression
+        public IStatement Body
         {
-            get { return _expression; }
+            get { return _body; }
         }
 
         #endregion
@@ -57,7 +57,7 @@
         /// <param name="visitor">The visitor walking the tree.</param>
         public void Accept(ITreeWalker visitor)
         {
-            visitor.Visit(this);
+            //visitor.Visit(this);
         }
 
         /// <summary>

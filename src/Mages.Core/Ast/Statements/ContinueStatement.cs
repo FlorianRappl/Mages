@@ -1,6 +1,7 @@
 ﻿namespace Mages.Core.Ast.Statements
 {
     using Mages.Core.Ast.Expressions;
+    using System;
 
     /// <summary>
     /// Represents a continue statement.
@@ -25,6 +26,18 @@
             : base(start, end)
         {
             _expression = expression;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the statement container status.
+        /// </summary>
+        public Boolean IsContainer
+        {
+            get { return false; }
         }
 
         #endregion

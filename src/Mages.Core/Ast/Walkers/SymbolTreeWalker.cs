@@ -122,8 +122,7 @@
         void ITreeWalker.Visit(IfStatement statement)
         {
             statement.Condition.Accept(this);
-            statement.Primary.Accept(this);
-            statement.Secondary.Accept(this);
+            statement.Body.Accept(this);
         }
 
         void ITreeWalker.Visit(ReturnStatement statement)

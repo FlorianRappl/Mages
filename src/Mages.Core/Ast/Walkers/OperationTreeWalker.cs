@@ -143,9 +143,9 @@
             statement.Condition.Accept(this);
             _operations.Add(SkipOperation.Instance);
             var jumpToElse = InsertMarker();
-            statement.Primary.Accept(this);
+            statement.Body.Accept(this);
             var jumpToEnd = InsertMarker();
-            statement.Secondary.Accept(this);
+            //statement.Secondary.Accept(this);
             var end = _operations.Count;
             _operations[jumpToElse] = new JumpOperation(jumpToEnd);
             _operations[jumpToEnd] = new JumpOperation(end - 1);

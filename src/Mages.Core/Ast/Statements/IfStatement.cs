@@ -1,5 +1,7 @@
 ﻿namespace Mages.Core.Ast.Statements
 {
+    using System;
+
     /// <summary>
     /// Represents an if statement.
     /// </summary>
@@ -8,8 +10,7 @@
         #region Fields
 
         private readonly IExpression _condition;
-        private readonly IStatement _primary;
-        private readonly IStatement _secondary;
+        private readonly IStatement _body;
 
         #endregion
 
@@ -19,21 +20,27 @@
         /// Creates a new if statement.
         /// </summary>
         /// <param name="condition">The condition to use.</param>
-        /// <param name="primary">The primary body to use.</param>
-        /// <param name="secondary">The secondary body to use.</param>
+        /// <param name="body">The body to carry.</param>
         /// <param name="start">The start position.</param>
         /// <param name="end">The end position.</param>
-        public IfStatement(IExpression condition, IStatement primary, IStatement secondary, TextPosition start, TextPosition end)
+        public IfStatement(IExpression condition, IStatement body, TextPosition start, TextPosition end)
             : base(start, end)
         {
             _condition = condition;
-            _primary = primary;
-            _secondary = secondary;
+            _body = body;
         }
 
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Gets the statement container status.
+        /// </summary>
+        public Boolean IsContainer
+        {
+            get { return _body.IsContainer; }
+        }
 
         /// <summary>
         /// Gets the stored condition.
@@ -44,19 +51,11 @@
         }
 
         /// <summary>
-        /// Gets the primary body.
+        /// Gets the body.
         /// </summary>
-        public IStatement Primary
+        public IStatement Body
         {
-            get { return _primary; }
-        }
-
-        /// <summary>
-        /// Gets the secondary body.
-        /// </summary>
-        public IStatement Secondary
-        {
-            get { return _secondary; }
+            get { return _body; }
         }
 
         #endregion

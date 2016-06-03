@@ -154,7 +154,7 @@
 
             Assert.AreEqual(2, statements.Count);
             Assert.IsInstanceOf<IfStatement>(statements[0]);
-            Assert.IsInstanceOf<BlockStatement>(((IfStatement)statements[0]).Primary);
+            Assert.IsInstanceOf<BlockStatement>(((IfStatement)statements[0]).Body);
 
             var errors = Validate(statements);
 
@@ -170,7 +170,7 @@
 
             Assert.AreEqual(1, statements.Count);
             Assert.IsInstanceOf<IfStatement>(statements[0]);
-            Assert.IsInstanceOf<SimpleStatement>(((IfStatement)statements[0]).Primary);
+            Assert.IsInstanceOf<SimpleStatement>(((IfStatement)statements[0]).Body);
 
             var errors = Validate(statements);
 
@@ -186,7 +186,7 @@
 
             Assert.AreEqual(1, statements.Count);
             Assert.IsInstanceOf<IfStatement>(statements[0]);
-            Assert.IsInstanceOf<BlockStatement>(((IfStatement)statements[0]).Primary);
+            Assert.IsInstanceOf<BlockStatement>(((IfStatement)statements[0]).Body);
 
             var errors = Validate(statements);
 
@@ -202,7 +202,7 @@
 
             Assert.AreEqual(1, statements.Count);
             Assert.IsInstanceOf<IfStatement>(statements[0]);
-            Assert.IsInstanceOf<BlockStatement>(((IfStatement)statements[0]).Primary);
+            Assert.IsInstanceOf<BlockStatement>(((IfStatement)statements[0]).Body);
 
             var errors = Validate(statements);
 
@@ -218,7 +218,7 @@
 
             Assert.AreEqual(2, statements.Count);
             Assert.IsInstanceOf<IfStatement>(statements[0]);
-            Assert.IsInstanceOf<BlockStatement>(((IfStatement)statements[0]).Primary);
+            Assert.IsInstanceOf<BlockStatement>(((IfStatement)statements[0]).Body);
 
             var errors = Validate(statements);
 
@@ -275,6 +275,22 @@
             Assert.IsNotNull(return1);
 
             Assert.AreEqual("x", assignment1.VariableName);
+        }
+
+        [Test]
+        public void ParseNestedWhileLoopsShouldSeeNestedBlocks()
+        {
+            var source = "while (i < 5) { n++; while (i < 4) { i++; } i++; }";
+            var parser = new ExpressionParser();
+            var statements = parser.ParseStatements(source);
+
+            Assert.AreEqual(2, statements.Count);
+            Assert.IsInstanceOf<WhileStatement>(statements[0]);
+            Assert.IsInstanceOf<BlockStatement>(((WhileStatement)statements[0]).Body);
+
+            var errors = Validate(statements);
+
+            Assert.AreEqual(0, errors.Count);
         }
 
         private static List<ParseError> Validate(List<IStatement> statements)

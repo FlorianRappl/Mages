@@ -71,8 +71,7 @@
         {
             statement.Validate(this);
             statement.Condition.Accept(this);
-            statement.Primary.Accept(this);
-            statement.Secondary.Accept(this);
+            statement.Body.Accept(this);
         }
 
         void ITreeWalker.Visit(ContinueStatement statement)

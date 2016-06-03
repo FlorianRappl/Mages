@@ -70,6 +70,10 @@
             {
                 return ParseIfStatement(tokens);
             }
+            else if (current.Is(Keywords.Else))
+            {
+                return ParseElseStatement(tokens);
+            }
             else if (current.Is(Keywords.Break))
             {
                 return ParseBreakStatement(tokens);
@@ -93,20 +97,17 @@
         {
             var start = tokens.Current.Start;
             var condition = ParseCondition(tokens.NextNonIgnorable());
-            var primary = ParseAfterCondition(tokens);
-            var secondary = default(IStatement);
-
-            if (tokens.Current.Is(Keywords.Else))
-            {
-                secondary = ParseNextStatement(tokens.NextNonIgnorable());
-            }
-            else 
-            {
-                secondary = new SimpleStatement(new EmptyExpression(tokens.Current.Start), tokens.Current.End);
-            }
-
+            var body = ParseAfterCondition(tokens);
             var end = tokens.Current.End;
-            return new IfStatement(condition, primary, secondary, start, end);
+            return new IfStatement(condition, body, start, end);
+        }
+
+        private IStatement ParseElseStatement(IEnumerator<IToken> tokens)
+        {
+            var start = tokens.Current.Start;
+            var body = ParseNextStatement(tokens.NextNonIgnorable());
+            var end = tokens.Current.End;
+            return new ElseStatement(body, start, end);
         }
 
         private IStatement ParseWhileStatement(IEnumerator<IToken> tokens)
@@ -162,7 +163,8 @@
                 statements.Add(statement);
                 current = tokens.Current;
 
-                if (current.Type == TokenType.SemiColon)
+                if ((current.Type == TokenType.SemiColon) ||
+                    (statement.IsContainer && current.Type == TokenType.CloseScope))
                 {
                     current = tokens.NextNonIgnorable().Current;
                 }
