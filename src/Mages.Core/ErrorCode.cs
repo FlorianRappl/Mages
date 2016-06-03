@@ -150,6 +150,11 @@
         /// <summary>
         /// See description.
         /// </summary>
+        [Description("A statement has been expected.")]
+        StatementExpected,
+        /// <summary>
+        /// See description.
+        /// </summary>
         [Description("Too many indices provided. A maximum of 2 indices is allowed.")]
         TooManyIndices,
         /// <summary>

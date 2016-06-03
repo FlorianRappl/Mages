@@ -69,7 +69,7 @@
         [Test]
         public void VectorWithSpacesMatrix()
         {
-            var result = @"[1,2  ,   3,4];".ToExpression();
+            var result = @"[1,2  ,   3,4]".ToExpression();
 
             Assert.IsInstanceOf<MatrixExpression>(result);
 
@@ -86,7 +86,7 @@
         [Test]
         public void SquareMatrixOfConstants()
         {
-            var result = @"[1,2  ;   3,4];".ToExpression();
+            var result = @"[1,2  ;   3,4]".ToExpression();
 
             Assert.IsInstanceOf<MatrixExpression>(result);
 
@@ -104,7 +104,7 @@
         [Test]
         public void DifferentExpressionsInRowVectorMatrix()
         {
-            var result = @"[1+3;x;f(3);7*3];".ToExpression();
+            var result = @"[1+3;x;f(3);7*3]".ToExpression();
 
             Assert.IsInstanceOf<MatrixExpression>(result);
 
@@ -121,7 +121,7 @@
         [Test]
         public void DifferentExpressionsInColumnVectorMatrix()
         {
-            var result = @"[1+3,x,f(3),7*3];".ToExpression();
+            var result = @"[1+3,x,f(3),7*3]".ToExpression();
 
             Assert.IsInstanceOf<MatrixExpression>(result);
 
@@ -138,7 +138,7 @@
         [Test]
         public void FunctionVectorAndArithmeticInVectorMatrix()
         {
-            var result = @"[()=>3,[1,2,3,4],2+3,(1-2)*3];".ToExpression();
+            var result = @"[()=>3,[1,2,3,4],2+3,(1-2)*3]".ToExpression();
 
             Assert.IsInstanceOf<MatrixExpression>(result);
 

@@ -21,9 +21,9 @@
         }
 
         [Test]
-        public void SemicolonIsEmptyExpression()
+        public void SpaceIsEmptyExpression()
         {
-            var expr = ";".ToExpression();
+            var expr = " ".ToExpression();
             Assert.IsInstanceOf<EmptyExpression>(expr);
         }
 

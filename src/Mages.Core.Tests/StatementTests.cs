@@ -1,12 +1,13 @@
 ﻿namespace Mages.Core.Tests
 {
-    using Ast.Walkers;
     using Mages.Core.Ast;
     using Mages.Core.Ast.Expressions;
     using Mages.Core.Ast.Statements;
+    using Mages.Core.Ast.Walkers;
     using NUnit.Framework;
     using System;
     using System.Collections.Generic;
+
     [TestFixture]
     public class StatementTests
     {
@@ -238,6 +239,22 @@
             var errors = Validate(statements);
 
             Assert.AreEqual(1, errors.Count);
+        }
+
+        [Test]
+        public void ParseWhileStatementWithEmptyStatementShouldBeFine()
+        {
+            var source = "while (true);";
+            var parser = new ExpressionParser();
+            var statements = parser.ParseStatements(source);
+
+            Assert.AreEqual(2, statements.Count);
+            Assert.IsInstanceOf<WhileStatement>(statements[0]);
+            Assert.IsInstanceOf<SimpleStatement>(((WhileStatement)statements[0]).Body);
+
+            var errors = Validate(statements);
+
+            Assert.AreEqual(0, errors.Count);
         }
 
         [Test]

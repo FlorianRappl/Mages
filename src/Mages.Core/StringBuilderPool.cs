@@ -47,12 +47,14 @@
         {
             lock (_lock)
             {
+                var result = sb.ToString();
+
                 if (_builder.Count < 4)
                 {
                     _builder.Push(sb);
                 }
 
-                return sb.ToString();
+                return result;
             }
         }
 

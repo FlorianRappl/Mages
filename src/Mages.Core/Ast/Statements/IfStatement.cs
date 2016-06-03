@@ -78,11 +78,6 @@
         /// <param name="context">The validator to report errors to.</param>
         public void Validate(IValidationContext context)
         {
-            if (_primary.IsEmpty())
-            {
-                var error = new ParseError(ErrorCode.ExpressionExpected, _primary);
-                context.Report(error);
-            }
         }
 
         #endregion

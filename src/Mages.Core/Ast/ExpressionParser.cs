@@ -23,7 +23,15 @@
 
         public IExpression ParseExpression(IEnumerator<IToken> tokens)
         {
-            return ParseAssignment(tokens.NextNonIgnorable());
+            var expr = ParseAssignment(tokens.NextNonIgnorable());
+
+            if (tokens.Current.Type != TokenType.End)
+            {
+                var invalid = ParseInvalid(ErrorCode.InvalidSymbol, tokens);
+                expr = new BinaryExpression.Multiply(expr, invalid);
+            }
+
+            return expr;
         }
 
         private IStatement ParseNextStatement(IEnumerator<IToken> tokens)
@@ -181,7 +189,15 @@
                 return new SimpleStatement(invalid, token.End);
             }
 
-            return ParseStatement(tokens);
+            token = tokens.NextNonIgnorable().Current;
+
+            if (token.Type == TokenType.End)
+            {
+                var invalid = new InvalidExpression(ErrorCode.StatementExpected, token);
+                return new SimpleStatement(invalid, token.End);
+            }
+
+            return ParseNextStatement(tokens);
         }
 
         private List<IExpression> ParseExpressions(IEnumerator<IToken> tokens)
