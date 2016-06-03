@@ -52,7 +52,7 @@
 
                 if (!String.IsNullOrEmpty(input))
                 {
-                    Evaluate(input, true);
+                    EvaluateCompleted(input);
                 }
             }
             while (input != null);
@@ -62,29 +62,22 @@
         {
         }
 
-        private void Startup()
+        private void EvaluateCompleted(String input)
         {
-            var logo = String.Format(@"
-     _____      _____    ___________________ _________
-    /     \    /  _  \  /  _____/\_   _____//   _____/
-   /  \ /  \  /  /_\  \/   \  ___ |    __)_ \_____  \ 
-  /    Y    \/    |    \    \_\  \|        \/        \
-  \____|__  /\____|__  /\______  /_______  /_______  /
-          \/         \/        \/        \/        \/ 
-
-  (c) Florian Rappl, {0}
-  Version {1}
-  Running on {2}
-
-  For help type 'help()'.
-", DateTime.Now.Year, _engine.Version, Environment.OSVersion.ToString());
-            var logoLines = logo.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-
-            foreach (var logoLine in logoLines)
+            while (!input.IsCompleted())
             {
-                _interactivity.Info(logoLine);
-                _interactivity.Write(Environment.NewLine);
+                _interactivity.IsPromptShown = false;
+                _interactivity.Info("...  ");
+                var rest = _interactivity.Read();
+                _interactivity.IsPromptShown = true;
+
+                if (String.IsNullOrEmpty(rest))
+                    break;
+
+                input += rest;
             }
+
+            Evaluate(input, true);
         }
 
         private void Evaluate(String content, Boolean showOutput)
@@ -134,6 +127,31 @@
             _interactivity.Error(Environment.NewLine);
             _interactivity.Error("Error: ");
             _interactivity.Error(message);
+        }
+
+        private void Startup()
+        {
+            var logo = String.Format(@"
+     _____      _____    ___________________ _________
+    /     \    /  _  \  /  _____/\_   _____//   _____/
+   /  \ /  \  /  /_\  \/   \  ___ |    __)_ \_____  \ 
+  /    Y    \/    |    \    \_\  \|        \/        \
+  \____|__  /\____|__  /\______  /_______  /_______  /
+          \/         \/        \/        \/        \/ 
+
+  (c) Florian Rappl, {0}
+  Version {1}
+  Running on {2}
+
+  For help type 'help()'.
+", DateTime.Now.Year, _engine.Version, Environment.OSVersion.ToString());
+            var logoLines = logo.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+
+            foreach (var logoLine in logoLines)
+            {
+                _interactivity.Info(logoLine);
+                _interactivity.Write(Environment.NewLine);
+            }
         }
     }
 }

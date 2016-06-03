@@ -104,7 +104,7 @@
     <Compile Include="ParseError.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="ErrorCode.cs" />
-    <Compile Include="ParserExtensions.cs" />
+    <Compile Include="Ast\ParserExtensions.cs" />
     <Compile Include="Runtime\BaseScope.cs" />
     <Compile Include="Runtime\BinaryOperators.cs" />
     <Compile Include="Runtime\Converters\ConverterExtensions.cs" />

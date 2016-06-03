@@ -177,6 +177,38 @@
         }
 
         [Test]
+        public void ParseIfStatementWithMissingTailShouldYieldError()
+        {
+            var source = "if (true) { n = 2 + 3";
+            var parser = new ExpressionParser();
+            var statements = parser.ParseStatements(source);
+
+            Assert.AreEqual(1, statements.Count);
+            Assert.IsInstanceOf<IfStatement>(statements[0]);
+            Assert.IsInstanceOf<BlockStatement>(((IfStatement)statements[0]).Primary);
+
+            var errors = Validate(statements);
+
+            Assert.AreEqual(1, errors.Count);
+        }
+
+        [Test]
+        public void ParseIfStatementWithMissingClosingScopeShouldYieldError()
+        {
+            var source = "if (true) { n = 2 + 3;";
+            var parser = new ExpressionParser();
+            var statements = parser.ParseStatements(source);
+
+            Assert.AreEqual(1, statements.Count);
+            Assert.IsInstanceOf<IfStatement>(statements[0]);
+            Assert.IsInstanceOf<BlockStatement>(((IfStatement)statements[0]).Primary);
+
+            var errors = Validate(statements);
+
+            Assert.AreEqual(1, errors.Count);
+        }
+
+        [Test]
         public void ParseIfStatementWithComposedConditionAndSingleStatementInBlockShouldBeFine()
         {
             var source = "if (a + b + c == d / 2) { n = k }";
@@ -190,6 +222,22 @@
             var errors = Validate(statements);
 
             Assert.AreEqual(0, errors.Count);
+        }
+
+        [Test]
+        public void ParseWhileStatementWithMissingCloseCurlyBracketShouldYieldError()
+        {
+            var source = "while (true) {";
+            var parser = new ExpressionParser();
+            var statements = parser.ParseStatements(source);
+
+            Assert.AreEqual(1, statements.Count);
+            Assert.IsInstanceOf<WhileStatement>(statements[0]);
+            Assert.IsInstanceOf<BlockStatement>(((WhileStatement)statements[0]).Body);
+
+            var errors = Validate(statements);
+
+            Assert.AreEqual(1, errors.Count);
         }
 
         [Test]

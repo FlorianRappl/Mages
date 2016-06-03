@@ -1,6 +1,5 @@
-﻿namespace Mages.Core
+﻿namespace Mages.Core.Ast
 {
-    using Mages.Core.Ast;
     using Mages.Core.Tokens;
     using System;
     using System.Collections.Generic;
@@ -61,7 +60,7 @@
                 var statement = parser.ParseStatement(tokens);
                 statements.Add(statement);
             }
-            while (tokens.Current.IsEither(TokenType.SemiColon, TokenType.CloseScope));
+            while (tokens.Current.Type != TokenType.End);
 
             return statements;
         }
