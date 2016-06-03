@@ -11,7 +11,7 @@
     {
         #region Fields
 
-		private static readonly Stack<WeakReference> _builder = new Stack<WeakReference>();
+		private static readonly Stack<StringBuilder> _builder = new Stack<StringBuilder>();
         private static readonly Object _lock = new Object();
 
         #endregion
@@ -26,19 +26,14 @@
         {
             lock (_lock)
             {
-                while (_builder.Count != 0)
+                if (_builder.Count != 0)
                 {
-                    var reference = _builder.Pop();
-                    var builder = default(StringBuilder);
-
-                    if (reference.IsAlive && (builder = reference.Target as StringBuilder) != null)
-                    {
-                        builder.Length = 0;
-                        return builder;
-                    }
+                    var builder = _builder.Pop();
+                    builder.Length = 0;
+                    return builder;
                 }
                 
-                return new StringBuilder();
+                return new StringBuilder();                
             }
         }
 
@@ -52,8 +47,11 @@
         {
             lock (_lock)
             {
-                var reference = new WeakReference(sb);
-                _builder.Push(reference);
+                if (_builder.Count < 4)
+                {
+                    _builder.Push(sb);
+                }
+
                 return sb.ToString();
             }
         }
