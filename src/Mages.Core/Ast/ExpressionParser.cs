@@ -258,9 +258,10 @@
             }
             else if (mode == TokenType.Lambda)
             {
-                if (x is ArgumentsExpression)
+                var args = x as ArgumentsExpression;
+
+                if (args != null)
                 {
-                    var args = ((ArgumentsExpression)x);
                     var parameters = new ParameterExpression(args.Arguments, args.Start, args.End);
                     return ParseFunction(parameters, tokens.NextNonIgnorable());
                 }
@@ -394,10 +395,11 @@
         {
             var x = ParsePower(tokens);
 
-            while (tokens.Current.IsOneOf(TokenType.Multiply, TokenType.Modulo, TokenType.LeftDivide, TokenType.RightDivide, TokenType.Number, TokenType.Identifier, TokenType.Keyword))
+            while (tokens.Current.IsOneOf(TokenType.Multiply, TokenType.Modulo, TokenType.LeftDivide, TokenType.RightDivide, 
+                TokenType.Number, TokenType.Identifier, TokenType.Keyword, TokenType.OpenList))
             {
                 var current = tokens.Current;
-                var implicitMultiply = current.IsOneOf(TokenType.Number, TokenType.Identifier, TokenType.Keyword);
+                var implicitMultiply = !current.IsOneOf(TokenType.Multiply, TokenType.Modulo, TokenType.LeftDivide, TokenType.RightDivide);
                 var mode = implicitMultiply ? TokenType.Multiply : current.Type;
                 var y = ParsePower(implicitMultiply ? tokens : tokens.NextNonIgnorable());
                 x = ExpressionCreators.Binary[mode].Invoke(x, y);

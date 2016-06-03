@@ -41,10 +41,9 @@
             return type == a || type == b || type == c || type == d;
         }
 
-        public static Boolean IsOneOf(this IToken token, TokenType a, TokenType b, TokenType c, TokenType d, TokenType e, TokenType f, TokenType g)
+        public static Boolean IsOneOf(this IToken token, TokenType a, TokenType b, TokenType c, TokenType d, TokenType e, TokenType f, TokenType g, TokenType h)
         {
-            var type = token.Type;
-            return type == a || type == b || type == c || type == d || type == e || type == f || type == g;
+            return token.IsOneOf(a, b, c, d) || token.IsOneOf(e, f, g, h);
         }
 
         public static Boolean Is(this IToken token, String keyword)

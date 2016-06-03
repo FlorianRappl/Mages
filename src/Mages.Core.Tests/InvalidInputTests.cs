@@ -34,6 +34,14 @@
             IsInvalid(stmt);
         }
 
+        [Test]
+        public void ScopeInConditionOfWhileStatementShouldNotThrowException()
+        {
+            var stmt = "while (0 {}) {}".ToStatement();
+            Assert.IsInstanceOf<WhileStatement>(stmt);
+            IsInvalid(stmt);
+        }
+
         private static void IsInvalid(IWalkable element)
         {
             var errors = new List<ParseError>();

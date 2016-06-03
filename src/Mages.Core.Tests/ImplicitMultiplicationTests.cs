@@ -49,6 +49,26 @@
         }
 
         [Test]
+        public void ImplicitMultiplicationInvolvingNumberAndMatrixSeparatedBySpace()
+        {
+            var expr = "2 [1,2,3]".ToExpression();
+
+            AssertMultiplication<ConstantExpression, MatrixExpression>(expr,
+                constant => (Double)constant.Value == 2.0,
+                matrix => matrix.Values.Length == 1 && matrix.Values[0].Length == 3);
+        }
+
+        [Test]
+        public void ImplicitMultiplicationInvolvingIdentifierAndMatrixSeparatedBySpace()
+        {
+            var expr = "x [1,2,3]".ToExpression();
+
+            AssertMultiplication<VariableExpression, MatrixExpression>(expr,
+                variable => variable.Name == "x",
+                matrix => matrix.Values.Length == 1 && matrix.Values[0].Length == 3);
+        }
+
+        [Test]
         public void ImplicitMultiplicationInvolvingIdentifiersAndKeywordConstantSeparatedBySpace()
         {
             var expr = "n pi".ToExpression();
