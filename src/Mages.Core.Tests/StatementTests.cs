@@ -293,6 +293,22 @@
             Assert.AreEqual(0, errors.Count);
         }
 
+        [Test]
+        public void IfBlockWithEndedElseShouldBeAnError()
+        {
+            var source = "if () { } else";
+            var parser = new ExpressionParser();
+            var statements = parser.ParseStatements(source);
+
+            Assert.AreEqual(1, statements.Count);
+            Assert.IsInstanceOf<IfStatement>(statements[0]);
+            Assert.IsInstanceOf<BlockStatement>(((IfStatement)statements[0]).Primary);
+
+            var errors = Validate(statements);
+
+            Assert.AreEqual(1, errors.Count);
+        }
+
         private static List<ParseError> Validate(List<IStatement> statements)
         {
             var errors = new List<ParseError>();

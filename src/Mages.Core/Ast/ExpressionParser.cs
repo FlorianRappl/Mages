@@ -127,12 +127,11 @@
 
             if (tokens.Current.Is(Keywords.Else))
             {
-                secondary = ParseNextStatement(tokens.NextNonIgnorable());
+                secondary = ParseExpectedStatement(tokens.NextNonIgnorable());
             }
             else
             {
-                var statements = new IStatement[0];
-                secondary = new BlockStatement(statements, primary.End, primary.End);
+                secondary = new BlockStatement(new IStatement[0], primary.End, primary.End);
             }
 
             return new IfStatement(condition, primary, secondary, start);
@@ -217,7 +216,12 @@
                 return new SimpleStatement(invalid, token.End);
             }
 
-            token = tokens.NextNonIgnorable().Current;
+            return ParseExpectedStatement(tokens.NextNonIgnorable());
+        }
+
+        private IStatement ParseExpectedStatement(IEnumerator<IToken> tokens)
+        {
+            var token = tokens.Current;
 
             if (token.Type == TokenType.End)
             {
