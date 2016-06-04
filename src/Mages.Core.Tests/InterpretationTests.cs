@@ -290,6 +290,36 @@
             Test("n = 0; while (false) { n = 1; }n", 0.0);
         }
 
+        [Test]
+        public void IfStatementWithBlocksShouldBeInPrimary()
+        {
+            Test("n = 0; i = 3; if (i > 2) { n = 1; } else { n = -1; } n", 1.0);
+        }
+
+        [Test]
+        public void IfStatementWithBlocksShouldBeInSecondary()
+        {
+            Test("n = 0; i = 3; if (i < 2) { n = 1; } else { n = -1; } n", -1.0);
+        }
+
+        [Test]
+        public void IfStatementWithoutElseShouldNotDoAnything()
+        {
+            Test("n = 0; i = 3; if (i < 2) { n = 1; } n", 0.0);
+        }
+
+        [Test]
+        public void IfStatementWithoutBlocksShouldBeInPrimary()
+        {
+            Test("n = 0; i = 3; if (i > 2) n = 1; else n = -1; n", 1.0);
+        }
+
+        [Test]
+        public void IfStartementWithoutBlocksShouldBeInSecondary()
+        {
+            Test("n = 0; i = 3; if (i < 2) n = 1; else n = -1; n", -1.0);
+        }
+
         private static IDictionary<String, Object> Test(String sourceCode, Double expected, Double tolerance = 0.0)
         {
             var engine = new Engine();
