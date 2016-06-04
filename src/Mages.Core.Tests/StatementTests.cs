@@ -137,7 +137,7 @@
             var parser = new ExpressionParser();
             var statements = parser.ParseStatements(source);
 
-            Assert.AreEqual(2, statements.Count);
+            Assert.AreEqual(1, statements.Count);
             Assert.IsInstanceOf<IfStatement>(statements[0]);
 
             var errors = Validate(statements);
@@ -152,9 +152,9 @@
             var parser = new ExpressionParser();
             var statements = parser.ParseStatements(source);
 
-            Assert.AreEqual(2, statements.Count);
+            Assert.AreEqual(1, statements.Count);
             Assert.IsInstanceOf<IfStatement>(statements[0]);
-            Assert.IsInstanceOf<BlockStatement>(((IfStatement)statements[0]).Body);
+            Assert.IsInstanceOf<BlockStatement>(((IfStatement)statements[0]).Primary);
 
             var errors = Validate(statements);
 
@@ -170,7 +170,7 @@
 
             Assert.AreEqual(1, statements.Count);
             Assert.IsInstanceOf<IfStatement>(statements[0]);
-            Assert.IsInstanceOf<SimpleStatement>(((IfStatement)statements[0]).Body);
+            Assert.IsInstanceOf<SimpleStatement>(((IfStatement)statements[0]).Primary);
 
             var errors = Validate(statements);
 
@@ -186,7 +186,7 @@
 
             Assert.AreEqual(1, statements.Count);
             Assert.IsInstanceOf<IfStatement>(statements[0]);
-            Assert.IsInstanceOf<BlockStatement>(((IfStatement)statements[0]).Body);
+            Assert.IsInstanceOf<BlockStatement>(((IfStatement)statements[0]).Primary);
 
             var errors = Validate(statements);
 
@@ -202,7 +202,7 @@
 
             Assert.AreEqual(1, statements.Count);
             Assert.IsInstanceOf<IfStatement>(statements[0]);
-            Assert.IsInstanceOf<BlockStatement>(((IfStatement)statements[0]).Body);
+            Assert.IsInstanceOf<BlockStatement>(((IfStatement)statements[0]).Primary);
 
             var errors = Validate(statements);
 
@@ -212,13 +212,13 @@
         [Test]
         public void ParseIfStatementWithComposedConditionAndSingleStatementInBlockShouldBeFine()
         {
-            var source = "if (a + b + c == d / 2) { n = k }";
+            var source = "if (a + b + c == d / 2) { n = k; }";
             var parser = new ExpressionParser();
             var statements = parser.ParseStatements(source);
 
-            Assert.AreEqual(2, statements.Count);
+            Assert.AreEqual(1, statements.Count);
             Assert.IsInstanceOf<IfStatement>(statements[0]);
-            Assert.IsInstanceOf<BlockStatement>(((IfStatement)statements[0]).Body);
+            Assert.IsInstanceOf<BlockStatement>(((IfStatement)statements[0]).Primary);
 
             var errors = Validate(statements);
 
@@ -248,7 +248,7 @@
             var parser = new ExpressionParser();
             var statements = parser.ParseStatements(source);
 
-            Assert.AreEqual(2, statements.Count);
+            Assert.AreEqual(1, statements.Count);
             Assert.IsInstanceOf<WhileStatement>(statements[0]);
             Assert.IsInstanceOf<SimpleStatement>(((WhileStatement)statements[0]).Body);
 
@@ -284,7 +284,7 @@
             var parser = new ExpressionParser();
             var statements = parser.ParseStatements(source);
 
-            Assert.AreEqual(2, statements.Count);
+            Assert.AreEqual(1, statements.Count);
             Assert.IsInstanceOf<WhileStatement>(statements[0]);
             Assert.IsInstanceOf<BlockStatement>(((WhileStatement)statements[0]).Body);
 

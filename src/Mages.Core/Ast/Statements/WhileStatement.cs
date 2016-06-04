@@ -16,12 +16,8 @@
         /// <summary>
         /// Creates a new while statement.
         /// </summary>
-        /// <param name="condition">The condition to use.</param>
-        /// <param name="body">The body to use.</param>
-        /// <param name="start">The start position.</param>
-        /// <param name="end">The end position.</param>
-        public WhileStatement(IExpression condition, IStatement body, TextPosition start, TextPosition end)
-            : base(body, start, end)
+        public WhileStatement(IExpression condition, IStatement body, TextPosition start)
+            : base(body, start, body.End)
         {
             _condition = condition;
         }

@@ -1,7 +1,6 @@
 ﻿namespace Mages.Core.Ast.Statements
 {
     using Mages.Core.Ast.Expressions;
-    using System;
 
     /// <summary>
     /// Represents a "var ...;" statement.
@@ -28,14 +27,6 @@
         #endregion
 
         #region Properties
-
-        /// <summary>
-        /// Gets the statement container status.
-        /// </summary>
-        public Boolean IsContainer
-        {
-            get { return false; }
-        }
 
         /// <summary>
         /// Gets the associated assignment.

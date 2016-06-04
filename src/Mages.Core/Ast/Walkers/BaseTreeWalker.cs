@@ -58,7 +58,8 @@
         public virtual void Visit(IfStatement statement)
         {
             statement.Condition.Accept(this);
-            statement.Body.Accept(this);
+            statement.Primary.Accept(this);
+            statement.Secondary.Accept(this);
         }
 
         /// <summary>

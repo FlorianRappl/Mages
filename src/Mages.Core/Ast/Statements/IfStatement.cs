@@ -1,7 +1,5 @@
 ﻿namespace Mages.Core.Ast.Statements
 {
-    using System;
-
     /// <summary>
     /// Represents an if statement.
     /// </summary>
@@ -10,7 +8,8 @@
         #region Fields
 
         private readonly IExpression _condition;
-        private readonly IStatement _body;
+        private readonly IStatement _primary;
+        private readonly IStatement _secondary;
 
         #endregion
 
@@ -19,28 +18,17 @@
         /// <summary>
         /// Creates a new if statement.
         /// </summary>
-        /// <param name="condition">The condition to use.</param>
-        /// <param name="body">The body to carry.</param>
-        /// <param name="start">The start position.</param>
-        /// <param name="end">The end position.</param>
-        public IfStatement(IExpression condition, IStatement body, TextPosition start, TextPosition end)
-            : base(start, end)
+        public IfStatement(IExpression condition, IStatement primary, IStatement secondary, TextPosition start)
+            : base(start, secondary.End)
         {
             _condition = condition;
-            _body = body;
+            _primary = primary;
+            _secondary = secondary;
         }
 
         #endregion
 
         #region Properties
-
-        /// <summary>
-        /// Gets the statement container status.
-        /// </summary>
-        public Boolean IsContainer
-        {
-            get { return _body.IsContainer; }
-        }
 
         /// <summary>
         /// Gets the stored condition.
@@ -51,11 +39,19 @@
         }
 
         /// <summary>
-        /// Gets the body.
+        /// Gets the primary statement.
         /// </summary>
-        public IStatement Body
+        public IStatement Primary
         {
-            get { return _body; }
+            get { return _primary; }
+        }
+
+        /// <summary>
+        /// Gets the secondary statement.
+        /// </summary>
+        public IStatement Secondary
+        {
+            get { return _secondary; }
         }
 
         #endregion

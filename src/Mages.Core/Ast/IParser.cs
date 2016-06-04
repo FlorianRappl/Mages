@@ -21,5 +21,12 @@
         /// <param name="tokens">The stream of tokens.</param>
         /// <returns>The parsed statement.</returns>
         IStatement ParseStatement(IEnumerator<IToken> tokens);
+        
+        /// <summary>
+        /// Parse the next statements.
+        /// </summary>
+        /// <param name="tokens">The stream of tokens.</param>
+        /// <returns>The parsed statements.</returns>
+        List<IStatement> ParseStatements(IEnumerator<IToken> tokens);
     }
 }

@@ -16,6 +16,11 @@
             _scopes = new AbstractScopeStack(root);
         }
 
+        public List<IStatement> ParseStatements(IEnumerator<IToken> tokens)
+        {
+            return ParseNextStatements(tokens.NextNonIgnorable());
+        }
+
         public IStatement ParseStatement(IEnumerator<IToken> tokens)
         {
             return ParseNextStatement(tokens.NextNonIgnorable());
@@ -32,6 +37,19 @@
             }
 
             return expr;
+        }
+
+        private List<IStatement> ParseNextStatements(IEnumerator<IToken> tokens)
+        {
+            var statements = new List<IStatement>();
+
+            while (tokens.Current.Type != TokenType.End)
+            {
+                var statement = ParseNextStatement(tokens);
+                statements.Add(statement);
+            }
+
+            return statements;
         }
 
         private IStatement ParseNextStatement(IEnumerator<IToken> tokens)
@@ -70,10 +88,6 @@
             {
                 return ParseIfStatement(tokens);
             }
-            else if (current.Is(Keywords.Else))
-            {
-                return ParseElseStatement(tokens);
-            }
             else if (current.Is(Keywords.Break))
             {
                 return ParseBreakStatement(tokens);
@@ -90,6 +104,17 @@
         {
             var expr = ParseAssignment(tokens);
             var end = tokens.Current.End;
+
+            if (tokens.Current.Type == TokenType.SemiColon)
+            {
+                tokens.NextNonIgnorable();
+            }
+            else if (tokens.Current.Type != TokenType.End)
+            {
+                var invalid = ParseInvalid(ErrorCode.InvalidSymbol, tokens);
+                expr = new BinaryExpression.Multiply(expr, invalid);
+            }
+
             return new SimpleStatement(expr, end);
         }
 
@@ -97,17 +122,20 @@
         {
             var start = tokens.Current.Start;
             var condition = ParseCondition(tokens.NextNonIgnorable());
-            var body = ParseAfterCondition(tokens);
-            var end = tokens.Current.End;
-            return new IfStatement(condition, body, start, end);
-        }
+            var primary = ParseAfterCondition(tokens);
+            var secondary = default(IStatement);
 
-        private IStatement ParseElseStatement(IEnumerator<IToken> tokens)
-        {
-            var start = tokens.Current.Start;
-            var body = ParseNextStatement(tokens.NextNonIgnorable());
-            var end = tokens.Current.End;
-            return new ElseStatement(body, start, end);
+            if (tokens.Current.Is(Keywords.Else))
+            {
+                secondary = ParseNextStatement(tokens.NextNonIgnorable());
+            }
+            else
+            {
+                var statements = new IStatement[0];
+                secondary = new BlockStatement(statements, primary.End, primary.End);
+            }
+
+            return new IfStatement(condition, primary, secondary, start);
         }
 
         private IStatement ParseWhileStatement(IEnumerator<IToken> tokens)
@@ -115,8 +143,7 @@
             var start = tokens.Current.Start;
             var condition = ParseCondition(tokens.NextNonIgnorable());
             var body = ParseAfterCondition(tokens);
-            var end = tokens.Current.End;
-            return new WhileStatement(condition, body, start, end);
+            return new WhileStatement(condition, body, start);
         }
 
         private IStatement ParseReturnStatement(IEnumerator<IToken> tokens)
@@ -124,6 +151,7 @@
             var start = tokens.Current.Start;
             var expr = ParseAssignment(tokens.NextNonIgnorable());
             var end = tokens.Current.End;
+            tokens.NextNonIgnorable();
             return new ReturnStatement(expr, start, end);
         }
 
@@ -132,6 +160,7 @@
             var start = tokens.Current.Start;
             var expr = ParseAssignment(tokens.NextNonIgnorable());
             var end = tokens.Current.End;
+            tokens.NextNonIgnorable();
             return new ContinueStatement(expr, start, end);
         }
 
@@ -140,6 +169,7 @@
             var start = tokens.Current.Start;
             var expr = ParseAssignment(tokens.NextNonIgnorable());
             var end = tokens.Current.End;
+            tokens.NextNonIgnorable();
             return new BreakStatement(expr, start, end);
         }
 
@@ -148,6 +178,7 @@
             var start = tokens.Current.Start;
             var expr = ParseAssignment(tokens.NextNonIgnorable());
             var end = tokens.Current.End;
+            tokens.NextNonIgnorable();
             return new VarStatement(expr, start, end);
         }
 
@@ -157,27 +188,22 @@
             var current = tokens.NextNonIgnorable().Current;
             var statements = new List<IStatement>();
 
-            while (current.IsNeither(TokenType.CloseScope, TokenType.End))
+            while (current.Type != TokenType.CloseScope)
             {
-                var statement = ParseNextStatement(tokens);
-                statements.Add(statement);
-                current = tokens.Current;
-
-                if ((current.Type == TokenType.SemiColon) ||
-                    (statement.IsContainer && current.Type == TokenType.CloseScope))
+                if (current.Type == TokenType.End)
                 {
-                    current = tokens.NextNonIgnorable().Current;
+                    var invalid = new InvalidExpression(ErrorCode.BlockNotTerminated, current);
+                    var statement = new SimpleStatement(invalid, current.End);
+                    statements.Add(statement);
+                    break;
                 }
-            }
 
-            if (current.Type != TokenType.CloseScope)
-            {
-                var invalid = new InvalidExpression(ErrorCode.BlockNotTerminated, current);
-                var statement = new SimpleStatement(invalid, current.End);
-                statements.Add(statement);
+                statements.Add(ParseNextStatement(tokens));
+                current = tokens.Current;
             }
 
             var end = tokens.Current.End;
+            tokens.NextNonIgnorable();
             return new BlockStatement(statements.ToArray(), start, end);
         }
 
@@ -234,7 +260,6 @@
             if (tokens.Current.Type == TokenType.OpenScope)
             {
                 body = ParseBlockStatement(tokens);
-                tokens.NextNonIgnorable();
             }
             else
             {

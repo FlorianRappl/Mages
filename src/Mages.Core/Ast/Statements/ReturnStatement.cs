@@ -32,14 +32,6 @@
         #region Properties
 
         /// <summary>
-        /// Gets the statement container status.
-        /// </summary>
-        public Boolean IsContainer
-        {
-            get { return false; }
-        }
-
-        /// <summary>
         /// Gets the stored payload.
         /// </summary>
         public IExpression Expression
