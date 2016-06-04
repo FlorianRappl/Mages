@@ -7,7 +7,7 @@
     {
         #region Fields
 
-        private readonly IExpression[] _expressions;
+        private readonly IExpression[] _parameters;
 
         #endregion
 
@@ -16,10 +16,10 @@
         /// <summary>
         /// Creates a new parameter expression.
         /// </summary>
-        public ParameterExpression(IExpression[] expressions, TextPosition start, TextPosition end)
+        public ParameterExpression(IExpression[] parameters, TextPosition start, TextPosition end)
             : base(start, end)
         {
-            _expressions = expressions;
+            _parameters = parameters;
 
         }
 
@@ -30,9 +30,9 @@
         /// <summary>
         /// Gets the contained expressions.
         /// </summary>
-        public IExpression[] Expressions
+        public IExpression[] Parameters
         {
-            get { return _expressions; }
+            get { return _parameters; }
         }
 
         #endregion
@@ -54,11 +54,11 @@
         /// <param name="context">The validator to report errors to.</param>
         public void Validate(IValidationContext context)
         {
-            foreach (var expression in _expressions)
+            foreach (var parameter in _parameters)
             {
-                if (expression is VariableExpression == false)
+                if (parameter is VariableExpression == false)
                 {
-                    var error = new ParseError(ErrorCode.IdentifierExpected, expression);
+                    var error = new ParseError(ErrorCode.IdentifierExpected, parameter);
                     context.Report(error);
                 }
             }

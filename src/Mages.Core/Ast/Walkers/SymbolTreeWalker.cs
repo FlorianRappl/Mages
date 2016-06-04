@@ -225,7 +225,7 @@
         void ITreeWalker.Visit(FunctionExpression expression)
         {
             var scope = expression.Scope;
-            var variables = expression.Parameters.Expressions.OfType<VariableExpression>();
+            var variables = expression.Parameters.Parameters.OfType<VariableExpression>();
 
             foreach (var variable in variables)
             {

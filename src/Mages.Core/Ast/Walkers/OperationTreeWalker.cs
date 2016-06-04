@@ -356,7 +356,7 @@
 
         void ITreeWalker.Visit(ParameterExpression expression)
         {
-            var expressions = expression.Expressions;
+            var expressions = expression.Parameters;
             expression.Validate(this);
 
             for (var i = 0; i < expressions.Length; i++)

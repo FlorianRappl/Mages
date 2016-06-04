@@ -225,7 +225,7 @@
         {
             expression.Validate(this);
             
-            foreach (var parameter in expression.Expressions)
+            foreach (var parameter in expression.Parameters)
             {
                 parameter.Accept(this);
             }
