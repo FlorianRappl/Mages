@@ -235,7 +235,7 @@ Task("Create-Chocolatey-Package")
     });
 
 Task("Publish-Chocolatey-Package")
-    .IsDependentOn("Copy-Files")
+    .IsDependentOn("Create-Chocolatey-Package")
     .WithCriteria(() => isLocal)
     .Does(() => {
         var apiKey = EnvironmentVariable("CHOCOLATEY_API_KEY");
