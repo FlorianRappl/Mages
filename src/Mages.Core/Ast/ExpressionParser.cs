@@ -104,17 +104,7 @@
         {
             var expr = ParseAssignment(tokens);
             var end = tokens.Current.End;
-
-            if (tokens.Current.Type == TokenType.SemiColon)
-            {
-                tokens.NextNonIgnorable();
-            }
-            else if (tokens.Current.Type != TokenType.End)
-            {
-                var invalid = ParseInvalid(ErrorCode.InvalidSymbol, tokens);
-                expr = new BinaryExpression.Multiply(expr, invalid);
-            }
-
+            CheckProperStatementEnd(tokens, ref expr);
             return new SimpleStatement(expr, end);
         }
 
@@ -150,7 +140,7 @@
             var start = tokens.Current.Start;
             var expr = ParseAssignment(tokens.NextNonIgnorable());
             var end = tokens.Current.End;
-            tokens.NextNonIgnorable();
+            CheckProperStatementEnd(tokens, ref expr);
             return new ReturnStatement(expr, start, end);
         }
 
@@ -159,7 +149,7 @@
             var start = tokens.Current.Start;
             var expr = ParseAssignment(tokens.NextNonIgnorable());
             var end = tokens.Current.End;
-            tokens.NextNonIgnorable();
+            CheckProperStatementEnd(tokens, ref expr);
             return new ContinueStatement(expr, start, end);
         }
 
@@ -168,7 +158,7 @@
             var start = tokens.Current.Start;
             var expr = ParseAssignment(tokens.NextNonIgnorable());
             var end = tokens.Current.End;
-            tokens.NextNonIgnorable();
+            CheckProperStatementEnd(tokens, ref expr);
             return new BreakStatement(expr, start, end);
         }
 
@@ -177,7 +167,7 @@
             var start = tokens.Current.Start;
             var expr = ParseAssignment(tokens.NextNonIgnorable());
             var end = tokens.Current.End;
-            tokens.NextNonIgnorable();
+            CheckProperStatementEnd(tokens, ref expr);
             return new VarStatement(expr, start, end);
         }
 
@@ -642,7 +632,7 @@
                 return new ObjectExpression(values.ToArray(), start.Start, end.End);
             }
 
-            return ParseInvalid(ErrorCode.BracketNotTerminated, tokens);
+            return ParseInvalid(ErrorCode.BracketExpected, tokens);
         }
 
         private PropertyExpression ParseProperty(IEnumerator<IToken> tokens)
@@ -708,7 +698,7 @@
             return ParseInvalid(ErrorCode.InvalidSymbol, tokens);
         }
 
-        private InvalidExpression ParseInvalid(ErrorCode code, IEnumerator<IToken> tokens)
+        private static InvalidExpression ParseInvalid(ErrorCode code, IEnumerator<IToken> tokens)
         {
             var expr = new InvalidExpression(code, tokens.Current);
             tokens.NextNonIgnorable();
@@ -729,7 +719,7 @@
             return ParseInvalid(ErrorCode.IdentifierExpected, tokens);
         }
 
-        private IExpression ParseIdentifier(IEnumerator<IToken> tokens)
+        private static IExpression ParseIdentifier(IEnumerator<IToken> tokens)
         {
             var token = tokens.Current;
 
@@ -743,40 +733,31 @@
             return ParseInvalid(ErrorCode.IdentifierExpected, tokens);
         }
 
-        private IExpression ParseIdentifierOrString(IEnumerator<IToken> tokens)
+        private static IExpression ParseIdentifierOrString(IEnumerator<IToken> tokens)
         {
-            if (tokens.Current.Type == TokenType.Text)
-            {
-                return ParseString(tokens);
-            }
-
-            return ParseIdentifier(tokens);
+            return tokens.Current.Type == TokenType.Text ? ParseString(tokens) : ParseIdentifier(tokens);
         }
 
         private IExpression ParseKeywordConstant(IEnumerator<IToken> tokens)
         {
             var token = tokens.Current;
+            var constant = default(Object);
 
-            if (token.Payload.Equals(Keywords.New, StringComparison.Ordinal))
+            if (token.Is(Keywords.New))
             {
                 return ParseObject(tokens);
             }
-            else
+            else if (Keywords.TryGetConstant(token.Payload, out constant))
             {
-                var constant = default(Object);
-
-                if (Keywords.TryGetConstant(token.Payload, out constant))
-                {
-                    var expr = ConstantExpression.From(constant, token);
-                    tokens.NextNonIgnorable();
-                    return expr;
-                }
+                var expr = ConstantExpression.From(constant, token);
+                tokens.NextNonIgnorable();
+                return expr;
             }
 
             return ParseInvalid(ErrorCode.KeywordUnexpected, tokens);
         }
 
-        private ConstantExpression ParseString(IEnumerator<IToken> tokens)
+        private static ConstantExpression ParseString(IEnumerator<IToken> tokens)
         {
             var token = (StringToken)tokens.Current;
             var expr = new ConstantExpression.StringConstant(token.Payload, token, token.Errors);
@@ -784,12 +765,25 @@
             return expr;
         }
 
-        private ConstantExpression ParseNumber(IEnumerator<IToken> tokens)
+        private static ConstantExpression ParseNumber(IEnumerator<IToken> tokens)
         {
             var token = (NumberToken)tokens.Current;
             var expr = new ConstantExpression.NumberConstant(token.Value, token, token.Errors);
             tokens.NextNonIgnorable();
             return expr;
+        }
+
+        private static void CheckProperStatementEnd(IEnumerator<IToken> tokens, ref IExpression expr)
+        {
+            if (tokens.Current.Type == TokenType.SemiColon)
+            {
+                tokens.NextNonIgnorable();
+            }
+            else if (tokens.Current.Type != TokenType.End)
+            {
+                var invalid = ParseInvalid(ErrorCode.InvalidSymbol, tokens);
+                expr = new BinaryExpression.Multiply(expr, invalid);
+            }
         }
     }
 }
