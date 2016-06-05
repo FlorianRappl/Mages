@@ -1,3 +1,13 @@
+# 0.6.0
+
+- Some fixes and performance improvements
+- Enhanced validation (#27)
+- Created installer for the REPL (#26)
+- Provided the if statement (#19)
+- Included while (#20)
+- Control loops via break (#24) and continue (#25)
+- Fixed some smaller bugs
+
 # 0.5.0
 
 - Source code validation (#21)
