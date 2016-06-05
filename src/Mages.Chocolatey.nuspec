@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Mages</id>
+    <version>$version$</version>
+    <title>MAGES REPL</title>
+    <authors>Florian Rappl</authors>
+    <owners>FlorianRappl</owners>
+    <licenseUrl>https://github.com/FlorianRappl/Mages/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/FlorianRappl/Mages</projectUrl>
+    <iconUrl>https://raw.github.com/FlorianRappl/Mages/master/logo.png</iconUrl>
+    <releaseNotes>https://github.com/FlorianRappl/Mages/blob/master/CHANGELOG.md</releaseNotes>
+    <projectSourceUrl>https://github.com/FlorianRappl/Mages</projectSourceUrl>
+    <docsUrl>https://github.com/FlorianRappl/Mages/tree/master/doc</docsUrl>
+    <bugTrackerUrl>https://github.com/FlorianRappl/Mages/issues</bugTrackerUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>MAGES is a very simple, yet powerful, expression parser and interpreter.</description>
+    <summary>A lightweight scripting language for .NET applications.</summary>
+    <tags>interpreter mages expression scripting language mathematics performance</tags>
+  </metadata>
+  <files>
+    <file src="tools\*.*" target="tools" />
+  </files>
+</package>
