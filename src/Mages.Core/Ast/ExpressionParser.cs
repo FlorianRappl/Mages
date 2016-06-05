@@ -489,18 +489,12 @@
         private IExpression ParseUnary(IEnumerator<IToken> tokens)
         {
             var current = tokens.Current;
-            var mode = current.Type;
+            var creator = default(Func<TextPosition, IExpression, PreUnaryExpression>);
 
-            switch (mode)
+            if (ExpressionCreators.PreUnary.TryGetValue(current.Type, out creator))
             {
-                case TokenType.Subtract:
-                case TokenType.Add:
-                case TokenType.Negate:
-                case TokenType.Decrement:
-                case TokenType.Increment:
-                case TokenType.Type:
-                    var expr = ParseUnary(tokens.NextNonIgnorable());
-                    return ExpressionCreators.PreUnary[mode].Invoke(current.Start, expr);
+                var expr = ParseUnary(tokens.NextNonIgnorable());
+                return creator.Invoke(current.Start, expr);
             }
 
             return ParsePrimary(tokens);
@@ -514,11 +508,12 @@
             {
                 var current = tokens.Current;
                 var mode = current.Type;
+                var creator = default(Func<IExpression, TextPosition, PostUnaryExpression>);
 
-                if (current.IsOneOf(TokenType.Increment, TokenType.Decrement, TokenType.Factorial, TokenType.Transpose))
+                if (ExpressionCreators.PostUnary.TryGetValue(mode, out creator))
                 {
-                    left = ExpressionCreators.PostUnary[mode].Invoke(left, current.End);
                     tokens.NextNonIgnorable();
+                    left = creator.Invoke(left, current.End);
                 }
                 else if (mode == TokenType.Dot)
                 {
