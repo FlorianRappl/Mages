@@ -341,6 +341,24 @@
         });
 
         /// <summary>
+        /// Contains the is function.
+        /// </summary>
+        public static readonly Function Is = new Function(args =>
+        {
+            return Curry.MinTwo(Is, args) ?? 
+                If.Is<String>(args, type => type == args[1].ToType());
+        });
+
+        /// <summary>
+        /// Contains the as function.
+        /// </summary>
+        public static readonly Function As = new Function(args =>
+        {
+            return Curry.MinTwo(As, args) ??
+                If.Is<String>(args, type => args[1].To(type));
+        });
+
+        /// <summary>
         /// Contains the list function.
         /// </summary>
         public static readonly Function List = new Function(Helpers.ToArrayObject);

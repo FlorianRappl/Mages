@@ -76,6 +76,7 @@
     <Compile Include="StringTests.cs" />
     <Compile Include="SymbolTests.cs" />
     <Compile Include="TokenizerTests.cs" />
+    <Compile Include="TypeTests.cs" />
     <Compile Include="YampTests.cs" />
   </ItemGroup>
   <ItemGroup>

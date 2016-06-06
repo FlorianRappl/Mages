@@ -7,6 +7,33 @@
 
     static class ConverterExtensions
     {
+        public static String ToType(this Object value)
+        {
+            if (value is Double) return "Number";
+            if (value is String) return "String";
+            if (value is Boolean) return "Boolean";
+            if (value is Double[,]) return "Matrix";
+            if (value is Function) return "Function";
+            if (value is IDictionary<String, Object>) return "Object";
+            return "Undefined";
+        }
+
+        public static Object To(this Object value, String type)
+        {
+            switch (type)
+            {
+                case "Number": return value.ToNumber();
+                case "String": return Stringify.This(value);
+                case "Boolean": return value.ToBoolean();
+                case "Matrix": return value.ToNumber().ToMatrix();
+                case "Function": return value as Function;
+                case "Object": return value as IDictionary<String, Object>;
+                case "Undefined": return null;
+            }
+
+            return null;
+        }
+
         public static Boolean ToBoolean(this Object value)
         {
             if (value is Boolean)

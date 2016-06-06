@@ -62,6 +62,8 @@
             { "stringify", Stringify.Default },
             { "json", Stringify.Json },
             { "list", StandardFunctions.List },
+            { "is", StandardFunctions.Is },
+            { "as", StandardFunctions.As },
         };
     }
 }
