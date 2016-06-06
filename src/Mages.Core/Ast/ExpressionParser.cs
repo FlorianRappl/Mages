@@ -338,7 +338,7 @@
 
         private IExpression ParseConditional(IEnumerator<IToken> tokens)
         {
-            var x = ParseOr(tokens);
+            var x = ParsePipe(tokens);
 
             if (tokens.Current.Type == TokenType.Condition)
             {
@@ -355,6 +355,19 @@
                 }
 
                 return new ConditionalExpression(x, y, z);
+            }
+
+            return x;
+        }
+
+        private IExpression ParsePipe(IEnumerator<IToken> tokens)
+        {
+            var x = ParseOr(tokens);
+
+            while (tokens.Current.Type == TokenType.Pipe)
+            {
+                var y = ParseOr(tokens.NextNonIgnorable());
+                x = new BinaryExpression.Pipe(x, y);
             }
 
             return x;

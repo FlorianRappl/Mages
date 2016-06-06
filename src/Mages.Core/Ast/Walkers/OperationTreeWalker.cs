@@ -49,7 +49,8 @@
             { "/", (walker, expr) => walker.Handle(expr, StandardOperators.RDiv) },
             { "\\", (walker, expr) => walker.Handle(expr, StandardOperators.LDiv) },
             { "^", (walker, expr) => walker.Handle(expr, StandardOperators.Pow) },
-            { "%", (walker, expr) => walker.Handle(expr, StandardOperators.Mod) }
+            { "%", (walker, expr) => walker.Handle(expr, StandardOperators.Mod) },
+            { "|", (walker, expr) => walker.Handle(expr, StandardOperators.Pipe) }
         };
 
         #endregion

@@ -126,7 +126,7 @@
                         return new OperatorToken(TokenType.Or, "||", start, scanner.Position);
                     }
 
-                    break;
+                    return new OperatorToken(TokenType.Pipe, "|", start);
                 case CharacterTable.Ampersand:
                     if (scanner.PeekMoveNext(CharacterTable.Ampersand))
                     {

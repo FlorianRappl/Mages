@@ -158,5 +158,11 @@
                 If.Is<Double, Double[,]>(args, (y, x) => x.IsGreaterOrEqual(y)) ??
                 (args[0].ToNumber() <= args[1].ToNumber());
         }
+
+        public static Object Pipe(Object[] args)
+        {
+            return Curry.MinTwo(StandardOperators.Pipe, args) ??
+                If.Is<Object, Function>(args, (x, f) => f.Invoke(new [] { x }));
+        }
     }
 }

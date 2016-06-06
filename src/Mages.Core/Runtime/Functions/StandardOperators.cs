@@ -81,6 +81,11 @@
         public static readonly Function Lt = new Function(BinaryOperators.Lt);
 
         /// <summary>
+        /// Contains the pipe operator.
+        /// </summary>
+        public static readonly Function Pipe = new Function(BinaryOperators.Pipe);
+
+        /// <summary>
         /// Contains the factorial function.
         /// </summary>
         public static readonly Function Factorial = new Function(UnaryOperators.Factorial);

@@ -92,6 +92,14 @@
 
         #region Operations
 
+        internal sealed class Pipe : BinaryExpression
+        {
+            public Pipe(IExpression left, IExpression right)
+                : base(left, right, "|")
+            {
+            }
+        }
+
         internal sealed class And : BinaryExpression
         {
             public And(IExpression left, IExpression right)

@@ -162,6 +162,10 @@
         /// </summary>
         Type = 39,
         /// <summary>
+        /// Pipe operator.
+        /// </summary>
+        Pipe = 40,
+        /// <summary>
         /// Semicolon symbol.
         /// </summary>
         SemiColon = 0xff,
