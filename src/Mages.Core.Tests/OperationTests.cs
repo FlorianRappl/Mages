@@ -773,6 +773,30 @@
         }
 
         [Test]
+        public void PipeOperatorAfterMinusOnCurriedMultiplyYieldsResult()
+        {
+            var result = Eval("2 - 4 | multiply(3)");
+            Assert.IsInstanceOf<Double>(result);
+            Assert.AreEqual(-6.0, result);
+        }
+
+        [Test]
+        public void PipeOperatorIsLowerPrecendenceThanEquals()
+        {
+            var result = Eval("3 == 4 | type");
+            Assert.IsInstanceOf<String>(result);
+            Assert.AreEqual("Boolean", result);
+        }
+
+        [Test]
+        public void PipeOperatorIsLowerPrecendenceThanOr()
+        {
+            var result = Eval("1 || 0 | type");
+            Assert.IsInstanceOf<String>(result);
+            Assert.AreEqual("Boolean", result);
+        }
+
+        [Test]
         public void PipeOperatorOnTypeYieldsResult()
         {
             var result = Eval("2 | type");
