@@ -757,6 +757,37 @@
             Assert.AreEqual("Matrix", result);
         }
 
+        [Test]
+        public void PipeOperatorOnAddYieldsFunction()
+        {
+            var result = Eval("2 | add");
+            Assert.IsInstanceOf<Function>(result);
+        }
+
+        [Test]
+        public void PipeOperatorOnCurriedAddYieldsResult()
+        {
+            var result = Eval("2 | add(3)");
+            Assert.IsInstanceOf<Double>(result);
+            Assert.AreEqual(5.0, result);
+        }
+
+        [Test]
+        public void PipeOperatorOnTypeYieldsResult()
+        {
+            var result = Eval("2 | type");
+            Assert.IsInstanceOf<String>(result);
+            Assert.AreEqual("Number", result);
+        }
+
+        [Test]
+        public void PipeOperatorOnTypeOfTypeYieldsString()
+        {
+            var result = Eval("2 | type | type");
+            Assert.IsInstanceOf<String>(result);
+            Assert.AreEqual("String", result);
+        }
+
         private static Object Eval(String source)
         {
             var engine = new Engine();
