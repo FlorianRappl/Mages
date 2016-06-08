@@ -97,6 +97,7 @@
     <Compile Include="Function.cs" />
     <Compile Include="IPlacement.cs" />
     <Compile Include="ParseException.cs" />
+    <Compile Include="Plugin.cs" />
     <Compile Include="Runtime\Container.cs" />
     <Compile Include="Runtime\Converters\CamelNameSelector.cs" />
     <Compile Include="Runtime\Converters\INameSelector.cs" />

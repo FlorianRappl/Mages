@@ -16,6 +16,7 @@
 
         private readonly IParser _parser;
         private readonly GlobalScope _scope;
+        private readonly List<Plugin> _plugins;
 
         #endregion
 
@@ -31,6 +32,7 @@
             var cfg = configuration ?? Configuration.Default;
             _parser = cfg.Parser ?? Configuration.Default.Parser;
             _scope = new GlobalScope(cfg.Scope);
+            _plugins = new List<Plugin>();
             this.Apply(cfg);
         }
 
@@ -74,9 +76,59 @@
             }
         }
 
+        /// <summary>
+        /// Gets the currently loaded plugins.
+        /// </summary>
+        public IEnumerable<Plugin> Plugins
+        {
+            get { return _plugins; }
+        }
+
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// Adds the given plugin to the list of plugins.
+        /// </summary>
+        /// <param name="plugin">The plugin to add.</param>
+        public void AddPlugin(Plugin plugin)
+        {
+            if (!_plugins.Contains(plugin))
+            {
+                _plugins.Add(plugin);
+                
+                foreach (var item in plugin.Content)
+                {
+                    if (!Globals.ContainsKey(item.Key))
+                    {
+                        Globals[item.Key] = item.Value;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Removes the plugin from the list of plugins.
+        /// </summary>
+        /// <param name="plugin">The plugin to remove.</param>
+        public void RemovePlugin(Plugin plugin)
+        {
+            if (_plugins.Contains(plugin))
+            {
+                _plugins.Remove(plugin);
+
+                foreach (var item in plugin.Content)
+                {
+                    var value = default(Object);
+
+                    if (Globals.TryGetValue(item.Key, out value) && value == item.Value)
+                    {
+                        Globals.Remove(item.Key);
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// Compiles the given source and returns a function to execute later.
