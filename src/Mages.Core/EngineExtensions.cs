@@ -157,6 +157,83 @@
             return symbols;
         }
 
+        /// <summary>
+        /// Adds a plugin from the given type. This requires that the type represents a
+        /// static class that ends with "Plugin". Meta-data is given in form of public
+        /// static string fields, while static properties and methods are considered
+        /// content.
+        /// </summary>
+        /// <param name="engine">The engine.</param>
+        /// <param name="type">The type to represent as a plugin.</param>
+        /// <returns>The plugin if any.</returns>
+        public static Plugin AddPlugin(this Engine engine, Type type)
+        {
+            if (type.IsSealed && type.IsAbstract && type.Name.Length > 6 && type.Name.EndsWith("Plugin"))
+            {
+                var flags = BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy;
+                var fields = type.GetFields(flags);
+                var properties = type.GetProperties(flags);
+                var methods = type.GetMethods(flags);
+                var meta = new Dictionary<String, String>();
+                var content = new Dictionary<String, Object>();
+
+                foreach (var field in fields)
+                {
+                    if (field.FieldType == typeof(String))
+                    {
+                        var name = meta.Keys.FindName(field);
+                        var value = field.GetValue(null);
+                        meta.Add(name, value as String);
+                    }
+                }
+
+                foreach (var property in properties)
+                {
+                    if (property.GetIndexParameters().Length == 0 && property.CanRead)
+                    {
+                        var name = content.Keys.FindName(property);
+                        var value = property.GetValue(null, null).WrapObject();
+                        content.Add(name, value);
+                    }
+                }
+
+                foreach (var method in methods)
+                {
+                    var name = content.Keys.FindName(method);
+                    var value = method.WrapFunction(null);
+                    content.Add(name, value);
+                }
+
+                return new Plugin(meta, content);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Adds all plugins found in the given assembly.
+        /// </summary>
+        /// <param name="engine">The engine.</param>
+        /// <param name="assembly">The assembly to investigate.</param>
+        /// <returns>The list with all added plugins.</returns>
+        public static IEnumerable<Plugin> AddPlugins(this Engine engine, Assembly assembly)
+        {
+            var types = assembly.GetExportedTypes();
+            var plugins = new List<Plugin>();
+
+            foreach (var type in types)
+            {
+                var plugin = engine.AddPlugin(type);
+
+                if (plugin != null)
+                {
+                    plugins.Add(plugin);
+                }
+            }
+
+            return plugins;
+        }
+
         internal static void Apply(this Engine engine, Configuration configuration)
         {
             if (!configuration.IsEvalForbidden)
