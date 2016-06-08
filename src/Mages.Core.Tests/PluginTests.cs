@@ -52,5 +52,37 @@
 
             Assert.AreEqual(5.0, five);
         }
+
+        [Test]
+        public void RemovingInexistingPluginHasNoEffect()
+        {
+            var metaData = new Dictionary<String, String>();
+            var content = new Dictionary<String, Object>();
+            content["a"] = new Function(args => (Double)args.Length);
+            var plugin = new Plugin(metaData, content);
+            var engine = new Engine();
+            engine.Globals["a"] = content["a"];
+            engine.RemovePlugin(plugin);
+
+            var three = engine.Interpret("a(1, 2, 3)");
+
+            Assert.AreEqual(3.0, three);
+        }
+
+        [Test]
+        public void RemovingExistingPluginRemovesNewFunction()
+        {
+            var metaData = new Dictionary<String, String>();
+            var content = new Dictionary<String, Object>();
+            content["a"] = new Function(args => (Double)args.Length);
+            var plugin = new Plugin(metaData, content);
+            var engine = new Engine();
+            engine.AddPlugin(plugin);
+            engine.RemovePlugin(plugin);
+
+            var undefined = engine.Interpret("a(1, 2, 3)");
+
+            Assert.AreEqual(null, undefined);
+        }
     }
 }
