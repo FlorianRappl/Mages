@@ -71,5 +71,18 @@
                 "singular", svd.SingularValues
             );
         }
+
+        public static Double Trace(Double[,] matrix)
+        {
+            var length = Math.Min(matrix.GetLength(0), matrix.GetLength(1));
+            var sum = 0.0;
+
+            for (var i = 0; i < length; i++)
+            {
+                sum += matrix[i, i];
+            }
+
+            return sum;
+        }
     }
 }
