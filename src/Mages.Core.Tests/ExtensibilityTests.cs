@@ -112,6 +112,28 @@
         }
 
         [Test]
+        public void AddingNewMethodIsAlreadyFunctionIsNotWrapped()
+        {
+            var engine = new Engine();
+            var func = new Func<Object[], Object>(args => (Double)args.Length);
+            engine.SetFunction("foo", func.Method, func.Target);
+
+            var result = engine.Interpret("foo(1, 2, 3, 4, 5)");
+            Assert.AreEqual(5.0, result);
+        }
+
+        [Test]
+        public void AddingNewMethodIsAlreadyFunctionWillNotAutoCurry()
+        {
+            var engine = new Engine();
+            var func = new Func<Object[], Object>(args => (Double)args.Length);
+            engine.SetFunction("foo", func.Method, func.Target);
+
+            var result = engine.Interpret("foo()");
+            Assert.AreEqual(0.0, result);
+        }
+
+        [Test]
         public void ReplacingAnExistingFunctionOverwrites()
         {
             var engine = new Engine();

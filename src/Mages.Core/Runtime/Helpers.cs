@@ -104,25 +104,34 @@
 
         public static Function WrapFunction(this MethodInfo method, Object target)
         {
-            var parameterConverters = method.GetParameters().Select(m => Converters.FindConverter(m.ParameterType)).ToArray();
+            var parameters = method.GetParameters();
             var f = default(Function);
-            
-            f = new Function(args =>
-            {
-                var result = Curry.Min(parameterConverters.Length, f, args);
 
-                if (result == null)
+            if (parameters.Length != 1 || parameters[0].ParameterType != typeof(Object[]) || method.ReturnType != typeof(Object))
+            {
+                var parameterConverters = parameters.Select(m => Converters.FindConverter(m.ParameterType)).ToArray();
+
+                f = new Function(args =>
                 {
-                    for (var i = 0; i < parameterConverters.Length; i++)
+                    var result = Curry.Min(parameterConverters.Length, f, args);
+
+                    if (result == null)
                     {
-                        args[i] = parameterConverters[i].Invoke(args[i]);
+                        for (var i = 0; i < parameterConverters.Length; i++)
+                        {
+                            args[i] = parameterConverters[i].Invoke(args[i]);
+                        }
+
+                        result = method.Call(target, args);
                     }
 
-                    result = method.Call(target, args);
-                }
-
-                return result;
-            });
+                    return result;
+                });
+            }
+            else
+            {
+                f = (Function)Delegate.CreateDelegate(typeof(Function), target, method);
+            }
 
             return f;
         }
