@@ -170,12 +170,13 @@
         {
             if (type.IsSealed && type.IsAbstract && type.Name.Length > 6 && type.Name.EndsWith("Plugin"))
             {
-                var flags = BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy;
+                var flags = BindingFlags.Public | BindingFlags.Static;
                 var fields = type.GetFields(flags);
                 var properties = type.GetProperties(flags);
                 var methods = type.GetMethods(flags);
                 var meta = new Dictionary<String, String>();
                 var content = new Dictionary<String, Object>();
+                var plugin = new Plugin(meta, content);
 
                 foreach (var field in fields)
                 {
@@ -189,7 +190,7 @@
 
                 foreach (var property in properties)
                 {
-                    if (property.GetIndexParameters().Length == 0 && property.CanRead)
+                    if (property.GetIndexParameters().Length == 0 && property.CanRead && !property.IsSpecialName)
                     {
                         var name = content.Keys.FindName(property);
                         var value = property.GetValue(null, null).WrapObject();
@@ -199,12 +200,16 @@
 
                 foreach (var method in methods)
                 {
-                    var name = content.Keys.FindName(method);
-                    var value = method.WrapFunction(null);
-                    content.Add(name, value);
+                    if (!method.IsSpecialName)
+                    {
+                        var name = content.Keys.FindName(method);
+                        var value = method.WrapFunction(null);
+                        content.Add(name, value);
+                    }
                 }
 
-                return new Plugin(meta, content);
+                engine.AddPlugin(plugin);
+                return plugin;
             }
 
             return null;

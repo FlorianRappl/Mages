@@ -3,6 +3,7 @@
     using NUnit.Framework;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     [TestFixture]
     public class PluginTests
@@ -83,6 +84,48 @@
             var undefined = engine.Interpret("a(1, 2, 3)");
 
             Assert.AreEqual(null, undefined);
+        }
+
+        [Test]
+        public void AddPluginFromStaticClassByConvention()
+        {
+            var engine = new Engine();
+            var plugin = engine.AddPlugin(typeof(MyPlugin));
+
+            var matrix = engine.Interpret("bar * numberOfArguments(1, 2, 3) * identity");
+
+            CollectionAssert.AreEquivalent(new Double[,] { { 6.0, 0.0 }, { 0.0, 6.0 } }, (Double[,])matrix);
+            Assert.AreEqual("Foo", plugin.Name);
+            Assert.AreEqual(3, plugin.MetaData.Count());
+            Assert.AreEqual(4, plugin.Content.Count());
+        }
+
+        [Test]
+        public void AddPluginFailsFromNormalClass()
+        {
+            var engine = new Engine();
+            var plugin = engine.AddPlugin(typeof(NotAPlugin));
+
+            Assert.IsNull(plugin);
+        }
+
+        static class MyPlugin
+        {
+            public static readonly String Name = "Foo";
+            public static readonly String Version = "1.0.0";
+            public static readonly String Author = "Author";
+
+            public static Double Bar { get { return 2.0; } }
+            public static Boolean Foo { get { return true; } }
+            public static Double[,] Identity { get { return new Double[2, 2] { { 1.0, 0.0 }, { 0.0, 1.0 } }; } }
+            public static Object NumberOfArguments(Object[] args)
+            {
+                return (Double)args.Length;
+            }
+        }
+
+        class NotAPlugin
+        {
         }
     }
 }
