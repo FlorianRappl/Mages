@@ -2,6 +2,7 @@
 {
     using Mages.Core;
     using Mages.Repl.Functions;
+    using Mages.Repl.Plugins;
     using System;
     using Tutorial;
 
@@ -15,6 +16,7 @@
             _interactivity = interactivity;
             _engine = new Engine(configuration);
             ReplFunctions.Integrate(_engine);
+            ReplPlugins.Integrate(_engine);
         }
 
         public void Run(String content)
