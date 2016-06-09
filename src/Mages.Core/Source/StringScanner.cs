@@ -38,6 +38,11 @@
 
         #region Methods
 
+        public TextPosition GetPositionAt(Int32 index)
+        {
+            return new TextPosition(0, 0, index);
+        }
+
         public Boolean MoveNext()
         {
             Advance();

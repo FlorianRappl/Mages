@@ -28,5 +28,12 @@
         /// </summary>
         /// <returns>True if the previous character exists, otherwise false.</returns>
         Boolean MoveBack();
+
+        /// <summary>
+        /// Gets the position at the given index.
+        /// </summary>
+        /// <param name="index">The linear index in the source.</param>
+        /// <returns>The corresponding text position.</returns>
+        TextPosition GetPositionAt(Int32 index);
     }
 }

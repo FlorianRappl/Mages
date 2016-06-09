@@ -3,6 +3,7 @@
     using Mages.Core.Ast;
     using Mages.Core.Ast.Expressions;
     using Mages.Core.Runtime;
+    using Mages.Core.Source;
     using System;
     using System.Collections.Generic;
     using System.Reflection;
@@ -266,9 +267,11 @@
         /// <returns>The enumeration over potential completion symbols.</returns>
         public static IEnumerable<String> GetCompletionAt(this Engine engine, String source, Int32 index)
         {
-            var ast = engine.Parser.ParseStatements(source);
+            var scanner = source.GetScanner();
+            var stream = scanner.ToTokenStream();
+            var ast = engine.Parser.ParseStatements(stream);
             var symbols = engine.GetGlobalSymbols();
-            var position = new TextPosition(0, 0, index);
+            var position = scanner.GetPositionAt(index);
             return ast.GetCompletionAt(position, symbols);
         }
 
