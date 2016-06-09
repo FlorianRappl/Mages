@@ -239,6 +239,39 @@
             return plugins;
         }
 
+        /// <summary>
+        /// Gets the currently stored global symbols.
+        /// </summary>
+        /// <param name="engine">The engine containing the global scope.</param>
+        /// <returns>The enumeration over all global symbols.</returns>
+        public static IEnumerable<String> GetGlobalSymbols(this Engine engine)
+        {
+            foreach (var item in engine.Scope)
+            {
+                yield return item.Key;
+            }
+
+            foreach (var item in engine.Globals)
+            {
+                yield return item.Key;
+            }
+        }
+
+        /// <summary>
+        /// Looks up for completion at the given index in the provided source.
+        /// </summary>
+        /// <param name="engine">The engine.</param>
+        /// <param name="source">The source code to use as basis.</param>
+        /// <param name="index">The index where the cursor is.</param>
+        /// <returns>The enumeration over potential completion symbols.</returns>
+        public static IEnumerable<String> GetCompletionAt(this Engine engine, String source, Int32 index)
+        {
+            var ast = engine.Parser.ParseStatements(source);
+            var symbols = engine.GetGlobalSymbols();
+            var position = new TextPosition(0, 0, index);
+            return ast.GetCompletionAt(position, symbols);
+        }
+
         internal static void Apply(this Engine engine, Configuration configuration)
         {
             if (!configuration.IsEvalForbidden)

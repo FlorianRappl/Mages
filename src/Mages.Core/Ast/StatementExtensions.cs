@@ -83,5 +83,17 @@
             var simple = statement as SimpleStatement;
             return simple != null && simple.Expression is EmptyExpression;
         }
+
+        /// <summary>
+        /// Gets the list of possible completions at the given position.
+        /// </summary>
+        /// <param name="statements">The statements.</param>
+        /// <param name="position">The position to look for completions.</param>
+        /// <param name="symbols">The existing global symbols.</param>
+        /// <returns>The list of completions for the given position.</returns>
+        public static IEnumerable<String> GetCompletionAt(this IEnumerable<IStatement> statements, TextPosition position, IEnumerable<String> symbols)
+        {
+            return new String[0];
+        }
     }
 }
