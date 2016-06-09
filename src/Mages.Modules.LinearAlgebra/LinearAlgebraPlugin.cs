@@ -84,5 +84,32 @@
 
             return sum;
         }
+
+        public static Double Det(Double[,] matrix)
+        {
+            var rows = matrix.GetLength(0);
+            var columns = matrix.GetLength(1);
+
+            if (rows == columns)
+            {
+                switch (rows)
+                {
+                    case 0:
+                        return 0.0;
+                    case 1:
+                        return matrix[0, 0];
+                    case 2:
+                        return Helpers.Det2(matrix);
+                    case 3:
+                        return Helpers.Det3(matrix);
+                    case 4:
+                        return Helpers.Det4(matrix);
+                    default:
+                        return LUDecomposition.Determinant(matrix);
+                }
+            }
+
+            return 0.0;
+        }
     }
 }

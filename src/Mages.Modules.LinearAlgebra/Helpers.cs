@@ -1,5 +1,6 @@
 ﻿namespace Mages.Modules.LinearAlgebra
 {
+    using Decompositions;
     using System;
     using System.Collections.Generic;
 
@@ -109,6 +110,39 @@
             }
 
             return result;
+        }
+
+        public static Double Det2(Double[,] matrix)
+        {
+            return matrix[0, 0] * matrix[1, 1] - matrix[0, 1] * matrix[1, 2];
+        }
+
+        public static Double Det3(Double[,] matrix)
+        {
+            return matrix[0, 0] * (matrix[1, 1] * matrix[2, 2] - matrix[1, 2] * matrix[2, 1]) +
+                   matrix[0, 1] * (matrix[1, 2] * matrix[2, 0] - matrix[1, 0] * matrix[2, 2]) +
+                   matrix[0, 2] * (matrix[1, 0] * matrix[2, 1] - matrix[1, 1] * matrix[2, 0]);
+        }
+
+        public static Double Det4(Double[,] matrix)
+        {
+            //I guess that's right
+            return matrix[0, 0] * (matrix[1, 1] *
+                        (matrix[2, 2] * matrix[3, 3] - matrix[2, 3] * matrix[3, 2]) + matrix[1, 2] *
+                            (matrix[2, 3] * matrix[3, 1] - matrix[2, 1] * matrix[3, 3]) + matrix[1, 3] *
+                                (matrix[2, 1] * matrix[3, 2] - matrix[2, 2] * matrix[3, 1])) -
+                    matrix[0, 1] * (matrix[1, 0] *
+                        (matrix[2, 2] * matrix[3, 3] - matrix[2, 3] * matrix[3, 2]) + matrix[1, 2] *
+                            (matrix[2, 3] * matrix[3, 0] - matrix[2, 0] * matrix[3, 3]) + matrix[1, 3] *
+                                (matrix[2, 0] * matrix[3, 2] - matrix[2, 2] * matrix[3, 0])) +
+                    matrix[0, 2] * (matrix[1, 0] *
+                        (matrix[2, 1] * matrix[3, 3] - matrix[2, 3] * matrix[3, 1]) + matrix[1, 1] *
+                            (matrix[2, 3] * matrix[3, 0] - matrix[2, 0] * matrix[3, 3]) + matrix[1, 3] *
+                                (matrix[2, 0] * matrix[3, 1] - matrix[2, 1] * matrix[3, 0])) -
+                    matrix[0, 3] * (matrix[1, 0] *
+                        (matrix[2, 1] * matrix[3, 2] - matrix[2, 2] * matrix[3, 1]) + matrix[1, 1] *
+                            (matrix[2, 2] * matrix[3, 0] - matrix[2, 0] * matrix[3, 2]) + matrix[1, 2] *
+                                (matrix[2, 0] * matrix[3, 1] - matrix[2, 1] * matrix[3, 0]));
         }
 
         public static Double[,] SubMatrix(Double[,] matrix, Int32 rowStart, Int32 rowEnd, Int32 columnStart, Int32 columnEnd)

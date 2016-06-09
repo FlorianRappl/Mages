@@ -217,17 +217,19 @@ namespace Mages.Modules.LinearAlgebra.Decompositions
         #region Methods
 
         /// <summary>
-        /// Computes the determinant.
+        /// Computes the determinant of the given matrix.
         /// </summary>
-        public Double Determinant()
+        public static Double Determinant(Double[,] matrix)
         {
-            if (_rows == _columns)
-            {
-                var d = (Double)_pivsign;
+            var lu = new LUDecomposition(matrix);
 
-                for (var j = 0; j < _columns; j++)
+            if (lu._rows == lu._columns)
+            {
+                var d = (Double)lu._pivsign;
+
+                for (var j = 0; j < lu._columns; j++)
                 {
-                    d = d * _LU[j, j];
+                    d = d * lu._LU[j, j];
                 }
 
                 return d;
