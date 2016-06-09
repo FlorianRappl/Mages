@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Core.Performance", "M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Repl.Installer", "Mages.Repl.Installer\Mages.Repl.Installer.csproj", "{2239BDD1-07B4-44B0-A6DB-ED4C69B8797C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Modules.LinearAlgebra", "Mages.Modules.LinearAlgebra\Mages.Modules.LinearAlgebra.csproj", "{84965E3E-B7E6-49E7-ADF1-46A3CB7EBEA6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{2239BDD1-07B4-44B0-A6DB-ED4C69B8797C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2239BDD1-07B4-44B0-A6DB-ED4C69B8797C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2239BDD1-07B4-44B0-A6DB-ED4C69B8797C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84965E3E-B7E6-49E7-ADF1-46A3CB7EBEA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84965E3E-B7E6-49E7-ADF1-46A3CB7EBEA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84965E3E-B7E6-49E7-ADF1-46A3CB7EBEA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84965E3E-B7E6-49E7-ADF1-46A3CB7EBEA6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
