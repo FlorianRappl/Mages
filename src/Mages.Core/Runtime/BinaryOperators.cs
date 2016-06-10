@@ -100,7 +100,7 @@
                 If.Is<String, String>(args, (x, y) => x.Equals(y)) ??
                 If.Is<String, Object>(args, (x, y) => x.Equals(Stringify.This(y))) ??
                 If.Is<Object, String>(args, (y, x) => x.Equals(Stringify.This(y))) ??
-                If.Is<Object, Object>(args, (x, y) => Object.ReferenceEquals(x, y));
+                Object.ReferenceEquals(args[0], args[1]);
         }
 
         public static Object Neq(Object[] args)
@@ -116,7 +116,7 @@
                 If.Is<String, String>(args, (x, y) => !x.Equals(y)) ??
                 If.Is<String, Object>(args, (x, y) => !x.Equals(Stringify.This(y))) ??
                 If.Is<Object, String>(args, (y, x) => !x.Equals(Stringify.This(y))) ??
-                If.Is<Object, Object>(args, (x, y) => !Object.ReferenceEquals(x, y));
+                !Object.ReferenceEquals(args[0], args[1]);
         }
 
         public static Object Gt(Object[] args)

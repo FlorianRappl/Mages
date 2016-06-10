@@ -737,6 +737,20 @@
         }
 
         [Test]
+        public void NullIsNothingIsTrue()
+        {
+            var result = Eval("abc(foo) == null");
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void SomethingAintNothingIsFalse()
+        {
+            var result = Eval("3 == null");
+            Assert.AreEqual(false, result);
+        }
+
+        [Test]
         public void TypeOperatorOnNullYieldsUndefined()
         {
             var result = Eval("&null");
