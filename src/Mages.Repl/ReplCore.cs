@@ -3,8 +3,8 @@
     using Mages.Core;
     using Mages.Repl.Functions;
     using Mages.Repl.Plugins;
+    using Mages.Repl.Tutorial;
     using System;
-    using Tutorial;
 
     sealed class ReplCore
     {
