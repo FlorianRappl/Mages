@@ -89,6 +89,7 @@
     <Compile Include="Ast\Statements\VarStatement.cs" />
     <Compile Include="Ast\Statements\WhileStatement.cs" />
     <Compile Include="Ast\Walkers\BaseTreeWalker.cs" />
+    <Compile Include="Ast\Walkers\CompletionTreeWalker.cs" />
     <Compile Include="Ast\Walkers\OperationTreeWalker.cs" />
     <Compile Include="Ast\Walkers\SymbolTreeWalker.cs" />
     <Compile Include="Ast\Walkers\ValidationTreeWalker.cs" />

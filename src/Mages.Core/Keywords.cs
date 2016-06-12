@@ -152,6 +152,28 @@
         };
 
         /// <summary>
+        /// Gets the globally available statement keywords.
+        /// </summary>
+        public static readonly String[] GlobalStatementKeywords = new []
+        {
+            Var,
+            Return,
+            While,
+            If
+        };
+
+        /// <summary>
+        /// Gets the available expression keywords.
+        /// </summary>
+        public static readonly String[] ExpressionKeywords = new[]
+        {
+            True,
+            False,
+            New,
+            Pi
+        };
+
+        /// <summary>
         /// Tries to get the constant's value.
         /// </summary>
         /// <param name="keyword">The name of the constant.</param>

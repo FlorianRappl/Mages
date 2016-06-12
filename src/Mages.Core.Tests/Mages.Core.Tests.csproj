@@ -60,6 +60,7 @@
     <Compile Include="FunctionTests.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="ImplicitMultiplicationTests.cs" />
+    <Compile Include="IntellisenseTests.cs" />
     <Compile Include="InterpretationTests.cs" />
     <Compile Include="InvalidInputTests.cs" />
     <Compile Include="MatrixExpressionTests.cs" />

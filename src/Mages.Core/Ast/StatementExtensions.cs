@@ -93,6 +93,7 @@
         /// <returns>The list of completions for the given position.</returns>
         public static IEnumerable<String> GetCompletionAt(this IEnumerable<IStatement> statements, TextPosition position, IEnumerable<String> symbols)
         {
+
             return new String[0];
         }
     }
