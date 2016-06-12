@@ -15,7 +15,6 @@
             { typeof(IDictionary<String, Object>), obj => ((IDictionary<String, Object>)obj).Getter },
         };
 
-
         private static Dictionary<Type, Func<Object, Procedure>> _setters = new Dictionary<Type, Func<Object, Procedure>>
         {
             { typeof(Double[,]), obj => ((Double[,])obj).Setter },
