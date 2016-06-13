@@ -61,7 +61,7 @@
             var engine = new Engine();
             engine.Globals.Clear();
             var autocomplete = engine.GetCompletionAt(source, source.Length).ToArray();
-            var available = Keywords.GlobalStatementKeywords.Concat(Keywords.ExpressionKeywords).Concat(new []{ "x", "y" });
+            var available = Keywords.ExpressionKeywords.Concat(new []{ "x", "y" });
 
             CollectionAssert.AreEquivalent(available, autocomplete);
         }

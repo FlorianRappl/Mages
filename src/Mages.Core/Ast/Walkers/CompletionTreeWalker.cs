@@ -13,6 +13,7 @@
     {
         private readonly TextPosition _position;
         private readonly IEnumerable<String> _symbols;
+        private readonly List<List<String>> _variables;
         private readonly List<String> _completion;
         private readonly Stack<Boolean> _breakable;
 
@@ -26,6 +27,8 @@
             _completion = new List<String>();
             _breakable = new Stack<Boolean>();
             _breakable.Push(false);
+            _variables = new List<List<String>>();
+            _variables.Add(new List<String>());
         }
 
         /// <summary>
@@ -74,6 +77,35 @@
             {
                 AddExpressionKeywords();
             }
+        }
+
+        /// <summary>
+        /// Visits a binary expression - accepts the left and right value.
+        /// </summary>
+        public override void Visit(BinaryExpression expression)
+        {
+            if (Within(expression))
+            {
+                AddExpressionKeywords();
+            }
+        }
+
+        /// <summary>
+        /// Visits an assignment expression - accepts the variable and value.
+        /// </summary>
+        public override void Visit(AssignmentExpression expression)
+        {
+            var name = expression.VariableName;
+
+            if (name != null)
+            {
+                var c = _variables.Count - 1;
+
+                if (!_variables[c].Contains(name) && !_variables[0].Contains(name))
+                {
+                    _variables[0].Add(name);
+                }
+            }
 
             base.Visit(expression);
         }
@@ -90,8 +122,9 @@
 
         private void AddExpressionKeywords()
         {
+            var symbols = _variables.SelectMany(m => m).Concat(_symbols).Distinct();
             _completion.AddRange(Keywords.ExpressionKeywords);
-            _completion.AddRange(_symbols);
+            _completion.AddRange(symbols);            
         }
 
         private Boolean Within(ITextRange range)
