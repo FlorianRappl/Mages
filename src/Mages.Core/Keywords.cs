@@ -163,6 +163,15 @@
         };
 
         /// <summary>
+        /// Gets the within-loop available statement keywords.
+        /// </summary>
+        public static readonly String[] LoopControlKeywords = new[]
+        {
+            Break,
+            Continue
+        };
+
+        /// <summary>
         /// Gets the available expression keywords.
         /// </summary>
         public static readonly String[] ExpressionKeywords = new[]
