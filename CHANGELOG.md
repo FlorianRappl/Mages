@@ -1,3 +1,11 @@
+# 0.7.0
+
+- Provided `is` / `as` functions (#29)
+- Included the pipe operator (#28)
+- Autocomplete / "intellisense" (#23)
+- Released plugin architecture (#22)
+- Operator improvements (`==` and `~=`)
+
 # 0.6.0
 
 - Some fixes and performance improvements
