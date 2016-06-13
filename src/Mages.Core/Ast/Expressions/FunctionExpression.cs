@@ -19,7 +19,7 @@
         /// Creates a new function expression.
         /// </summary>
         public FunctionExpression(AbstractScope scope, ParameterExpression parameters, IStatement body)
-            : base(parameters.Start, parameters.End)
+            : base(parameters.Start, body.End)
         {
             _scope = scope;
             _parameters = parameters;

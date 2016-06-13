@@ -36,7 +36,7 @@
             var source = "(() => { var x = 5; })";
             var engine = new Engine();
             engine.Globals.Clear();
-            var autocomplete = engine.GetCompletionAt(source, source.Length - 3).ToArray();
+            var autocomplete = engine.GetCompletionAt(source, source.Length - 2).ToArray();
             var available = Keywords.GlobalStatementKeywords.Concat(Keywords.ExpressionKeywords).Concat(new[] { "x" });
 
             CollectionAssert.AreEquivalent(available, autocomplete);
@@ -45,7 +45,7 @@
         [Test]
         public void OutsideLocalScopeYieldsKeywordsAndVariables()
         {
-            var source = "(() => { var x = 5; })";
+            var source = "(() => { var x = 5; });";
             var engine = new Engine();
             engine.Globals.Clear();
             var autocomplete = engine.GetCompletionAt(source, source.Length).ToArray();
@@ -62,6 +62,18 @@
             engine.Globals.Clear();
             var autocomplete = engine.GetCompletionAt(source, source.Length).ToArray();
             var available = Keywords.ExpressionKeywords.Concat(new []{ "x", "y" });
+
+            CollectionAssert.AreEquivalent(available, autocomplete);
+        }
+
+        [Test]
+        public void ParametersOfFunctionShouldBeIncludedInCompletionList()
+        {
+            var source = "((a, b, c) => { var x = 5; })";
+            var engine = new Engine();
+            engine.Globals.Clear();
+            var autocomplete = engine.GetCompletionAt(source, source.Length - 2).ToArray();
+            var available = Keywords.GlobalStatementKeywords.Concat(Keywords.ExpressionKeywords).Concat(new[] { "x", "a", "b", "c" });
 
             CollectionAssert.AreEquivalent(available, autocomplete);
         }

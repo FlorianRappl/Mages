@@ -36,7 +36,7 @@
         /// </summary>
         public IEnumerable<String> Suggestions
         {
-            get { return _completion.OrderBy(m => m, StringComparer.Ordinal); }
+            get { return _completion.Where(m => !String.IsNullOrEmpty(m)).OrderBy(m => m, StringComparer.Ordinal); }
         }
 
         /// <summary>
@@ -44,14 +44,37 @@
         /// </summary>
         public override void Visit(BlockStatement block)
         {
-            if (!block.Statements.Any() && Within(block))
+            base.Visit(block);
+
+            if (_completion.Count == 0 && Within(block))
             {
                 AddStatementKeywords();
                 AddExpressionKeywords();
             }
-            else
+        }
+
+        /// <summary>
+        /// Visits a var statement - accepts the assignment.
+        /// </summary>
+        public override void Visit(VarStatement statement)
+        {
+            var assignment = statement.Assignment as AssignmentExpression;
+
+            if (assignment != null)
             {
-                base.Visit(block);
+                var c = _variables.Count - 1;
+                var variables = _variables[c];
+                var variable = assignment.VariableName;
+
+                if (variable != null && !variables.Contains(variable))
+                {
+                    variables.Add(variable);
+                }
+            }
+
+            if (Within(statement))
+            {
+                base.Visit(statement);
             }
         }
 
@@ -72,6 +95,17 @@
         /// Visits an empty expression.
         /// </summary>
         public override void Visit(EmptyExpression expression)
+        {
+            if (Within(expression))
+            {
+                AddExpressionKeywords();
+            }
+        }
+
+        /// <summary>
+        /// Visits an invalid expression.
+        /// </summary>
+        public override void Visit(InvalidExpression expression)
         {
             if (Within(expression))
             {
@@ -108,6 +142,63 @@
             }
 
             base.Visit(expression);
+        }
+
+        /// <summary>
+        /// Visits a function expression - accepts the parameters and body.
+        /// </summary>
+        public override void Visit(FunctionExpression expression)
+        {
+            if (Within(expression))
+            {
+                var scope = new List<String>();
+                _breakable.Push(false);
+                _variables.Add(scope);
+                base.Visit(expression);
+                _variables.Remove(scope);
+                _breakable.Pop();
+            }
+        }
+
+        /// <summary>
+        /// Visits a parameter expression - accepts all parameters.
+        /// </summary>
+        public override void Visit(ParameterExpression expression)
+        {
+            foreach (var parameter in expression.Parameters)
+            {
+                var variable = parameter as VariableExpression;
+
+                if (variable != null)
+                {
+                    var variables = _variables[_variables.Count - 1];
+
+                    if (!variables.Contains(variable.Name))
+                    {
+                        variables.Add(variable.Name);
+                    }
+                }
+            }
+
+            if (Within(expression))
+            {
+                _completion.Add(String.Empty);
+            }
+        }
+
+        /// <summary>
+        /// Visits a property expression - accepts the name and value.
+        /// </summary>
+        public override void Visit(PropertyExpression expression)
+        {
+            if (Within(expression.Name))
+            {
+                _completion.Add(String.Empty);
+            }
+            else if (Within(expression.Value))
+            {
+                expression.Value.Accept(this);
+            }
         }
 
         private void AddStatementKeywords()
