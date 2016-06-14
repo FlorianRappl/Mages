@@ -67,6 +67,7 @@
     <Compile Include="Mocks\NameSelectorMock.cs" />
     <Compile Include="NumberTests.cs" />
     <Compile Include="ObjectExpressionTests.cs" />
+    <Compile Include="ObservableTests.cs" />
     <Compile Include="OperationTests.cs" />
     <Compile Include="PluginTests.cs" />
     <Compile Include="PrimeNumberTests.cs" />
