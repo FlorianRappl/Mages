@@ -56,6 +56,21 @@
             return value;
         }
 
+        public static Object Map(this IDictionary<String, Object> obj, Function f)
+        {
+            var result = new Dictionary<String, Object>();
+            var args = new Object[2];
+
+            foreach (var item in obj)
+            {
+                args[0] = item.Value;
+                args[1] = item.Key;
+                result[item.Key] = f(args);
+            }
+
+            return result;
+        }
+
         public static IDictionary<String, Object> ToArrayObject(this Object[] arguments)
         {
             var obj = new Dictionary<String, Object>();
