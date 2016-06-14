@@ -6,7 +6,7 @@
     /// The Householder reflection is an implementation of a QR decomposition.
     /// This decomposition does not work for complex numbers.
     /// </summary>
-    public class HouseholderDecomposition : QRDecomposition, IDirectSolver
+    public class HouseholderDecomposition : QRDecomposition
     {
         #region Fields
         
@@ -188,7 +188,7 @@
         /// </summary>
         /// <param name="matrix">A Matrix with as many rows as A and any number of columns.</param>
         /// <returns>X that minimizes the two norm of Q*R*X-B.</returns>
-        public Double[,] Solve(Double[,] matrix)
+        public override Double[,] Solve(Double[,] matrix)
         {
             if (matrix.GetLength(0) != _rows)
                 throw new InvalidOperationException(ErrorMessages.RowMismatch);

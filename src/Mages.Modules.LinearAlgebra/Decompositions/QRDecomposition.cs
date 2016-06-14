@@ -13,7 +13,7 @@ namespace Mages.Modules.LinearAlgebra.Decompositions
     /// of simultaneous linear equations.  This will fail if IsFullRank()
     /// returns false.
     /// </summary>
-    public abstract class QRDecomposition
+    public abstract class QRDecomposition : IDirectSolver
     {
         #region Fields
         
@@ -78,6 +78,17 @@ namespace Mages.Modules.LinearAlgebra.Decompositions
         {
             get;
         }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Least squares solution of A * X = B
+        /// </summary>
+        /// <param name="b">A Matrix with as many rows as A and any number of columns.</param>
+        /// <returns>X that minimizes the two norm of Q*R*X-B.</returns>
+        public abstract Double[,] Solve(Double[,] b);
 
         #endregion
     }

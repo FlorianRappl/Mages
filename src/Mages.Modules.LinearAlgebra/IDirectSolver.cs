@@ -1,4 +1,4 @@
-﻿namespace Mages.Modules.LinearAlgebra.Decompositions
+﻿namespace Mages.Modules.LinearAlgebra
 {
     using System;
 
@@ -8,7 +8,7 @@
     public interface IDirectSolver
     {
         /// <summary>
-        /// Solves the given system of linear equations for a source vector b.
+        /// Solves the given system of linear equations for a target b.
         /// </summary>
         /// <param name="b">The vector b in A * x = b.</param>
         /// <returns>The solution vector x.</returns>

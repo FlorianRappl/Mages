@@ -6,7 +6,7 @@
     /// The Givens rotation is an implementation of a QR decomposition.
     /// This decomposition also works for complex numbers.
     /// </summary>
-    public class GivensDecomposition : QRDecomposition, IDirectSolver
+    public class GivensDecomposition : QRDecomposition
     {
         #region Fields
 
@@ -91,7 +91,7 @@
         /// </summary>
         /// <param name="b">A Matrix with as many rows as A and any number of columns.</param>
         /// <returns>X that minimizes the two norm of Q*R*X-B.</returns>
-        public Double[,] Solve(Double[,] b)
+        public override Double[,] Solve(Double[,] b)
         {
             if (b.GetLength(0) != _rows)
                 throw new InvalidOperationException(ErrorMessages.RowMismatch);

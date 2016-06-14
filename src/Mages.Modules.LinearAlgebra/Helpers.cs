@@ -145,6 +145,16 @@
                                 (matrix[2, 0] * matrix[3, 1] - matrix[2, 1] * matrix[3, 0]));
         }
 
+        public static Double[,] GetColumnVector(Double[,] matrix, Int32 column)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void SetColumnVector(Double[,] matrix, Int32 column, Double[,] value)
+        {
+            throw new NotImplementedException();
+        }
+
         public static Double[,] SubMatrix(Double[,] matrix, Int32 rowStart, Int32 rowEnd, Int32 columnStart, Int32 columnEnd)
         {
             var rows = rowEnd - rowStart;
@@ -162,6 +172,12 @@
             return result;
         }
 
+        public static Double Norm(Double[,] matrix)
+        {
+            var sum = Reduce(matrix, matrix);
+            return Math.Sqrt(sum);
+        }
+
         public static Double[,] Transpose(Double[,] matrix)
         {
             var rows = matrix.GetLength(0);
@@ -173,6 +189,57 @@
                 for (var j = 0; j < cols; j++)
                 {
                     result[j, i] = matrix[i, j];
+                }
+            }
+
+            return result;
+        }
+
+        public static Double[,] Add(Double[,] a, Double[,] b)
+        {
+            var rows = a.GetLength(0);
+            var cols = a.GetLength(1);
+            var result = new Double[rows, cols];
+
+            for (var i = 0; i < rows; i++)
+            {
+                for (var j = 0; j < cols; j++)
+                {
+                    result[i, j] = a[i, j] + b[i, j];
+                }
+            }
+
+            return result;
+        }
+
+        public static Double[,] Subtract(Double[,] a, Double[,] b)
+        {
+            var rows = a.GetLength(0);
+            var cols = a.GetLength(1);
+            var result = new Double[rows, cols];
+
+            for (var i = 0; i < rows; i++)
+            {
+                for (var j = 0; j < cols; j++)
+                {
+                    result[i, j] = a[i, j] - b[i, j];
+                }
+            }
+
+            return result;
+        }
+
+        public static Double[,] Multiply(Double[,] a, Double b)
+        {
+            var rows = a.GetLength(0);
+            var cols = a.GetLength(1);
+            var result = new Double[rows, cols];
+
+            for (var i = 0; i < rows; i++)
+            {
+                for (var j = 0; j < cols; j++)
+                {
+                    result[i, j] = a[i, j] * b;
                 }
             }
 
@@ -208,6 +275,57 @@
             }
 
             return null;
+        }
+
+        public static Double[,] AddScaled(Double[,] a, Double scale, Double[,] b)
+        {
+            var rows = a.GetLength(0);
+            var cols = a.GetLength(1);
+            var result = new Double[rows, cols];
+
+            for (var i = 0; i < rows; i++)
+            {
+                for (var j = 0; j < cols; j++)
+                {
+                    result[i, j] = a[i, j] + scale * b[i, j];
+                }
+            }
+
+            return result;
+        }
+
+        public static Double[,] SubtractScaled(Double[,] a, Double scale, Double[,] b)
+        {
+            var rows = a.GetLength(0);
+            var cols = a.GetLength(1);
+            var result = new Double[rows, cols];
+
+            for (var i = 0; i < rows; i++)
+            {
+                for (var j = 0; j < cols; j++)
+                {
+                    result[i, j] = a[i, j] - scale * b[i, j];
+                }
+            }
+
+            return result;
+        }
+
+        public static Double Reduce(Double[,] a, Double[,] b)
+        {
+            var rows = a.GetLength(0);
+            var columns = a.GetLength(1);
+            var sum = 0.0;
+
+            for (var i = 0; i < rows; i++)
+            {
+                for (var j = 0; j < columns; j++)
+                {
+                    sum += a[i, j] * b[i, j];
+                }
+            }
+
+            return sum;
         }
 
         public static IDictionary<String, Object> CreateObject(params Object[] keyValues)
