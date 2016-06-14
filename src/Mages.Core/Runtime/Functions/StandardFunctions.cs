@@ -362,5 +362,16 @@
         /// Contains the list function.
         /// </summary>
         public static readonly Function List = new Function(Helpers.ToArrayObject);
+
+        /// <summary>
+        /// Contains the map function.
+        /// </summary>
+        public static readonly Function Map = new Function(args =>
+        {
+            return Curry.MinTwo(Map, args) ??
+                If.Is<Function, Double[,]>(args, (f, m) => m.Map(f)) ??
+                If.Is<Function, IDictionary<String, Object>>(args, (f, o) => o.Map(f)) ??
+                If.Is<Function>(args, f => f(new[] { args[1] }));
+        });
     }
 }

@@ -2,7 +2,7 @@
 {
     using Mages.Core.Runtime.Converters;
     using System;
-
+    using System.Collections.Generic;
     static class Matrix
     {
         public static Int32 GetRows(this Double[,] matrix)
@@ -476,6 +476,29 @@
         public static Double[,] AreNotEqual(this Double[,] a, Double b)
         {
             return a.AreNotEqual(a.Fill(b));
+        }
+
+        public static Object Map(this Double[,] matrix, Function f)
+        {
+            var result = new Dictionary<String, Object>();
+            var args = new Object[4];
+            var length = matrix.Length;
+            var rows = matrix.GetRows();
+            var columns = matrix.GetColumns();
+
+            for (int i = 0, k = 0; i < rows; i++)
+            {
+                for (var j = 0; j < columns; j++, k++)
+                {
+                    args[0] = matrix[i, j];
+                    args[1] = (Double)k;
+                    args[2] = (Double)i;
+                    args[3] = (Double)j;
+                    result[k.ToString()] = f(args);
+                }
+            }
+
+            return result;
         }
 
         public static Double[,] AreNotEqual(this Double[,] a, Double[,] b)

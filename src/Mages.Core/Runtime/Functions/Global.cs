@@ -64,6 +64,7 @@
             { "list", StandardFunctions.List },
             { "is", StandardFunctions.Is },
             { "as", StandardFunctions.As },
+            { "map", StandardFunctions.Map },
         };
     }
 }
