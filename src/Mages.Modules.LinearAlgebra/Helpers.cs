@@ -147,12 +147,25 @@
 
         public static Double[,] GetColumnVector(Double[,] matrix, Int32 column)
         {
-            throw new NotImplementedException();
+            var rows = matrix.GetLength(0);
+            var result = new Double[rows, 1];
+
+            for (var row = 0; row < rows; row++)
+            {
+                result[row, 0] = matrix[row, column];
+            }
+
+            return result;
         }
 
         public static void SetColumnVector(Double[,] matrix, Int32 column, Double[,] value)
         {
-            throw new NotImplementedException();
+            var rows = matrix.GetLength(0);
+
+            for (var row = 0; row < rows; row++)
+            {
+                matrix[row, column] = value[row, 0];
+            }
         }
 
         public static Double[,] SubMatrix(Double[,] matrix, Int32 rowStart, Int32 rowEnd, Int32 columnStart, Int32 columnEnd)
