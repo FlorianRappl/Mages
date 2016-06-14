@@ -387,6 +387,49 @@
             Assert.AreEqual(5.0, result);
         }
 
+        [Test]
+        public void MapFunctionShouldReturnScalar()
+        {
+            var result = Eval("map(x => x, 3)");
+            Assert.AreEqual(3.0, result);
+        }
+
+        [Test]
+        public void MapFunctionShouldReturnLengthOfEachValue()
+        {
+            var result = Eval("map(length, new { a: \"hi\", b: \"foo\", c: \"here\" })") as IDictionary<String, Object>;
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(2.0, result["a"]);
+            Assert.AreEqual(3.0, result["b"]);
+            Assert.AreEqual(4.0, result["c"]);
+        }
+
+        [Test]
+        public void MapFunctionShouldReturnLengthOfEachKey()
+        {
+            var result = Eval("map((v, k) => length(k), new { eins: \"hi\", two: \"foo\", three: \"here\" })") as IDictionary<String, Object>;
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(4.0, result["eins"]);
+            Assert.AreEqual(3.0, result["two"]);
+            Assert.AreEqual(5.0, result["three"]);
+        }
+
+        [Test]
+        public void MapFunctionShouldConvertMatrixToListObject()
+        {
+            var result = Eval("map(factorial, [1, 2, 3; 4, 5, 6])") as IDictionary<String, Object>;
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1.0, result["0"]);
+            Assert.AreEqual(2.0, result["1"]);
+            Assert.AreEqual(6.0, result["2"]);
+            Assert.AreEqual(24.0, result["3"]);
+            Assert.AreEqual(120.0, result["4"]);
+            Assert.AreEqual(720.0, result["5"]);
+        }
+
         private static Object Eval(String source)
         {
             var engine = new Engine();
