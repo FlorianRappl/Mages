@@ -269,6 +269,38 @@ Works with two arguments.
 M = rand(3, 2) // a 3x2 matrix with numbers between 0 and 1
 ```
 
+## Type System Functions
+
+### Getting the Type
+
+Works with one argument, which could be anything.
+
+```
+x = type(true) // "Boolean"
+x = type([1, 2, 3]) // "Matrix"
+x = type("foo") // "String"
+```
+
+### Checking Types
+
+Works with two arguments, where the first one is the type to check for and the second one is the value to check.
+
+```
+x = is("String", true) // false
+x = is("Boolean", false) // true
+x = is("Number", 23) // true
+```
+
+### Converting Values
+
+Works with two arguments, where the first one is the type to convert to and the second one is the value to convert.
+
+```
+x = as("String", 23.3) // "23.3"
+x = as("Number", "foo") // NaN
+x = as("Boolean", 5) // true
+```
+
 ## General Functions
 
 ### Length Determination
@@ -309,4 +341,13 @@ The `Engine` instance itself can be used during evaluation (if not deactivated).
 ```
 x = eval("2 + 3") // 5
 M = eval("[1,2,3] / 2") // [0.5, 1.0, 1.5]
+```
+
+### Mapping Entries
+
+Works with two arguments, where the first is a function to map an entry and the second one could be anything.
+
+```
+map(x => x.item, list(new { item: 5 }, new { item: true }, new { item: "foo" })) // new { "0": 5, "1": true, "2": "foo" }
+map(x => 7x, new { a: 5, b: 3, c: 9 }) // new { "a": 35, "b": 21, "c": "63" }
 ```

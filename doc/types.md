@@ -109,3 +109,8 @@ The following tables yield information on casting possibilities.
 Things that have not been mentioned, e.g., casting from number to function are not directly possible, but can be done trivially. For instance, a number `x` can be brought into a function `y` by writing `y = () => x`. Similarly, everything can be converted to an object. Here we just need to know what we call the key. If we go with the name `value` then we can use `y = new { value: x }` to transform any value to an object.
 
 For transforming a matrix into a number multiple ways are possible. If the cast is required internally then the first value is picked if there is just a single value. Otherwise `NaN` is taken due to ambiguity. Explicitly, however, there are multiply options, e.g., picking a specific element, performing a special operation such as `det` or `trace`, or using a self-defined way.
+
+## Type Checking
+
+Furthermore, two interesting functions exist: `is` and `as`. Both take a type name (e.g., `Number`) and a value as arguments. However, while the former returns a boolean value indicating if the value is of the given type, the latter returns the converted value or `undefined`.
+

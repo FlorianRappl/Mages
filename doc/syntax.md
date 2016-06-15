@@ -125,7 +125,7 @@ member ::= expr space* '.' space* identifier
 All other binary operators can be summarized as follows:
 
 ```
-binary_operator ::= '+' | '-' | '*' | '/' | '\' | '%' | '^' | '>' | '>=' | '<=' | '<' | '==' | '~=' | '&&' | '||'
+binary_operator ::= '+' | '-' | '*' | '/' | '\' | '%' | '^' | '>' | '>=' | '<=' | '<' | '==' | '~=' | '&&' | '||' | '|'
 binary ::= expr space* binary_operator space* expr
 ```
 
@@ -133,7 +133,7 @@ There is one exception to this rule: The multiplication operator also works in s
 
 ```
 explicit_multiplication ::= expr space* '*' space* expr
-implicit_multiplication ::= expr space* (number | identifier)
+implicit_multiplication ::= expr space* (identifier | literal)
 multiplication ::= explicit_multiplication | implicit_multiplication
 ```
 

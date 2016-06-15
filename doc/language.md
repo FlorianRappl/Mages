@@ -66,7 +66,7 @@ Matrices in MAGES are simple two-dimensional double arrays of .NET (`Double[,]`)
 
 ### Literals
 
-Matrices are created by using a literal. The literal looks similar to array literals in other language (e.g., Javascript), however, does not accept non-number values. Any non-number will be converted (potentially `NaN`).
+Matrices are created by using a literal. The literal looks similar to array literals in other language (e.g., JavaScript), however, does not accept non-number values. Any non-number will be converted (potentially `NaN`).
 
 ```C
 M = [1,2,3,4] // 1x4 matrix ("vector")
@@ -76,11 +76,27 @@ M = []
 
 ### Arithmetic Usage
 
-(tbd)
+The language contains the usual arithmetic operators and feels natural coming from other programming languages such as C, JavaScript, or MATLAB. Besides the operators described in the next section every operation can be invoked by calling a function. For the addition the function is called `add`.
+
+```C
+add(2, 3) // same as 2 + 3
+subtract(5, 2) // same as 5 - 2
+factorial(3) // same as 3!
+```
+
+The idea is that operators are also useful in piping scenarios, i.e., when used such that
+
+```C
+3 | add(5) | subtract(10) // same as subtract(10, add(5, 3))
+```
+
+This idea is supported by arithmetic functions and auto currying, which will be discussed later.
 
 ### Operators
 
-(tbd)
+MAGES comes with a similar set of operators as known from C. Besides the usual arithmetic operators (e.g., `+`, `-`, `*`, `/`) MAGES also introduces some other operators. Here we have the factorial operator `!`, the transpose operator `'`, and the reverse division operator `\`. The latter allows writing `2 \ 1` instead of `1 / 2`. This may become handy for matrices.
+
+Some operators are different than in C. For instance, the negate operator is not `!` (that is the factorial operator, which is post-unary and not pre-unary), but the tilde `~`. Hence `~false` is `true`. Consequently, the not equals operator is given by writing `~=` instead of `!=`. Furthermore, there are no bitwise operators in MAGES. Instead, the `&` operator is a pre-unary operator to return the type and the `|` operator is a binary operator to call a function on the right with the argument on the left.
 
 ### Index Accessors
 
@@ -99,9 +115,11 @@ Besides the getter there is also a setter. It is invoked by using the type funct
 
 Matrices are perfectly additioned by ranges. A range is precomputed, i.e., it is a real matrix without lazy loading. Very large ranges therefore occupy also a lot of memory.
 
+Ranges come in two versions. There is an implicit and an explicit range. The former requires only 2 arguments, the latter three.
+
 ### Literals
 
-The operator to invoke the range literal is the colon `:`. It can be used with two such colons (denoting start, step, end) or just one (separating start and end). Start and end are both given inclusive.
+The operator to invoke the range literal is the colon `:`. It can be used with two such colons (explicit: denoting start, step, end) or just one (implicit: separating start and end). Start and end are both given inclusive.
 
 ```C
 1:1:5 // Creates a 1x5 matrix [1,2,3,4,5]

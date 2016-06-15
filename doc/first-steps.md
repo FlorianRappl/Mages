@@ -77,7 +77,7 @@ var testWith1 = (Boolean)euler.Invoke(new Object[] { 1.0 });
 var testWith7 = (Boolean)euler.Invoke(new Object[] { 7.0 });
 ```
 
-The objects that are given to the function defined in MAGES need to be supplied in MAGES compatible types. So the call wouldn't work with integers:
+The objects that are given to the function defined in MAGES need to be supplied in MAGES compatible types. So the call **wouldn't** work with integers:
 
 ```cs
 var isNull = euler.Invoke(new Object[] { 1 });
