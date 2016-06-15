@@ -35,6 +35,12 @@ While delegates and methods are converted to MAGES functions arbitrary objects a
 
 MAGES does not offer a classical array or list notation. Instead, it introduces a new function called `list`, which transforms its arguments to an object enumerating its keys from `0` to `length - 1`. This "list object" is treated like any other object, even though some helpers exist.
 
+```C
+l = list("a", true, 3.0); // list with 3 elements
+```
+
+The standard index accessors can also be applied to any list.
+
 ### Index Accessors
 
 MAGES does not come with dedicated indexers. Instead, MAGES uses special functions called "type functions" to resolve type specific functionality that is exposed via calling a function. For instance, we can do
@@ -92,11 +98,26 @@ The idea is that operators are also useful in piping scenarios, i.e., when used 
 
 This idea is supported by arithmetic functions and auto currying, which will be discussed later.
 
+For matrices the arithmetic usage requires both matrices to have
+
+* the same size (add, subtract, comparisons),
+* the same columns on the left as rows on the right (multiplication).
+
+Division and power operations require a mix consisting of a matrix and a number.
+
 ### Operators
 
 MAGES comes with a similar set of operators as known from C. Besides the usual arithmetic operators (e.g., `+`, `-`, `*`, `/`) MAGES also introduces some other operators. Here we have the factorial operator `!`, the transpose operator `'`, and the reverse division operator `\`. The latter allows writing `2 \ 1` instead of `1 / 2`. This may become handy for matrices.
 
 Some operators are different than in C. For instance, the negate operator is not `!` (that is the factorial operator, which is post-unary and not pre-unary), but the tilde `~`. Hence `~false` is `true`. Consequently, the not equals operator is given by writing `~=` instead of `!=`. Furthermore, there are no bitwise operators in MAGES. Instead, the `&` operator is a pre-unary operator to return the type and the `|` operator is a binary operator to call a function on the right with the argument on the left.
+
+Another special operator in MAGES is the power operator `^`. The power operator takes the first argument to the power specified in the second argument.
+
+```C
+x = 2^3 // 8
+```
+
+The same operators also apply to matrices. Here, the function call operator `()` is also used to get or set single entries.
 
 ### Index Accessors
 
@@ -133,16 +154,86 @@ By default this creates a row vector, however, one can always transpose the resu
 
 ## Functions
 
-(tbd)
+Functions are first-class citizens in MAGES. There is no specific statement to create functions. Instead, functions are created explicitly as lambda expressions or implicitly by using auto currying (see sub-section).
 
 ### Literals
 
-(tbd)
+Lambda expressions provide a way to create a function on the fly. We only need to specify the required (!) arguments by name followed by the function mapping operator `=>` and the function body. The body may be an expression or a block of statements.
+
+The most simple function is the empty `noop` function:
+
+```C
+noop = () => {};
+```
+
+This one uses an empty block of statements to avoid any computation. Alternatively, we may return a constant expression:
+
+```C
+one = () => 1;
+```
+
+By labelling parameters we tell MAGES what arguments to expect. For a single argument we can omit the round brackets, e.g.,
+
+```C
+identity = x => x;
+```
+
+Similarly, we may want to set three arguments as the requirements for the function we use:
+
+```C
+f = (x, y, z) => x^3 + y^2 + z;
+```
+
+The case where we also consider optional arguments is covered as well.
 
 ### Arbitrary Arguments
 
-(tbd)
+Every function is run with the `args` variable. This variable contains all given arguments. Consider the following example:
+
+```C
+f = () => length(args);
+```
+
+Calling `f(1, 2, 3)` will return three. Similarly, `f(true, [1, 2, 3])` will return two. `args` itself is an object array as specified earlier. This means we can use the standard indexer to obtain the values.
+
+```C
+f = () => args(0) + args(1);
+```
+
+For calling `f(2, 3`)` we will therefore receive the result `5`, however, if we do provide less than two arguments we only get `null`. This is different to the behavior we usually see with named arguments, e.g.,
+
+```C
+f = (x, y) => x + y;
+```
+
+Here calling, e.g., `f(2)` will return another function.
 
 ### Auto Currying
 
-(tbd)
+Auto currying is a feature to increase convenience when working with functions. Let's take for instance the `is` function to check for a certain type. Of course it would be helpful to also have dedicated helpers to check for string, number, ... and all other types. But such a function could be created easily, e.g.,
+
+```C
+is_string = x => is("String", x);
+```
+
+There is much ceremony going on. This is a case where currying is helpful to automatically do the wrapping. We could write
+
+```C
+is_string = is("String");
+```
+
+Why is this working? Well, `is` is expecting at least two arguments, so any call with less than two arguments will result in a function. Actually, with zero arguments we get the function itself, so
+
+```C
+sin == sin()
+```
+
+as well as chains such as
+
+```C
+cos(2.5) == cos()()(2.5)
+```
+
+are therefore equal. In the previous example two calls without any arguments result in the function itself, such that the last call is operating on `cos` itself. Auto currying is applied to any standard function, custom created function (lambda expression), and wrapped .NET function.
+
+Auto currying allows to use functions to create functions without much ceremony and plays great together with the pipe operator, which expects functions requiring only a single argument on the right side.
