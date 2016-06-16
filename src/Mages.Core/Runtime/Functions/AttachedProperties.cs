@@ -30,6 +30,21 @@
         }
 
         /// <summary>
+        /// Unregisters the provided attached property.
+        /// </summary>
+        /// <typeparam name="T">The type of the object to extend.</typeparam>
+        /// <param name="name">The name of the property to detach.</param>
+        public static void Unregister<T>(String name)
+        {
+            var properties = default(Dictionary<String, Func<Object, Object>>);
+
+            if (_properties.TryGetValue(typeof(T), out properties) && properties.Remove(name) && properties.Count == 0)
+            {
+                _properties.Remove(typeof(T));
+            }
+        }
+
+        /// <summary>
         /// Tries to find the value for the attached property.
         /// </summary>
         /// <param name="instance">The object context.</param>

@@ -513,6 +513,38 @@
             Assert.AreEqual(5.0, result);
         }
 
+        [Test]
+        public void MatrixExtendedWithXPropertyYieldsX()
+        {
+            var engine = new Engine();
+            AttachedProperties.Register<Double[,]>("x", matrix => matrix[0, 0]);
+            var result = engine.Interpret("M = [1,2,3]; M.x");
+            AttachedProperties.Unregister<Double[,]>("x");
+            Assert.AreEqual(1.0, result);
+        }
+
+        [Test]
+        public void MatrixExtendedWithXPropertiesYieldsRightValue()
+        {
+            var engine = new Engine();
+            AttachedProperties.Register<Double[,]>("x", matrix => matrix[0, 0]);
+            AttachedProperties.Register<Double[,]>("y", matrix => matrix[0, 1]);
+            AttachedProperties.Register<Double[,]>("z", matrix => matrix[0, 2]);
+            var result = engine.Interpret("M = [1,2,3]; M.x + M.y + M.z");
+            AttachedProperties.Unregister<Double[,]>("x");
+            AttachedProperties.Unregister<Double[,]>("y");
+            AttachedProperties.Unregister<Double[,]>("z");
+            Assert.AreEqual(6.0, result);
+        }
+
+        [Test]
+        public void MatrixHasNoXPropertyByDefault()
+        {
+            var engine = new Engine();
+            var result = engine.Interpret("M = [1,2,3]; M.x");
+            Assert.AreEqual(null, result);
+        }
+
         sealed class Point
         {
             public Double x;
