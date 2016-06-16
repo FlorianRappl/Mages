@@ -826,6 +826,48 @@
             Assert.AreEqual("String", result);
         }
 
+        [Test]
+        public void AssignmentAddWithNumberYieldsRightResult()
+        {
+            var result = Eval("x = 0; x += 2; x");
+            Assert.AreEqual(2.0, result);
+        }
+
+        [Test]
+        public void AssignmentSubtractWithNumberYieldsRightResult()
+        {
+            var result = Eval("x = 7; x -= 2; x");
+            Assert.AreEqual(5.0, result);
+        }
+
+        [Test]
+        public void AssignmentMultiplyWithNumberYieldsRightResult()
+        {
+            var result = Eval("x = 3; x *= 2; x");
+            Assert.AreEqual(6.0, result);
+        }
+
+        [Test]
+        public void AssignmentPowerWithNumberYieldsRightResult()
+        {
+            var result = Eval("x = 3; x ^= 2; x");
+            Assert.AreEqual(9.0, result);
+        }
+
+        [Test]
+        public void AssignmentDivideWithNumberYieldsRightResult()
+        {
+            var result = Eval("x = 10; x /= 2; x");
+            Assert.AreEqual(5.0, result);
+        }
+
+        [Test]
+        public void AssignmentPipeWithNumberYieldsRightResult()
+        {
+            var result = Eval("x = 4; x |= factorial; x");
+            Assert.AreEqual(24.0, result);
+        }
+
         private static Object Eval(String source)
         {
             var engine = new Engine();
