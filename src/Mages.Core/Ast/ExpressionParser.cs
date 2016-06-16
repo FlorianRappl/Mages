@@ -366,9 +366,17 @@
 
             while (tokens.Current.Type == TokenType.Pipe)
             {
-                var assigned = CheckAssigned(tokens.NextNonIgnorable());
-                var y = ParseOr(tokens);
-                x = CreateBinaryExpression(assigned, TokenType.Pipe, x, y);
+                if (CheckAssigned(tokens.NextNonIgnorable()))
+                {
+                    var y = ParseAssignment(tokens);
+                    var z = new BinaryExpression.Pipe(x, y);
+                    return new AssignmentExpression(x, z);
+                }
+                else
+                {
+                    var y = ParseOr(tokens);
+                    x = new BinaryExpression.Pipe(x, y);
+                }
             }
 
             return x;
@@ -435,9 +443,18 @@
             while (tokens.Current.IsEither(TokenType.Add, TokenType.Subtract))
             {
                 var mode = tokens.Current.Type;
-                var assigned = CheckAssigned(tokens.NextNonIgnorable());
-                var y = ParseMultiplicative(tokens);
-                x = CreateBinaryExpression(assigned, mode, x, y);
+
+                if (CheckAssigned(tokens.NextNonIgnorable()))
+                {
+                    var y = ParseAssignment(tokens);
+                    var z = ExpressionCreators.Binary[mode].Invoke(x, y);
+                    return new AssignmentExpression(x, z);
+                }
+                else
+                {
+                    var y = ParseMultiplicative(tokens);
+                    x = ExpressionCreators.Binary[mode].Invoke(x, y);
+                }
             }
 
             return x;
@@ -453,9 +470,18 @@
                 var current = tokens.Current;
                 var implicitMultiply = !current.IsOneOf(TokenType.Multiply, TokenType.Modulo, TokenType.LeftDivide, TokenType.RightDivide);
                 var mode = implicitMultiply ? TokenType.Multiply : current.Type;
-                var assigned = CheckAssigned(implicitMultiply ? tokens : tokens.NextNonIgnorable());
-                var y = ParsePower(tokens);
-                x = CreateBinaryExpression(assigned, mode, x, y);
+
+                if (CheckAssigned(implicitMultiply ? tokens : tokens.NextNonIgnorable()))
+                {
+                    var y = ParseAssignment(tokens);
+                    var z = ExpressionCreators.Binary[mode].Invoke(x, y);
+                    return new AssignmentExpression(x, z);
+                }
+                else
+                {
+                    var y = ParsePower(tokens);
+                    x = ExpressionCreators.Binary[mode].Invoke(x, y);
+                }
             }
 
             return x;
@@ -469,31 +495,34 @@
             {
                 var expressions = new Stack<IExpression>();
                 var assigned = CheckAssigned(tokens.NextNonIgnorable());
-                expressions.Push(atom);
 
-                do
+                if (!assigned)
                 {
-                    var x = ParseUnary(tokens);
-                    expressions.Push(x);
-                }
-                while (tokens.Current.Type == TokenType.Power && tokens.NextNonIgnorable() != null);
+                    expressions.Push(atom);
 
-                do
-                {
-                    var right = expressions.Pop();
-                    var left = expressions.Pop();
-                    var x = new BinaryExpression.Power(left, right);
-                    expressions.Push(x);
-                }
-                while (expressions.Count > 1);
+                    do
+                    {
+                        var x = ParseUnary(tokens);
+                        expressions.Push(x);
+                    }
+                    while (tokens.Current.Type == TokenType.Power && tokens.NextNonIgnorable() != null);
 
-                if (assigned)
-                {
-                    atom = new AssignmentExpression(atom, expressions.Pop());
+                    do
+                    {
+                        var right = expressions.Pop();
+                        var left = expressions.Pop();
+                        var x = new BinaryExpression.Power(left, right);
+                        expressions.Push(x);
+                    }
+                    while (expressions.Count > 1);
+
+                    atom = expressions.Pop();
                 }
                 else
                 {
-                    atom = expressions.Pop();
+                    var rest = ParseAssignment(tokens);
+                    var rhs = new BinaryExpression.Power(atom, rest);
+                    return new AssignmentExpression(atom, rhs);
                 }
             }
 
