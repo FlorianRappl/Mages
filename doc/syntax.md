@@ -125,7 +125,11 @@ member ::= expr space* '.' space* identifier
 All other binary operators can be summarized as follows:
 
 ```
-binary_operator ::= '+' | '-' | '*' | '/' | '\' | '%' | '^' | '>' | '>=' | '<=' | '<' | '==' | '~=' | '&&' | '||' | '|'
+comparison_operator ::= '>' | '>=' | '<=' | '<' | '==' | '~=' | '&&' | '||'
+arithmetic_operator ::= '+' | '-' | '*' | '/' | '\' | '%' | '^'
+pipe_operator ::= '|'
+computing_operator ::= arithmetic_operator | pipe_operator
+binary_operator ::= comparison_operator | computing_operator
 binary ::= expr space* binary_operator space* expr
 ```
 
@@ -162,6 +166,14 @@ The recursion of `assignable_expr` only works if we know the definition of this 
 ```
 assignment ::= assignable_expr space* '=' space* expr
 ```
+
+There is also a special variant of the `assignment`, which works with a `computing_operator` and the equals sign:
+
+```
+x_assignment ::= assignable_expr space* computing_operator '=' space* expr
+```
+
+The `x_assignment` is resolved to an ordinary `assignment`, where the left side is duplicated to be used in the binary expression on the right side.
 
 ## Statements
 

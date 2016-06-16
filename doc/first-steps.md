@@ -23,7 +23,7 @@ static class Program
 }
 ```
 
-Of course from this point on MAGES is already nearly REPL-usable:
+Of course from this point on MAGES is already nearly a REPL (Read-Evaluate-Print-Loop):
 
 ```cs
 var engine = new Engine();
@@ -66,7 +66,7 @@ MAGES tries to narrow every .NET data type to one of its data types:
 * Matrix (`System.Double[,]`)
 * Object (`System.Collections.Generic.IDictionary<System.String, System.Object>`)
 * Function (`Mages.Core.Function`, essentially a `Delegate` mapping `Object[]` to `Object`)
-* Nothing (`null`)
+* Undefined (`null`)
 
 Most types will be simply wrapped in a wrapper object that implements the `IDictionary<String, Object>`. One thing we can easily do is to create new functions in MAGES and use them in .NET applications:
 

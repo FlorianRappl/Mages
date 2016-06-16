@@ -54,7 +54,7 @@
             if (result == null)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Write("nothing");
+                Console.Write("Undefined");
                 Console.ResetColor();
             }
             else
