@@ -868,6 +868,27 @@
             Assert.AreEqual(24.0, result);
         }
 
+        [Test]
+        public void AssignmentMultiplyTreatsRightSideAsOneExpression()
+        {
+            var result = Eval("x = 12; x *= 1 + 2; x");
+            Assert.AreEqual(36.0, result);
+        }
+
+        [Test]
+        public void AssignmentAddAndAssignmentSubtractWithNumberYieldsRightResult()
+        {
+            var result = Eval("x = 4; y = 3; x += y -= 5; x");
+            Assert.AreEqual(2.0, result);
+        }
+
+        [Test]
+        public void AssignmentMultiplyAndAssignmentPowerWithNumberYieldsRightResult()
+        {
+            var result = Eval("x = 4; y = 3; x *= y ^= 2; x + y");
+            Assert.AreEqual(45.0, result);
+        }
+
         private static Object Eval(String source)
         {
             var engine = new Engine();
