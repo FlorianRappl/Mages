@@ -27,7 +27,7 @@
                 arguments[i] = context.Pop();
             }
 
-            if (obj != null && TypeFunctions.TryFindSetter(obj, out function))
+            if (obj != null && TypeProcedures.TryFind(obj, out function))
             {
                 function.Invoke(arguments, value);
             }

@@ -30,7 +30,7 @@
             {
                 var function = obj as Function;
 
-                if (function != null || TypeFunctions.TryFindGetter(obj, out function))
+                if (function != null || TypeFunctions.TryFind(obj, out function))
                 {
                     result = function.Invoke(arguments);
                 }
