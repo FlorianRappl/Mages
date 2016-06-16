@@ -3,6 +3,7 @@
     using Mages.Core.Runtime;
     using Mages.Core.Tests.Mocks;
     using NUnit.Framework;
+    using Runtime.Functions;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -472,6 +473,43 @@
 
             var result = engine.Interpret("x = Type.create(1, 2)(3); x.at()(3)(\"hi\")");
 
+            Assert.AreEqual(5.0, result);
+        }
+
+        [Test]
+        public void RegisteredBooleanTypeFunctionDoesExist()
+        {
+            var engine = new Engine();
+            TypeFunctions.Register<Boolean>(_ => args => args[0]);
+            var result = engine.Interpret("true(3)");
+            TypeFunctions.Unregister<Boolean>();
+            Assert.AreEqual(3.0, result);
+        }
+
+        [Test]
+        public void BooleanTypeFunctionDoesNotExistByDefault()
+        {
+            var engine = new Engine();
+            var result = engine.Interpret("true(3)");
+            Assert.AreEqual(null, result);
+        }
+
+        [Test]
+        public void RegisteredBooleanTypeProcedureDoesExist()
+        {
+            var engine = new Engine();
+            var captured = default(Object);
+            TypeProcedures.Register<Boolean>(_ => (args, value) => { captured = value; });
+            engine.Interpret("true(3) = 5");
+            TypeFunctions.Unregister<Boolean>();
+            Assert.AreEqual(5.0, captured);
+        }
+
+        [Test]
+        public void BooleanTypeProcedureDoesNotExistByDefault()
+        {
+            var engine = new Engine();
+            var result = engine.Interpret("true(3) = 5");
             Assert.AreEqual(5.0, result);
         }
 
