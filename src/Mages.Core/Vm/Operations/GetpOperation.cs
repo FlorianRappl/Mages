@@ -1,6 +1,6 @@
 ﻿namespace Mages.Core.Vm.Operations
 {
-    using Mages.Core.Runtime;
+    using Mages.Core.Runtime.Functions;
     using System;
     using System.Collections.Generic;
 
@@ -17,13 +17,17 @@
 
         public void Invoke(IExecutionContext context)
         {
-            var obj = context.Pop() as IDictionary<String, Object>;
+            var instance = context.Pop();
             var name = context.Pop() as String;
+            var obj = instance as IDictionary<String, Object>;
             var result = default(Object);
 
-            if (obj != null && name != null)
+            if (name != null && instance != null)
             {
-                result = obj.GetProperty(name);
+                if (obj == null || !obj.TryGetValue(name, out result))
+                {
+                    AttachedProperties.TryFind(instance, name, out result);
+                }
             }
             
             context.Push(result);

@@ -3,6 +3,7 @@
     using Mages.Core.Runtime.Converters;
     using System;
     using System.Collections.Generic;
+
     static class Matrix
     {
         public static Int32 GetRows(this Double[,] matrix)

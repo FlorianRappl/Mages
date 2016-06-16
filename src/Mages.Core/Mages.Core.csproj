@@ -116,6 +116,7 @@
     <Compile Include="Runtime\Converters\TypeConverter.cs" />
     <Compile Include="Runtime\Converters\TypeConverterMap.cs" />
     <Compile Include="Runtime\EntryChangedArgs.cs" />
+    <Compile Include="Runtime\Functions\AttachedProperties.cs" />
     <Compile Include="Runtime\Functions\Curry.cs" />
     <Compile Include="Runtime\Functions\Global.cs" />
     <Compile Include="Runtime\Functions\If.cs" />
