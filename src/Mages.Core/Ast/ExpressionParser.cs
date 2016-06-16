@@ -366,8 +366,9 @@
 
             while (tokens.Current.Type == TokenType.Pipe)
             {
-                var y = ParseOr(tokens.NextNonIgnorable());
-                x = new BinaryExpression.Pipe(x, y);
+                var assigned = CheckAssigned(tokens.NextNonIgnorable());
+                var y = ParseOr(tokens);
+                x = CreateBinaryExpression(assigned, TokenType.Pipe, x, y);
             }
 
             return x;
@@ -434,8 +435,9 @@
             while (tokens.Current.IsEither(TokenType.Add, TokenType.Subtract))
             {
                 var mode = tokens.Current.Type;
-                var y = ParseMultiplicative(tokens.NextNonIgnorable());
-                x = ExpressionCreators.Binary[mode].Invoke(x, y);
+                var assigned = CheckAssigned(tokens.NextNonIgnorable());
+                var y = ParseMultiplicative(tokens);
+                x = CreateBinaryExpression(assigned, mode, x, y);
             }
 
             return x;
@@ -451,8 +453,9 @@
                 var current = tokens.Current;
                 var implicitMultiply = !current.IsOneOf(TokenType.Multiply, TokenType.Modulo, TokenType.LeftDivide, TokenType.RightDivide);
                 var mode = implicitMultiply ? TokenType.Multiply : current.Type;
-                var y = ParsePower(implicitMultiply ? tokens : tokens.NextNonIgnorable());
-                x = ExpressionCreators.Binary[mode].Invoke(x, y);
+                var assigned = CheckAssigned(implicitMultiply ? tokens : tokens.NextNonIgnorable());
+                var y = ParsePower(tokens);
+                x = CreateBinaryExpression(assigned, mode, x, y);
             }
 
             return x;
@@ -465,14 +468,15 @@
             if (tokens.Current.Type == TokenType.Power)
             {
                 var expressions = new Stack<IExpression>();
+                var assigned = CheckAssigned(tokens.NextNonIgnorable());
                 expressions.Push(atom);
 
                 do
                 {
-                    var x = ParseUnary(tokens.NextNonIgnorable());
+                    var x = ParseUnary(tokens);
                     expressions.Push(x);
                 }
-                while (tokens.Current.Type == TokenType.Power);
+                while (tokens.Current.Type == TokenType.Power && tokens.NextNonIgnorable() != null);
 
                 do
                 {
@@ -483,7 +487,14 @@
                 }
                 while (expressions.Count > 1);
 
-                atom = expressions.Pop();
+                if (assigned)
+                {
+                    atom = new AssignmentExpression(atom, expressions.Pop());
+                }
+                else
+                {
+                    atom = expressions.Pop();
+                }
             }
 
             return atom;
@@ -784,6 +795,28 @@
             var expr = new ConstantExpression.NumberConstant(token.Value, token, token.Errors);
             tokens.NextNonIgnorable();
             return expr;
+        }
+
+        private static IExpression CreateBinaryExpression(Boolean assigned, TokenType mode, IExpression x, IExpression y)
+        {
+            if (assigned)
+            {
+                var z = ExpressionCreators.Binary[mode].Invoke(x, y);
+                return new AssignmentExpression(x, z);
+            }
+
+            return ExpressionCreators.Binary[mode].Invoke(x, y);
+        }
+
+        private static Boolean CheckAssigned(IEnumerator<IToken> tokens)
+        {
+            if (tokens.Current.Type == TokenType.Assignment)
+            {
+                tokens.NextNonIgnorable();
+                return true;
+            }
+
+            return false;
         }
 
         private static void CheckProperStatementEnd(IEnumerator<IToken> tokens, ref IExpression expr)

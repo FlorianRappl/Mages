@@ -21,6 +21,7 @@
             { TokenType.Modulo, (a, b) => new BinaryExpression.Modulo(a, b) },
             { TokenType.LeftDivide, (a, b) => new BinaryExpression.LeftDivide(a, b) },
             { TokenType.RightDivide, (a, b) => new BinaryExpression.RightDivide(a, b) },
+            { TokenType.Pipe, (a, b) => new BinaryExpression.Pipe(a, b) },
         };
 
         public static readonly Dictionary<TokenType, Func<TextPosition, IExpression, PreUnaryExpression>> PreUnary = new Dictionary<TokenType, Func<TextPosition, IExpression, PreUnaryExpression>>
