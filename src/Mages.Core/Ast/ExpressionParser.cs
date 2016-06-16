@@ -295,18 +295,8 @@
             }
             else if (mode == TokenType.Lambda)
             {
-                var args = x as ArgumentsExpression;
-
-                if (args != null)
-                {
-                    var parameters = new ParameterExpression(args.Arguments, args.Start, args.End);
-                    return ParseFunction(parameters, tokens.NextNonIgnorable());
-                }
-                else
-                {
-                    var parameters = new ParameterExpression(new[] { x }, x.Start, x.End);
-                    return ParseFunction(parameters, tokens.NextNonIgnorable());
-                }
+                var parameters = GetParameters(x);
+                return ParseFunction(parameters, tokens.NextNonIgnorable());
             }
 
             return x;
@@ -366,9 +356,9 @@
 
             while (tokens.Current.Type == TokenType.Pipe)
             {
-                if (CheckAssigned(tokens.NextNonIgnorable()))
+                if (tokens.NextNonIgnorable().Current.Type == TokenType.Assignment)
                 {
-                    var y = ParseAssignment(tokens);
+                    var y = ParseAssignment(tokens.NextNonIgnorable());
                     var z = new BinaryExpression.Pipe(x, y);
                     return new AssignmentExpression(x, z);
                 }
@@ -444,9 +434,9 @@
             {
                 var mode = tokens.Current.Type;
 
-                if (CheckAssigned(tokens.NextNonIgnorable()))
+                if (tokens.NextNonIgnorable().Current.Type == TokenType.Assignment)
                 {
-                    var y = ParseAssignment(tokens);
+                    var y = ParseAssignment(tokens.NextNonIgnorable());
                     var z = ExpressionCreators.Binary[mode].Invoke(x, y);
                     return new AssignmentExpression(x, z);
                 }
@@ -471,9 +461,9 @@
                 var implicitMultiply = !current.IsOneOf(TokenType.Multiply, TokenType.Modulo, TokenType.LeftDivide, TokenType.RightDivide);
                 var mode = implicitMultiply ? TokenType.Multiply : current.Type;
 
-                if (CheckAssigned(implicitMultiply ? tokens : tokens.NextNonIgnorable()))
+                if (!implicitMultiply && tokens.NextNonIgnorable().Current.Type == TokenType.Assignment)
                 {
-                    var y = ParseAssignment(tokens);
+                    var y = ParseAssignment(tokens.NextNonIgnorable());
                     var z = ExpressionCreators.Binary[mode].Invoke(x, y);
                     return new AssignmentExpression(x, z);
                 }
@@ -494,9 +484,8 @@
             if (tokens.Current.Type == TokenType.Power)
             {
                 var expressions = new Stack<IExpression>();
-                var assigned = CheckAssigned(tokens.NextNonIgnorable());
 
-                if (!assigned)
+                if (tokens.NextNonIgnorable().Current.Type != TokenType.Assignment)
                 {
                     expressions.Push(atom);
 
@@ -520,7 +509,7 @@
                 }
                 else
                 {
-                    var rest = ParseAssignment(tokens);
+                    var rest = ParseAssignment(tokens.NextNonIgnorable());
                     var rhs = new BinaryExpression.Power(atom, rest);
                     return new AssignmentExpression(atom, rhs);
                 }
@@ -826,26 +815,12 @@
             return expr;
         }
 
-        private static IExpression CreateBinaryExpression(Boolean assigned, TokenType mode, IExpression x, IExpression y)
+        private static ParameterExpression GetParameters(IExpression x)
         {
-            if (assigned)
-            {
-                var z = ExpressionCreators.Binary[mode].Invoke(x, y);
-                return new AssignmentExpression(x, z);
-            }
-
-            return ExpressionCreators.Binary[mode].Invoke(x, y);
-        }
-
-        private static Boolean CheckAssigned(IEnumerator<IToken> tokens)
-        {
-            if (tokens.Current.Type == TokenType.Assignment)
-            {
-                tokens.NextNonIgnorable();
-                return true;
-            }
-
-            return false;
+            var args = x as ArgumentsExpression;
+            return args != null ?
+                new ParameterExpression(args.Arguments, args.Start, args.End) :
+                new ParameterExpression(new[] { x }, x.Start, x.End);
         }
 
         private static void CheckProperStatementEnd(IEnumerator<IToken> tokens, ref IExpression expr)
