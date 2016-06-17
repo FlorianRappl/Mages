@@ -352,5 +352,29 @@
 
             return dict;
         }
+
+        public static Boolean IsSymmetric(Double[,] matrix)
+        {
+            var rows = matrix.GetLength(0);
+            var cols = matrix.GetLength(1);
+
+            if (rows == cols)
+            {
+                for (var i = 0; i < rows; i++)
+                {
+                    for (var j = 0; j < i; j++)
+                    {
+                        if (matrix[i, j] != matrix[j, i])
+                        {
+                            return false;
+                        }
+                    }
+                }
+
+                return true;
+            }
+
+            return false;
+        }
     }
 }

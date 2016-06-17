@@ -1,6 +1,7 @@
 ﻿namespace Mages.Modules.LinearAlgebra
 {
     using Decompositions;
+    using Mages.Modules.LinearAlgebra.Solvers;
     using System;
 
     public static class LinearAlgebraPlugin
@@ -60,6 +61,29 @@
             );
         }
 
+        public static Double[,] Inverse(Double[,] matrix)
+        {
+            var rows = matrix.GetLength(0);
+            var cols = matrix.GetLength(1);
+            var target = Helpers.One(cols);
+
+            if (cols < 24)
+            {
+                var lu = new LUDecomposition(matrix);
+                return lu.Solve(target);
+            }
+            else if (Helpers.IsSymmetric(matrix))
+            {
+                var cho = new CholeskyDecomposition(matrix);
+                return cho.Solve(target);
+            }
+            else
+            {
+                var qr = QRDecomposition.Create(matrix);
+                return qr.Solve(target);
+            }
+        }
+
         public static Object Svd(Double[,] matrix)
         {
             var svd = new SingularValueDecomposition(matrix);
@@ -105,6 +129,34 @@
             }
 
             return 0.0;
+        }
+
+        public static Double[,] Cg(Double[,] A, Double[,] b)
+        {
+            var cg = new CGSolver(A);
+            return cg.Solve(b);
+        }
+
+        public static Double[,] Gmres(Double[,] A, Double[,] b)
+        {
+            var cg = new GMRESkSolver(A);
+            return cg.Solve(b);
+        }
+
+        public static Double[,] Solve(Double[,] A, Double[,] b)
+        {
+            if (Helpers.IsSymmetric(A))
+            {
+                return Cg(A, b);
+            }
+            else if (A.GetLength(0) == A.GetLength(1) && A.GetLength(0) > 64) // Is there a way to "guess" a good number for this?
+            {
+                var gmres = new GMRESkSolver(A);
+                gmres.Restart = 30;
+                return gmres.Solve(b);
+            }
+
+            return Helpers.Multiply(Inverse(A), b);
         }
     }
 }
