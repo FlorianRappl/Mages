@@ -356,7 +356,7 @@
 
             while (tokens.Current.Type == TokenType.Pipe)
             {
-                if (tokens.NextNonIgnorable().Current.Type == TokenType.Assignment)
+                if (CheckAssigned(tokens))
                 {
                     var y = ParseAssignment(tokens.NextNonIgnorable());
                     var z = new BinaryExpression.Pipe(x, y);
@@ -434,7 +434,7 @@
             {
                 var mode = tokens.Current.Type;
 
-                if (tokens.NextNonIgnorable().Current.Type == TokenType.Assignment)
+                if (CheckAssigned(tokens))
                 {
                     var y = ParseAssignment(tokens.NextNonIgnorable());
                     var z = ExpressionCreators.Binary[mode].Invoke(x, y);
@@ -461,7 +461,7 @@
                 var implicitMultiply = !current.IsOneOf(TokenType.Multiply, TokenType.Modulo, TokenType.LeftDivide, TokenType.RightDivide);
                 var mode = implicitMultiply ? TokenType.Multiply : current.Type;
 
-                if (!implicitMultiply && tokens.NextNonIgnorable().Current.Type == TokenType.Assignment)
+                if (!implicitMultiply && CheckAssigned(tokens))
                 {
                     var y = ParseAssignment(tokens.NextNonIgnorable());
                     var z = ExpressionCreators.Binary[mode].Invoke(x, y);
@@ -485,7 +485,7 @@
             {
                 var expressions = new Stack<IExpression>();
 
-                if (tokens.NextNonIgnorable().Current.Type != TokenType.Assignment)
+                if (!CheckAssigned(tokens))
                 {
                     expressions.Push(atom);
 
@@ -821,6 +821,23 @@
             return args != null ?
                 new ParameterExpression(args.Arguments, args.Start, args.End) :
                 new ParameterExpression(new[] { x }, x.Start, x.End);
+        }
+
+        private static Boolean CheckAssigned(IEnumerator<IToken> tokens)
+        {
+            if (tokens.MoveNext())
+            {
+                if (tokens.Current.Type == TokenType.Assignment)
+                {
+                    return true;
+                }
+                else if (tokens.Current.IsIgnorable())
+                {
+                    tokens.NextNonIgnorable();
+                }
+            }
+
+            return false;
         }
 
         private static void CheckProperStatementEnd(IEnumerator<IToken> tokens, ref IExpression expr)

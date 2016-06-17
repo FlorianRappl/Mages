@@ -827,6 +827,12 @@
         }
 
         [Test]
+        public void InvalidAssignmentAddWithNumberYieldsError()
+        {
+            Assert.Catch<ParseException>(() => Eval("x = 0; x + = 2; x"));
+        }
+
+        [Test]
         public void AssignmentAddWithNumberYieldsRightResult()
         {
             var result = Eval("x = 0; x += 2; x");
@@ -848,10 +854,22 @@
         }
 
         [Test]
+        public void InvalidAssignmentMultiplyWithNumberYieldsError()
+        {
+            Assert.Catch<ParseException>(() => Eval("x = 0; x * = 2; x"));
+        }
+
+        [Test]
         public void AssignmentPowerWithNumberYieldsRightResult()
         {
             var result = Eval("x = 3; x ^= 2; x");
             Assert.AreEqual(9.0, result);
+        }
+
+        [Test]
+        public void InvalidAssignmentPowerWithNumberYieldsError()
+        {
+            Assert.Catch<ParseException>(() => Eval("x = 0; x ^ = 2; x"));
         }
 
         [Test]
@@ -866,6 +884,12 @@
         {
             var result = Eval("x = 4; x |= factorial; x");
             Assert.AreEqual(24.0, result);
+        }
+
+        [Test]
+        public void InvalidAssignmentPipeWithNumberYieldsError()
+        {
+            Assert.Catch<ParseException>(() => Eval("x = 0; x | = factorial; x"));
         }
 
         [Test]
