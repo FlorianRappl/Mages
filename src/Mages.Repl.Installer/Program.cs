@@ -30,6 +30,12 @@
                 Actions.CreateShortcut();
                 Actions.AddToPath();
             }
+            else if (options.IsFirstRun)
+            {
+                Actions.CreateLatestCmdFile();
+                Actions.CreateShortcut();
+                Actions.AddToPath();
+            }
             else if (options.IsUpdating)
             {
                 Updater.PerformUpdate();

@@ -7,12 +7,20 @@
 
     static class Actions
     {
+        public static void CreateLatestCmdFile()
+        {
+            var installDirectory = GetInstallDirectory();
+            var subDirectories = Directory.GetDirectories(installDirectory, "app-*").Select(m => Path.GetFileName(m));
+            var versions = subDirectories.Select(m => m.Substring(4)).OrderByDescending(m => m, StringComparer.OrdinalIgnoreCase);
+            var version = versions.FirstOrDefault();
+            CreateCmdFile(version);
+        }
+
         public static void CreateCmdFile(String version)
         {
             var installDirectory = GetInstallDirectory();
             var exeFile = "mages.exe";
-
-            var cmdContent = String.Format(@"@echo off{0}{1}\app-{2}\{3} %*", Environment.NewLine, installDirectory, version, exeFile);
+            var cmdContent = String.Format(@"@echo off{3}start ""Mages"" /b /wait ""{0}\app-{1}\{2}"" %*", installDirectory, version, exeFile, Environment.NewLine);
             var cmdPath = Path.Combine(installDirectory, Path.ChangeExtension(exeFile, ".cmd"));
             File.WriteAllText(cmdPath, cmdContent);
         }
