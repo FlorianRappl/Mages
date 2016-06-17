@@ -415,8 +415,8 @@
 
         private void Handle(BinaryExpression expression, Function function)
         {
-            expression.RValue.Accept(this);
             expression.LValue.Accept(this);
+            expression.RValue.Accept(this);
             CallFunction(function, 2);
         }
 

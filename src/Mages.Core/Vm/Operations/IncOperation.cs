@@ -17,7 +17,7 @@
         public void Invoke(IExecutionContext context)
         {
             var value = context.Pop();
-            var arguments = new Object[] { value, 1.0 };
+            var arguments = new Object[] { 1.0, value };
             context.Push(BinaryOperators.Add(arguments));
         }
     }
