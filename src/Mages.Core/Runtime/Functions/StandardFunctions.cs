@@ -373,5 +373,27 @@
                 If.Is<Function, IDictionary<String, Object>>(args, (f, o) => o.Map(f)) ??
                 If.Is<Function>(args, f => f(new[] { args[1] }));
         });
+
+        /// <summary>
+        /// Contains the reduce function.
+        /// </summary>
+        public static readonly Function Reduce = new Function(args =>
+        {
+            return Curry.Min(3, Reduce, args) ??
+                If.IsAnyT2<Function, Double[,]>(args, (f, s, m) => m.Reduce(f, s)) ??
+                If.IsAnyT2<Function, IDictionary<String, Object>>(args, (f, s, o) => o.Reduce(f, s)) ??
+                If.Is<Function>(args, f => f(new[] { args[1], args[2] }));
+        });
+
+        /// <summary>
+        /// Contains the where function.
+        /// </summary>
+        public static readonly Function Where = new Function(args =>
+        {
+            return Curry.MinTwo(Where, args) ??
+                If.Is<Function, Double[,]>(args, (f, m) => m.Where(f)) ??
+                If.Is<Function, IDictionary<String, Object>>(args, (f, o) => o.Where(f)) ??
+                If.Is<Function>(args, f => f(new[] { args[1] }));
+        });
     }
 }

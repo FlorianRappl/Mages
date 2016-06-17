@@ -64,5 +64,19 @@
             return args[0] is T1 && args[1] is T2 && args[2] is T3 && args[3] is T4 ? 
                 f((T1)args[0], (T2)args[1], (T3)args[2], (T4)args[3]) : null;
         }
+
+        /// <summary>
+        /// Checks if the first three values of the given arguments are of type
+        /// T1, anything, and T3.
+        /// </summary>
+        /// <typeparam name="T1">The type of the first value.</typeparam>
+        /// <typeparam name="T3">The type of the third value.</typeparam>
+        /// <param name="args">The arguments to check.</param>
+        /// <param name="f">The callback to invoke if fulfilled.</param>
+        /// <returns>The result of the callback or null.</returns>
+        public static Object IsAnyT2<T1, T3>(Object[] args, Func<T1, Object, T3, Object> f)
+        {
+            return args[0] is T1 && args[2] is T3 ? f((T1)args[0], args[1], (T3)args[2]) : null;
+        }
     }
 }

@@ -65,6 +65,8 @@
             { "is", StandardFunctions.Is },
             { "as", StandardFunctions.As },
             { "map", StandardFunctions.Map },
+            { "reduce", StandardFunctions.Reduce },
+            { "where", StandardFunctions.Where },
         };
     }
 }

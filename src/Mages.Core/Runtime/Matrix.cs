@@ -483,7 +483,6 @@
         {
             var result = new Dictionary<String, Object>();
             var args = new Object[4];
-            var length = matrix.Length;
             var rows = matrix.GetRows();
             var columns = matrix.GetColumns();
 
@@ -496,6 +495,56 @@
                     args[2] = (Double)i;
                     args[3] = (Double)j;
                     result[k.ToString()] = f(args);
+                }
+            }
+
+            return result;
+        }
+
+        public static Object Where(this Double[,] matrix, Function f)
+        {
+            var result = new Dictionary<String, Object>();
+            var args = new Object[4];
+            var rows = matrix.GetRows();
+            var columns = matrix.GetColumns();
+
+            for (int i = 0, k = 0; i < rows; i++)
+            {
+                for (var j = 0; j < columns; j++, k++)
+                {
+                    var value = matrix[i, j];
+                    args[0] = value;
+                    args[1] = (Double)k;
+                    args[2] = (Double)i;
+                    args[3] = (Double)j;
+
+                    if (f(args).ToBoolean())
+                    {
+                        result[k.ToString()] = value;
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public static Object Reduce(this Double[,] matrix, Function f, Object start)
+        {
+            var args = new Object[5];
+            var result = start;
+            var rows = matrix.GetRows();
+            var columns = matrix.GetColumns();
+
+            for (int i = 0, k = 0; i < rows; i++)
+            {
+                for (var j = 0; j < columns; j++, k++)
+                {
+                    args[0] = result;
+                    args[1] = matrix[i, j];
+                    args[2] = (Double)k;
+                    args[3] = (Double)i;
+                    args[4] = (Double)j;
+                    result = f(args);
                 }
             }
 

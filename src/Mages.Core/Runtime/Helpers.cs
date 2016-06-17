@@ -71,6 +71,41 @@
             return result;
         }
 
+        public static Object Where(this IDictionary<String, Object> obj, Function f)
+        {
+            var result = new Dictionary<String, Object>();
+            var args = new Object[2];
+
+            foreach (var item in obj)
+            {
+                args[0] = item.Value;
+                args[1] = item.Key;
+
+                if (f(args).ToBoolean())
+                {
+                    result[item.Key] = item.Value;
+                }
+            }
+
+            return result;
+        }
+
+        public static Object Reduce(this IDictionary<String, Object> obj, Function f, Object start)
+        {
+            var result = start;
+            var args = new Object[3];
+
+            foreach (var item in obj)
+            {
+                args[0] = result;
+                args[1] = item.Value;
+                args[2] = item.Key;
+                result = f(args);
+            }
+
+            return result;
+        }
+
         public static IDictionary<String, Object> ToArrayObject(this Object[] arguments)
         {
             var obj = new Dictionary<String, Object>();
