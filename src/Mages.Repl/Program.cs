@@ -31,7 +31,7 @@
 
                 if (!String.IsNullOrEmpty(options.ScriptFile))
                 {
-                    var content = File.ReadAllText(options.ScriptFile);
+                    var content = ReadFile(options.ScriptFile, interactivity);
                     repl.Run(content);
                 }
                 else if (options.IsTutorial)
@@ -43,6 +43,29 @@
                     repl.Run();
                 }
             }
+        }
+
+        private static String ReadFile(String fileName, IInteractivity interactivity)
+        {
+            var content = String.Empty;
+
+            if (!File.Exists(fileName))
+            {
+                interactivity.Error(String.Format("The file {0} does not exist.", fileName));
+                Environment.Exit(1);
+            }
+
+            try
+            {
+                content = File.ReadAllText(fileName);
+            }
+            catch
+            {
+                interactivity.Error(String.Format("Error while reading the file {0}.", fileName));
+                Environment.Exit(1);
+            }
+
+            return content;
         }
     }
 }

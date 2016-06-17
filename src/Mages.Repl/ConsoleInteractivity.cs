@@ -46,7 +46,8 @@
 
         private void ConsoleCancelled(Object sender, ConsoleCancelEventArgs e)
         {
-            //e.Cancel = true;
+            e.Cancel = true;
+            Environment.Exit(0);
         }
 
         public void Info(Object result)
