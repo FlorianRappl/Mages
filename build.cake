@@ -254,7 +254,7 @@ Task("Publish-Chocolatey-Package")
         });
     });
     
-Task("Publish-Release")
+Task("Publish-GitHub-Release")
     .IsDependentOn("Create-Squirrel-Package")
     .WithCriteria(() => isLocal)
     .Does(() =>
@@ -315,8 +315,8 @@ Task("Default")
 
 Task("Publish")
     .IsDependentOn("Publish-Nuget-Package")
-    .IsDependentOn("Publish-Chocolatey-Package")
-    .IsDependentOn("Publish-Release");
+    .IsDependentOn("Publish-GitHub-Release")
+    .IsDependentOn("Publish-Chocolatey-Package");
     
 Task("AppVeyor")
     .IsDependentOn("Run-Unit-Tests")

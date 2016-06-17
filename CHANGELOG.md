@@ -1,3 +1,13 @@
+# 0.8.0
+
+- Included x-assignment operator (#34)
+- Provided `map` function (#33)
+- Introduced attachable properties (#32)
+- Extended the documentation (#31)
+- Created an `ObservableDictionary` helper (#30)
+- REPL improvements
+- Distribute installer via Chocolatey
+
 # 0.7.0
 
 - Provided `is` / `as` functions (#29)
