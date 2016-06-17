@@ -376,5 +376,18 @@
 
             return false;
         }
+
+        public static Double[,] ToMatrix(Double[] p)
+        {
+            var l = p.Length;
+            var matrix = new Double[1, l];
+
+            for (var i = 0; i < l; i++)
+            {
+                matrix[0, i] = p[i];
+            }
+
+            return matrix;
+        }
     }
 }

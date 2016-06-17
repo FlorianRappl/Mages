@@ -42,7 +42,7 @@ namespace Mages.Modules.LinearAlgebra.Decompositions
             _columns = matrix.GetLength(1);
             _piv = new Int32[_rows];
 
-            for (var i = 0; i < _rows; i++)
+            for (var i = 1; i < _rows; i++)
             {
                 _piv[i] = i;
             }

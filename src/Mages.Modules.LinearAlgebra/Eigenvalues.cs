@@ -20,15 +20,13 @@ namespace Mages.Modules.LinearAlgebra
     {
         #region	 Fields
         
-        private Int32 _n;
-        private Boolean _symmetric;
-        private Double[] _d;
-        private Double[] _e;
-        private Double[,] _V;
-        private Double[,] _H;
-        private Double[] _ort;
-        private Double _cdivr;
-        private Double _cdivi;
+        private readonly Int32 _n;
+        private readonly Boolean _symmetric;
+        private readonly Double[] _d;
+        private readonly Double[] _e;
+        private readonly Double[,] _V;
+        private readonly Double[,] _H;
+        private readonly Double[] _ort;
 
         #endregion
 
@@ -37,8 +35,6 @@ namespace Mages.Modules.LinearAlgebra
         /// <summary>
         /// Check for symmetry, then construct the eigenvalue decomposition
         /// </summary>
-        /// <param name="Arg">Square matrix</param>
-        /// <returns>Structure to access D and V.</returns>
         public Eigenvalues(Double[,] matrix)
         {
             _n = matrix.GetLength(1);
@@ -95,7 +91,7 @@ namespace Mages.Modules.LinearAlgebra
 
         #endregion
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
         /// Gets the real parts of the eigenvalues.
@@ -116,34 +112,18 @@ namespace Mages.Modules.LinearAlgebra
         /// <summary>
         /// Gets the V matrix.
         /// </summary>
-        public Double[,] GetV
+        public Double[,] Eigenvectors
         {
             get { return _V; }
         }
 
-        /// <summary>
-        /// Gets the block diagonal eigenvalue matrix.
-        /// </summary>
-        public Double[,] D
-        {
-            get
-            {
-                var result = new Double[_n, _n];
-
-                for (var i = 0; i < _n; i++)
-                {
-                    result[i, i] = _d[i]; // e[i] ?
-                }
-
-                return result;
-            }
-        }
-
         #endregion
 
-        #region Private Methods
+        #region Methods
 
-        // Symmetric Householder reduction to tridiagonal form.
+        /// <summary>
+        /// Symmetric Householder reduction to tridiagonal form.
+        /// </summary>
         private void tred2()
         {
             //  This is derived from the Algol procedures tred2 by
@@ -301,7 +281,9 @@ namespace Mages.Modules.LinearAlgebra
             _e[0] = 0.0;
         }
 
-        // Symmetric tridiagonal QL algorithm.
+        /// <summary>
+        /// Symmetric tridiagonal QL algorithm.
+        /// </summary>
         private void tql2()
         {
             //  This is derived from the Algol procedures tql2, by
@@ -441,8 +423,10 @@ namespace Mages.Modules.LinearAlgebra
             }
         }
 
-        // Nonsymmetric reduction to Hessenberg form.
-        void orthes()
+        /// <summary>
+        /// Nonsymmetric reduction to Hessenberg form.
+        /// </summary>
+        private void orthes()
         {
             //  This is derived from the Algol procedures orthes and ortran,
             //  by Martin and Wilkinson, Handbook for Auto. Comp.,
@@ -565,7 +549,7 @@ namespace Mages.Modules.LinearAlgebra
             }
         }
         
-        private void cdiv(Double xr, Double xi, Double yr, Double yi)
+        private Complex cdiv(Double xr, Double xi, Double yr, Double yi)
         {
             var r = 0.0;
             var d = 0.0;
@@ -574,19 +558,27 @@ namespace Mages.Modules.LinearAlgebra
             {
                 r = yi / yr;
                 d = yr + r * yi;
-                _cdivr = (xr + r * xi) / d;
-                _cdivi = (xi - r * xr) / d;
+                return new Complex
+                {
+                    Real = (xr + r * xi) / d,
+                    Imag = (xi - r * xr) / d
+                };
             }
             else
             {
                 r = yr / yi;
                 d = yi + r * yr;
-                _cdivr = (r * xr + xi) / d;
-                _cdivi = (r * xi - xr) / d;
+                return new Complex
+                {
+                    Real = (r * xr + xi) / d,
+                    Imag = (r * xi - xr) / d
+                };
             }
         }
 
-        // Nonsymmetric reduction from Hessenberg to real Schur form.
+        /// <summary>
+        /// Nonsymmetric reduction from Hessenberg to real Schur form.
+        /// </summary>
         private void hqr2()
         {
             //  This is derived from the Algol procedure hqr2,
@@ -595,8 +587,7 @@ namespace Mages.Modules.LinearAlgebra
             //  Fortran subroutine in EISPACK.
 
             // Initialize
-
-            var nn = this._n;
+            var nn = _n;
             var n = nn - 1;
             var low = 0;
             var high = nn - 1;
@@ -1016,9 +1007,9 @@ namespace Mages.Modules.LinearAlgebra
                     }
                     else
                     {
-                        cdiv(0.0, -_H[n - 1, n], _H[n - 1, n - 1] - p, q);
-                        _H[n - 1, n - 1] = _cdivr;
-                        _H[n - 1, n] = _cdivi;
+                        var g = cdiv(0.0, -_H[n - 1, n], _H[n - 1, n - 1] - p, q);
+                        _H[n - 1, n - 1] = g.Real;
+                        _H[n - 1, n] = g.Imag;
                     }
 
                     _H[n, n - 1] = 0.0;
@@ -1051,15 +1042,13 @@ namespace Mages.Modules.LinearAlgebra
 
                             if (_e[i] == 0)
                             {
-                                cdiv(-ra, -sa, w, q);
-                                _H[i, n - 1] = _cdivr;
-                                _H[i, n] = _cdivi;
+                                var g = cdiv(-ra, -sa, w, q);
+                                _H[i, n - 1] = g.Real;
+                                _H[i, n] = g.Imag;
                             }
                             else
                             {
-
                                 // Solve complex equations
-
                                 x = _H[i, i + 1];
                                 y = _H[i + 1, i];
                                 vr = (_d[i] - p) * (_d[i] - p) + _e[i] * _e[i] - q * q;
@@ -1070,9 +1059,9 @@ namespace Mages.Modules.LinearAlgebra
                                     vr = eps * norm * (Math.Abs(w) + Math.Abs(q) + Math.Abs(x) + Math.Abs(y) + Math.Abs(z));
                                 }
 
-                                cdiv(x * r - z * ra + q * sa, x * s - z * sa - q * ra, vr, vi);
-                                _H[i, n - 1] = _cdivr;
-                                _H[i, n] = _cdivi;
+                                var g = cdiv(x * r - z * ra + q * sa, x * s - z * sa - q * ra, vr, vi);
+                                _H[i, n - 1] = g.Real;
+                                _H[i, n] = g.Imag;
 
                                 if (Math.Abs(x) > (Math.Abs(z) + Math.Abs(q)))
                                 {
@@ -1081,9 +1070,9 @@ namespace Mages.Modules.LinearAlgebra
                                 }
                                 else
                                 {
-                                    cdiv(-r - y * _H[i, n - 1], -s - y * _H[i, n], z, q);
-                                    _H[i + 1, n - 1] = _cdivr;
-                                    _H[i + 1, n] = _cdivi;
+                                    g = cdiv(-r - y * _H[i, n - 1], -s - y * _H[i, n], z, q);
+                                    _H[i + 1, n - 1] = g.Real;
+                                    _H[i + 1, n] = g.Imag;
                                 }
                             }
 
@@ -1133,6 +1122,16 @@ namespace Mages.Modules.LinearAlgebra
                     _V[i,j] = z;
                 }
             }
+        }
+
+        #endregion
+
+        #region Complex
+
+        struct Complex
+        {
+            public Double Real;
+            public Double Imag;
         }
 
         #endregion

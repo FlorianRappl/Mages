@@ -143,6 +143,16 @@
             return cg.Solve(b);
         }
 
+        public static Object Eigen(Double[,] A)
+        {
+            var ev = new Eigenvalues(A);
+            return Helpers.CreateObject(
+                "real", Helpers.ToMatrix(ev.RealEigenvalues),
+                "imag", Helpers.ToMatrix(ev.ImagEigenvalues),
+                "vec", ev.Eigenvectors
+            );
+        }
+
         public static Double[,] Solve(Double[,] A, Double[,] b)
         {
             if (Helpers.IsSymmetric(A))
