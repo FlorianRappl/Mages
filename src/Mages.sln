@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Core", "Mages.Core\Mages.Core.csproj", "{B0698A2A-BFE9-4568-9055-82302F325452}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Repl.Installer", "Mages.Repl.Installer\Mages.Repl.Installer.csproj", "{2239BDD1-07B4-44B0-A6DB-ED4C69B8797C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Modules.LinearAlgebra", "Mages.Modules.LinearAlgebra\Mages.Modules.LinearAlgebra.csproj", "{84965E3E-B7E6-49E7-ADF1-46A3CB7EBEA6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Modules.FileSystem", "Mages.Modules.FileSystem\Mages.Modules.FileSystem.csproj", "{DF8D8E0E-87BC-4B70-8560-14B2DE02C424}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{84965E3E-B7E6-49E7-ADF1-46A3CB7EBEA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84965E3E-B7E6-49E7-ADF1-46A3CB7EBEA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84965E3E-B7E6-49E7-ADF1-46A3CB7EBEA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF8D8E0E-87BC-4B70-8560-14B2DE02C424}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF8D8E0E-87BC-4B70-8560-14B2DE02C424}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF8D8E0E-87BC-4B70-8560-14B2DE02C424}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF8D8E0E-87BC-4B70-8560-14B2DE02C424}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

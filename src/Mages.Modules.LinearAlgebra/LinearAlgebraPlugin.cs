@@ -1,6 +1,6 @@
 ﻿namespace Mages.Modules.LinearAlgebra
 {
-    using Decompositions;
+    using Mages.Modules.LinearAlgebra.Decompositions;
     using Mages.Modules.LinearAlgebra.Solvers;
     using System;
 
