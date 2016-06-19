@@ -159,12 +159,17 @@
         public static Double[,] ToMatrix(this IEnumerable<Double> value)
         {
             var source = value.ToList();
-            var length = source.Count;
+            return source.ToMatrix();
+        }
+
+        public static Double[,] ToMatrix(this List<Double> value)
+        {
+            var length = value.Count;
             var matrix = new Double[1, length];
 
             for (var i = 0; i < length; i++)
             {
-                matrix[0, i] = source[i];
+                matrix[0, i] = value[i];
             }
 
             return matrix;

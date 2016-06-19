@@ -393,7 +393,7 @@
             return Curry.MinTwo(Where, args) ??
                 If.Is<Function, Double[,]>(args, (f, m) => m.Where(f)) ??
                 If.Is<Function, IDictionary<String, Object>>(args, (f, o) => o.Where(f)) ??
-                If.Is<Function>(args, f => f(new[] { args[1] }));
+                If.Is<Function>(args, f => f(new[] { args[1] }).ToBoolean() ? args[1] : null);
         });
     }
 }

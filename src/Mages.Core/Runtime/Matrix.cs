@@ -503,7 +503,7 @@
 
         public static Object Where(this Double[,] matrix, Function f)
         {
-            var result = new Dictionary<String, Object>();
+            var result = new List<Double>();
             var args = new Object[4];
             var rows = matrix.GetRows();
             var columns = matrix.GetColumns();
@@ -520,12 +520,12 @@
 
                     if (f(args).ToBoolean())
                     {
-                        result[k.ToString()] = value;
+                        result.Add(value);
                     }
                 }
             }
 
-            return result;
+            return result.ToMatrix();
         }
 
         public static Object Reduce(this Double[,] matrix, Function f, Object start)
