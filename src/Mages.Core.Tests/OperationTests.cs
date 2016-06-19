@@ -9,441 +9,441 @@
         [Test]
         public void BinaryAddWithNumbersYieldsNumber()
         {
-            var result = Eval("2 + 3");
+            var result = "2 + 3".Eval();
             Assert.AreEqual(5.0, result);
         }
 
         [Test]
         public void BinaryAddWithNumberAndUnknownVariableYieldsNull()
         {
-            var result = Eval("2 + a");
+            var result = "2 + a".Eval();
             Assert.IsNull(result);
         }
 
         [Test]
         public void BinaryAddWithUnknownVariablesYieldsNull()
         {
-            var result = Eval("a + b");
+            var result = "a + b".Eval();
             Assert.IsNull(result);
         }
 
         [Test]
         public void BinaryPowerWithNumbersYieldsNumber()
         {
-            var result = Eval("2^3");
+            var result = "2^3".Eval();
             Assert.AreEqual(8.0, result);
         }
 
         [Test]
         public void BinarySubtractWithNumbersYieldsNumber()
         {
-            var result = Eval("2 - 3.5");
+            var result = "2 - 3.5".Eval();
             Assert.AreEqual(-1.5, result);
         }
 
         [Test]
         public void BinaryMultiplyWithNumbersYieldsNumber()
         {
-            var result = Eval("2.5 * 1.5");
+            var result = "2.5 * 1.5".Eval();
             Assert.AreEqual(3.75, result);
         }
 
         [Test]
         public void BinaryDivideWithNumbersYieldsNumber()
         {
-            var result = Eval("4 / 2");
+            var result = "4 / 2".Eval();
             Assert.AreEqual(2.0, result);
         }
 
         [Test]
         public void BinaryAddWithMatricessYieldsMatrix()
         {
-            var result = Eval("[1,2;3,4]+[4,3;2,1]");
+            var result = "[1,2;3,4]+[4,3;2,1]".Eval();
             CollectionAssert.AreEqual(new Double[,] { { 5, 5 }, { 5, 5 } }, (Double[,])result);
         }
 
         [Test]
         public void BinarySubtractWithMatricesYieldsMatrix()
         {
-            var result = Eval("[3,2,1]-[1,0,-1]");
+            var result = "[3,2,1]-[1,0,-1]".Eval();
             CollectionAssert.AreEqual(new Double[,] { { 2, 2, 2 } }, (Double[,])result);
         }
 
         [Test]
         public void BinaryMultiplyWithMatricesYieldsMatrix()
         {
-            var result = Eval("[1,2;3,4]*[3;5]");
+            var result = "[1,2;3,4]*[3;5]".Eval();
             CollectionAssert.AreEqual(new Double[,] { { 13 }, { 29 } }, (Double[,])result);
         }
 
         [Test]
         public void BinaryAndWithNumbersYieldsBoolean()
         {
-            var result = Eval("2 && 3");
+            var result = "2 && 3".Eval();
             Assert.AreEqual(true, result);
         }
 
         [Test]
         public void BinaryAndWithBooleansYieldsBoolean()
         {
-            var result = Eval("true && false");
+            var result = "true && false".Eval();
             Assert.AreEqual(false, result);
         }
 
         [Test]
         public void BinaryOrWithBooleansYieldsBoolean()
         {
-            var result = Eval("true || false");
+            var result = "true || false".Eval();
             Assert.AreEqual(true, result);
         }
 
         [Test]
         public void BinaryAndWithMatricesYieldsMatrix()
         {
-            var result = Eval("[1,0;0,0] && [1,1;1,0]");
+            var result = "[1,0;0,0] && [1,1;1,0]".Eval();
             CollectionAssert.AreEquivalent(new Double[,] { { 1.0, 0.0 }, { 0.0, 0.0 } }, (Double[,])result);
         }
 
         [Test]
         public void BinaryAndWithMatrixAndDoubleYieldsMatrix()
         {
-            var result = Eval("[1,0;0,0] && 1");
+            var result = "[1,0;0,0] && 1".Eval();
             CollectionAssert.AreEquivalent(new Double[,] { { 1.0, 0.0 }, { 0.0, 0.0 } }, (Double[,])result);
         }
 
         [Test]
         public void BinaryAndWithMatrixAndBooleanYieldsMatrix()
         {
-            var result = Eval("[1,0;0,0] && true");
+            var result = "[1,0;0,0] && true".Eval();
             CollectionAssert.AreEquivalent(new Double[,] { { 1.0, 0.0 }, { 0.0, 0.0 } }, (Double[,])result);
         }
 
         [Test]
         public void BinaryOrWithMatricesYieldsMatrix()
         {
-            var result = Eval("[1,0;0,0] || [1,1;1,0]");
+            var result = "[1,0;0,0] || [1,1;1,0]".Eval();
             CollectionAssert.AreEquivalent(new Double[,] { { 1.0, 1.0 }, { 1.0, 0.0 } }, (Double[,])result);
         }
 
         [Test]
         public void BinaryEqWithMatrixAndDoubleYieldsMatrix()
         {
-            var result = Eval("[1,2;3,4] == 3");
+            var result = "[1,2;3,4] == 3".Eval();
             CollectionAssert.AreEquivalent(new Double[,] { { 0.0, 0.0 }, { 1.0, 0.0 } }, (Double[,])result);
         }
 
         [Test]
         public void BinaryEqWithMatricesYieldsMatrix()
         {
-            var result = Eval("[1,2;3,4] == [2,3;4,4]");
+            var result = "[1,2;3,4] == [2,3;4,4]".Eval();
             CollectionAssert.AreEquivalent(new Double[,] { { 0.0, 0.0 }, { 0.0, 1.0 } }, (Double[,])result);
         }
 
         [Test]
         public void BinaryEqWithNumbersYieldsBoolean()
         {
-            var result = Eval("2 == 3");
+            var result = "2 == 3".Eval();
             Assert.AreEqual(false, result);
         }
 
         [Test]
         public void BinaryNeqWithNumbersYieldsBoolean()
         {
-            var result = Eval("2 ~= 3");
+            var result = "2 ~= 3".Eval();
             Assert.AreEqual(true, result);
         }
 
         [Test]
         public void BinaryNeqWithMatricesYieldsMatrix()
         {
-            var result = Eval("[1,2;3,4] ~= [2,3;4,4]");
+            var result = "[1,2;3,4] ~= [2,3;4,4]".Eval();
             CollectionAssert.AreEquivalent(new Double[,] { { 1.0, 1.0 }, { 1.0, 0.0 } }, (Double[,])result);
         }
 
         [Test]
         public void BinaryGeqWithMatricesYieldsMatrix()
         {
-            var result = Eval("[1,2;3,4] >= [2,3;4,4]");
+            var result = "[1,2;3,4] >= [2,3;4,4]".Eval();
             CollectionAssert.AreEquivalent(new Double[,] { { 0.0, 0.0 }, { 0.0, 1.0 } }, (Double[,])result);
         }
 
         [Test]
         public void BinaryGtWithMatricesYieldsMatrix()
         {
-            var result = Eval("[1,2;3,4] > [2,3;4,4]");
+            var result = "[1,2;3,4] > [2,3;4,4]".Eval();
             CollectionAssert.AreEquivalent(new Double[,] { { 0.0, 0.0 }, { 0.0, 0.0 } }, (Double[,])result);
         }
 
         [Test]
         public void BinaryLtWithMatricesYieldsMatrix()
         {
-            var result = Eval("[1,2;3,4] < [2,3;4,4]");
+            var result = "[1,2;3,4] < [2,3;4,4]".Eval();
             CollectionAssert.AreEquivalent(new Double[,] { { 1.0, 1.0 }, { 1.0, 0.0 } }, (Double[,])result);
         }
 
         [Test]
         public void BinaryLtWithDoubleAndMatrixYieldsMatrix()
         {
-            var result = Eval("3 < [2,3;4,4]");
+            var result = "3 < [2,3;4,4]".Eval();
             CollectionAssert.AreEquivalent(new Double[,] { { 0.0, 0.0 }, { 1.0, 1.0 } }, (Double[,])result);
         }
 
         [Test]
         public void BinaryGtWithDoubleAndMatrixYieldsMatrix()
         {
-            var result = Eval("4 > [2,3;4,4]");
+            var result = "4 > [2,3;4,4]".Eval();
             CollectionAssert.AreEquivalent(new Double[,] { { 1.0, 1.0 }, { 0.0, 0.0 } }, (Double[,])result);
         }
 
         [Test]
         public void BinaryGeqWithDoubleAndMatrixYieldsMatrix()
         {
-            var result = Eval("4 >= [2,3;4,4]");
+            var result = "4 >= [2,3;4,4]".Eval();
             CollectionAssert.AreEquivalent(new Double[,] { { 1.0, 1.0 }, { 1.0, 1.0 } }, (Double[,])result);
         }
 
         [Test]
         public void BinaryNeqWithMatrixAndDoubleYieldsMatrix()
         {
-            var result = Eval("[1,2;3,4] ~= 3");
+            var result = "[1,2;3,4] ~= 3".Eval();
             CollectionAssert.AreEquivalent(new Double[,] { { 1.0, 1.0 }, { 0.0, 1.0 } }, (Double[,])result);
         }
 
         [Test]
         public void MemberOperatorOnStringShouldYieldNothing()
         {
-            var result = Eval("\"hallo\".test");
+            var result = "\"hallo\".test".Eval();
             Assert.IsNull(result);
         }
 
         [Test]
         public void MemberOperatorOnNumberShouldYieldNothing()
         {
-            var result = Eval("(2.3).test");
+            var result = "(2.3).test".Eval();
             Assert.IsNull(result);
         }
 
         [Test]
         public void MemberOperatorOnBooleanShouldYieldNothing()
         {
-            var result = Eval("(true).test");
+            var result = "(true).test".Eval();
             Assert.IsNull(result);
         }
 
         [Test]
         public void MemberOperatorOnMatrixShouldYieldNothing()
         {
-            var result = Eval("[].test");
+            var result = "[].test".Eval();
             Assert.IsNull(result);
         }
 
         [Test]
         public void MemberOperatorOnNothingShouldYieldNothing()
         {
-            var result = Eval("foo.test");
+            var result = "foo.test".Eval();
             Assert.IsNull(result);
         }
 
         [Test]
         public void MemberOperatorOnFunctionShouldYieldNothing()
         {
-            var result = Eval("(() => 2 + 3).test");
+            var result = "(() => 2 + 3).test".Eval();
             Assert.IsNull(result);
         }
 
         [Test]
         public void MemberOperatorOnDictionaryLegitKeyShouldYieldValue()
         {
-            var result = Eval("new { test: 2 + 3 }.test");
+            var result = "new { test: 2 + 3 }.test".Eval();
             Assert.AreEqual(5.0, result);
         }
 
         [Test]
         public void MemberOperatorOnDictionaryInvalidKeyShouldYieldNothing()
         {
-            var result = Eval("new { foo: 2 + 3 }.bar");
+            var result = "new { foo: 2 + 3 }.bar".Eval();
             Assert.IsNull(result);
         }
 
         [Test]
         public void NotWithBooleanIsOpposite()
         {
-            var result = Eval("~false");
+            var result = "~false".Eval();
             Assert.AreEqual(true, result);
         }
 
         [Test]
         public void NotWithNullIsTrue()
         {
-            var result = Eval("~null");
+            var result = "~null".Eval();
             Assert.AreEqual(true, result);
         }
 
         [Test]
         public void NotWithDoubleIsFalseIfNotZero()
         {
-            var result = Eval("~0.1");
+            var result = "~0.1".Eval();
             Assert.AreEqual(false, result);
         }
 
         [Test]
         public void NotWithDoubleIsTrueIfZero()
         {
-            var result = Eval("~0.0");
+            var result = "~0.0".Eval();
             Assert.AreEqual(true, result);
         }
 
         [Test]
         public void NotWithEmptyStringIsTrue()
         {
-            var result = Eval("~\"\"");
+            var result = "~\"\"".Eval();
             Assert.AreEqual(true, result);
         }
 
         [Test]
         public void NotWithNonEmptyStringIsFalse()
         {
-            var result = Eval("~\"Foo\"");
+            var result = "~\"Foo\"".Eval();
             Assert.AreEqual(false, result);
         }
 
         [Test]
         public void NotWithFunctionIsFalse()
         {
-            var result = Eval("~(() => 5)");
+            var result = "~(() => 5)".Eval();
             Assert.AreEqual(false, result);
         }
 
         [Test]
         public void NotWithMatrixIsLogicMatrix()
         {
-            var result = Eval("~[0, 1; 4, 7]");
+            var result = "~[0, 1; 4, 7]".Eval();
             CollectionAssert.AreEquivalent(new Double[,] { { 1.0, 0.0 }, { 0.0, 0.0 } }, (Double[,])result);
         }
 
         [Test]
         public void PositiveWithMatrixIsIdentity()
         {
-            var result = Eval("+[0, 1; 4, 7]");
+            var result = "+[0, 1; 4, 7]".Eval();
             CollectionAssert.AreEquivalent(new Double[,] { { 0.0, 1.0 }, { 4.0, 7.0 } }, (Double[,])result);
         }
 
         [Test]
         public void PositiveWithBooleanConvertsToNumber()
         {
-            var result = Eval("+true");
+            var result = "+true".Eval();
             Assert.AreEqual(1.0, result);
         }
 
         [Test]
         public void PositiveWithStringConvertsToNumber()
         {
-            var result = Eval("+\"123\"");
+            var result = "+\"123\"".Eval();
             Assert.AreEqual(123.0, result);
         }
 
         [Test]
         public void PositiveWithStringIsNaNIfNoNumber()
         {
-            var result = Eval("+\"foo\"");
+            var result = "+\"foo\"".Eval();
             Assert.AreEqual(Double.NaN, result);
         }
 
         [Test]
         public void PositiveWithObjectIsNaN()
         {
-            var result = Eval("+new {}");
+            var result = "+new {}".Eval();
             Assert.AreEqual(Double.NaN, result);
         }
 
         [Test]
         public void PositiveWithFunctionIsNaN()
         {
-            var result = Eval("+(() => 5)");
+            var result = "+(() => 5)".Eval();
             Assert.AreEqual(Double.NaN, result);
         }
 
         [Test]
         public void PositiveWithNullIsNaN()
         {
-            var result = Eval("+null");
+            var result = "+null".Eval();
             Assert.AreEqual(Double.NaN, result);
         }
 
         [Test]
         public void AbsWithNullIsNaN()
         {
-            var result = Eval("abs(null)");
+            var result = "abs(null)".Eval();
             Assert.AreEqual(Double.NaN, result);
         }
 
         [Test]
         public void AbsWithStringTriesToUseNumber()
         {
-            var result = Eval("abs(\"-199\")");
+            var result = "abs(\"-199\")".Eval();
             Assert.AreEqual(199.0, result);
         }
 
         [Test]
         public void AbsWithInvalidStringIsNaN()
         {
-            var result = Eval("abs(\"baz\")");
+            var result = "abs(\"baz\")".Eval();
             Assert.AreEqual(Double.NaN, result);
         }
 
         [Test]
         public void AbsWithMatrixReturnsL2Norm()
         {
-            var result = Eval("abs([2,2;2,2])");
+            var result = "abs([2,2;2,2])".Eval();
             Assert.AreEqual(4.0, result);
         }
 
         [Test]
         public void AnyWithCompletelyNonZeroMatrixIsTrue()
         {
-            var result = Eval("any([2,2;2,2])");
+            var result = "any([2,2;2,2])".Eval();
             Assert.AreEqual(true, result);
         }
 
         [Test]
         public void AnyWithCompletelyZeroMatrixIsFalse()
         {
-            var result = Eval("any([0,0,0])");
+            var result = "any([0,0,0])".Eval();
             Assert.AreEqual(false, result);
         }
 
         [Test]
         public void AnyWithOneAndZeroMatrixIsTrue()
         {
-            var result = Eval("any([0,1;0,0])");
+            var result = "any([0,1;0,0])".Eval();
             Assert.AreEqual(true, result);
         }
 
         [Test]
         public void AllWithCompletelyNonZeroMatrixIsTrue()
         {
-            var result = Eval("all([2,2;2,2])");
+            var result = "all([2,2;2,2])".Eval();
             Assert.AreEqual(true, result);
         }
 
         [Test]
         public void AllWithCompletelyZeroMatrixIsFalse()
         {
-            var result = Eval("all([0,0,0])");
+            var result = "all([0,0,0])".Eval();
             Assert.AreEqual(false, result);
         }
 
         [Test]
         public void AllWithOneAndZeroMatrixIsFalse()
         {
-            var result = Eval("all([0,1;0,0])");
+            var result = "all([0,1;0,0])".Eval();
             Assert.AreEqual(false, result);
         }
 
         [Test]
         public void RangeWithValidToAndFromAutoStep()
         {
-            var result = Eval("1:3") as Double[,];
+            var result = "1:3".Eval() as Double[,];
             Assert.IsNotNull(result);
             Assert.AreEqual(3, result.Length);
             Assert.AreEqual(1.0, result[0, 0]);
@@ -454,7 +454,7 @@
         [Test]
         public void RangeWithInvalidToAndValidFromAutoStep()
         {
-            var result = Eval("1:\"3k\"") as Double[,];
+            var result = "1:\"3k\"".Eval() as Double[,];
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Length);
         }
@@ -462,7 +462,7 @@
         [Test]
         public void RangeWithValidToAndInvalidFromAutoStep()
         {
-            var result = Eval("\"3k\":1") as Double[,];
+            var result = "\"3k\":1".Eval() as Double[,];
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Length);
         }
@@ -470,7 +470,7 @@
         [Test]
         public void RangeWithValidToAndFromAndStep()
         {
-            var result = Eval("1:2:3") as Double[,];
+            var result = "1:2:3".Eval() as Double[,];
             Assert.IsNotNull(result);
             Assert.AreEqual(2, result.Length);
             Assert.AreEqual(1.0, result[0, 0]);
@@ -480,7 +480,7 @@
         [Test]
         public void RangeWithValidToAndInvalidFromAndValidStep()
         {
-            var result = Eval("\"foo\":2:3") as Double[,];
+            var result = "\"foo\":2:3".Eval() as Double[,];
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Length);
         }
@@ -488,7 +488,7 @@
         [Test]
         public void RangeWithValidToAndFromAndInvalidStep()
         {
-            var result = Eval("1:\"foo\":3") as Double[,];
+            var result = "1:\"foo\":3".Eval() as Double[,];
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Length);
         }
@@ -496,7 +496,7 @@
         [Test]
         public void RangeWithInvalidToAndValidFromAndValidStep()
         {
-            var result = Eval("1:2:\"foo\"") as Double[,];
+            var result = "1:2:\"foo\"".Eval() as Double[,];
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Length);
         }
@@ -504,175 +504,175 @@
         [Test]
         public void PreIncrementWithVariableShouldWork()
         {
-            var result = Eval("x = 2; ++x");
+            var result = "x = 2; ++x".Eval();
             Assert.AreEqual(3.0, result);
         }
 
         [Test]
         public void PostIncrementWithVariableShouldWork()
         {
-            var result = Eval("x = 2; x++");
+            var result = "x = 2; x++".Eval();
             Assert.AreEqual(2.0, result);
         }
 
         [Test]
         public void PreDoubleIncrementWithVariableShouldWork()
         {
-            var result = Eval("x = 2; ++x; ++x");
+            var result = "x = 2; ++x; ++x".Eval();
             Assert.AreEqual(4.0, result);
         }
 
         [Test]
         public void PostDoubleIncrementWithVariableShouldWork()
         {
-            var result = Eval("x = 2; x++; x++");
+            var result = "x = 2; x++; x++".Eval();
             Assert.AreEqual(3.0, result);
         }
 
         [Test]
         public void PreIncrementWithMatrixElementShouldWork()
         {
-            var result = Eval("x = [1,2,3]; ++x(0)");
+            var result = "x = [1,2,3]; ++x(0)".Eval();
             Assert.AreEqual(2.0, result);
         }
 
         [Test]
         public void PostIncrementWithMatrixElementShouldWork()
         {
-            var result = Eval("x = [1,2,3]; x(2)++");
+            var result = "x = [1,2,3]; x(2)++".Eval();
             Assert.AreEqual(3.0, result);
         }
 
         [Test]
         public void PreDoubleIncrementWithMatrixElementShouldWork()
         {
-            var result = Eval("x = [1,5,3]; ++x(1); ++x(1)");
+            var result = "x = [1,5,3]; ++x(1); ++x(1)".Eval();
             Assert.AreEqual(7.0, result);
         }
 
         [Test]
         public void PostDoubleIncrementWithMatrixElementShouldWork()
         {
-            var result = Eval("x = [1,2,3]; x(1)++; x(1)++");
+            var result = "x = [1,2,3]; x(1)++; x(1)++".Eval();
             Assert.AreEqual(3.0, result);
         }
 
         [Test]
         public void PreIncrementWithObjectValueShouldWork()
         {
-            var result = Eval("x = new { a: \"hi\", b: 7 }; ++x.b");
+            var result = "x = new { a: \"hi\", b: 7 }; ++x.b".Eval();
             Assert.AreEqual(8.0, result);
         }
 
         [Test]
         public void PostIncrementWithObjectValueShouldWork()
         {
-            var result = Eval("x = new { a: \"hi\", b: 7 }; x.b++");
+            var result = "x = new { a: \"hi\", b: 7 }; x.b++".Eval();
             Assert.AreEqual(7.0, result);
         }
 
         [Test]
         public void PreDoubleIncrementWithObjectValueShouldWork()
         {
-            var result = Eval("x = new { a: \"hi\", b: 7 }; ++x.b; ++x.b");
+            var result = "x = new { a: \"hi\", b: 7 }; ++x.b; ++x.b".Eval();
             Assert.AreEqual(9.0, result);
         }
 
         [Test]
         public void PostDoubleIncrementWithObjectValueShouldWork()
         {
-            var result = Eval("x = new { a: \"hi\", b: 7 }; x.b++; x.b++");
+            var result = "x = new { a: \"hi\", b: 7 }; x.b++; x.b++".Eval();
             Assert.AreEqual(8.0, result);
         }
 
         [Test]
         public void PreDecrementWithVariableShouldWork()
         {
-            var result = Eval("x = 2; --x");
+            var result = "x = 2; --x".Eval();
             Assert.AreEqual(1.0, result);
         }
 
         [Test]
         public void PostDecrementWithVariableShouldWork()
         {
-            var result = Eval("x = 2; x--");
+            var result = "x = 2; x--".Eval();
             Assert.AreEqual(2.0, result);
         }
 
         [Test]
         public void PreDoubleDecrementWithVariableShouldWork()
         {
-            var result = Eval("x = 2; --x; --x");
+            var result = "x = 2; --x; --x".Eval();
             Assert.AreEqual(0.0, result);
         }
 
         [Test]
         public void PostDoubleDecrementWithVariableShouldWork()
         {
-            var result = Eval("x = 2; x--; x--");
+            var result = "x = 2; x--; x--".Eval();
             Assert.AreEqual(1.0, result);
         }
 
         [Test]
         public void PreDecrementWithMatrixElementShouldWork()
         {
-            var result = Eval("x = [1,2,3]; --x(0)");
+            var result = "x = [1,2,3]; --x(0)".Eval();
             Assert.AreEqual(0.0, result);
         }
 
         [Test]
         public void PostDecrementWithMatrixElementShouldWork()
         {
-            var result = Eval("x = [1,2,3]; x(2)--");
+            var result = "x = [1,2,3]; x(2)--".Eval();
             Assert.AreEqual(3.0, result);
         }
 
         [Test]
         public void PreDoubleDecrementWithMatrixElementShouldWork()
         {
-            var result = Eval("x = [1,5,3]; --x(1); --x(1)");
+            var result = "x = [1,5,3]; --x(1); --x(1)".Eval();
             Assert.AreEqual(3.0, result);
         }
 
         [Test]
         public void PostDoubleDecrementWithMatrixElementShouldWork()
         {
-            var result = Eval("x = [1,2,3]; x(1)--; x(1)--");
+            var result = "x = [1,2,3]; x(1)--; x(1)--".Eval();
             Assert.AreEqual(1.0, result);
         }
 
         [Test]
         public void PreDecrementWithObjectValueShouldWork()
         {
-            var result = Eval("x = new { a: \"hi\", b: 7 }; --x.b");
+            var result = "x = new { a: \"hi\", b: 7 }; --x.b".Eval();
             Assert.AreEqual(6.0, result);
         }
 
         [Test]
         public void PostDecrementWithObjectValueShouldWork()
         {
-            var result = Eval("x = new { a: \"hi\", b: 7 }; x.b--");
+            var result = "x = new { a: \"hi\", b: 7 }; x.b--".Eval();
             Assert.AreEqual(7.0, result);
         }
 
         [Test]
         public void PreDoubleDecrementWithObjectValueShouldWork()
         {
-            var result = Eval("x = new { a: \"hi\", b: 7 }; --x.b; --x.b");
+            var result = "x = new { a: \"hi\", b: 7 }; --x.b; --x.b".Eval();
             Assert.AreEqual(5.0, result);
         }
 
         [Test]
         public void PostDoubleDecrementWithObjectValueShouldWork()
         {
-            var result = Eval("x = new { a: \"hi\", b: 7 }; x.b--; x.b--");
+            var result = "x = new { a: \"hi\", b: 7 }; x.b--; x.b--".Eval();
             Assert.AreEqual(6.0, result);
         }
 
         [Test]
         public void InitMatrixWithNonExistingValuesYieldsNaN()
         {
-            var result = Eval("[a, b, c]") as Double[,];
+            var result = "[a, b, c]".Eval() as Double[,];
             Assert.IsNotNull(result);
             Assert.AreEqual(3, result.Length);
             Assert.IsNaN(result[0, 0]);
@@ -683,105 +683,105 @@
         [Test]
         public void ReducerStandardFunctionsAreCurried()
         {
-            var result = Eval("sum() == sum");
+            var result = "sum() == sum".Eval();
             Assert.AreEqual(true, result);
         }
 
         [Test]
         public void ArrayStandardFunctionsAreCurried()
         {
-            var result = Eval("sort() == sort");
+            var result = "sort() == sort".Eval();
             Assert.AreEqual(true, result);
         }
 
         [Test]
         public void LogicalStandardFunctionsAreCurried()
         {
-            var result = Eval("isprime() == isprime");
+            var result = "isprime() == isprime".Eval();
             Assert.AreEqual(true, result);
         }
 
         [Test]
         public void TrigonometricStandardFunctionsAreCurried()
         {
-            var result = Eval("sin() == sin");
+            var result = "sin() == sin".Eval();
             Assert.AreEqual(true, result);
         }
 
         [Test]
         public void ArithmeticStandardFunctionsAreCurried()
         {
-            var result = Eval("sqrt() == sqrt");
+            var result = "sqrt() == sqrt".Eval();
             Assert.AreEqual(true, result);
         }
 
         [Test]
         public void ComparisonStandardFunctionsAreCurried()
         {
-            var result = Eval("equals() == equals");
+            var result = "equals() == equals".Eval();
             Assert.AreEqual(true, result);
         }
 
         [Test]
         public void OperatorStandardFunctionsAreCurried()
         {
-            var result = Eval("add() == add");
+            var result = "add() == add".Eval();
             Assert.AreEqual(true, result);
         }
 
         [Test]
         public void UseCurriedAddOperatorFunction()
         {
-            var result = Eval("add(2)(3)");
+            var result = "add(2)(3)".Eval();
             Assert.AreEqual(5.0, result);
         }
 
         [Test]
         public void NullIsNothingIsTrue()
         {
-            var result = Eval("abc(foo) == null");
+            var result = "abc(foo) == null".Eval();
             Assert.AreEqual(true, result);
         }
 
         [Test]
         public void SomethingAintNothingIsFalse()
         {
-            var result = Eval("3 == null");
+            var result = "3 == null".Eval();
             Assert.AreEqual(false, result);
         }
 
         [Test]
         public void TypeOperatorOnNullYieldsUndefined()
         {
-            var result = Eval("&null");
+            var result = "&null".Eval();
             Assert.AreEqual("Undefined", result);
         }
 
         [Test]
         public void TypeOperatorOnResultOfTypeOperatorYieldsString()
         {
-            var result = Eval("& &null");
+            var result = "& &null".Eval();
             Assert.AreEqual("String", result);
         }
 
         [Test]
         public void TypeOperatorOnMatrixYieldsMatrix()
         {
-            var result = Eval("&[1, 2, 3]");
+            var result = "&[1, 2, 3]".Eval();
             Assert.AreEqual("Matrix", result);
         }
 
         [Test]
         public void PipeOperatorOnAddYieldsFunction()
         {
-            var result = Eval("2 | add");
+            var result = "2 | add".Eval();
             Assert.IsInstanceOf<Function>(result);
         }
 
         [Test]
         public void PipeOperatorOnCurriedAddYieldsResult()
         {
-            var result = Eval("2 | add(3)");
+            var result = "2 | add(3)".Eval();
             Assert.IsInstanceOf<Double>(result);
             Assert.AreEqual(5.0, result);
         }
@@ -789,7 +789,7 @@
         [Test]
         public void PipeOperatorAfterMinusOnCurriedMultiplyYieldsResult()
         {
-            var result = Eval("2 - 4 | multiply(3)");
+            var result = "2 - 4 | multiply(3)".Eval();
             Assert.IsInstanceOf<Double>(result);
             Assert.AreEqual(-6.0, result);
         }
@@ -797,7 +797,7 @@
         [Test]
         public void PipeOperatorIsLowerPrecendenceThanEquals()
         {
-            var result = Eval("3 == 4 | type");
+            var result = "3 == 4 | type".Eval();
             Assert.IsInstanceOf<String>(result);
             Assert.AreEqual("Boolean", result);
         }
@@ -805,7 +805,7 @@
         [Test]
         public void PipeOperatorIsLowerPrecendenceThanOr()
         {
-            var result = Eval("1 || 0 | type");
+            var result = "1 || 0 | type".Eval();
             Assert.IsInstanceOf<String>(result);
             Assert.AreEqual("Boolean", result);
         }
@@ -813,7 +813,7 @@
         [Test]
         public void PipeOperatorOnTypeYieldsResult()
         {
-            var result = Eval("2 | type");
+            var result = "2 | type".Eval();
             Assert.IsInstanceOf<String>(result);
             Assert.AreEqual("Number", result);
         }
@@ -821,7 +821,7 @@
         [Test]
         public void PipeOperatorOnTypeOfTypeYieldsString()
         {
-            var result = Eval("2 | type | type");
+            var result = "2 | type | type".Eval();
             Assert.IsInstanceOf<String>(result);
             Assert.AreEqual("String", result);
         }
@@ -829,94 +829,88 @@
         [Test]
         public void InvalidAssignmentAddWithNumberYieldsError()
         {
-            Assert.Catch<ParseException>(() => Eval("x = 0; x + = 2; x"));
+            Assert.Catch<ParseException>(() => "x = 0; x + = 2; x".Eval());
         }
 
         [Test]
         public void AssignmentAddWithNumberYieldsRightResult()
         {
-            var result = Eval("x = 0; x += 2; x");
+            var result = "x = 0; x += 2; x".Eval();
             Assert.AreEqual(2.0, result);
         }
 
         [Test]
         public void AssignmentSubtractWithNumberYieldsRightResult()
         {
-            var result = Eval("x = 7; x -= 2; x");
+            var result = "x = 7; x -= 2; x".Eval();
             Assert.AreEqual(5.0, result);
         }
 
         [Test]
         public void AssignmentMultiplyWithNumberYieldsRightResult()
         {
-            var result = Eval("x = 3; x *= 2; x");
+            var result = "x = 3; x *= 2; x".Eval();
             Assert.AreEqual(6.0, result);
         }
 
         [Test]
         public void InvalidAssignmentMultiplyWithNumberYieldsError()
         {
-            Assert.Catch<ParseException>(() => Eval("x = 0; x * = 2; x"));
+            Assert.Catch<ParseException>(() => "x = 0; x * = 2; x".Eval());
         }
 
         [Test]
         public void AssignmentPowerWithNumberYieldsRightResult()
         {
-            var result = Eval("x = 3; x ^= 2; x");
+            var result = "x = 3; x ^= 2; x".Eval();
             Assert.AreEqual(9.0, result);
         }
 
         [Test]
         public void InvalidAssignmentPowerWithNumberYieldsError()
         {
-            Assert.Catch<ParseException>(() => Eval("x = 0; x ^ = 2; x"));
+            Assert.Catch<ParseException>(() => "x = 0; x ^ = 2; x".Eval());
         }
 
         [Test]
         public void AssignmentDivideWithNumberYieldsRightResult()
         {
-            var result = Eval("x = 10; x /= 2; x");
+            var result = "x = 10; x /= 2; x".Eval();
             Assert.AreEqual(5.0, result);
         }
 
         [Test]
         public void AssignmentPipeWithNumberYieldsRightResult()
         {
-            var result = Eval("x = 4; x |= factorial; x");
+            var result = "x = 4; x |= factorial; x".Eval();
             Assert.AreEqual(24.0, result);
         }
 
         [Test]
         public void InvalidAssignmentPipeWithNumberYieldsError()
         {
-            Assert.Catch<ParseException>(() => Eval("x = 0; x | = factorial; x"));
+            Assert.Catch<ParseException>(() => "x = 0; x | = factorial; x".Eval());
         }
 
         [Test]
         public void AssignmentMultiplyTreatsRightSideAsOneExpression()
         {
-            var result = Eval("x = 12; x *= 1 + 2; x");
+            var result = "x = 12; x *= 1 + 2; x".Eval();
             Assert.AreEqual(36.0, result);
         }
 
         [Test]
         public void AssignmentAddAndAssignmentSubtractWithNumberYieldsRightResult()
         {
-            var result = Eval("x = 4; y = 3; x += y -= 5; x");
+            var result = "x = 4; y = 3; x += y -= 5; x".Eval();
             Assert.AreEqual(2.0, result);
         }
 
         [Test]
         public void AssignmentMultiplyAndAssignmentPowerWithNumberYieldsRightResult()
         {
-            var result = Eval("x = 4; y = 3; x *= y ^= 2; x + y");
+            var result = "x = 4; y = 3; x *= y ^= 2; x + y".Eval();
             Assert.AreEqual(45.0, result);
-        }
-
-        private static Object Eval(String source)
-        {
-            var engine = new Engine();
-            return engine.Interpret(source);
         }
     }
 }

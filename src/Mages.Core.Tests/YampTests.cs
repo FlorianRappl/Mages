@@ -572,27 +572,21 @@
             Test("max([1,5,7,9,8])", 9.0);
         }
 
-        private Object Eval(String sourceCode)
-        {
-            var engine = new Engine();
-            return engine.Interpret(sourceCode);
-        }
-
         private void Test(String sourceCode, Double[,] expected)
         {
-            var result = (Double[,])Eval(sourceCode);
+            var result = (Double[,])sourceCode.Eval();
             CollectionAssert.AreEquivalent(expected, result);
         }
 
         private void Test(String sourceCode, Boolean expected)
         {
-            var result = (Boolean)Eval(sourceCode);
+            var result = (Boolean)sourceCode.Eval();
             Assert.AreEqual(expected, result);
         }
 
         private void Test(String sourceCode, Double expected, Double tolerance = 0.0)
         {
-            var result = (Double)Eval(sourceCode);
+            var result = (Double)sourceCode.Eval();
             Assert.AreEqual(expected, result, tolerance);
         }
 

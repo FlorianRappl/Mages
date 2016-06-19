@@ -16,5 +16,11 @@
             var parser = new ExpressionParser();
             return parser.ParseStatement(sourceCode);
         }
+
+        public static Object Eval(this String sourceCode)
+        {
+            var engine = new Engine();
+            return engine.Interpret(sourceCode);
+        }
     }
 }
