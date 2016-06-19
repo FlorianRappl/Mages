@@ -53,6 +53,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="AtomicExpressionTests.cs" />
+    <Compile Include="AuxiliariesTests.cs" />
     <Compile Include="CommentTests.cs" />
     <Compile Include="ComposedExpressionTests.cs" />
     <Compile Include="ExtensibilityTests.cs" />
