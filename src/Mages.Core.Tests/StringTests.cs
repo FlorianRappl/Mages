@@ -78,7 +78,7 @@
             var space2 = tokenizer.Next(scanner);
             var end = tokenizer.Next(scanner);
             Assert.AreEqual(TokenType.Space, space1.Type);
-            Assert.AreEqual(TokenType.Text, result.Type);
+            Assert.AreEqual(TokenType.String, result.Type);
             Assert.AreEqual(TokenType.Space, space2.Type);
             Assert.AreEqual(TokenType.End, end.Type);
             Assert.AreEqual("foo", result.Payload);

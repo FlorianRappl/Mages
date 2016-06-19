@@ -161,12 +161,14 @@
     <Compile Include="Tokens\CommentTokenizer.cs" />
     <Compile Include="Tokens\EndToken.cs" />
     <Compile Include="Tokens\IdentToken.cs" />
+    <Compile Include="Tokens\InterpolationTokenizer.cs" />
     <Compile Include="Tokens\IToken.cs" />
     <Compile Include="Tokens\ITokenizer.cs" />
     <Compile Include="Tokens\GeneralTokenizer.cs" />
     <Compile Include="Tokens\NumberToken.cs" />
     <Compile Include="Tokens\NumberTokenizer.cs" />
     <Compile Include="Tokens\OperatorToken.cs" />
+    <Compile Include="Tokens\InterpolatedToken.cs" />
     <Compile Include="Tokens\StringToken.cs" />
     <Compile Include="Tokens\StringTokenizer.cs" />
     <Compile Include="Tokens\TextPositionExtensions.cs" />

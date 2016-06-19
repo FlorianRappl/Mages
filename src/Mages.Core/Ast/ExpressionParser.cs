@@ -730,7 +730,7 @@
                     return ParseVariable(tokens);
                 case TokenType.Number:
                     return ParseNumber(tokens);
-                case TokenType.Text:
+                case TokenType.String:
                     return ParseString(tokens);
                 case TokenType.SemiColon:
                 case TokenType.End:
@@ -777,7 +777,7 @@
 
         private static IExpression ParseIdentifierOrString(IEnumerator<IToken> tokens)
         {
-            return tokens.Current.Type == TokenType.Text ? ParseString(tokens) : ParseIdentifier(tokens);
+            return tokens.Current.Type == TokenType.String ? ParseString(tokens) : ParseIdentifier(tokens);
         }
 
         private IExpression ParseKeywordConstant(IEnumerator<IToken> tokens)

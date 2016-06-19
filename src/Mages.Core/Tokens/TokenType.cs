@@ -22,9 +22,13 @@
         /// </summary>
         Number = 3,
         /// <summary>
+        /// Interpolated string token.
+        /// </summary>
+        InterpolatedString = 4,
+        /// <summary>
         /// String token.
         /// </summary>
-        Text = 5,
+        String = 5,
         /// <summary>
         /// Round bracket open.
         /// </summary>

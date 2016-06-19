@@ -10,6 +10,7 @@
         private readonly ITokenizer _number;
         private readonly ITokenizer _string;
         private readonly ITokenizer _comment;
+        private readonly ITokenizer _interpolated;
 
         #endregion
 
@@ -20,6 +21,7 @@
             _number = numberTokenizer;
             _string = stringTokenizer;
             _comment = commentTokenizer;
+            _interpolated = new InterpolationTokenizer(this);
         }
 
         #endregion
@@ -140,6 +142,8 @@
                     return new OperatorToken(TokenType.Transpose, "'", start);
                 case CharacterTable.DoubleQuotationMark:
                     return _string.Next(scanner);
+                case CharacterTable.CurvedQuotationMark:
+                    return _interpolated.Next(scanner);
                 case CharacterTable.OpenBracket:
                     return new CharacterToken(TokenType.OpenGroup, CharacterTable.OpenBracket, start);
                 case CharacterTable.CloseBracket:
