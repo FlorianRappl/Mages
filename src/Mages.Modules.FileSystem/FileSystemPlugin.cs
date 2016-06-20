@@ -22,5 +22,15 @@
         {
             get { return typeof(DirectoryFunctions); }
         }
+
+        public static String ToBase64(Byte[] content)
+        {
+            return Convert.ToBase64String(content);
+        }
+
+        public static Byte[] FromBase64(String content)
+        {
+            return Convert.FromBase64String(content);
+        }
     }
 }
