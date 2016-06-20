@@ -159,19 +159,12 @@
 
             if (parameters.Length != 1 || parameters[0].ParameterType != typeof(Object[]) || method.ReturnType != typeof(Object))
             {
-                var parameterConverters = parameters.Select(m => Converters.FindConverter(m.ParameterType)).ToArray();
-
                 f = new Function(args =>
                 {
-                    var result = Curry.Min(parameterConverters.Length, f, args);
+                    var result = Curry.Min(parameters.Length, f, args);
 
-                    if (result == null)
+                    if (result == null && method.TryMatch(parameters, args))
                     {
-                        for (var i = 0; i < parameterConverters.Length; i++)
-                        {
-                            args[i] = parameterConverters[i].Invoke(args[i]);
-                        }
-
                         result = method.Call(target, args);
                     }
 

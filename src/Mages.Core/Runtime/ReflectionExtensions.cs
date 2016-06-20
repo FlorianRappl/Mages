@@ -70,37 +70,63 @@
             foreach (var method in methods)
             {
                 var actualParameters = method.GetParameters();
-                var length = actualParameters.Length;
-                var values = new Object[length];
-
-                if (currentParameters.Length == length)
+                
+                if (method.TryMatch(actualParameters, arguments, currentParameters))
                 {
-                    var i = 0;
-
-                    while (i < length)
-                    {
-                        var source = currentParameters[i];
-                        var target = actualParameters[i].ParameterType;
-                        var converter = Helpers.Converters.FindConverter(source, target);
-                        values[i] = converter.Invoke(arguments[i]);
-
-                        if (values[i] == null)
-                        {
-                            break;
-                        }
-
-                        i++;
-                    }
-
-                    if (i == length)
-                    {
-                        values.CopyTo(arguments, 0);
-                        return method;
-                    }
+                    return method;
                 }
             }
 
             return null;
+        }
+
+        public static Boolean TryMatch(this MethodBase method, ParameterInfo[] actualParameters, Object[] arguments)
+        {
+            var currentParameters = arguments.Select(m => m.GetType()).ToArray();
+            return method.TryMatch(actualParameters, arguments, currentParameters);
+        }
+
+        public static Boolean TryMatch(this MethodBase method, ParameterInfo[] actualParameters, Object[] arguments, Type[] currentParameters)
+        {
+            var length = actualParameters.Length;
+
+            if (currentParameters.Length == length)
+            {
+                var values = new Object[length];
+                var i = 0;
+
+                while (i < length)
+                {
+                    var source = currentParameters[i];
+                    var target = actualParameters[i].ParameterType;
+                    var wrapper = arguments[i] as WrapperObject;
+
+                    if (wrapper == null || wrapper.Type != target)
+                    {
+                        var converter = Helpers.Converters.FindConverter(source, target);
+                        values[i] = converter.Invoke(arguments[i]);
+                    }
+                    else
+                    {
+                        values[i] = wrapper.Content;
+                    }
+
+                    if (values[i] == null)
+                    {
+                        break;
+                    }
+
+                    i++;
+                }
+
+                if (i == length)
+                {
+                    values.CopyTo(arguments, 0);
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public static Dictionary<String, BaseProxy> GetStaticProxies(this Type type, WrapperObject target)

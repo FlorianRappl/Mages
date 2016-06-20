@@ -545,6 +545,30 @@
             Assert.AreEqual(null, result);
         }
 
+        [Test]
+        public void WrapperObjectReferencesShouldBeUnwrappedIfSpecified()
+        {
+            var engine = new Engine();
+            engine.SetStatic(typeof(WrapUnwrapTest)).WithName("Test");
+
+            var result = engine.Interpret("x = Test.create(); x.foo(x)");
+
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void FunctionTakingComplexObjectShouldBeUnwrappedIfSpecified()
+        {
+            var engine = new Engine();
+            engine.SetStatic(typeof(WrapUnwrapTest)).WithName("Test");
+            var func = new Func<WrapUnwrapTest, Boolean>((obj) => obj != null);
+            engine.SetFunction("verify", func.Method, func.Target);
+
+            var result = engine.Interpret("x = Test.create(); verify(x)");
+
+            Assert.AreEqual(true, result);
+        }
+
         sealed class Point
         {
             public Double x;
@@ -560,6 +584,14 @@
         sealed class PropertyTest
         {
             public String test { get; set; }
+        }
+
+        sealed class WrapUnwrapTest
+        {
+            public Boolean Foo(WrapUnwrapTest self)
+            {
+                return Object.ReferenceEquals(this, self);
+            }
         }
 
         static class Functions
