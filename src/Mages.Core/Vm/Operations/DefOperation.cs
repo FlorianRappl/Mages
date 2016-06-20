@@ -5,11 +5,11 @@
     /// <summary>
     /// Stores the top-most element on the stack.
     /// </summary>
-    sealed class AddsOperation : IOperation
+    sealed class DefOperation : IOperation
     {
         private readonly String _name;
 
-        public AddsOperation(String name)
+        public DefOperation(String name)
         {
             _name = name;
         }
@@ -32,7 +32,7 @@
 
         public override String ToString()
         {
-            return String.Concat("adds ", _name);
+            return String.Concat("def ", _name);
         }
     }
 }

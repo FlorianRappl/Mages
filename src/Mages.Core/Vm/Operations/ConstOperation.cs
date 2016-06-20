@@ -27,7 +27,7 @@
 
         public override String ToString()
         {
-            return String.Concat("const ", Stringify.This(_constant));
+            return String.Concat("const ", _constant != null ? _constant.GetHashCode() : 0);
         }
     }
 }

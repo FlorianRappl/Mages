@@ -178,7 +178,7 @@
     <Compile Include="Vm\ExecutionContextExtensions.cs" />
     <Compile Include="Vm\IExecutionContext.cs" />
     <Compile Include="Vm\IOperation.cs" />
-    <Compile Include="Vm\Operations\AddsOperation.cs" />
+    <Compile Include="Vm\Operations\DefOperation.cs" />
     <Compile Include="Vm\Operations\ArgOperation.cs" />
     <Compile Include="Vm\Operations\ArgsOperation.cs" />
     <Compile Include="Vm\Operations\CondOperation.cs" />
@@ -194,14 +194,15 @@
     <Compile Include="Vm\Operations\GetsOperation.cs" />
     <Compile Include="Vm\OperationExtensions.cs" />
     <Compile Include="Vm\Operations\PopOperation.cs" />
-    <Compile Include="Vm\Operations\RangeOperation.cs" />
+    <Compile Include="Vm\Operations\RngeOperation.cs" />
+    <Compile Include="Vm\Operations\RngiOperation.cs" />
     <Compile Include="Vm\Operations\RetOperation.cs" />
     <Compile Include="Vm\Operations\SetcOperation.cs" />
     <Compile Include="Vm\Operations\NewMatOperation.cs" />
     <Compile Include="Vm\Operations\NewObjOperation.cs" />
     <Compile Include="Vm\Operations\SetpOperation.cs" />
     <Compile Include="Vm\Operations\SetsOperation.cs" />
-    <Compile Include="Vm\Operations\SkipOperation.cs" />
+    <Compile Include="Vm\Operations\PopIfOperation.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

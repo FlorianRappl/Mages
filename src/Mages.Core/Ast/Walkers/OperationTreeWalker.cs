@@ -128,7 +128,7 @@
             statement.Validate(this);
             var start = _operations.Count;
             statement.Condition.Accept(this);
-            _operations.Add(SkipOperation.Instance);
+            _operations.Add(PopIfOperation.Instance);
             var jump = InsertMarker();
             _loops.Push(new LoopInfo { Break = jump, Continue = start });
             statement.Body.Accept(this);
@@ -142,7 +142,7 @@
         {
             statement.Validate(this);
             statement.Condition.Accept(this);
-            _operations.Add(SkipOperation.Instance);
+            _operations.Add(PopIfOperation.Instance);
             var jumpToElse = InsertMarker();
             statement.Primary.Accept(this);
             var jumpToEnd = InsertMarker();
@@ -228,16 +228,18 @@
         void ITreeWalker.Visit(RangeExpression expression)
         {
             var hasStep = expression.Step is EmptyExpression == false;
+            var operation = RngiOperation.Instance;
             expression.Validate(this);
 
             if (hasStep)
             {
+                operation = RngeOperation.Instance;
                 expression.Step.Accept(this);
             }
 
             expression.To.Accept(this);
             expression.From.Accept(this);
-            _operations.Add(new RangeOperation(hasStep));
+            _operations.Add(operation);
         }
 
         void ITreeWalker.Visit(ConditionalExpression expression)
@@ -380,7 +382,7 @@
             {
                 if (_declaring)
                 {
-                    _operations.Add(new AddsOperation(name));
+                    _operations.Add(new DefOperation(name));
                 }
                 else
                 {

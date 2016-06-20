@@ -6,11 +6,11 @@
     /// <summary>
     /// Takes one value from the stack and potentially changes the position.
     /// </summary>
-    sealed class SkipOperation : IOperation
+    sealed class PopIfOperation : IOperation
     {
-        public static readonly IOperation Instance = new SkipOperation();
+        public static readonly IOperation Instance = new PopIfOperation();
 
-        private SkipOperation()
+        private PopIfOperation()
         {
         }
 
@@ -26,7 +26,7 @@
 
         public override String ToString()
         {
-            return "skip";
+            return "popif";
         }
     }
 }
