@@ -4,7 +4,7 @@
     using System;
 
     /// <summary>
-    /// Takes one object from the stack and increments it.
+    /// Pops one element from the stack and pushes one element.
     /// </summary>
     sealed class IncOperation : IOperation
     {

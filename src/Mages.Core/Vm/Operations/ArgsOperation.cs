@@ -4,7 +4,7 @@
     using System;
 
     /// <summary>
-    /// Pops one object[] from the stack and exposes a args object.
+    /// Pops one element from the stack.
     /// </summary>
     sealed class ArgsOperation : IOperation
     {

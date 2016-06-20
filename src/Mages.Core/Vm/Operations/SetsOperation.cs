@@ -4,7 +4,7 @@
     using System;
 
     /// <summary>
-    /// Stores the top-most element on the stack.
+    /// Peeks the top element from the stack.
     /// </summary>
     sealed class SetsOperation : IOperation
     {

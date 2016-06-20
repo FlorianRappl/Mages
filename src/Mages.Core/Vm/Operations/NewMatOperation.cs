@@ -3,7 +3,7 @@
     using System;
 
     /// <summary>
-    /// Pushes one new object on the stack.
+    /// Pushes one new element on the stack.
     /// </summary>
     sealed class NewMatOperation : IOperation
     {

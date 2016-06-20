@@ -5,7 +5,7 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// Takes three values from the stack and pushes one.
+    /// Pops three elements from the stack and pushes one.
     /// </summary>
     sealed class SetpOperation : IOperation
     {

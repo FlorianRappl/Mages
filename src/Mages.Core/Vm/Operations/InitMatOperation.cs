@@ -4,6 +4,9 @@
     using Mages.Core.Runtime.Converters;
     using System;
 
+    /// <summary>
+    /// Peeks the top element from the stack.
+    /// </summary>
     sealed class InitMatOperation : IOperation
     {
         private readonly Int32 _row;

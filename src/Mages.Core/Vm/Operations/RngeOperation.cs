@@ -4,6 +4,9 @@
     using Mages.Core.Runtime.Converters;
     using System;
 
+    /// <summary>
+    /// Pops three elements from the stack and pushes one.
+    /// </summary>
     sealed class RngeOperation : IOperation
     {
         public static readonly IOperation Instance = new RngeOperation();

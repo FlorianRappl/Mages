@@ -4,7 +4,7 @@
     using System;
 
     /// <summary>
-    /// Takes two objects from the stack and returns one.
+    /// Takes two elements from the stack and pushes one.
     /// </summary>
     sealed class GetcOperation : IOperation
     {

@@ -4,7 +4,7 @@
     using System;
 
     /// <summary>
-    /// Takes one value from the stack and potentially changes the position.
+    /// Pops one element from the stack.
     /// </summary>
     sealed class PopIfOperation : IOperation
     {

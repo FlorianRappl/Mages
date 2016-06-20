@@ -5,7 +5,7 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// Takes two values from the stack.
+    /// Pops three elements from the stack and pushes on element.
     /// </summary>
     sealed class InitObjOperation : IOperation
     {

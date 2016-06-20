@@ -4,7 +4,7 @@
     using System;
 
     /// <summary>
-    /// Takes three objects from the stack and returns one.
+    /// Pops at least two elements from the stack and pushes one.
     /// </summary>
     sealed class SetcOperation : IOperation
     {

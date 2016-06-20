@@ -5,7 +5,7 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// Pushes a new function on the stack.
+    /// Pushes one new element on the stack.
     /// </summary>
     sealed class NewFuncOperation : IOperation
     {

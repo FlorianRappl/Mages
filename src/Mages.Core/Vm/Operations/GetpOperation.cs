@@ -5,7 +5,7 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// Takes two values from the stack and pushes the result.
+    /// Takes two elements from the stack and pushes the result.
     /// </summary>
     sealed class GetpOperation : IOperation
     {

@@ -3,7 +3,7 @@
     using System;
 
     /// <summary>
-    /// Takes one value from the stack without placing a new one.
+    /// Pops one element from the stack.
     /// </summary>
     sealed class PopOperation : IOperation
     {

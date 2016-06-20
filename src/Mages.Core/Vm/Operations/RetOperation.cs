@@ -2,6 +2,9 @@
 {
     using System;
 
+    /// <summary>
+    /// Stops the execution without changing the stack.
+    /// </summary>
     sealed class RetOperation : IOperation
     {
         public static readonly IOperation Instance = new RetOperation();
