@@ -74,6 +74,10 @@
       <Project>{b0698a2a-bfe9-4568-9055-82302f325452}</Project>
       <Name>Mages.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Mages.Modules.Draw\Mages.Modules.Draw.csproj">
+      <Project>{d9a3af85-2b7f-4240-bbb4-54a75a599efc}</Project>
+      <Name>Mages.Modules.Draw</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mages.Modules.FileSystem\Mages.Modules.FileSystem.csproj">
       <Project>{df8d8e0e-87bc-4b70-8560-14b2de02c424}</Project>
       <Name>Mages.Modules.FileSystem</Name>
