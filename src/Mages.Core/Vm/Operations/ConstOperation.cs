@@ -1,5 +1,6 @@
 ﻿namespace Mages.Core.Vm.Operations
 {
+    using Mages.Core.Runtime;
     using System;
 
     /// <summary>
@@ -22,6 +23,11 @@
         public void Invoke(IExecutionContext context)
         {
             context.Push(_constant);
+        }
+
+        public override String ToString()
+        {
+            return String.Concat("const ", Stringify.This(_constant));
         }
     }
 }

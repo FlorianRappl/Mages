@@ -1,6 +1,8 @@
 ﻿namespace Mages.Repl.Functions
 {
     using Mages.Core;
+    using Mages.Core.Ast;
+    using Mages.Core.Vm;
     using System;
     using System.Collections.Generic;
     using System.Text;
@@ -50,6 +52,14 @@
             }
 
             return sb.ToString();
+        }
+
+        public static String ShowIl(Engine engine, String source)
+        {
+            var tokens = source.ToTokenStream();
+            var statements = engine.Parser.ParseStatements(tokens);
+            var operations = statements.MakeRunnable();
+            return operations.Serialize();
         }
     }
 }

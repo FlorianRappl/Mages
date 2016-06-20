@@ -22,5 +22,10 @@
             matrix.SetValue(_row, _col, value);
             context.Push(matrix);
         }
+
+        public override String ToString()
+        {
+            return String.Concat("initmat ", _row.ToString(), " ", _col.ToString());
+        }
     }
 }

@@ -38,5 +38,10 @@
 
             context.Push(result);
         }
+
+        public override String ToString()
+        {
+            return String.Concat("getc ", _length.ToString());
+        }
     }
 }

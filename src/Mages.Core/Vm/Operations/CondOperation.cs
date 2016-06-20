@@ -1,6 +1,7 @@
 ﻿namespace Mages.Core.Vm.Operations
 {
     using Mages.Core.Runtime.Converters;
+    using System;
 
     sealed class CondOperation : IOperation
     {
@@ -16,6 +17,11 @@
             var primary = context.Pop();
             var alternative = context.Pop();
             context.Push(condition ? primary : alternative);
+        }
+
+        public override String ToString()
+        {
+            return "cond";
         }
     }
 }

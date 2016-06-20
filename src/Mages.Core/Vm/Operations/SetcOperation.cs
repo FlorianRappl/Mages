@@ -34,5 +34,10 @@
 
             context.Push(value);
         }
+
+        public override String ToString()
+        {
+            return String.Concat("setc ", _length.ToString());
+        }
     }
 }

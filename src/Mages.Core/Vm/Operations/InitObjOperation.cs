@@ -23,5 +23,10 @@
             obj.SetProperty(name, value);
             context.Push(obj);
         }
+
+        public override String ToString()
+        {
+            return "initobj";
+        }
     }
 }

@@ -23,6 +23,15 @@
             context.Push(function.Pointer);
         }
 
+        public override String ToString()
+        {
+            var instructions = new String[3];
+            instructions[0] = "newfunc start";
+            instructions[1] = _operations.Serialize();
+            instructions[2] = "newfunc end";
+            return String.Join(Environment.NewLine, instructions);
+        }
+
         sealed class InternalFunction
         {
             private readonly IDictionary<String, Object> _parentScope;

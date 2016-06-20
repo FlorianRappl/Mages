@@ -32,5 +32,10 @@
             
             context.Push(result);
         }
+
+        public override String ToString()
+        {
+            return "getp";
+        }
     }
 }

@@ -18,5 +18,10 @@
         {
             context.Push(new Dictionary<String, Object>());
         }
+
+        public override String ToString()
+        {
+            return "newobj";
+        }
     }
 }

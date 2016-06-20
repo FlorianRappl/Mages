@@ -39,5 +39,10 @@
                 context.Push(parameters);
             }
         }
+
+        public override String ToString()
+        {
+            return String.Concat("arg ", _index.ToString(), " ", _name);
+        }
     }
 }

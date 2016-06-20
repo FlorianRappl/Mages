@@ -20,5 +20,10 @@
         {
             context.Push(new Double[_rows, _cols]);
         }
+
+        public override String ToString()
+        {
+            return String.Concat("newmat ", _rows.ToString(), " ", _cols.ToString());
+        }
     }
 }

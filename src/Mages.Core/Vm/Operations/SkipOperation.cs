@@ -1,6 +1,7 @@
 ﻿namespace Mages.Core.Vm.Operations
 {
     using Mages.Core.Runtime.Converters;
+    using System;
 
     /// <summary>
     /// Takes one value from the stack and potentially changes the position.
@@ -21,6 +22,11 @@
             {
                 context.Position++;
             }
+        }
+
+        public override String ToString()
+        {
+            return "skip";
         }
     }
 }

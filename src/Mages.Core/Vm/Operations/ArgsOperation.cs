@@ -25,5 +25,10 @@
                 context.Scope.Add(ArgsIdentifier, obj);
             }
         }
+
+        public override String ToString()
+        {
+            return String.Concat("args ", ArgsIdentifier);
+        }
     }
 }

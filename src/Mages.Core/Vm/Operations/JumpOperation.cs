@@ -18,5 +18,10 @@
         {
             context.Position = _position;
         }
+
+        public override String ToString()
+        {
+            return String.Concat("jump ", _position.ToString());
+        }
     }
 }

@@ -20,5 +20,10 @@
             var arguments = new Object[] { 1.0, value };
             context.Push(BinaryOperators.Sub(arguments));
         }
+
+        public override String ToString()
+        {
+            return "dec";
+        }
     }
 }

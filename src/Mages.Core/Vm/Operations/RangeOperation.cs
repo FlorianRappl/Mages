@@ -31,5 +31,10 @@
 
             context.Push(result);
         }
+
+        public override String ToString()
+        {
+            return String.Concat("range ", _hasStep.ToString());
+        }
     }
 }

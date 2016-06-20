@@ -28,5 +28,10 @@
 
             context.Push(value);
         }
+
+        public override String ToString()
+        {
+            return "setp";
+        }
     }
 }

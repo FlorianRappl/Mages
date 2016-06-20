@@ -2,6 +2,7 @@
 {
     using Mages.Core;
     using Mages.Core.Runtime.Functions;
+    using System;
     using System.Linq;
 
     static class ReplFunctions
@@ -13,6 +14,12 @@
                 var id = engine.Globals["spawn"] as Function;
                 return Curry.MinOne(id, args) ??
                     If.Is<Function>(args, f => Helpers.Spawn(f, args.Skip(1).ToArray()));
+            }));
+            engine.SetFunction("il", new Function(args =>
+            {
+                var id = engine.Globals["il"] as Function;
+                return Curry.MinOne(id, args) ??
+                    If.Is<String>(args, source => Helpers.ShowIl(engine, source));
             }));
             engine.SetConstant("process", new ProcessObject());
             engine.SetFunction("help", new Function(args =>

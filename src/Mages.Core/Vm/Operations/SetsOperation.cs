@@ -21,5 +21,10 @@
             context.Scope.SetProperty(_name, value);
             context.Push(value);
         }
+
+        public override String ToString()
+        {
+            return String.Concat("sets ", _name);
+        }
     }
 }

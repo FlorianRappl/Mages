@@ -20,5 +20,10 @@
             var value = context.Scope.GetProperty(_name);
             context.Push(value);
         }
+
+        public override String ToString()
+        {
+            return String.Concat("gets ", _name);
+        }
     }
 }

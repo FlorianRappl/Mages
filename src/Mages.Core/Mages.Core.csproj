@@ -192,6 +192,7 @@
     <Compile Include="Vm\Operations\IncOperation.cs" />
     <Compile Include="Vm\Operations\InitObjOperation.cs" />
     <Compile Include="Vm\Operations\GetsOperation.cs" />
+    <Compile Include="Vm\OperationExtensions.cs" />
     <Compile Include="Vm\Operations\PopOperation.cs" />
     <Compile Include="Vm\Operations\RangeOperation.cs" />
     <Compile Include="Vm\Operations\RetOperation.cs" />
