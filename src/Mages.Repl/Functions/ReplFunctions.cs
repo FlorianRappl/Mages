@@ -21,6 +21,12 @@
                 return Curry.MinOne(id, args) ??
                     If.Is<String>(args, source => Helpers.ShowIl(engine, source));
             }));
+            engine.SetFunction("ast", new Function(args =>
+            {
+                var id = engine.Globals["ast"] as Function;
+                return Curry.MinOne(id, args) ??
+                    If.Is<String>(args, source => Helpers.ShowAst(engine, source));
+            }));
             engine.SetConstant("process", new ProcessObject());
             engine.SetFunction("help", new Function(args =>
             {

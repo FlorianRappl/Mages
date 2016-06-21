@@ -1,10 +1,12 @@
 ﻿namespace Mages.Repl.Functions
 {
+    using Core.Ast.Walkers;
     using Mages.Core;
     using Mages.Core.Ast;
     using Mages.Core.Vm;
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Text;
     using System.Threading.Tasks;
 
@@ -60,6 +62,17 @@
             var statements = engine.Parser.ParseStatements(tokens);
             var operations = statements.MakeRunnable();
             return operations.Serialize();
+        }
+
+        public static String ShowAst(Engine engine, String source)
+        {
+            var tokens = source.ToTokenStream();
+            var statements = engine.Parser.ParseStatements(tokens);
+            var sb = new StringBuilder();
+            var writer = new StringWriter(sb);
+            var walker = new SerializeTreeWalker(writer);
+            statements.ToBlock().Accept(walker);
+            return sb.ToString();
         }
     }
 }

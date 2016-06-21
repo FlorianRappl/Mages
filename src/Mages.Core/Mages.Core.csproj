@@ -92,6 +92,7 @@
     <Compile Include="Ast\Walkers\BaseTreeWalker.cs" />
     <Compile Include="Ast\Walkers\CompletionTreeWalker.cs" />
     <Compile Include="Ast\Walkers\OperationTreeWalker.cs" />
+    <Compile Include="Ast\Walkers\SerializeTreeWalker.cs" />
     <Compile Include="Ast\Walkers\SymbolTreeWalker.cs" />
     <Compile Include="Ast\Walkers\ValidationTreeWalker.cs" />
     <Compile Include="Configuration.cs" />
