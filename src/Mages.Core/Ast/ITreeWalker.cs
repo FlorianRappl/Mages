@@ -71,6 +71,12 @@
         /// <summary>
         /// Visits the given expression.
         /// </summary>
+        /// <param name="expression">Interpolated expression.</param>
+        void Visit(InterpolatedExpression expression);
+
+        /// <summary>
+        /// Visits the given expression.
+        /// </summary>
         /// <param name="expression">Arguments expression.</param>
         void Visit(ArgumentsExpression expression);
 

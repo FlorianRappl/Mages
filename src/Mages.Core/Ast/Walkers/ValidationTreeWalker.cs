@@ -237,6 +237,17 @@
             expression.Validate(this);
         }
 
+        void ITreeWalker.Visit(InterpolatedExpression expression)
+        {
+            expression.Validate(this);
+            expression.Format.Accept(this);
+
+            foreach (var replacement in expression.Replacements)
+            {
+                replacement.Accept(this);
+            }
+        }
+
         #endregion
 
         #region Reporting

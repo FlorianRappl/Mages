@@ -395,6 +395,20 @@
             }
         }
 
+        void ITreeWalker.Visit(InterpolatedExpression expression)
+        {
+            var length = expression.Replacements.Length + 1;
+            expression.Validate(this);
+
+            foreach (var replacement in expression.Replacements)
+            {
+                replacement.Accept(this);
+            }
+
+            expression.Format.Accept(this);
+            CallFunction(StandardFunctions.Format, length);
+        }
+
         #endregion
 
         #region Error Reporting

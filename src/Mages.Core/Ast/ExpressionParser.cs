@@ -730,6 +730,8 @@
                     return ParseVariable(tokens);
                 case TokenType.Number:
                     return ParseNumber(tokens);
+                case TokenType.InterpolatedString:
+                    return ParseInterpolated(tokens);
                 case TokenType.String:
                     return ParseString(tokens);
                 case TokenType.SemiColon:
@@ -797,6 +799,22 @@
             }
 
             return ParseInvalid(ErrorCode.KeywordUnexpected, tokens);
+        }
+
+        private IExpression ParseInterpolated(IEnumerator<IToken> tokens)
+        {
+            var token = (InterpolatedToken)tokens.Current;
+            var replacements = new IExpression[token.ReplacementCount];
+            var format = new ConstantExpression.StringConstant(token.Payload, token, token.Errors);
+
+            for (var i = 0; i < replacements.Length; i++)
+            {
+                var subtokens = token[i].GetEnumerator();
+                replacements[i] = ParseExpression(subtokens);
+            }
+
+            tokens.NextNonIgnorable();
+            return new InterpolatedExpression(format, replacements);
         }
 
         private static ConstantExpression ParseString(IEnumerator<IToken> tokens)

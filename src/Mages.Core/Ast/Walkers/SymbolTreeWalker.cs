@@ -1,7 +1,6 @@
 ﻿namespace Mages.Core.Ast.Walkers
 {
     using Mages.Core.Ast.Expressions;
-    using Mages.Core.Ast.Statements;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -9,7 +8,7 @@
     /// <summary>
     /// Represents the walker to gather symbol information.
     /// </summary>
-    public sealed class SymbolTreeWalker : ITreeWalker
+    public sealed class SymbolTreeWalker : BaseTreeWalker
     {
         #region Fields
 
@@ -95,67 +94,10 @@
 
         #region Visitors
 
-        void ITreeWalker.Visit(BlockStatement block)
-        {
-            foreach (var statement in block.Statements)
-            {
-                statement.Accept(this);
-            }
-        }
-
-        void ITreeWalker.Visit(SimpleStatement statement)
-        {
-            statement.Expression.Accept(this);
-        }
-
-        void ITreeWalker.Visit(VarStatement statement)
-        {
-            statement.Assignment.Accept(this);
-        }
-
-        void ITreeWalker.Visit(WhileStatement statement)
-        {
-            statement.Condition.Accept(this);
-            statement.Body.Accept(this);
-        }
-
-        void ITreeWalker.Visit(IfStatement statement)
-        {
-            statement.Condition.Accept(this);
-            statement.Primary.Accept(this);
-            statement.Secondary.Accept(this);
-        }
-
-        void ITreeWalker.Visit(ReturnStatement statement)
-        {
-            statement.Expression.Accept(this);
-        }
-
-        void ITreeWalker.Visit(BreakStatement statement)
-        {
-        }
-
-        void ITreeWalker.Visit(ContinueStatement statement)
-        {
-        }
-
-        void ITreeWalker.Visit(EmptyExpression expression)
-        {
-        }
-
-        void ITreeWalker.Visit(ConstantExpression expression)
-        {
-        }
-
-        void ITreeWalker.Visit(ArgumentsExpression expression)
-        {
-            foreach (var argument in expression.Arguments)
-            {
-                argument.Accept(this);
-            }
-        }
-
-        void ITreeWalker.Visit(AssignmentExpression expression)
+        /// <summary>
+        /// Visits the assignment expression.
+        /// </summary>
+        public override void Visit(AssignmentExpression expression)
         {
             expression.Value.Accept(this);
             _assigning = true;
@@ -163,67 +105,10 @@
             _assigning = false;
         }
 
-        void ITreeWalker.Visit(BinaryExpression expression)
-        {
-            expression.LValue.Accept(this);
-            expression.RValue.Accept(this);
-        }
-
-        void ITreeWalker.Visit(PreUnaryExpression expression)
-        {
-            expression.Value.Accept(this);
-        }
-
-        void ITreeWalker.Visit(PostUnaryExpression expression)
-        {
-            expression.Value.Accept(this);
-        }
-
-        void ITreeWalker.Visit(RangeExpression expression)
-        {
-            expression.From.Accept(this);
-            expression.Step.Accept(this);
-            expression.To.Accept(this);
-        }
-
-        void ITreeWalker.Visit(ConditionalExpression expression)
-        {
-            expression.Condition.Accept(this);
-            expression.Primary.Accept(this);
-            expression.Secondary.Accept(this);
-        }
-
-        void ITreeWalker.Visit(CallExpression expression)
-        {
-            expression.Function.Accept(this);
-            expression.Arguments.Accept(this);
-        }
-
-        void ITreeWalker.Visit(ObjectExpression expression)
-        {
-            foreach (var value in expression.Values)
-            {
-                value.Accept(this);
-            }
-        }
-
-        void ITreeWalker.Visit(PropertyExpression expression)
-        {
-            expression.Value.Accept(this);
-        }
-
-        void ITreeWalker.Visit(MatrixExpression expression)
-        {
-            foreach (var rows in expression.Values)
-            {
-                foreach (var value in rows)
-                {
-                    value.Accept(this);
-                }
-            }
-        }
-
-        void ITreeWalker.Visit(FunctionExpression expression)
+        /// <summary>
+        /// Visits the function expression.
+        /// </summary>
+        public override void Visit(FunctionExpression expression)
         {
             var scope = expression.Scope;
             var variables = expression.Parameters.Parameters.OfType<VariableExpression>();
@@ -239,24 +124,10 @@
             expression.Body.Accept(this);
         }
 
-        void ITreeWalker.Visit(InvalidExpression expression)
-        {
-        }
-
-        void ITreeWalker.Visit(IdentifierExpression expression)
-        {
-        }
-
-        void ITreeWalker.Visit(MemberExpression expression)
-        {
-            expression.Object.Accept(this);
-        }
-
-        void ITreeWalker.Visit(ParameterExpression expression)
-        {
-        }
-
-        void ITreeWalker.Visit(VariableExpression expression)
+        /// <summary>
+        /// Visits the variable expression.
+        /// </summary>
+        public override void Visit(VariableExpression expression)
         {
             var list = Find(expression.Name, expression.Scope);
 

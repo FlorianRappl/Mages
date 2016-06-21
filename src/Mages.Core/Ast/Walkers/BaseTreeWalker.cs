@@ -1,5 +1,6 @@
 ﻿namespace Mages.Core.Ast.Walkers
 {
+    using System;
     using Mages.Core.Ast.Expressions;
     using Mages.Core.Ast.Statements;
 
@@ -117,6 +118,19 @@
         {
             expression.LValue.Accept(this);
             expression.RValue.Accept(this);
+        }
+
+        /// <summary>
+        /// Visits an interpolated string - accepts the format and replacements.
+        /// </summary>
+        public virtual void Visit(InterpolatedExpression expression)
+        {
+            expression.Format.Accept(this);
+
+            foreach (var replacement in expression.Replacements)
+            {
+                replacement.Accept(this);
+            }
         }
 
         /// <summary>

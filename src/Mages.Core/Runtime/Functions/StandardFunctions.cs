@@ -395,5 +395,15 @@
                 If.Is<Function, IDictionary<String, Object>>(args, (f, o) => o.Where(f)) ??
                 If.Is<Function>(args, f => f(new[] { args[1] }).ToBoolean() ? args[1] : null);
         });
+
+        /// <summary>
+        /// Wraps the String.Format function.
+        /// </summary>
+        public static readonly Function Format = new Function(args =>
+        {
+            return Curry.MinOne(Format, args) ??
+                If.Is<String>(args, s => 
+                    String.Format(s, args.Skip(1).Select(Stringify.This).ToArray()));
+        });
     }
 }

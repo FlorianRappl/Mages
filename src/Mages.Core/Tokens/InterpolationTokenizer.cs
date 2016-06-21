@@ -116,6 +116,7 @@
                 }
 
                 tokens.RemoveAt(tokens.Count - 1);
+                tokens.Add(new EndToken(_scanner.Position));
                 _parts.Add(tokens);
             }
 

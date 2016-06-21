@@ -60,6 +60,7 @@
     <Compile Include="Ast\Expressions\ExpressionExtensions.cs" />
     <Compile Include="Ast\Expressions\FunctionExpression.cs" />
     <Compile Include="Ast\Expressions\IdentifierExpression.cs" />
+    <Compile Include="Ast\Expressions\InterpolatedExpression.cs" />
     <Compile Include="Ast\Expressions\InvalidExpression.cs" />
     <Compile Include="Ast\Expressions\MatrixExpression.cs" />
     <Compile Include="Ast\Expressions\MemberExpression.cs" />
