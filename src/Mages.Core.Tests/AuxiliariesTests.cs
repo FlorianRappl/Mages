@@ -255,5 +255,69 @@
             Assert.AreEqual(1.0, array["4"]);
             Assert.AreEqual(2.0, array["5"]);
         }
+
+        [Test]
+        public void IntersectionBetweenTwoObjectsWithMatchingKeyButValueMismatch()
+        {
+            var result = "intersection(new { a: 2, c: 4 }, new { a: 9 })".Eval();
+            var array = result as IDictionary<String, Object>;
+            Assert.IsNotNull(array);
+            Assert.AreEqual(0, array.Count);
+        }
+
+        [Test]
+        public void IntersectionBetweenTwoObjectsWithMatchingKeyAndValue()
+        {
+            var result = "intersection(new { a: 2, c: 4 }, new { a: 2 })".Eval();
+            var array = result as IDictionary<String, Object>;
+            Assert.IsNotNull(array);
+            Assert.AreEqual(1, array.Count);
+            Assert.AreEqual(2.0, array["a"]);
+        }
+
+        [Test]
+        public void UnionBetweenTwoObjectsWithTwoKeysDifferentInValue()
+        {
+            var result = "union(new { a: 2, c: 4 }, new { a: 9 })".Eval();
+            var array = result as IDictionary<String, Object>;
+            Assert.IsNotNull(array);
+            Assert.AreEqual(2, array.Count);
+            var subarray = array["a"] as IDictionary<String, Object>;
+            Assert.AreEqual(2.0, subarray["0"]);
+            Assert.AreEqual(9.0, subarray["1"]);
+            Assert.AreEqual(4.0, array["c"]);
+        }
+
+        [Test]
+        public void UnionBetweenTwoObjectWithTwoEqualInValue()
+        {
+            var result = "union(new { a: 2, c: 4 }, new { a: 2 })".Eval();
+            var array = result as IDictionary<String, Object>;
+            Assert.IsNotNull(array);
+            Assert.AreEqual(2, array.Count);
+            Assert.AreEqual(2.0, array["a"]);
+            Assert.AreEqual(4.0, array["c"]);
+        }
+
+        [Test]
+        public void ExceptBetweenTwoObjectsWithIdenticalValue()
+        {
+            var result = "except(new { a: 2 }, new { a: 2, c: 4 })".Eval();
+            var array = result as IDictionary<String, Object>;
+            Assert.IsNotNull(array);
+            Assert.AreEqual(1, array.Count);
+            Assert.AreEqual(4.0, array["c"]);
+        }
+
+        [Test]
+        public void ExceptBetweenTwoObjectsWithDifferentValue()
+        {
+            var result = "except(new { a: 9 }, new { a: 2, c: 4 })".Eval();
+            var array = result as IDictionary<String, Object>;
+            Assert.IsNotNull(array);
+            Assert.AreEqual(2, array.Count);
+            Assert.AreEqual(2.0, array["a"]);
+            Assert.AreEqual(4.0, array["c"]);
+        }
     }
 }
