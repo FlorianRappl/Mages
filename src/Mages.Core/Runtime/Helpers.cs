@@ -90,6 +90,40 @@
             return result;
         }
 
+        public static Object Zip(this IDictionary<String, Object> a, IDictionary<String, Object> b)
+        {
+            var result = new Dictionary<String, Object>();
+            var index = 0;
+            var aiter = a.Values.GetEnumerator();
+            var biter = b.Values.GetEnumerator();
+
+            while (aiter.MoveNext() && biter.MoveNext())
+            {
+                var value = new[] { aiter.Current, biter.Current };
+                result[(index++).ToString()] = ToArrayObject(value);
+            }
+
+            return result;
+        }
+
+        public static Object Merge(this IDictionary<String, Object> a, IDictionary<String, Object> b)
+        {
+            var result = new Dictionary<String, Object>();
+            var index = 0;
+
+            foreach (var value in a.Values)
+            {
+                result[(index++).ToString()] = value;
+            }
+
+            foreach (var value in b.Values)
+            {
+                result[(index++).ToString()] = value;
+            }
+
+            return result;
+        }
+
         public static Object Reduce(this IDictionary<String, Object> obj, Function f, Object start)
         {
             var result = start;

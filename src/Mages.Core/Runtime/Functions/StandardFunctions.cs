@@ -397,6 +397,24 @@
         });
 
         /// <summary>
+        /// Contains the zip function.
+        /// </summary>
+        public static readonly Function Zip = new Function(args =>
+        {
+            return Curry.MinTwo(Zip, args) ??
+                args[0].ToObject().Zip(args[1].ToObject());
+        });
+
+        /// <summary>
+        /// Contains the concat function.
+        /// </summary>
+        public static readonly Function Concat = new Function(args =>
+        {
+            return Curry.MinTwo(Concat, args) ??
+                args[0].ToObject().Merge(args[1].ToObject());
+        });
+
+        /// <summary>
         /// Wraps the String.Format function.
         /// </summary>
         public static readonly Function Format = new Function(args =>

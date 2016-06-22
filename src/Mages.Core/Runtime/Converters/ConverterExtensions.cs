@@ -90,6 +90,42 @@
             return obj.Count > 0;
         }
 
+        public static IDictionary<String, Object> ToObject(this Object value)
+        {
+            if (value is IDictionary<String, Object>)
+            {
+                return (IDictionary<String, Object>)value;
+            }
+            else if (value is Double[,])
+            {
+                var matrix = (Double[,])value;
+                var result = new Dictionary<String, Object>();
+                var rows = matrix.GetRows();
+                var columns = matrix.GetColumns();
+
+                for (int i = 0, k = 0; i < rows; i++)
+                {
+                    for (var j = 0; j < columns; j++, k++)
+                    {
+                        result[k.ToString()] = matrix[i, j];
+                    }
+                }
+
+                return result;
+            }
+            else
+            {
+                var result = new Dictionary<String, Object>();
+
+                if (value != null)
+                {
+                    result["0"] = value;
+                }
+
+                return result;
+            }
+        }
+
         public static Double ToNumber(this Object value)
         {
             if (value is Double)

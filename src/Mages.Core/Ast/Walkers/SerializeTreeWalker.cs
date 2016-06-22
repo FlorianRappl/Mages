@@ -20,6 +20,10 @@
 
         #region ctor
 
+        /// <summary>
+        /// Creates a new serialization tree walker.
+        /// </summary>
+        /// <param name="writer">The destination to write to.</param>
         public SerializeTreeWalker(TextWriter writer)
         {
             _writer = writer;

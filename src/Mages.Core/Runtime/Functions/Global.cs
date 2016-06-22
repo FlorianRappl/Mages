@@ -67,6 +67,8 @@
             { "map", StandardFunctions.Map },
             { "reduce", StandardFunctions.Reduce },
             { "where", StandardFunctions.Where },
+            { "concat", StandardFunctions.Concat },
+            { "zip", StandardFunctions.Zip },
         };
     }
 }

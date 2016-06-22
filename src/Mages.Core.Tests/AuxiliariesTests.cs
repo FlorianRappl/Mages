@@ -106,5 +106,154 @@
             Assert.AreEqual(4.0, array["b"]);
             Assert.AreEqual(3.0, array["c"]);
         }
+
+        [Test]
+        public void ZipWithObjectsResultInArrayObject()
+        {
+            var result = "zip(new { c: 4 }, new { a: 5, b: 4, c: 3 })".Eval();
+            var array = result as IDictionary<String, Object>;
+            Assert.IsNotNull(array);
+            Assert.AreEqual(1, array.Count);
+            var subarray = array["0"] as IDictionary<String, Object>;
+            Assert.IsNotNull(subarray);
+            Assert.AreEqual(4.0, subarray["0"]);
+            Assert.AreEqual(5.0, subarray["1"]);
+        }
+
+        [Test]
+        public void ZipWithSwitchedObjectsResultInArrayObjectWithReverseEntry()
+        {
+            var result = "zip(new { a: 5, b: 4, c: 3 }, new { c: 4 })".Eval();
+            var array = result as IDictionary<String, Object>;
+            Assert.IsNotNull(array);
+            Assert.AreEqual(1, array.Count);
+            var subarray = array["0"] as IDictionary<String, Object>;
+            Assert.IsNotNull(subarray);
+            Assert.AreEqual(5.0, subarray["0"]);
+            Assert.AreEqual(4.0, subarray["1"]);
+        }
+
+        [Test]
+        public void ZipWithMatrixAndObjectResultInArrayObject()
+        {
+            var result = "zip([1,2,3], new { a: 5, b: 4, c: 3 })".Eval();
+            var array = result as IDictionary<String, Object>;
+            Assert.IsNotNull(array);
+            Assert.AreEqual(3, array.Count);
+            var subarray1 = array["0"] as IDictionary<String, Object>;
+            var subarray2 = array["1"] as IDictionary<String, Object>;
+            var subarray3 = array["2"] as IDictionary<String, Object>;
+            Assert.AreEqual(1.0, subarray1["0"]);
+            Assert.AreEqual(5.0, subarray1["1"]);
+            Assert.AreEqual(2.0, subarray2["0"]);
+            Assert.AreEqual(4.0, subarray2["1"]);
+            Assert.AreEqual(3.0, subarray3["0"]);
+            Assert.AreEqual(3.0, subarray3["1"]);
+        }
+
+        [Test]
+        public void ZipWithMatrixAndNumberResultInArrayObject()
+        {
+            var result = "zip([1,2,3], -5)".Eval();
+            var array = result as IDictionary<String, Object>;
+            Assert.IsNotNull(array);
+            Assert.AreEqual(1, array.Count);
+            var subarray = array["0"] as IDictionary<String, Object>;
+            Assert.AreEqual(1.0, subarray["0"]);
+            Assert.AreEqual(-5.0, subarray["1"]);
+        }
+
+        [Test]
+        public void ZipWithBooleanAndStringResultInArrayObject()
+        {
+            var result = "zip(false, \"foo\")".Eval();
+            var array = result as IDictionary<String, Object>;
+            Assert.IsNotNull(array);
+            Assert.AreEqual(1, array.Count);
+            var subarray = array["0"] as IDictionary<String, Object>;
+            Assert.AreEqual(false, subarray["0"]);
+            Assert.AreEqual("foo", subarray["1"]);
+        }
+
+        [Test]
+        public void ZipWitMatricesResultInArrayObject()
+        {
+            var result = "zip([1,2,3], [4,5])".Eval();
+            var array = result as IDictionary<String, Object>;
+            Assert.IsNotNull(array);
+            Assert.AreEqual(2, array.Count);
+            var subarray1 = array["0"] as IDictionary<String, Object>;
+            var subarray2 = array["1"] as IDictionary<String, Object>;
+            Assert.AreEqual(1.0, subarray1["0"]);
+            Assert.AreEqual(4.0, subarray1["1"]);
+            Assert.AreEqual(2.0, subarray2["0"]);
+            Assert.AreEqual(5.0, subarray2["1"]);
+        }
+
+        [Test]
+        public void ConcatWithObjectAndBooleanResultInArrayObject()
+        {
+            var result = "concat(new { c: 4, foo: \"bar\" }, true)".Eval();
+            var array = result as IDictionary<String, Object>;
+            Assert.IsNotNull(array);
+            Assert.AreEqual(3, array.Count);
+            Assert.AreEqual(4.0, array["0"]);
+            Assert.AreEqual("bar", array["1"]);
+            Assert.AreEqual(true, array["2"]);
+        }
+
+        [Test]
+        public void ConcatWithObjectsResultInArrayObject()
+        {
+            var result = "concat(new { a: 5, b: 4, c: 3 }, new { c: 4 })".Eval();
+            var array = result as IDictionary<String, Object>;
+            Assert.IsNotNull(array);
+            Assert.AreEqual(4, array.Count);
+            Assert.AreEqual(5.0, array["0"]);
+            Assert.AreEqual(4.0, array["1"]);
+            Assert.AreEqual(3.0, array["2"]);
+            Assert.AreEqual(4.0, array["3"]);
+        }
+
+        [Test]
+        public void ConcatWithMatrixAndObjectResultInArrayObject()
+        {
+            var result = "concat([1,2,3], new { a: 5, b: 4, c: 3 })".Eval();
+            var array = result as IDictionary<String, Object>;
+            Assert.IsNotNull(array);
+            Assert.AreEqual(6, array.Count);
+            Assert.AreEqual(1.0, array["0"]);
+            Assert.AreEqual(2.0, array["1"]);
+            Assert.AreEqual(3.0, array["2"]);
+            Assert.AreEqual(5.0, array["3"]);
+            Assert.AreEqual(4.0, array["4"]);
+            Assert.AreEqual(3.0, array["5"]);
+        }
+
+        [Test]
+        public void ConcatWithNumberAndNumberResultInArrayObject()
+        {
+            var result = "concat(5, -5)".Eval();
+            var array = result as IDictionary<String, Object>;
+            Assert.IsNotNull(array);
+            Assert.AreEqual(2, array.Count);
+            Assert.AreEqual(5.0, array["0"]);
+            Assert.AreEqual(-5.0, array["1"]);
+        }
+
+        [Test]
+        public void ConcatWithMatricesResultInArrayObject()
+        {
+            var result = "concat([1,2,3,4], [1,2])".Eval();
+            var array = result as IDictionary<String, Object>;
+            Assert.IsNotNull(array);
+            Assert.AreEqual(6, array.Count);
+            Assert.AreEqual(1.0, array["0"]);
+            Assert.AreEqual(2.0, array["1"]);
+            Assert.AreEqual(3.0, array["2"]);
+            Assert.AreEqual(4.0, array["3"]);
+            Assert.AreEqual(1.0, array["4"]);
+            Assert.AreEqual(2.0, array["5"]);
+        }
     }
 }
