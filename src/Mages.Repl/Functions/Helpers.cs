@@ -4,6 +4,7 @@
     using Mages.Core;
     using Mages.Core.Ast;
     using Mages.Core.Vm;
+    using Modules;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -73,6 +74,16 @@
             var walker = new SerializeTreeWalker(writer);
             statements.ToBlock().Accept(walker);
             return sb.ToString();
+        }
+
+        public static Object Import(String fileName)
+        {
+            return null;
+        }
+
+        public static void Export(Engine engine, Object value)
+        {
+            Cache.Assign(engine, value);
         }
     }
 }

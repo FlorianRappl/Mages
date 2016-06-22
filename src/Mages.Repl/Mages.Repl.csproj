@@ -52,6 +52,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Modules\Cache.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="ConsoleInteractivity.cs" />
     <Compile Include="ErrorCodeExtensions.cs" />
