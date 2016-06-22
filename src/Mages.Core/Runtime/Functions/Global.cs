@@ -69,6 +69,9 @@
             { "where", StandardFunctions.Where },
             { "concat", StandardFunctions.Concat },
             { "zip", StandardFunctions.Zip },
+            { "intersection", StandardFunctions.Intersection },
+            { "union", StandardFunctions.Union },
+            { "except", StandardFunctions.Except },
         };
     }
 }

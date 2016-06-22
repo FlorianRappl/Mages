@@ -415,6 +415,33 @@
         });
 
         /// <summary>
+        /// Contains the intersection function.
+        /// </summary>
+        public static readonly Function Intersection = new Function(args =>
+        {
+            return Curry.MinTwo(Intersection, args) ??
+                args[0].ToObject().Intersect(args[1].ToObject()).ToDictionary(m => m.Key, m => m.Value);
+        });
+
+        /// <summary>
+        /// Contains the union function.
+        /// </summary>
+        public static readonly Function Union = new Function(args =>
+        {
+            return Curry.MinTwo(Union, args) ??
+                args[0].ToObject().Union(args[1].ToObject()).ToDictionary(m => m.Key, m => m.Value);
+        });
+
+        /// <summary>
+        /// Contains the except function.
+        /// </summary>
+        public static readonly Function Except = new Function(args =>
+        {
+            return Curry.MinTwo(Except, args) ??
+                args[1].ToObject().Except(args[0].ToObject()).ToDictionary(m => m.Key, m => m.Value);
+        });
+
+        /// <summary>
         /// Wraps the String.Format function.
         /// </summary>
         public static readonly Function Format = new Function(args =>
