@@ -13,13 +13,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Core.Performance", "M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Repl.Installer", "Mages.Repl.Installer\Mages.Repl.Installer.csproj", "{2239BDD1-07B4-44B0-A6DB-ED4C69B8797C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Modules.LinearAlgebra", "Mages.Modules.LinearAlgebra\Mages.Modules.LinearAlgebra.csproj", "{84965E3E-B7E6-49E7-ADF1-46A3CB7EBEA6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Plugins.LinearAlgebra", "Mages.Plugins.LinearAlgebra\Mages.Plugins.LinearAlgebra.csproj", "{84965E3E-B7E6-49E7-ADF1-46A3CB7EBEA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Modules.FileSystem", "Mages.Modules.FileSystem\Mages.Modules.FileSystem.csproj", "{DF8D8E0E-87BC-4B70-8560-14B2DE02C424}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Plugins.FileSystem", "Mages.Plugins.FileSystem\Mages.Plugins.FileSystem.csproj", "{DF8D8E0E-87BC-4B70-8560-14B2DE02C424}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Modules.Draw", "Mages.Modules.Draw\Mages.Modules.Draw.csproj", "{D9A3AF85-2B7F-4240-BBB4-54A75A599EFC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Plugins.Draw", "Mages.Plugins.Draw\Mages.Plugins.Draw.csproj", "{D9A3AF85-2B7F-4240-BBB4-54A75A599EFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Modules.Plots", "Mages.Modules.Plots\Mages.Modules.Plots.csproj", "{152E57B3-2AC2-434C-9695-73BB91E9D772}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Plugins.Plots", "Mages.Plugins.Plots\Mages.Plugins.Plots.csproj", "{152E57B3-2AC2-434C-9695-73BB91E9D772}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

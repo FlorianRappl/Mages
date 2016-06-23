@@ -86,21 +86,21 @@
       <Project>{b0698a2a-bfe9-4568-9055-82302f325452}</Project>
       <Name>Mages.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Mages.Modules.Draw\Mages.Modules.Draw.csproj">
+    <ProjectReference Include="..\Mages.Plugins.Draw\Mages.Plugins.Draw.csproj">
       <Project>{d9a3af85-2b7f-4240-bbb4-54a75a599efc}</Project>
-      <Name>Mages.Modules.Draw</Name>
+      <Name>Mages.Plugins.Draw</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Mages.Modules.FileSystem\Mages.Modules.FileSystem.csproj">
+    <ProjectReference Include="..\Mages.Plugins.FileSystem\Mages.Plugins.FileSystem.csproj">
       <Project>{df8d8e0e-87bc-4b70-8560-14b2de02c424}</Project>
-      <Name>Mages.Modules.FileSystem</Name>
+      <Name>Mages.Plugins.FileSystem</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Mages.Modules.LinearAlgebra\Mages.Modules.LinearAlgebra.csproj">
+    <ProjectReference Include="..\Mages.Plugins.LinearAlgebra\Mages.Plugins.LinearAlgebra.csproj">
       <Project>{84965e3e-b7e6-49e7-adf1-46a3cb7ebea6}</Project>
-      <Name>Mages.Modules.LinearAlgebra</Name>
+      <Name>Mages.Plugins.LinearAlgebra</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Mages.Modules.Plots\Mages.Modules.Plots.csproj">
+    <ProjectReference Include="..\Mages.Plugins.Plots\Mages.Plugins.Plots.csproj">
       <Project>{152e57b3-2ac2-434c-9695-73bb91e9d772}</Project>
-      <Name>Mages.Modules.Plots</Name>
+      <Name>Mages.Plugins.Plots</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

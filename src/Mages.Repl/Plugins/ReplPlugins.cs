@@ -1,10 +1,10 @@
 ﻿namespace Mages.Repl.Plugins
 {
     using Mages.Core;
-    using Mages.Modules.Draw;
-    using Mages.Modules.FileSystem;
-    using Mages.Modules.LinearAlgebra;
-    using Mages.Modules.Plots;
+    using Mages.Plugins.Draw;
+    using Mages.Plugins.FileSystem;
+    using Mages.Plugins.LinearAlgebra;
+    using Mages.Plugins.Plots;
 
     static class ReplPlugins
     {
