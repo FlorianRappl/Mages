@@ -97,6 +97,10 @@
       <Project>{84965e3e-b7e6-49e7-adf1-46a3cb7ebea6}</Project>
       <Name>Mages.Modules.LinearAlgebra</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Mages.Modules.Plots\Mages.Modules.Plots.csproj">
+      <Project>{152e57b3-2ac2-434c-9695-73bb91e9d772}</Project>
+      <Name>Mages.Modules.Plots</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
