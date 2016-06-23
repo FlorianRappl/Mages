@@ -233,6 +233,7 @@
         {
             return Curry.MinOne(Sum, args) ??
                 If.Is<Double[,]>(args, x => x.Reduce((a, b) => a + b)) ??
+                If.Is<Dictionary<String, Object>>(args, obj => obj.Sum(m => m.Value.ToNumber())) ??
                 args[0].ToNumber();
         });
 
@@ -243,6 +244,7 @@
         {
             return Curry.MinOne(Min, args) ??
                 If.Is<Double[,]>(args, x => x.Reduce(Math.Min)) ??
+                If.Is<Dictionary<String, Object>>(args, obj => obj.Min(m => m.Value.ToNumber())) ??
                 args[0].ToNumber();
         });
 
@@ -253,6 +255,7 @@
         {
             return Curry.MinOne(Max, args) ??
                 If.Is<Double[,]>(args, x => x.Reduce(Math.Max)) ??
+                If.Is<Dictionary<String, Object>>(args, obj => obj.Max(m => m.Value.ToNumber())) ??
                 args[0].ToNumber();
         });
 
