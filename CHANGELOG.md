@@ -1,3 +1,15 @@
+# 0.9.0
+
+- Some improvements and fixes
+- Import and export in REPL (#41)
+- Serialize instructions and AST (#40)
+- `intersection`, `union`, and `except` functions (#39)		
+- `zip` and `concat` functions (#38)
+- `reduce` and `where` functions (#37)
+- Added interpolated strings (#35)
+- Filesystem plugin for the REPL (#36)
+- Some more REPL plugins
+
 # 0.8.0
 
 - Included x-assignment operator (#34)
