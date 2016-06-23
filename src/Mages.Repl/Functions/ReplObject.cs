@@ -21,5 +21,10 @@
             var str = Stringify.This(value);
             Console.WriteLine(str);
         }
+
+        public void Exit()
+        {
+            Environment.Exit(0);
+        }
     }
 }
