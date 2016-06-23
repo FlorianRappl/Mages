@@ -1,10 +1,11 @@
 ﻿namespace Mages.Repl.Functions
 {
-    using Core.Ast.Walkers;
+    using Mages.Core.Ast.Walkers;
     using Mages.Core;
     using Mages.Core.Ast;
     using Mages.Core.Vm;
-    using Modules;
+    using Mages.Repl.Modules;
+    using Ninject;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -78,7 +79,24 @@
 
         public static Object Import(String fileName)
         {
-            return null;
+            var path = Path.GetFullPath(fileName);
+            var reader = Program.Kernel.Get<IFileReader>();
+            var engine = Cache.Find(path);
+
+            if (engine == null)
+            {
+                var content = reader.GetContent(path);
+
+                if (!String.IsNullOrEmpty(content))
+                {
+                    var creator = Program.Kernel.Get<IMagesCreator>();
+                    engine = creator.CreateEngine();
+                    Cache.Init(engine, path);
+                    engine.Interpret(content);
+                }
+            }
+
+            return Cache.Retrieve(engine);
         }
 
         public static void Export(Engine engine, Object value)

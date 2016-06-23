@@ -60,6 +60,7 @@
     <Compile Include="IMagesCreator.cs" />
     <Compile Include="ModuleFileReader.cs" />
     <Compile Include="Modules\Cache.cs" />
+    <Compile Include="Modules\Variables.cs" />
     <Compile Include="OpenFileReader.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="ConsoleInteractivity.cs" />
