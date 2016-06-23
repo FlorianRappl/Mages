@@ -432,7 +432,9 @@
         public static readonly Function Union = new Function(args =>
         {
             return Curry.MinTwo(Union, args) ??
-                args[0].ToObject().Union(args[1].ToObject()).ToDictionary(m => m.Key, m => m.Value);
+                args[0].ToObject().Union(args[1].ToObject()).GroupBy(m => m.Key).
+                    ToDictionary(m => m.Key, m => m.Count() == 1 ? m.Single().Value : 
+                        Helpers.ToArrayObject(m.Select(n => n.Value).Distinct().ToArray()));
         });
 
         /// <summary>
