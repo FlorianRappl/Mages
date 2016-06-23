@@ -23,7 +23,7 @@
         private void SerializeTo(IDictionary<String, Object> obj, StringBuilder buffer, Int32 level)
         {
             var index = 0;
-            _seen.Add(obj);
+            _seen.Add(obj.Unwrap());
             buffer.AppendLine("{");
 
             foreach (var item in obj)
@@ -56,7 +56,7 @@
             }
             else if (value is IDictionary<String, Object>)
             {
-                if (!_seen.Contains(value))
+                if (!_seen.Contains(value.Unwrap()))
                 {
                     SerializeTo((IDictionary<String, Object>)value, buffer, level);
                 }

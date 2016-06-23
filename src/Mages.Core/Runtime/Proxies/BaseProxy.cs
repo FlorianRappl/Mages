@@ -35,8 +35,12 @@
             {
                 return _obj;
             }
+            else if (value != null)
+            {
+                return Convert(value, value.GetType().FindPrimitive());
+            }
 
-            return Convert(value, value.GetType().FindPrimitive());
+            return null;
         }
     }
 }
