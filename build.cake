@@ -31,6 +31,7 @@ var buildResultDir = Directory("./bin") + Directory(version);
 var nugetRoot = buildResultDir + Directory("nuget");
 var chocolateyRoot = buildResultDir + Directory("chocolatey");
 var squirrelRoot = buildResultDir + Directory("squirrel");
+var releaseDir = squirrelRoot + Directory("release");
 
 // Initialization
 // ----------------------------------------
@@ -192,8 +193,7 @@ Task("Create-Squirrel-Package")
         }
 
         var spec = squirrelRoot + File("Mages.nuspec");
-        var release = squirrelRoot + Directory("release");
-        CreateDirectory(release);
+        CreateDirectory(releaseDir);
 
         NuGetPack(spec, new NuGetPackSettings
         {
@@ -210,7 +210,7 @@ Task("Create-Squirrel-Package")
         {
             Silent = true,
             NoMsi = true,
-            ReleaseDirectory = release,
+            ReleaseDirectory = releaseDir,
             SetupIcon = GetFiles("./src/Mages.Repl.Installer/mages.ico").First().FullPath
         });
     });
@@ -281,16 +281,26 @@ Task("Publish-GitHub-Release")
 
         var target = nugetRoot + Directory("lib") + Directory("net35");
         var libPath = target + File("Mages.Core.dll");
-        var setupPath = squirrelRoot + Directory("release") + File("Setup.exe");
+        var releaseFiles = GetFiles(releaseDir.Path.FullPath + "/*");
 
         using (var libStream = System.IO.File.OpenRead(libPath.Path.FullPath))
         {
             github.Release.UploadAsset(release, new ReleaseAssetUpload("Mages.Core.dll", "application/x-msdownload", libStream, null)).Wait();
         }
 
-        using (var setupStream = System.IO.File.OpenRead(setupPath.Path.FullPath))
+        foreach (var file in releaseFiles)
         {
-            github.Release.UploadAsset(release, new ReleaseAssetUpload("Mages.exe", "application/x-msdownload", setupStream, null)).Wait();
+            var name = System.IO.Path.GetFileName(file.FullPath);
+
+            if (name.Equals("Setup.exe"))
+            {
+                name = "Mages.exe";
+            }
+
+            using (var fileStream = System.IO.File.OpenRead(file.FullPath))
+            {
+                github.Release.UploadAsset(release, new ReleaseAssetUpload(name, "application/x-msdownload", fileStream, null)).Wait();
+            }
         }
     });
     
