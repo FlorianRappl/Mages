@@ -9,16 +9,16 @@
         {
             using (var manager = GetUpdateManager())
             {
-                Console.Write("Checking for updates... ");
+                Console.WriteLine("Checking for updates... ");
                 var updates = manager.CheckForUpdate().Result;
                 var releases = updates.ReleasesToApply;
 
                 if (releases.Count > 0)
                 {
-                    Console.Write("Downloading updates... ");
+                    Console.WriteLine("Downloading updates... ");
                     manager.DownloadReleases(releases).Wait();
 
-                    Console.Write("Applying updates... ");
+                    Console.WriteLine("Applying updates... ");
                     var version = manager.ApplyReleases(updates).Result;
 
                     Console.WriteLine("Successfully updated to version {0}", version);
@@ -32,7 +32,7 @@
 
         private static UpdateManager GetUpdateManager()
         {
-            return UpdateManager.GitHubUpdateManager("https://github.com/FlorianRappl/Mages").Result;
+            return UpdateManager.GitHubUpdateManager("https://github.com/FlorianRappl/Mages", "Mages").Result;
         }
     }
 }

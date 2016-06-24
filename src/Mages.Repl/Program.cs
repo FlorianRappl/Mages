@@ -4,6 +4,8 @@
     using Ninject;
     using System;
     using System.Diagnostics;
+    using System.IO;
+    using System.Security.Principal;
 
     static class Program
     {
@@ -18,7 +20,14 @@
         {
             if (options.IsUpdating)
             {
-                Process.Start("mages.installer.exe", "--update");
+                var directory = AppDomain.CurrentDomain.BaseDirectory;
+                var path = Path.Combine(directory, "mages.installer.exe");
+                var admin = IsAdministrator();
+                var process = new Process
+                {
+                    StartInfo = new ProcessStartInfo(path, "--update") { UseShellExecute = !admin }
+                };
+                process.Start();
             }
             else
             {
@@ -39,6 +48,13 @@
                     repl.Run();
                 }
             }
+        }
+
+        private static Boolean IsAdministrator()
+        {
+            var identity = WindowsIdentity.GetCurrent();
+            var principal = new WindowsPrincipal(identity);
+            return principal.IsInRole(WindowsBuiltInRole.Administrator);
         }
     }
 }
