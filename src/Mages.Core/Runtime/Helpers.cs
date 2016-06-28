@@ -56,6 +56,44 @@
             return value;
         }
 
+        public static Object GetKeys(this IDictionary<String, Object> obj)
+        {
+            var result = new Dictionary<String, Object>();
+
+            foreach (var item in obj)
+            {
+                result[result.Count.ToString()] = item.Key;
+            }
+
+            return result;
+        }
+
+        public static Boolean AllTrue(this IDictionary<String, Object> obj)
+        {
+            foreach (var item in obj)
+            {
+                if (!item.Value.ToBoolean())
+                {
+                    return false;
+                }
+            }
+
+            return obj.Count > 0;
+        }
+
+        public static Boolean AnyTrue(this IDictionary<String, Object> obj)
+        {
+            foreach (var item in obj)
+            {
+                if (item.Value.ToBoolean())
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public static Object Map(this IDictionary<String, Object> obj, Function f)
         {
             var result = new Dictionary<String, Object>();

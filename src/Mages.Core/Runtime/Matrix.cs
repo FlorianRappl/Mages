@@ -21,6 +21,19 @@
             return matrix.GetLength(0) * matrix.GetLength(1);
         }
 
+        public static Object GetKeys(this Double[,] matrix)
+        {
+            var result = new Dictionary<String, Object>();
+            var length = matrix.Length;
+
+            for (var i = 0; i < length; i++)
+            {
+                result[i.ToString()] = (Double)i;
+            }
+
+            return result;
+        }
+
         public static Boolean TryGetIndices(this Double[,] matrix, Object[] arguments, out Int32 row, out Int32 col)
         {
             var rows = matrix.GetRows();

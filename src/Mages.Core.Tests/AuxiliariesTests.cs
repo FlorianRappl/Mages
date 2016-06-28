@@ -319,5 +319,59 @@
             Assert.AreEqual(2.0, array["a"]);
             Assert.AreEqual(4.0, array["c"]);
         }
+
+        [Test]
+        public void KeysOfMatrixYieldNumbers()
+        {
+            var result = "keys(1:5)".Eval();
+            var array = result as IDictionary<String, Object>;
+            Assert.IsNotNull(array);
+            Assert.AreEqual(5, array.Count);
+            Assert.AreEqual(0.0, array["0"]);
+            Assert.AreEqual(1.0, array["1"]);
+            Assert.AreEqual(2.0, array["2"]);
+            Assert.AreEqual(3.0, array["3"]);
+            Assert.AreEqual(4.0, array["4"]);
+        }
+
+        [Test]
+        public void KeysOfObjectYieldsStrings()
+        {
+            var result = "keys(new { a: 5, c: \"foo\", z: true })".Eval();
+            var array = result as IDictionary<String, Object>;
+            Assert.IsNotNull(array);
+            Assert.AreEqual(3, array.Count);
+            Assert.AreEqual("a", array["0"]);
+            Assert.AreEqual("c", array["1"]);
+            Assert.AreEqual("z", array["2"]);
+        }
+
+        [Test]
+        public void AnyOfEmptyObjectIsFalse()
+        {
+            var result = "any(new { })".Eval();
+            Assert.AreEqual(false, result);
+        }
+
+        [Test]
+        public void AnyOfObjectWithAnyTrueIsTrue()
+        {
+            var result = "any(new { b: 0, c: false, h: true })".Eval();
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void AllOfObjectWithSomeFalseIsFalse()
+        {
+            var result = "all(new { b: 0, c: false, h: true })".Eval();
+            Assert.AreEqual(false, result);
+        }
+
+        [Test]
+        public void AllOfMatrixWithNoZerosIsTrue()
+        {
+            var result = "all(1:10)".Eval();
+            Assert.AreEqual(true, result);
+        }
     }
 }

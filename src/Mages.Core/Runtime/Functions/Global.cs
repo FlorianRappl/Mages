@@ -56,6 +56,7 @@
             { "throw", StandardFunctions.Throw },
             { "catch", StandardFunctions.Catch },
             { "length", StandardFunctions.Length },
+            { "keys", StandardFunctions.Keys },
             { "sum", StandardFunctions.Sum },
             { "any", StandardFunctions.Any },
             { "all", StandardFunctions.All },

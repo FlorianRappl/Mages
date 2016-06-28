@@ -330,6 +330,7 @@
         {
             return Curry.MinOne(Any, args) ??
                 If.Is<Double[,]>(args, x => x.AnyTrue()) ??
+                If.Is<Dictionary<String, Object>>(args, x => x.AnyTrue()) ??
                 args[0].ToBoolean();
         });
 
@@ -340,6 +341,7 @@
         {
             return Curry.MinOne(All, args) ??
                 If.Is<Double[,]>(args, x => x.AllTrue()) ??
+                If.Is<Dictionary<String, Object>>(args, x => x.AllTrue()) ??
                 args[0].ToBoolean();
         });
 
@@ -365,6 +367,16 @@
         /// Contains the list function.
         /// </summary>
         public static readonly Function List = new Function(Helpers.ToArrayObject);
+
+        /// <summary>
+        /// Contains the keys function.
+        /// </summary>
+        public static readonly Function Keys = new Function(args =>
+        {
+            return Curry.MinOne(Map, args) ??
+                If.Is<IDictionary<String, Object>>(args, x => x.GetKeys()) ??
+                If.Is<Double[,]>(args, x => x.GetKeys());
+        });
 
         /// <summary>
         /// Contains the map function.
