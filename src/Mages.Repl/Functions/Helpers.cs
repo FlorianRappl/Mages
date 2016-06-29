@@ -74,7 +74,7 @@
             var writer = new StringWriter(sb);
             var walker = new SerializeTreeWalker(writer);
             statements.ToBlock().Accept(walker);
-            return sb.ToString();
+            return sb.ToString(0, sb.Length - Environment.NewLine.Length);
         }
 
         public static Object Import(String fileName)
