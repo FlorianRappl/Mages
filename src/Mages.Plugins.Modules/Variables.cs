@@ -1,4 +1,4 @@
-﻿namespace Mages.Repl.Modules
+﻿namespace Mages.Plugins.Modules
 {
     using System;
 

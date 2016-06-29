@@ -9,8 +9,6 @@
 
     static class Program
     {
-        internal static readonly IKernel Kernel = new StandardKernel(new ReplServices());
-
         internal static void Main(String[] arguments)
         {
             Parser.Default.ParseArguments<Options>(arguments).WithParsed(Run);
@@ -31,11 +29,12 @@
             }
             else
             {
-                var repl = Kernel.Get<ReplCore>();
+                var kernel = new StandardKernel(new ReplServices());
+                var repl = kernel.Get<ReplCore>();
 
                 if (!String.IsNullOrEmpty(options.ScriptFile))
                 {
-                    var fileReader = Kernel.Get<OpenFileReader>();
+                    var fileReader = kernel.Get<IFileReader>();
                     var content = fileReader.GetContent(options.ScriptFile);
                     repl.Run(content);
                 }

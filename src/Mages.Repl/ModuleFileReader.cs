@@ -1,9 +1,10 @@
 ﻿namespace Mages.Repl
 {
+    using Mages.Plugins.Modules;
     using System;
     using System.IO;
 
-    sealed class ModuleFileReader : IFileReader
+    sealed class ModuleFileReader : IModuleFileReader
     {
         public String GetContent(String fileName)
         {

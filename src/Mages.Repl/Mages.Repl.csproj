@@ -57,10 +57,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="IFileReader.cs" />
-    <Compile Include="IMagesCreator.cs" />
     <Compile Include="ModuleFileReader.cs" />
-    <Compile Include="Modules\Cache.cs" />
-    <Compile Include="Modules\Variables.cs" />
     <Compile Include="OpenFileReader.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="ConsoleInteractivity.cs" />
@@ -97,6 +94,10 @@
     <ProjectReference Include="..\Mages.Plugins.LinearAlgebra\Mages.Plugins.LinearAlgebra.csproj">
       <Project>{84965e3e-b7e6-49e7-adf1-46a3cb7ebea6}</Project>
       <Name>Mages.Plugins.LinearAlgebra</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mages.Plugins.Modules\Mages.Plugins.Modules.csproj">
+      <Project>{16e1baf8-6ce0-404f-85d8-e8841cc48eca}</Project>
+      <Name>Mages.Plugins.Modules</Name>
     </ProjectReference>
     <ProjectReference Include="..\Mages.Plugins.Plots\Mages.Plugins.Plots.csproj">
       <Project>{152e57b3-2ac2-434c-9695-73bb91e9d772}</Project>

@@ -1,6 +1,7 @@
 ﻿namespace Mages.Repl
 {
     using Mages.Core;
+    using Mages.Plugins.Modules;
     using Mages.Repl.Tutorial;
     using System;
 
@@ -9,7 +10,7 @@
         private readonly IInteractivity _interactivity;
         private readonly Engine _engine;
 
-        public ReplCore(IInteractivity interactivity, IMagesCreator creator)
+        public ReplCore(IInteractivity interactivity, IEngineCreator creator)
         {
             _interactivity = interactivity;
             _engine = creator.CreateEngine();

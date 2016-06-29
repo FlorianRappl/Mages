@@ -37,17 +37,6 @@
 
                 return null;
             }));
-            engine.SetFunction("import", new Function(args =>
-            {
-                var id = engine.Globals["import"] as Function;
-                return Curry.MinOne(id, args) ??
-                    If.Is<String>(args, fileName => Helpers.Import(fileName));
-            }));
-            engine.SetFunction("export", new Function(args =>
-            {
-                Helpers.Export(engine, args.Length != 0 ? args[0] : null);
-                return null;
-            }));
             engine.SetConstant("repl", new ReplObject());
         }
     }

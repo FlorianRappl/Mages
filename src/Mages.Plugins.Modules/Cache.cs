@@ -1,9 +1,8 @@
-﻿namespace Mages.Repl.Modules
+﻿namespace Mages.Plugins.Modules
 {
     using Mages.Core;
     using System;
     using System.Collections.Generic;
-    using System.Runtime.CompilerServices;
 
     static class Cache
     {
