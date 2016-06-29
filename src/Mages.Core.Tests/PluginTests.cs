@@ -109,6 +109,18 @@
             Assert.IsNull(plugin);
         }
 
+        [Test]
+        public void ExposeFunctionFromPluginViaFuncDelegate()
+        {
+            var engine = new Engine();
+            var plugin = engine.AddPlugin(typeof(FunctionPlugin));
+
+            var result = engine.Interpret("capture(5)()");
+
+            Assert.IsNotNull(plugin);
+            Assert.AreEqual(5.0, result);
+        }
+
         static class MyPlugin
         {
             public static readonly String Name = "Foo";
@@ -121,6 +133,14 @@
             public static Object NumberOfArguments(Object[] args)
             {
                 return (Double)args.Length;
+            }
+        }
+
+        static class FunctionPlugin
+        {
+            public static Func<Object[], Object> Capture(Double five)
+            {
+                return args => five;
             }
         }
 

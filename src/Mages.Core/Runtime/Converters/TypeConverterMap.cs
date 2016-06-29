@@ -44,7 +44,7 @@
                 {
                     var converter = converters[i];
 
-                    if (converter.From == from && converter.To == to)
+                    if (converter.From.IsAssignableFrom(from) && to.IsAssignableFrom(converter.To))
                     {
                         return converter.Converter;
                     }
@@ -70,7 +70,7 @@
                 {
                     var converter = converters[i];
 
-                    if (converter.To == to)
+                    if (to.IsAssignableFrom(converter.To))
                     {
                         mapping.Add(converter.From, converter.Converter);
                     }
