@@ -5,6 +5,7 @@
     using Mages.Plugins.FileSystem;
     using Mages.Plugins.LinearAlgebra;
     using Mages.Plugins.Plots;
+    using Mages.Plugins.Random;
 
     static class ReplPlugins
     {
@@ -14,6 +15,7 @@
             engine.AddPlugin(typeof(FileSystemPlugin));
             engine.AddPlugin(typeof(DrawPlugin));
             engine.AddPlugin(typeof(PlotsPlugin));
+            engine.AddPlugin(typeof(RandomPlugin));
         }
     }
 }

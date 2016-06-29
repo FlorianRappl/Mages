@@ -102,6 +102,10 @@
       <Project>{152e57b3-2ac2-434c-9695-73bb91e9d772}</Project>
       <Name>Mages.Plugins.Plots</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Mages.Plugins.Random\Mages.Plugins.Random.csproj">
+      <Project>{75fc4f51-4bb7-4f30-a0ca-80d91a5bdd62}</Project>
+      <Name>Mages.Plugins.Random</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
