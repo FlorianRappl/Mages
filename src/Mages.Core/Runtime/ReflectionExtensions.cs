@@ -132,7 +132,7 @@
         public static Dictionary<String, BaseProxy> GetStaticProxies(this Type type, WrapperObject target)
         {
             var proxies = new Dictionary<String, BaseProxy>();
-            var flags = BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy;
+            var flags = BindingFlags.Public | BindingFlags.Static;
             var ctors = type.GetConstructors();
             var fields = type.GetFields(flags);
             var properties = type.GetProperties(flags);
