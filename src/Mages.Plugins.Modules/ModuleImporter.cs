@@ -1,37 +1,47 @@
 ﻿namespace Mages.Plugins.Modules
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
 
     sealed class ModuleImporter
     {
-        private readonly IModuleFileReader _reader;
+        private readonly IEnumerable<IModuleFileReader> _readers;
         private readonly IEngineCreator _creator;
 
-        public ModuleImporter(IModuleFileReader reader, IEngineCreator creator)
+        public ModuleImporter(IEnumerable<IModuleFileReader> readers, IEngineCreator creator)
         {
-            _reader = reader;
+            _readers = readers;
             _creator = creator;
         }
 
-        internal object From(String fileName)
+        public Object From(String fileName)
         {
-            var path = Path.GetFullPath(fileName);
-            var engine = Cache.Find(path);
+            var path = default(String);
 
-            if (engine == null)
+            foreach (var reader in _readers)
             {
-                var content = _reader.GetContent(path);
-
-                if (!String.IsNullOrEmpty(content))
+                if (reader.TryGetPath(fileName, out path))
                 {
-                    engine = _creator.CreateEngine();
-                    Cache.Init(engine, path);
-                    engine.Interpret(content);
+                    var engine = Cache.Find(path);
+
+                    if (engine == null)
+                    {
+                        var content = reader.GetContent(path);
+
+                        if (!String.IsNullOrEmpty(content))
+                        {
+                            engine = _creator.CreateEngine();
+                            Cache.Init(engine, path);
+                            engine.Interpret(content);
+                        }
+                    }
+
+                    return Cache.Retrieve(engine);
                 }
             }
 
-            return Cache.Retrieve(engine);
+            return null;
         }
     }
 }

@@ -6,20 +6,30 @@
 
     sealed class ModuleFileReader : IModuleFileReader
     {
-        public String GetContent(String fileName)
+        public String GetContent(String path)
+        {
+            try
+            {
+                return File.ReadAllText(path);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public Boolean TryGetPath(String fileName, out String path)
         {
             if (File.Exists(fileName))
             {
-                try
-                {
-                    return File.ReadAllText(fileName);
-                }
-                catch
-                {
-                }
+                path = Path.GetFullPath(fileName);
+                return true;
             }
-
-            return null;
+            else
+            {
+                path = null;
+                return false;
+            }
         }
     }
 }

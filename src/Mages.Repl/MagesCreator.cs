@@ -4,14 +4,15 @@
     using Mages.Plugins.Modules;
     using Mages.Repl.Functions;
     using Mages.Repl.Plugins;
+    using System.Collections.Generic;
 
     sealed class MagesCreator : IEngineCreator
     {
-        private readonly IModuleFileReader _reader;
+        private readonly IEnumerable<IModuleFileReader> _readers;
 
-        public MagesCreator(IModuleFileReader reader)
+        public MagesCreator(IEnumerable<IModuleFileReader> readers)
         {
-            _reader = reader;
+            _readers = readers;
         }
 
         public Engine CreateEngine()
@@ -24,7 +25,7 @@
             var engine = new Engine(configuration);
             ReplFunctions.Integrate(engine);
             ReplPlugins.Integrate(engine);
-            engine.AllowModules(_reader, this);
+            engine.AllowModules(_readers, this);
             return engine;
         }
     }
