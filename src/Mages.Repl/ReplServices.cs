@@ -11,6 +11,7 @@
             Bind<IInteractivity>().ToConstant(new ConsoleInteractivity());
             Bind<IModuleFileReader>().ToConstant(new MagesModuleFileReader());
             Bind<IModuleFileReader>().ToConstant(new DotnetModuleFileReader());
+            Bind<IModuleFileReader>().ToConstant(new NugetModuleFileReader());
             Bind<IFileReader>().To<OpenFileReader>();
             Bind<IEngineCreator>().To<MagesCreator>();
         }

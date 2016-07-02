@@ -59,6 +59,7 @@
     <Compile Include="IFileReader.cs" />
     <Compile Include="Modules\DotnetModuleFileReader.cs" />
     <Compile Include="Modules\MagesModuleFileReader.cs" />
+    <Compile Include="Modules\NugetModuleFileReader.cs" />
     <Compile Include="OpenFileReader.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="ConsoleInteractivity.cs" />
