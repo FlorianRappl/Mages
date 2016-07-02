@@ -27,13 +27,13 @@
 
                     if (engine == null)
                     {
-                        var content = reader.GetContent(path);
+                        var callback = reader.Prepare(path);
 
-                        if (!String.IsNullOrEmpty(content))
+                        if (callback != null)
                         {
                             engine = _creator.CreateEngine();
                             Cache.Init(engine, path);
-                            engine.Interpret(content);
+                            callback.Invoke(engine);
                         }
                     }
 

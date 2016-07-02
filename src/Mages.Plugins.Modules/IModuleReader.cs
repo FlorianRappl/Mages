@@ -1,10 +1,11 @@
 ﻿namespace Mages.Plugins.Modules
 {
+    using Mages.Core;
     using System;
 
     public interface IModuleFileReader
     {
-        String GetContent(String path);
+        Action<Engine> Prepare(String path);
 
         Boolean TryGetPath(String fileName, out String path);
     }

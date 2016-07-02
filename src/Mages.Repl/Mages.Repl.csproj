@@ -57,7 +57,8 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="IFileReader.cs" />
-    <Compile Include="ModuleFileReader.cs" />
+    <Compile Include="Modules\DotnetModuleFileReader.cs" />
+    <Compile Include="Modules\MagesModuleFileReader.cs" />
     <Compile Include="OpenFileReader.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="ConsoleInteractivity.cs" />
