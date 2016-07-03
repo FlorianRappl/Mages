@@ -2,37 +2,94 @@
 {
     using Mages.Core;
     using Mages.Plugins.Modules;
+    using NuGet;
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
 
     sealed class NugetModuleFileReader : IModuleFileReader
     {
-        private static readonly String[] AllowedExtensions = new[] { ".nupkg", ".nuget" };
+        private static readonly String LibName = "__lib";
+        private static readonly String[] AllowedExtensions = new[] { ".nupkg", ".nuget", ".pkg" };
 
         public Action<Engine> Prepare(String path)
         {
-            throw new NotImplementedException();
+            if (Path.IsPathRooted(path))
+            {
+            }
+            else
+            {
+                var packageId = Path.GetFileNameWithoutExtension(path);
+                var repository = PackageRepositoryFactory.Default.CreateRepository("https://packages.nuget.org/api/v2");
+                var package = repository.FindPackage(packageId);
+
+                if (package != null)
+                {
+                    var files = package.GetLibFiles().ToList();
+                    return engine => 
+                    {
+                        if (TryInsertLibrary(files, engine))
+                        {
+                            var export = engine.Globals["export"] as Function;
+                            export.Call(engine.Globals[LibName]);
+                        }
+                    };
+                }
+            }
+
+            return null;
         }
 
         public Boolean TryGetPath(String fileName, out String path)
         {
-            if (HasExtension(fileName) && File.Exists(fileName))
+            if (HasExtension(fileName))
             {
-                path = Path.GetFullPath(fileName);
-                return true;
+                if (File.Exists(fileName))
+                {
+                    path = Path.GetFullPath(fileName);
+                    return true;
+                }
+                else if (Path.GetDirectoryName(fileName).Length == 0)
+                {
+                    path = fileName;
+                    return true;
+                }
             }
-            else
-            {
-                path = null;
-                return false;
-            }
+
+            path = null;
+            return false;
         }
 
         private static Boolean HasExtension(String fileName)
         {
             var ext = Path.GetExtension(fileName);
             return AllowedExtensions.Contains(ext, StringComparer.OrdinalIgnoreCase);
+        }
+
+        private static Boolean TryInsertLibrary(IEnumerable<IPackageFile> files, Engine engine)
+        {
+            foreach (var file in files)
+            {
+                if (file.TargetFramework.Version.CompareTo(Version.Parse("4.5")) <= 0)
+                {
+                    using (var content = new MemoryStream())
+                    {
+                        using (var stream = file.GetStream())
+                        {
+                            stream.CopyTo(content);
+                        }
+
+                        var lib = Assembly.Load(content.ToArray());
+                        engine.SetStatic(lib).WithName(LibName);
+                    }
+
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
