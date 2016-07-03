@@ -287,6 +287,11 @@
             {
                 engine.SetConstant("engine", engine);
             }
+
+            if (configuration.IsThisAvailable)
+            {
+                engine.SetConstant("this", engine.Scope);
+            }
         }
 
         sealed class Placement : IPlacement

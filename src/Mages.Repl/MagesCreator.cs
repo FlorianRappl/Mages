@@ -20,7 +20,8 @@
             var configuration = new Configuration
             {
                 IsEngineExposed = true,
-                IsEvalForbidden = false
+                IsEvalForbidden = false,
+                IsThisAvailable = true,
             };
             var engine = new Engine(configuration);
             ReplFunctions.Integrate(engine);
