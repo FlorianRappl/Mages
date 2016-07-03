@@ -16,27 +16,12 @@
 
         public Action<Engine> Prepare(String path)
         {
-            if (Path.IsPathRooted(path))
-            {
-            }
-            else
-            {
-                var packageId = Path.GetFileNameWithoutExtension(path);
-                var repository = PackageRepositoryFactory.Default.CreateRepository("https://packages.nuget.org/api/v2");
-                var package = repository.FindPackage(packageId);
+            var package = GetPackage(path);
 
-                if (package != null)
-                {
-                    var files = package.GetLibFiles().ToList();
-                    return engine => 
-                    {
-                        if (TryInsertLibrary(files, engine))
-                        {
-                            var export = engine.Globals["export"] as Function;
-                            export.Call(engine.Globals[LibName]);
-                        }
-                    };
-                }
+            if (package != null)
+            {
+                var files = package.GetLibFiles().ToList();
+                return engine => ExposeLibrary(files, engine);
             }
 
             return null;
@@ -66,6 +51,27 @@
         {
             var ext = Path.GetExtension(fileName);
             return AllowedExtensions.Contains(ext, StringComparer.OrdinalIgnoreCase);
+        }
+
+        private static IPackage GetPackage(String path)
+        {
+            if (!Path.IsPathRooted(path))
+            {
+                var packageId = Path.GetFileNameWithoutExtension(path);
+                var repository = PackageRepositoryFactory.Default.CreateRepository("https://packages.nuget.org/api/v2");
+                return repository.FindPackage(packageId);
+            }
+
+            return new ZipPackage(path);
+        }
+
+        private static void ExposeLibrary(IEnumerable<IPackageFile> files, Engine engine)
+        {
+            if (TryInsertLibrary(files, engine))
+            {
+                var export = engine.Globals["export"] as Function;
+                export.Call(engine.Globals[LibName]);
+            }
         }
 
         private static Boolean TryInsertLibrary(IEnumerable<IPackageFile> files, Engine engine)
