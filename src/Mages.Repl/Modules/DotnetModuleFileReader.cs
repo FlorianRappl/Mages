@@ -32,21 +32,46 @@
 
         public Boolean TryGetPath(String fileName, out String path)
         {
-            path = null;
-
             if (HasExtension(fileName))
             {
-                if (Path.IsPathRooted(fileName) && File.Exists(fileName))
+                if (Path.IsPathRooted(fileName))
                 {
-                    path = fileName;
-                    return true;
+                    if (File.Exists(fileName))
+                    {
+                        path = fileName;
+                        return true;
+                    }
                 }
                 else
                 {
-                    //TODO
+                    var baseDirectories = new[]
+                    {
+                        Environment.CurrentDirectory,
+                        Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)
+                    };
+
+                    foreach (var baseDirectory in baseDirectories)
+                    {
+                        path = Path.Combine(baseDirectory, fileName);
+
+                        if (File.Exists(path))
+                        {
+                            return true;
+                        }
+                    }
+
+                    path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Microsoft.NET", "assembly");
+                    var results = Directory.GetFiles(path, fileName, SearchOption.AllDirectories);
+
+                    if (results.Length > 0)
+                    {
+                        path = results[0];
+                        return true;
+                    }
                 }
             }
-
+                
+            path = null;
             return false;
         }
 
