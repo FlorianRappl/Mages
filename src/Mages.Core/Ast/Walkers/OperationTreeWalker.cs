@@ -61,6 +61,7 @@
         private readonly Stack<LoopInfo> _loops;
         private Boolean _assigning;
         private Boolean _declaring;
+        private Boolean _member;
 
         #endregion
 
@@ -288,8 +289,9 @@
         {
             expression.Validate(this);
             expression.Name.Accept(this);
+            _member = true;
             expression.Value.Accept(this);
-
+            _member = false;
             _operations.Add(InitObjOperation.Instance);
         }
 
@@ -314,14 +316,17 @@
 
         void ITreeWalker.Visit(FunctionExpression expression)
         {
+            var member = _member;
             var current = _operations.Count;
+            var parameters = expression.Parameters;
+            _member = false;
             expression.Validate(this);
-            expression.Parameters.Accept(this);
+            parameters.Accept(this);
             _loops.Push(default(LoopInfo));
             expression.Body.Accept(this);
             _loops.Pop();
-            var operations = ExtractFrom(current);
-            _operations.Add(new NewFuncOperation(operations));
+            var function = ExtractFunction(member, current);
+            _operations.Add(function);
         }
 
         void ITreeWalker.Visit(InvalidExpression expression)
@@ -460,6 +465,18 @@
             var operation = _operations[index];
             _operations.RemoveAt(index);
             return operation;
+        }
+
+        private IOperation ExtractFunction(Boolean member, Int32 index)
+        {
+            var operations = ExtractFrom(index);
+
+            if (member)
+            {
+                return new NewMethOperation(operations);
+            }
+
+            return new NewFuncOperation(operations);
         }
 
         private IOperation[] ExtractFrom(Int32 index)

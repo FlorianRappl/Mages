@@ -912,5 +912,52 @@
             var result = "x = 4; y = 3; x *= y ^= 2; x + y".Eval();
             Assert.AreEqual(45.0, result);
         }
+
+        [Test]
+        public void CallingAMemberFunctionCanAccessLocalScopedThis()
+        {
+            var result = @"var foo = new {
+              a: 5,
+              bar: () => this.a
+            };
+            foo.bar()".Eval();
+            Assert.AreEqual(5.0, result);
+        }
+
+        [Test]
+        public void CallingAMemberFunctionUsesReferencedScopedThis()
+        {
+            var result = @"var foo = new {
+              a: 5,
+              bar: () => this.a
+            };
+            foo.a = false;
+            foo.bar()".Eval();
+            Assert.AreEqual(false, result);
+        }
+
+        [Test]
+        public void CallingAnAliasedMemberFunctionDoesNotLooseCapture()
+        {
+            var result = @"var foo = new {
+              a: 5,
+              bar: () => this.a
+            };
+            var f = foo.bar;
+            foo.a = ""hallo"";
+            f()".Eval();
+            Assert.AreEqual("hallo", result);
+        }
+
+        [Test]
+        public void CallingNestedMemberFunctionWorksOnNestedThis()
+        {
+            var result = @"var foo = new {
+              a: 5,
+              b: new { a: 4, bar: () => this.a }
+            };
+            foo.b.bar()".Eval();
+            Assert.AreEqual(4.0, result);
+        }
     }
 }
