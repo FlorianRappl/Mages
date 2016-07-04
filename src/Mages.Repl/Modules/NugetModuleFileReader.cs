@@ -57,12 +57,56 @@
         {
             if (!Path.IsPathRooted(path))
             {
-                var packageId = Path.GetFileNameWithoutExtension(path);
-                var repository = PackageRepositoryFactory.Default.CreateRepository("https://packages.nuget.org/api/v2");
-                return repository.FindPackage(packageId);
+                var info = ParsePackageInfo(path);
+                var manager = GetPackageManager();
+                var package = manager.LocalRepository.FindPackage(info.Name, info.Version);
+
+                if (package == null)
+                {
+                    package = manager.SourceRepository.FindPackage(info.Name, info.Version);
+                    manager.LocalRepository.AddPackage(package);
+                }
+
+                return package;
             }
 
             return new ZipPackage(path);
+        }
+
+        private static PackageManager GetPackageManager()
+        {
+            var repository = PackageRepositoryFactory.Default.CreateRepository("https://packages.nuget.org/api/v2");
+            var baseDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var packageDirectory = Path.Combine(baseDirectory, "packages");
+            return new PackageManager(repository, packageDirectory);
+        }
+
+        private static PackageInfo ParsePackageInfo(String path)
+        {
+            var packageId = Path.GetFileNameWithoutExtension(path);
+            var parts = packageId.Split('.');
+            var version = default(SemanticVersion);
+            var offset = parts[0].Length + 1;
+
+            for (var i = 1; i < parts.Length; i++)
+            {
+                var result = 0;
+
+                if (Int32.TryParse(parts[i], out result) && result >= 0)
+                {
+                    var rest = packageId.Substring(offset);
+
+                    if (SemanticVersion.TryParse(rest, out version))
+                    {
+                        packageId = packageId.Substring(0, offset - 1);
+                        break;
+                    }
+                }
+
+                offset += parts[i].Length + 1;
+            }
+
+            return new PackageInfo { Name = packageId, Version = version };
         }
 
         private static void ExposeLibrary(IEnumerable<IPackageFile> files, Engine engine)
@@ -96,6 +140,12 @@
             }
 
             return false;
+        }
+
+        struct PackageInfo
+        {
+            public String Name;
+            public SemanticVersion Version;
         }
     }
 }
