@@ -83,7 +83,7 @@
         {
             try
             {
-                var result = _engine.Interpret(content);
+                var result = _interactivity.Run(_engine, content);
 
                 if (showOutput)
                 {
