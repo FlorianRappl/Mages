@@ -132,6 +132,28 @@
         });
 
         /// <summary>
+        /// Contains the sec function.
+        /// </summary>
+        public static readonly Function Sec = new Function(args =>
+        {
+            return Curry.MinOne(Sec, args) ??
+                If.Is<Double>(args, x => Mathx.Sec(x)) ??
+                If.Is<Double[,]>(args, x => x.ForEach(Mathx.Sec)) ??
+                Mathx.Sec(args[0].ToNumber());
+        });
+
+        /// <summary>
+        /// Contains the csc function.
+        /// </summary>
+        public static readonly Function Csc = new Function(args =>
+        {
+            return Curry.MinOne(Csc, args) ??
+                If.Is<Double>(args, x => Mathx.Csc(x)) ??
+                If.Is<Double[,]>(args, x => x.ForEach(Mathx.Csc)) ??
+                Mathx.Csc(args[0].ToNumber());
+        });
+
+        /// <summary>
         /// Wraps the Math.Sinh function.
         /// </summary>
         public static readonly Function Sinh = new Function(args =>
@@ -154,6 +176,17 @@
         });
 
         /// <summary>
+        /// Wraps the Math.Tanh function.
+        /// </summary>
+        public static readonly Function Tanh = new Function(args =>
+        {
+            return Curry.MinOne(Tanh, args) ??
+                If.Is<Double>(args, x => Math.Tanh(x)) ??
+                If.Is<Double[,]>(args, x => x.ForEach(Math.Tanh)) ??
+                Math.Tanh(args[0].ToNumber());
+        });
+
+        /// <summary>
         /// Contains the coth function.
         /// </summary>
         public static readonly Function Coth = new Function(args =>
@@ -165,14 +198,25 @@
         });
 
         /// <summary>
-        /// Wraps the Math.Tanh function.
+        /// Contains the sech function.
         /// </summary>
-        public static readonly Function Tanh = new Function(args =>
+        public static readonly Function Sech = new Function(args =>
         {
-            return Curry.MinOne(Tanh, args) ??
-                If.Is<Double>(args, x => Math.Tanh(x)) ??
-                If.Is<Double[,]>(args, x => x.ForEach(Math.Tanh)) ??
-                Math.Tanh(args[0].ToNumber());
+            return Curry.MinOne(Sech, args) ??
+                If.Is<Double>(args, x => Mathx.Sech(x)) ??
+                If.Is<Double[,]>(args, x => x.ForEach(Mathx.Sech)) ??
+                Mathx.Sech(args[0].ToNumber());
+        });
+
+        /// <summary>
+        /// Contains the csch function.
+        /// </summary>
+        public static readonly Function Csch = new Function(args =>
+        {
+            return Curry.MinOne(Csch, args) ??
+                If.Is<Double>(args, x => Mathx.Csch(x)) ??
+                If.Is<Double[,]>(args, x => x.ForEach(Mathx.Csch)) ??
+                Mathx.Csch(args[0].ToNumber());
         });
 
         /// <summary>
@@ -220,6 +264,28 @@
         });
 
         /// <summary>
+        /// Contains the asec function.
+        /// </summary>
+        public static readonly Function ArcSec = new Function(args =>
+        {
+            return Curry.MinOne(ArcSec, args) ??
+                If.Is<Double>(args, x => Mathx.Asec(x)) ??
+                If.Is<Double[,]>(args, x => x.ForEach(Mathx.Asec)) ??
+                Mathx.Asec(args[0].ToNumber());
+        });
+
+        /// <summary>
+        /// Contains the acsc function.
+        /// </summary>
+        public static readonly Function ArcCsc = new Function(args =>
+        {
+            return Curry.MinOne(ArcCsc, args) ??
+                If.Is<Double>(args, x => Mathx.Acsc(x)) ??
+                If.Is<Double[,]>(args, x => x.ForEach(Mathx.Acsc)) ??
+                Mathx.Acsc(args[0].ToNumber());
+        });
+
+        /// <summary>
         /// Contains the arsinh function.
         /// </summary>
         public static readonly Function ArSinh = new Function(args =>
@@ -261,6 +327,28 @@
                 If.Is<Double>(args, x => Mathx.Acoth(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Mathx.Acoth)) ??
                 Mathx.Acoth(args[0].ToNumber());
+        });
+
+        /// <summary>
+        /// Contains the asech function.
+        /// </summary>
+        public static readonly Function ArSech = new Function(args =>
+        {
+            return Curry.MinOne(ArSech, args) ??
+                If.Is<Double>(args, x => Mathx.Asech(x)) ??
+                If.Is<Double[,]>(args, x => x.ForEach(Mathx.Asech)) ??
+                Mathx.Asech(args[0].ToNumber());
+        });
+
+        /// <summary>
+        /// Contains the acsch function.
+        /// </summary>
+        public static readonly Function ArCsch = new Function(args =>
+        {
+            return Curry.MinOne(ArCsch, args) ??
+                If.Is<Double>(args, x => Mathx.Acsch(x)) ??
+                If.Is<Double[,]>(args, x => x.ForEach(Mathx.Acsch)) ??
+                Mathx.Acsch(args[0].ToNumber());
         });
 
         /// <summary>
