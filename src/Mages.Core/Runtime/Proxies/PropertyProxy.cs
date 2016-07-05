@@ -18,7 +18,9 @@
             if (_property.CanRead)
             {
                 var target = _obj.Content;
-                return _property.GetValue(target, null);
+
+                try { return _property.GetValue(target, null); }
+                catch { return null; }
             }
 
             return null;
@@ -30,7 +32,9 @@
             {
                 var target = _obj.Content;
                 var result = Convert(value, _property.PropertyType);
-                _property.SetValue(target, result, null);
+
+                try { _property.SetValue(target, result, null); }
+                catch { }
             }
         }
     }

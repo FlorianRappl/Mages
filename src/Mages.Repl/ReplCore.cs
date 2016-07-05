@@ -83,7 +83,7 @@
         {
             try
             {
-                var result = _engine.Interpret(content);
+                var result = _interactivity.Run(_engine, content);
 
                 if (showOutput)
                 {
@@ -93,7 +93,7 @@
             }
             catch (ParseException ex)
             {
-                Display(ex.Error, content);
+                _interactivity.Display(ex.Error, content);
             }
             catch (Exception ex)
             {
@@ -101,33 +101,6 @@
             }
 
             _interactivity.Write(Environment.NewLine);
-        }
-
-        private void Display(ParseError error, String source)
-        {
-            var start = error.Start.Index - 1;
-            var end = error.End.Index - 1;
-            var lines = source.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-            source = String.Join(" ", lines).Replace('\t', ' ');
-
-            if (end == start)
-            {
-                end++;
-            }
-
-            var range = 80;
-            var message = error.Code.GetMessage();
-            var middle = (end + start) / 2;
-            var ss = Math.Max(middle - range / 2, 0);
-            var se = Math.Min(middle + range / 2, source.Length);
-            var snippet = source.Substring(ss, se - ss);
-            _interactivity.Error(snippet);
-            _interactivity.Error(Environment.NewLine);
-            _interactivity.Error(new String(' ', start - ss));
-            _interactivity.Error(new String('^', end - start));
-            _interactivity.Error(Environment.NewLine);
-            _interactivity.Error("Error: ");
-            _interactivity.Error(message);
         }
 
         private void Startup()

@@ -15,6 +15,7 @@
             Scope = null,
             IsEvalForbidden = false,
             IsEngineExposed = false,
+            IsThisAvailable = false,
         };
 
         /// <summary>
@@ -30,6 +31,15 @@
         /// Gets or sets the scope to use.
         /// </summary>
         public IDictionary<String, Object> Scope
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets of a global 'this' referencing the scope should be created.
+        /// </summary>
+        public Boolean IsThisAvailable
         {
             get;
             set;

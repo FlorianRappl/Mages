@@ -3,11 +3,10 @@
     using Mages.Core.Runtime;
     using System;
 
-    sealed class ConsoleInteractivity : IInteractivity, IDisposable
+    sealed class ConsoleInteractivity : IInteractivity
     {
         public ConsoleInteractivity()
         {
-            Console.CancelKeyPress += ConsoleCancelled;
             IsPromptShown = true;
         }
 
@@ -39,17 +38,6 @@
             return Console.ReadLine();
         }
 
-        public void Dispose()
-        {
-            Console.CancelKeyPress -= ConsoleCancelled;
-        }
-
-        private void ConsoleCancelled(Object sender, ConsoleCancelEventArgs e)
-        {
-            e.Cancel = true;
-            Environment.Exit(0);
-        }
-
         public void Info(Object result)
         {
             if (result == null)
@@ -71,6 +59,33 @@
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write(message);
             Console.ResetColor();
+        }
+
+        public IDisposable HandleCancellation(Action callback)
+        {
+            return new CancellationRegistration(callback);
+        }
+
+        struct CancellationRegistration : IDisposable
+        {
+            private readonly Action _callback;
+
+            public CancellationRegistration(Action callback)
+            {
+                _callback = callback;
+                Console.CancelKeyPress += OnCancelled;
+            }
+
+            public void Dispose()
+            {
+                Console.CancelKeyPress -= OnCancelled;
+            }
+
+            private void OnCancelled(Object sender, ConsoleCancelEventArgs e)
+            {
+                _callback.Invoke();
+                e.Cancel = true;
+            }
         }
     }
 }

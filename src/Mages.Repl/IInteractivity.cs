@@ -4,6 +4,8 @@
 
     interface IInteractivity
     {
+        IDisposable HandleCancellation(Action callback);
+
         Boolean IsPromptShown { get; set; }
 
         String Read();

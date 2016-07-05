@@ -23,7 +23,9 @@
         {
             var target = _obj.Content;
             var result = Convert(value, _field.FieldType);
-            _field.SetValue(target, result);
+
+            try { _field.SetValue(target, result); } 
+            catch { }
         }
     }
 }
