@@ -27,9 +27,9 @@
         public static readonly Function Sign = new Function(args => 
         {
             return Curry.MinOne(Sign, args) ??
-                If.Is<Double>(args, x => Helpers.Sign(x)) ??
-                If.Is<Double[,]>(args, x => x.ForEach(Helpers.Sign)) ??
-                Helpers.Sign(args[0].ToNumber());
+                If.Is<Double>(args, x => Mathx.Sign(x)) ??
+                If.Is<Double[,]>(args, x => x.ForEach(Mathx.Sign)) ??
+                Mathx.Sign(args[0].ToNumber());
         });
 
         /// <summary>
@@ -121,6 +121,17 @@
         });
 
         /// <summary>
+        /// Contains the cot function.
+        /// </summary>
+        public static readonly Function Cot = new Function(args =>
+        {
+            return Curry.MinOne(Cot, args) ??
+                If.Is<Double>(args, x => Mathx.Cot(x)) ??
+                If.Is<Double[,]>(args, x => x.ForEach(Mathx.Cot)) ??
+                Mathx.Cot(args[0].ToNumber());
+        });
+
+        /// <summary>
         /// Wraps the Math.Sinh function.
         /// </summary>
         public static readonly Function Sinh = new Function(args =>
@@ -140,6 +151,17 @@
                 If.Is<Double>(args, x => Math.Cosh(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Math.Cosh)) ??
                 Math.Cosh(args[0].ToNumber());
+        });
+
+        /// <summary>
+        /// Contains the coth function.
+        /// </summary>
+        public static readonly Function Coth = new Function(args =>
+        {
+            return Curry.MinOne(Coth, args) ??
+                If.Is<Double>(args, x => Mathx.Coth(x)) ??
+                If.Is<Double[,]>(args, x => x.ForEach(Mathx.Coth)) ??
+                Mathx.Coth(args[0].ToNumber());
         });
 
         /// <summary>
@@ -184,6 +206,61 @@
                 If.Is<Double>(args, x => Math.Atan(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Math.Atan)) ??
                 Math.Atan(args[0].ToNumber());
+        });
+
+        /// <summary>
+        /// Contains the arccot function.
+        /// </summary>
+        public static readonly Function ArcCot = new Function(args =>
+        {
+            return Curry.MinOne(ArcCot, args) ??
+                If.Is<Double>(args, x => Mathx.Acot(x)) ??
+                If.Is<Double[,]>(args, x => x.ForEach(Mathx.Acot)) ??
+                Mathx.Acot(args[0].ToNumber());
+        });
+
+        /// <summary>
+        /// Contains the arsinh function.
+        /// </summary>
+        public static readonly Function ArSinh = new Function(args =>
+        {
+            return Curry.MinOne(ArSinh, args) ??
+                If.Is<Double>(args, x => Mathx.Asinh(x)) ??
+                If.Is<Double[,]>(args, x => x.ForEach(Mathx.Asinh)) ??
+                Mathx.Asinh(args[0].ToNumber());
+        });
+
+        /// <summary>
+        /// Contains the arcosh function.
+        /// </summary>
+        public static readonly Function ArCosh = new Function(args =>
+        {
+            return Curry.MinOne(ArCosh, args) ??
+                If.Is<Double>(args, x => Mathx.Acosh(x)) ??
+                If.Is<Double[,]>(args, x => x.ForEach(Mathx.Acosh)) ??
+                Mathx.Acosh(args[0].ToNumber());
+        });
+
+        /// <summary>
+        /// Contains the artanh function.
+        /// </summary>
+        public static readonly Function ArTanh = new Function(args =>
+        {
+            return Curry.MinOne(ArTanh, args) ??
+                If.Is<Double>(args, x => Mathx.Atanh(x)) ??
+                If.Is<Double[,]>(args, x => x.ForEach(Mathx.Atanh)) ??
+                Mathx.Atanh(args[0].ToNumber());
+        });
+
+        /// <summary>
+        /// Contains the arcoth function.
+        /// </summary>
+        public static readonly Function ArCoth = new Function(args =>
+        {
+            return Curry.MinOne(ArCoth, args) ??
+                If.Is<Double>(args, x => Mathx.Acoth(x)) ??
+                If.Is<Double[,]>(args, x => x.ForEach(Mathx.Acoth)) ??
+                Mathx.Acoth(args[0].ToNumber());
         });
 
         /// <summary>

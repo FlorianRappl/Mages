@@ -33,8 +33,8 @@
         public static Object Factorial(Object[] args)
         {
             return Curry.MinOne(StandardOperators.Factorial, args) ??
-                If.Is<Double[,]>(args, x => x.ForEach(y => y.Factorial())) ??
-                If.Is<Object>(args, x => x.ToNumber().Factorial()) ??
+                If.Is<Double[,]>(args, x => x.ForEach(y => Mathx.Factorial(y))) ??
+                If.Is<Object>(args, x => Mathx.Factorial(x.ToNumber())) ??
                 Double.NaN;
         }
 

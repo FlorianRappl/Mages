@@ -131,6 +131,7 @@
     <Compile Include="Runtime\Helpers.cs" />
     <Compile Include="Runtime\JsonSerializer.cs" />
     <Compile Include="Runtime\Logic.cs" />
+    <Compile Include="Runtime\Mathx.cs" />
     <Compile Include="Runtime\Matrix.cs" />
     <Compile Include="Runtime\ObservableDictionary.cs" />
     <Compile Include="Runtime\PrimeNumber.cs" />
