@@ -429,5 +429,96 @@
             Assert.AreEqual(120.0, result["4"]);
             Assert.AreEqual(720.0, result["5"]);
         }
+
+        [Test]
+        public void GammaIsFactorialWithOffset()
+        {
+            var result = "gamma(7) - 6!".Eval();
+            Assert.AreEqual(0.0, (Double)result, 1e9);
+        }
+
+        [Test]
+        public void GammaIsAliasedCorrectly()
+        {
+            var result = "gamma() == gamma".Eval();
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void SinhIsAliasedCorrectly()
+        {
+            var result = "sinh() == sinh".Eval();
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void CoshIsAliasedCorrectly()
+        {
+            var result = "cosh() == cosh".Eval();
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void TanhIsAliasedCorrectly()
+        {
+            var result = "tanh() == tanh".Eval();
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void CothIsAliasedCorrectly()
+        {
+            var result = "coth() == coth".Eval();
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void ArcothIsAliasedCorrectly()
+        {
+            var result = "arcoth() == arcoth".Eval();
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void ArcsinIsAliasedCorrectly()
+        {
+            var result = "arcsin() == arcsin".Eval();
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void ArsinhIsAliasedCorrectly()
+        {
+            var result = "arsinh() == arsinh".Eval();
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void ArcoshIsAliasedCorrectly()
+        {
+            var result = "arcosh() == arcosh".Eval();
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void ArcsecIsAliasedCorrectly()
+        {
+            var result = "arcsec() == arcsec".Eval();
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void CscIsAliasedCorrectly()
+        {
+            var result = "csc() == csc".Eval();
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void ArcschIsAliasedCorrectly()
+        {
+            var result = "arcsch() == arcsch".Eval();
+            Assert.AreEqual(true, result);
+        }
     }
 }
