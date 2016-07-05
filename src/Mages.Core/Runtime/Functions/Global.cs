@@ -34,6 +34,7 @@
             { "round", StandardFunctions.Round },
             { "log", StandardFunctions.Log },
             { "sign", StandardFunctions.Sign },
+            { "gamma", StandardFunctions.Gamma },
             { "sqrt", StandardFunctions.Sqrt },
             { "rand", StandardFunctions.Rand },
             { "sin", StandardFunctions.Sin },

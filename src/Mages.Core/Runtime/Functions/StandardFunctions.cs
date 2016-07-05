@@ -33,6 +33,17 @@
         });
 
         /// <summary>
+        /// Contains the gamma function.
+        /// </summary>
+        public static readonly Function Gamma = new Function(args =>
+        {
+            return Curry.MinOne(Gamma, args) ??
+                If.Is<Double>(args, x => Mathx.Gamma(x)) ??
+                If.Is<Double[,]>(args, x => x.ForEach(Mathx.Gamma)) ??
+                Mathx.Gamma(args[0].ToNumber());
+        });
+
+        /// <summary>
         /// Wraps the Math.Ceiling function.
         /// </summary>
         public static readonly Function Ceil = new Function(args => 
