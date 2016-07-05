@@ -18,6 +18,7 @@
             return Curry.MinOne(Sqrt, args) ??
                 If.Is<Double>(args, x => Math.Sqrt(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Math.Sqrt)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(Sqrt)) ??
                 Math.Sqrt(args[0].ToNumber());
         });
 
@@ -29,6 +30,7 @@
             return Curry.MinOne(Sign, args) ??
                 If.Is<Double>(args, x => Mathx.Sign(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Mathx.Sign)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(Sign)) ??
                 Mathx.Sign(args[0].ToNumber());
         });
 
@@ -40,6 +42,7 @@
             return Curry.MinOne(Gamma, args) ??
                 If.Is<Double>(args, x => Mathx.Gamma(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Mathx.Gamma)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(Gamma)) ??
                 Mathx.Gamma(args[0].ToNumber());
         });
 
@@ -51,6 +54,7 @@
             return Curry.MinOne(Ceil, args) ??
                 If.Is<Double>(args, x => Math.Ceiling(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Math.Ceiling)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(Ceil)) ??
                 Math.Ceiling(args[0].ToNumber());
         });
 
@@ -62,6 +66,7 @@
             return Curry.MinOne(Floor, args) ??
                 If.Is<Double>(args, x => Math.Floor(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Math.Floor)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(Floor)) ??
                 Math.Floor(args[0].ToNumber());
         });
 
@@ -73,6 +78,7 @@
             return Curry.MinOne(Round, args) ??
                 If.Is<Double>(args, x => Math.Round(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Math.Round)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(Round)) ??
                 Math.Round(args[0].ToNumber());
         });
 
@@ -84,6 +90,7 @@
             return Curry.MinOne(Exp, args) ??
                 If.Is<Double>(args, x => Math.Exp(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Math.Exp)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(Exp)) ??
                 Math.Exp(args[0].ToNumber());
         });
 
@@ -95,6 +102,7 @@
             return Curry.MinOne(Log, args) ??
                 If.Is<Double>(args, x => Math.Log(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Math.Log)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(Log)) ??
                 Math.Log(args[0].ToNumber());
         });
 
@@ -106,6 +114,7 @@
             return Curry.MinOne(Sin, args) ??
                 If.Is<Double>(args, x => Math.Sin(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Math.Sin)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(Sin)) ??
                 Math.Sin(args[0].ToNumber());
         });
 
@@ -117,6 +126,7 @@
             return Curry.MinOne(Cos, args) ??
                 If.Is<Double>(args, x => Math.Cos(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Math.Cos)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(Cos)) ??
                 Math.Cos(args[0].ToNumber());
         });
 
@@ -128,6 +138,7 @@
             return Curry.MinOne(Tan, args) ??
                 If.Is<Double>(args, x => Math.Tan(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Math.Tan)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(Tan)) ??
                 Math.Tan(args[0].ToNumber());
         });
 
@@ -139,6 +150,7 @@
             return Curry.MinOne(Cot, args) ??
                 If.Is<Double>(args, x => Mathx.Cot(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Mathx.Cot)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(Cot)) ??
                 Mathx.Cot(args[0].ToNumber());
         });
 
@@ -150,6 +162,7 @@
             return Curry.MinOne(Sec, args) ??
                 If.Is<Double>(args, x => Mathx.Sec(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Mathx.Sec)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(Sec)) ??
                 Mathx.Sec(args[0].ToNumber());
         });
 
@@ -161,6 +174,7 @@
             return Curry.MinOne(Csc, args) ??
                 If.Is<Double>(args, x => Mathx.Csc(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Mathx.Csc)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(Csc)) ??
                 Mathx.Csc(args[0].ToNumber());
         });
 
@@ -172,6 +186,7 @@
             return Curry.MinOne(Sinh, args) ??
                 If.Is<Double>(args, x => Math.Sinh(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Math.Sinh)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(Sinh)) ??
                 Math.Sinh(args[0].ToNumber());
         });
 
@@ -183,6 +198,7 @@
             return Curry.MinOne(Cosh, args) ??
                 If.Is<Double>(args, x => Math.Cosh(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Math.Cosh)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(Cosh)) ??
                 Math.Cosh(args[0].ToNumber());
         });
 
@@ -194,6 +210,7 @@
             return Curry.MinOne(Tanh, args) ??
                 If.Is<Double>(args, x => Math.Tanh(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Math.Tanh)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(Tanh)) ??
                 Math.Tanh(args[0].ToNumber());
         });
 
@@ -205,6 +222,7 @@
             return Curry.MinOne(Coth, args) ??
                 If.Is<Double>(args, x => Mathx.Coth(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Mathx.Coth)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(Coth)) ??
                 Mathx.Coth(args[0].ToNumber());
         });
 
@@ -216,6 +234,7 @@
             return Curry.MinOne(Sech, args) ??
                 If.Is<Double>(args, x => Mathx.Sech(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Mathx.Sech)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(Sech)) ??
                 Mathx.Sech(args[0].ToNumber());
         });
 
@@ -227,6 +246,7 @@
             return Curry.MinOne(Csch, args) ??
                 If.Is<Double>(args, x => Mathx.Csch(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Mathx.Csch)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(Csch)) ??
                 Mathx.Csch(args[0].ToNumber());
         });
 
@@ -238,6 +258,7 @@
             return Curry.MinOne(ArcSin, args) ??
                 If.Is<Double>(args, x => Math.Asin(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Math.Asin)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(ArcSin)) ??
                 Math.Asin(args[0].ToNumber());
         });
 
@@ -249,6 +270,7 @@
             return Curry.MinOne(ArcCos, args) ??
                 If.Is<Double>(args, x => Math.Acos(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Math.Acos)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(ArcCos)) ??
                 Math.Acos(args[0].ToNumber());
         });
 
@@ -260,6 +282,7 @@
             return Curry.MinOne(ArcTan, args) ??
                 If.Is<Double>(args, x => Math.Atan(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Math.Atan)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(ArcTan)) ??
                 Math.Atan(args[0].ToNumber());
         });
 
@@ -271,6 +294,7 @@
             return Curry.MinOne(ArcCot, args) ??
                 If.Is<Double>(args, x => Mathx.Acot(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Mathx.Acot)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(ArcCot)) ??
                 Mathx.Acot(args[0].ToNumber());
         });
 
@@ -282,6 +306,7 @@
             return Curry.MinOne(ArcSec, args) ??
                 If.Is<Double>(args, x => Mathx.Asec(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Mathx.Asec)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(ArcSec)) ??
                 Mathx.Asec(args[0].ToNumber());
         });
 
@@ -293,6 +318,7 @@
             return Curry.MinOne(ArcCsc, args) ??
                 If.Is<Double>(args, x => Mathx.Acsc(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Mathx.Acsc)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(ArcCsc)) ??
                 Mathx.Acsc(args[0].ToNumber());
         });
 
@@ -304,6 +330,7 @@
             return Curry.MinOne(ArSinh, args) ??
                 If.Is<Double>(args, x => Mathx.Asinh(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Mathx.Asinh)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(ArSinh)) ??
                 Mathx.Asinh(args[0].ToNumber());
         });
 
@@ -315,6 +342,7 @@
             return Curry.MinOne(ArCosh, args) ??
                 If.Is<Double>(args, x => Mathx.Acosh(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Mathx.Acosh)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(ArCosh)) ??
                 Mathx.Acosh(args[0].ToNumber());
         });
 
@@ -326,6 +354,7 @@
             return Curry.MinOne(ArTanh, args) ??
                 If.Is<Double>(args, x => Mathx.Atanh(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Mathx.Atanh)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(ArTanh)) ??
                 Mathx.Atanh(args[0].ToNumber());
         });
 
@@ -337,6 +366,7 @@
             return Curry.MinOne(ArCoth, args) ??
                 If.Is<Double>(args, x => Mathx.Acoth(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Mathx.Acoth)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(ArCoth)) ??
                 Mathx.Acoth(args[0].ToNumber());
         });
 
@@ -348,6 +378,7 @@
             return Curry.MinOne(ArSech, args) ??
                 If.Is<Double>(args, x => Mathx.Asech(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Mathx.Asech)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(ArSech)) ??
                 Mathx.Asech(args[0].ToNumber());
         });
 
@@ -359,6 +390,7 @@
             return Curry.MinOne(ArCsch, args) ??
                 If.Is<Double>(args, x => Mathx.Acsch(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Mathx.Acsch)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(ArCsch)) ??
                 Mathx.Acsch(args[0].ToNumber());
         });
 
@@ -485,6 +517,7 @@
             return Curry.MinOne(IsPrime, args) ??
                 If.Is<Double>(args, x => Logic.IsPrime(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(y => Logic.IsPrime(y).ToNumber())) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(IsPrime)) ??
                 false;
         });
 
@@ -496,6 +529,7 @@
             return Curry.MinOne(IsPrime, args) ??
                 If.Is<Double>(args, x => Double.IsInfinity(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(y => Double.IsInfinity(y).ToNumber())) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(IsInfty)) ??
                 false;
         });
 
