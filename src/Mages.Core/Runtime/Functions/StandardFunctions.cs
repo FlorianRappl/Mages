@@ -399,8 +399,8 @@
         /// </summary>
         public static readonly Function Rand = new Function(args => 
         {
-            return If.Is<Double, Double>(args, SimpleRandom.CreateMatrix) ??
-                If.Is<Double>(args, SimpleRandom.CreateVector) ??
+            return (args.Length > 1 ? If.Is<Double, Double>(args, SimpleRandom.CreateMatrix) : null) ??
+                (args.Length > 0 ? If.Is<Double>(args, SimpleRandom.CreateVector) : null) ??
                 SimpleRandom.GetNumber();
         });
 
