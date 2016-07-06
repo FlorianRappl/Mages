@@ -28,6 +28,12 @@
                     If.Is<String>(args, source => Helpers.ShowAst(engine, source));
             }));
             engine.SetConstant("process", new ProcessObject());
+            engine.SetConstant("measure", new Function(args =>
+            {
+                var id = engine.Globals["measure"] as Function;
+                return Curry.MinOne(id, args) ??
+                    If.Is<Function>(args, f => Helpers.Measure(f));
+            }));
             engine.SetFunction("help", new Function(args =>
             {
                 if (args.Length == 0)

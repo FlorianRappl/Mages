@@ -6,6 +6,7 @@
     using Mages.Core.Vm;
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Text;
     using System.Threading.Tasks;
@@ -54,6 +55,13 @@
             }
 
             return sb.ToString();
+        }
+
+        public static Double Measure(Function f)
+        {
+            var sw = Stopwatch.StartNew();
+            f.Invoke(new Object[0]);
+            return sw.Elapsed.TotalMilliseconds;
         }
 
         public static String ShowIl(Engine engine, String source)
