@@ -11,7 +11,8 @@ The documentation of MAGES is organized via simple Markdown files. All relevant 
 5. [Performance](performance.md)
 6. [Functions](functions.md)
 7. [Type System](types.md)
-8. [Syntax Definition](syntax.md)
-9. [Contribution Guide](contributing.md)
+8. [Plugins](plugins.md)
+9. [Syntax Definition](syntax.md)
+10. [Contribution Guide](contributing.md)
 
 Don't hesitate to contribute via issues, pull requests, or comments. If you find the project useful a star would be much appreciated.

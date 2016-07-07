@@ -48,11 +48,43 @@ Of course, none of these scenarios can be solely handled by MAGES. Most of these
 
 ## Extensions and Modules
 
-(tbd)
+MAGES comes with the promise of extensibility. As it is simple and straight forward to expose *any* .NET code, literally *any* kind of code can be used *without much effort* from MAGES. The possibilities of the DLR (using the Iron-languages, e.g., IronRuby or IronPython) are given. Even simpler is the usage of native libraries via PInvoke. MAGES opens the door to the scripting within the whole .NET world.
+
+The REPL makes use of this promise by introducing a module system, similar to the one being found in, e.g., Node.js. In the standard MAGES executable (which uses the MAGES library together with some custom functions and other useful things) the *Modules* plugin is loaded. This plugin adds two key functions to the given `Engine` instance. We get
+
+- `import` to import the code exported in a module and
+- `export` to export some functionality.
+
+Custom hooks for the `import` function exist. In the standard executable the following hooks are present:
+
+- evaluating another MAGES file; here the exported functionality is imported
+- including a .NET library; here the public types are imported
+- including a NuGet package; here the library is included as previously mentioned
+
+MAGES is therefore a great and simple tool to explore NuGet packages without firing up Visual Studio and creating a pseudo solution.
+
+So let's see how the modularity may help us. Let's say we are working in a directory with two files, *helpers.ms* and *main.ms*. The *helpers.ms* file may look as follows:
+
+```C
+export(new 
+{
+  prop: (name, obj) => obj(name),
+  /* ... */
+});
+```
+
+In our *main.ms* file we may now use this additional functionality:
+
+```C
+var h = import("helpers.ms");
+engine | h.prop("version") | console.writeln;
+```
+
+Generally, the usage of modules allows writing reusable code that can come in handy in many scenarios.
 
 ## REPL
 
-MAGES is a full library - not a language. Of course, MAGES comes with a specified [language](language.md) strictly defined by a [syntax](syntax.md), however, it is possible to adjust many features of MAGES - including the language itself - by the project requirements. Therefore, it is important to understand that the delivered REPL (short for Read-Evaluate-Print-Loop, i.e., a simple console application to enter expressions which are directly evaluated) only represents the default state.
+As already mentioned MAGES is a full library - not a language. Of course, MAGES comes with a specified [language](language.md) strictly defined by a [syntax](syntax.md), however, it is possible to adjust many features of MAGES - including the language itself - by the project requirements. Therefore, it is important to understand that the delivered REPL (short for Read-Evaluate-Print-Loop, i.e., a simple console application to enter expressions which are directly evaluated) only represents the default state.
 
 The default state of MAGES has been spiced up with some auxiliary functions that enable a lot of interesting scenarios, where otherwise PowerShell, Bash, or Node.js would be used (just to name a couple of command line / general-purpose scripting environments).
 
