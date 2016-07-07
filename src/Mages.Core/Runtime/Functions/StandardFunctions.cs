@@ -484,6 +484,7 @@
         {
             return Curry.MinOne(Reverse, args) ??
                 If.Is<Double[,]>(args, x => x.ToVector().Reverse().ToMatrix()) ??
+                If.Is<String>(args, x => new String(x.Reverse().ToArray())) ??
                 args[0];
         });
 
