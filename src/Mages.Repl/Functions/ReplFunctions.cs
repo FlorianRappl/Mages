@@ -3,6 +3,7 @@
     using Mages.Core;
     using Mages.Core.Runtime.Functions;
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     static class ReplFunctions
@@ -43,7 +44,17 @@
 
                 return null;
             }));
-            engine.SetConstant("repl", new ReplObject());
+            engine.SetFunction("exit", new Function(args =>
+            {
+                Environment.Exit(0);
+                return null;
+            }));
+            engine.SetConstant("console", new Dictionary<String, Object>
+            {
+                { "read", ConsoleFunctions.Read },
+                { "write", ConsoleFunctions.Write },
+                { "writeln", ConsoleFunctions.WriteLine }
+            });
         }
     }
 }

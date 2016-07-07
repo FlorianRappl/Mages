@@ -76,7 +76,7 @@
     <Compile Include="Functions\ProcessObject.cs" />
     <Compile Include="Functions\ReplFunctions.cs" />
     <Compile Include="Functions\Helpers.cs" />
-    <Compile Include="Functions\ReplObject.cs" />
+    <Compile Include="Functions\ConsoleFunctions.cs" />
     <Compile Include="IInteractivity.cs" />
     <Compile Include="Plugins\ReplPlugins.cs" />
     <Compile Include="Program.cs" />
