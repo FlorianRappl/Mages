@@ -14,7 +14,7 @@
 
         private Object Invoke(Object[] arguments)
         {
-            var parameters = arguments.Select(m => m.GetType()).ToArray();
+            var parameters = arguments.Select(m => m != null ? m.GetType() : typeof(Object)).ToArray();
             var method = _methods.Find(arguments, parameters);
 
             if (method != null)

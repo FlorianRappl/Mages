@@ -24,7 +24,7 @@
 
         protected Object Convert(Object value, Type target)
         {
-            var source = value.GetType();
+            var source = value != null ? value.GetType() : target;
             var converter = Helpers.Converters.FindConverter(source, target);
             return converter.Invoke(value);
         }
