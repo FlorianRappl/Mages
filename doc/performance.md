@@ -71,3 +71,37 @@ Until now we've seen that MAGES is decently faster than YAMP. But what about the
 As we can see MAGES does a great job beating YAMP in every scenario. Especially for matrices MAGES brings a huge performance gain to the table. In the benchmark above even with multiplying two "large" matrices MAGES outperforms the performance of YAMP when multiplying medium matrices. Already for small matrices we see a nice gain by using MAGES.
 
 Another area of improvement is objects. Initially, YAMP did not know about objects, however, with one of the more recent versions support for arbitrary objects has been added. Now we see that MAGES, which comes with object literals and extended support from the beginning, is able to outperform MAGES already in simple scenarios easily.
+
+## Comparison Benchmark
+
+Let's compare MAGES against other math expression parsers. Needless to say that MAGES offers much more than most of these libraries, however, having a quick comparison in this area is still interesting.
+
+For this comparison benchmark we use a (potentially modified version of the) query:
+
+```C
+2^3 * (2 + 3 * sin(1) / 0.3 - sqrt(5))
+```
+
+The following table shows how MAGES compares against its competition in the area of math expression parsers.
+
+|                 Parser |         Median |      StdDev |
+| ---------------------- |--------------- |------------ |
+|        MAGES (Default) |     11.1582 us |   0.6506 us |
+|         MAGES (Cached) |      1.3827 us |   0.0499 us |
+|                   YAMP |     30.9068 us |   0.5521 us |
+|               mxParser | 11,543.4065 us | 216.0238 us |
+|                dotMath |      8.9858 us |   0.1715 us |
+|               MuParser |     68.0219 us |  15.4130 us |
+|     GuiLabs.MathParser |     16.4246 us |   3.0767 us |
+|                 Arpain |     15.1224 us |   1.8141 us |
+|                     S# |    246.5942 us |  32.9897 us |
+|         Jace (Default) |      1.1588 us |   0.2792 us |
+|        Jace (Uncached) |     12.7334 us |   1.7223 us |
+|     Jace (Interpreted) |     13.1057 us |   2.0007 us |
+|            Jace (Bare) |     12.8641 us |   2.8407 us |
+
+We see that Jace is potentially the closest one to MAGES. They are both very similar, with Jace defaulting to cached evaluation. Without caching dotMath is doing a great job.
+
+Please note, however, that the original query throws an exception in dotMath as there seems to be a bug in handling the round brackets as a single expression on the right hand side. Therefore, the value has to be taken with a small question mark.
+
+Finally, S# - which is quite similar to MAGES from some of its goals - is much more heavyweight.
