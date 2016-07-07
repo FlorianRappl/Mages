@@ -29,30 +29,30 @@
         }
 
         [Test]
-        public void ReduceWitObjectShouldYieldOneValue()
+        public void ReduceWithObjectShouldYieldOneValue()
         {
-            var result = "reduce(multiply, 1, new { a: 5, b: 4, c: 3 })".Eval();
+            var result = "reduce(mul, 1, new { a: 5, b: 4, c: 3 })".Eval();
             Assert.AreEqual(60.0, result);
         }
 
         [Test]
         public void WhereWithNumberSatisfiedShouldYieldValue()
         {
-            var result = "where(greater(3), 5)".Eval();
+            var result = "where(gt(3), 5)".Eval();
             Assert.AreEqual(5.0, result);
         }
 
         [Test]
         public void WhereWithNumberNotSatisfiedShouldYieldNull()
         {
-            var result = "where(less(3), 5)".Eval();
+            var result = "where(lt(3), 5)".Eval();
             Assert.AreEqual(null, result);
         }
 
         [Test]
         public void WhereWithMatrixPartiallySatisfiedShouldYieldVector()
         {
-            var result = "where(greater(4), [1, 2, 3, 4, 5, 6])".Eval();
+            var result = "where(gt(4), [1, 2, 3, 4, 5, 6])".Eval();
             var vector = result as Double[,];
             Assert.IsNotNull(vector);
             Assert.AreEqual(2, vector.Length);
@@ -63,7 +63,7 @@
         [Test]
         public void WhereWithMatrixFullySatisfiedShouldYieldVector()
         {
-            var result = "where(greater(0), [1, 2; 3, 4; 5, 6])".Eval();
+            var result = "where(gt(0), [1, 2; 3, 4; 5, 6])".Eval();
             var vector = result as Double[,];
             Assert.IsNotNull(vector);
             Assert.AreEqual(6, vector.Length);
@@ -76,18 +76,18 @@
         }
 
         [Test]
-        public void WhereWitObjectNotSatisfiedShouldYieldEmptyObject()
+        public void WhereWithObjectNotSatisfiedShouldYieldEmptyObject()
         {
-            var result = "where(less(0), new { a: 5, b: 4, c: 3 })".Eval();
+            var result = "where(lt(0), new { a: 5, b: 4, c: 3 })".Eval();
             var array = result as IDictionary<String, Object>;
             Assert.IsNotNull(array);
             Assert.AreEqual(0, array.Count);
         }
 
         [Test]
-        public void WhereWitObjectPartiallySatisfiedShouldYieldObject()
+        public void WhereWithObjectPartiallySatisfiedShouldYieldObject()
         {
-            var result = "where(less(5), new { a: 5, b: 4, c: 3 })".Eval();
+            var result = "where(lt(5), new { a: 5, b: 4, c: 3 })".Eval();
             var array = result as IDictionary<String, Object>;
             Assert.IsNotNull(array);
             Assert.AreEqual(2, array.Count);
@@ -96,9 +96,9 @@
         }
 
         [Test]
-        public void WhereWitObjectFullySatisfiedShouldYieldObject()
+        public void WhereWithObjectFullySatisfiedShouldYieldObject()
         {
-            var result = "where(greater(0), new { a: 5, b: 4, c: 3 })".Eval();
+            var result = "where(gt(0), new { a: 5, b: 4, c: 3 })".Eval();
             var array = result as IDictionary<String, Object>;
             Assert.IsNotNull(array);
             Assert.AreEqual(3, array.Count);
@@ -259,7 +259,7 @@
         [Test]
         public void IntersectionBetweenTwoObjectsWithMatchingKeyButValueMismatch()
         {
-            var result = "intersection(new { a: 2, c: 4 }, new { a: 9 })".Eval();
+            var result = "intersect(new { a: 2, c: 4 }, new { a: 9 })".Eval();
             var array = result as IDictionary<String, Object>;
             Assert.IsNotNull(array);
             Assert.AreEqual(0, array.Count);
@@ -268,7 +268,7 @@
         [Test]
         public void IntersectionBetweenTwoObjectsWithMatchingKeyAndValue()
         {
-            var result = "intersection(new { a: 2, c: 4 }, new { a: 2 })".Eval();
+            var result = "intersect(new { a: 2, c: 4 }, new { a: 2 })".Eval();
             var array = result as IDictionary<String, Object>;
             Assert.IsNotNull(array);
             Assert.AreEqual(1, array.Count);

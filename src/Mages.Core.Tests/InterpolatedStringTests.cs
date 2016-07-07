@@ -43,7 +43,7 @@
         [Test]
         public void UsingInterpolatedStringWithCurriedFunctionCallPlaceholder()
         {
-            var result = "`five is {multiply(2.5)(2)}\\r\\nfoo`".Eval();
+            var result = "`five is {mul(2.5)(2)}\\r\\nfoo`".Eval();
             Assert.AreEqual("five is 5\r\nfoo", result);
         }
 
