@@ -4,7 +4,6 @@
     using Mages.Core.Runtime.Functions;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection;
 
     static class Helpers
@@ -217,7 +216,7 @@
                 {
                     var result = Curry.Min(parameters.Length, f, args);
 
-                    if (result == null && method.TryMatch(parameters, args))
+                    if (result == null && method.TryMatch(parameters, ref args))
                     {
                         result = method.Call(target, args);
                     }

@@ -15,7 +15,7 @@
         private Object Invoke(Object[] arguments)
         {
             var types = arguments.Select(m => m != null ? m.GetType() : typeof(Object)).ToArray();
-            var ctor = _methods.Find(arguments, types) as ConstructorInfo;
+            var ctor = _methods.Find(types, ref arguments) as ConstructorInfo;
 
             if (ctor != null)
             {

@@ -65,32 +65,30 @@
             return mp;
         }
 
-        public static MethodBase Find(this IEnumerable<MethodBase> methods, Object[] arguments, Type[] currentParameters)
+        public static MethodBase Find(this IEnumerable<MethodBase> methods, Type[] currentParameters, ref Object[] arguments)
         {
-            foreach (var method in methods)
+            foreach (var method in methods.Select(m => new { Info = m, ActualParameters = m.GetParameters() }).OrderByDescending(m => m.ActualParameters.Length))
             {
-                var actualParameters = method.GetParameters();
-                
-                if (method.TryMatch(actualParameters, arguments, currentParameters))
+                if (method.Info.TryMatch(method.ActualParameters, currentParameters, ref arguments))
                 {
-                    return method;
+                    return method.Info;
                 }
             }
 
             return null;
         }
 
-        public static Boolean TryMatch(this MethodBase method, ParameterInfo[] actualParameters, Object[] arguments)
+        public static Boolean TryMatch(this MethodBase method, ParameterInfo[] actualParameters, ref Object[] arguments)
         {
             var currentParameters = arguments.Select(m => m.GetType()).ToArray();
-            return method.TryMatch(actualParameters, arguments, currentParameters);
+            return method.TryMatch(actualParameters, currentParameters, ref arguments);
         }
 
-        public static Boolean TryMatch(this MethodBase method, ParameterInfo[] actualParameters, Object[] arguments, Type[] currentParameters)
+        public static Boolean TryMatch(this MethodBase method, ParameterInfo[] actualParameters, Type[] currentParameters, ref Object[] arguments)
         {
             var length = actualParameters.Length;
 
-            if (currentParameters.Length == length)
+            if (currentParameters.Length >= length)
             {
                 var values = new Object[length];
                 var i = 0;
@@ -121,7 +119,7 @@
 
                 if (i == length)
                 {
-                    values.CopyTo(arguments, 0);
+                    arguments = values;
                     return true;
                 }
             }
