@@ -64,6 +64,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Functions\HelpFunctions.cs" />
     <Compile Include="IFileReader.cs" />
     <Compile Include="InteractivityExtensions.cs" />
     <Compile Include="Modules\DotnetModuleFileReader.cs" />

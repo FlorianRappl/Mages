@@ -10,6 +10,7 @@
     {
         public static void Integrate(Engine engine)
         {
+            var help = new HelpFunctions(engine.Globals, engine.Scope);
             engine.SetFunction("spawn", new Function(args =>
             {
                 var id = engine.Globals["spawn"] as Function;
@@ -37,12 +38,8 @@
             }));
             engine.SetFunction("help", new Function(args =>
             {
-                if (args.Length == 0)
-                {
-                    return Helpers.GetAllTopics(engine.Globals, engine.Scope);
-                }
-
-                return null;
+                return args.Length == 0 ? help.GetAllTopics() :
+                    If.Is<String>(args, topic => help.GetTopic(topic));
             }));
             engine.SetFunction("exit", new Function(args =>
             {

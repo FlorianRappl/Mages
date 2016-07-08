@@ -10,8 +10,6 @@
     using System.IO;
     using System.Text;
     using System.Threading.Tasks;
-    using Mages.Core.Runtime.Converters;
-    using System.Linq;
 
     static class Helpers
     {
@@ -38,31 +36,6 @@
             });
 
             return dict;
-        }
-
-        public static String GetAllTopics(IDictionary<String, Object> globals, IDictionary<String, Object> scope)
-        {
-            var sb = new StringBuilder();
-            sb.Append("Global Scope: ");
-            Print(sb, scope);
-            sb.AppendLine();
-            sb.Append("Available API: ");
-            Print(sb, globals);
-            return sb.ToString();
-        }
-
-        private static void Print(StringBuilder sb, IDictionary<String, Object> items)
-        {
-            foreach (var item in items)
-            {
-                var name = item.Key;
-                var type = item.Value.ToType();
-                sb.AppendLine();
-                sb.Append("- [");
-                sb.Append(type);
-                sb.Append("] ");
-                sb.Append(name);
-            }
         }
 
         public static Double Measure(Function f)
