@@ -7,6 +7,6 @@
     {
         Action<Engine> Prepare(String path);
 
-        Boolean TryGetPath(String fileName, out String path);
+        Boolean TryGetPath(String fileName, String directory, out String path);
     }
 }

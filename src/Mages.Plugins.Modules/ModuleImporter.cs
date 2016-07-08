@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
 
     sealed class ModuleImporter
     {
@@ -15,13 +14,13 @@
             _creator = creator;
         }
 
-        public Object From(String fileName)
+        public Object From(String fileName, String directory)
         {
             var path = default(String);
 
             foreach (var reader in _readers)
             {
-                if (reader.TryGetPath(fileName, out path))
+                if (reader.TryGetPath(fileName, directory, out path))
                 {
                     var engine = Cache.Find(path);
 
@@ -32,7 +31,8 @@
                         if (callback != null)
                         {
                             engine = _creator.CreateEngine();
-                            Cache.Init(engine, path);
+                            Cache.Add(engine);
+                            engine.SetPath(path);
                             callback.Invoke(engine);
                         }
                     }
