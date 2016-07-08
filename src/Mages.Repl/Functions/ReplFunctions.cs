@@ -39,7 +39,7 @@
             {
                 if (args.Length == 0)
                 {
-                    return Helpers.GetAllTopics(engine.Globals);
+                    return Helpers.GetAllTopics(engine.Globals, engine.Scope);
                 }
 
                 return null;
