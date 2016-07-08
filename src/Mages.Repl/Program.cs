@@ -34,9 +34,7 @@
 
                 if (!String.IsNullOrEmpty(options.ScriptFile))
                 {
-                    var fileReader = kernel.Get<IFileReader>();
-                    var content = fileReader.GetContent(options.ScriptFile);
-                    repl.Run(content);
+                    repl.Run(options.ScriptFile);
                 }
                 else if (options.IsTutorial)
                 {

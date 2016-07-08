@@ -4,7 +4,6 @@
     using Mages.Plugins.Modules;
     using System;
     using System.IO;
-    using System.Linq;
     using System.Reflection;
 
     sealed class DotnetModuleFileReader : IModuleFileReader
@@ -30,55 +29,29 @@
             }
         }
 
-        public Boolean TryGetPath(String fileName, out String path)
+        public Boolean TryGetPath(String fileName, String directory, out String path)
         {
-            if (HasExtension(fileName))
+            if (ModuleHelpers.HasExtension(AllowedExtensions, fileName))
             {
-                if (Path.IsPathRooted(fileName))
+                if (!ModuleHelpers.TryFindPath(fileName, directory, out path))
                 {
-                    if (File.Exists(fileName))
+                    var windows = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
+                    var baseDir = Path.Combine(windows, "Microsoft.NET", "assembly");
+                    var results = Directory.GetFiles(baseDir, fileName, SearchOption.AllDirectories);
+
+                    if (results.Length == 0)
                     {
-                        path = fileName;
-                        return true;
+                        return false;
                     }
+
+                    path = results[0];
                 }
-                else
-                {
-                    var baseDirectories = new[]
-                    {
-                        Environment.CurrentDirectory,
-                        Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)
-                    };
 
-                    foreach (var baseDirectory in baseDirectories)
-                    {
-                        path = Path.Combine(baseDirectory, fileName);
-
-                        if (File.Exists(path))
-                        {
-                            return true;
-                        }
-                    }
-
-                    path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Microsoft.NET", "assembly");
-                    var results = Directory.GetFiles(path, fileName, SearchOption.AllDirectories);
-
-                    if (results.Length > 0)
-                    {
-                        path = results[0];
-                        return true;
-                    }
-                }
+                return true;
             }
                 
             path = null;
             return false;
-        }
-
-        private static Boolean HasExtension(String fileName)
-        {
-            var ext = Path.GetExtension(fileName);
-            return AllowedExtensions.Contains(ext, StringComparer.OrdinalIgnoreCase);
         }
     }
 }
