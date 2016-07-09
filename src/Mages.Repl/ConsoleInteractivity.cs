@@ -2,9 +2,12 @@
 {
     using Mages.Core.Runtime;
     using System;
+    using System.Text;
 
     sealed class ConsoleInteractivity : IInteractivity
     {
+        private const Int32 BufferSize = 4096;
+
         public ConsoleInteractivity()
         {
             IsPromptShown = true;
@@ -35,7 +38,7 @@
                 WritePrompt();
             }
 
-            return Console.ReadLine();
+            return ReadLine();
         }
 
         public void Info(Object result)
@@ -64,6 +67,14 @@
         public IDisposable HandleCancellation(Action callback)
         {
             return new CancellationRegistration(callback);
+        }
+
+        private static String ReadLine()
+        {
+            var inputStream = Console.OpenStandardInput(4096);
+            var bytes = new Byte[4096];
+            var outputLength = inputStream.Read(bytes, 0, 4096);
+            return Encoding.UTF7.GetString(bytes, 0, outputLength);
         }
 
         struct CancellationRegistration : IDisposable
