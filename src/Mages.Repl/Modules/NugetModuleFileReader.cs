@@ -27,13 +27,12 @@
             return null;
         }
 
-        public Boolean TryGetPath(String fileName, out String path)
+        public Boolean TryGetPath(String fileName, String directory, out String path)
         {
-            if (HasExtension(fileName))
+            if (ModuleHelpers.HasExtension(AllowedExtensions, fileName))
             {
-                if (File.Exists(fileName))
+                if (ModuleHelpers.TryFindPath(fileName, directory, out path))
                 {
-                    path = Path.GetFullPath(fileName);
                     return true;
                 }
                 else if (Path.GetDirectoryName(fileName).Length == 0)
@@ -45,12 +44,6 @@
 
             path = null;
             return false;
-        }
-
-        private static Boolean HasExtension(String fileName)
-        {
-            var ext = Path.GetExtension(fileName);
-            return AllowedExtensions.Contains(ext, StringComparer.OrdinalIgnoreCase);
         }
 
         private static IPackage GetPackage(String path)

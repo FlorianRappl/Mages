@@ -16,9 +16,10 @@
             _engine = creator.CreateEngine();
         }
 
-        public void Run(String content)
+        public void Run(String file)
         {
-            Evaluate(content, false);
+            var import = _engine.Globals["import"] as Function;
+            import?.Invoke(new[] { file });
         }
 
         public void Run()
@@ -66,7 +67,7 @@
             while (!input.IsCompleted())
             {
                 _interactivity.IsPromptShown = false;
-                _interactivity.Info("...  ");
+                _interactivity.Info("...> ");
                 var rest = _interactivity.Read();
                 _interactivity.IsPromptShown = true;
 

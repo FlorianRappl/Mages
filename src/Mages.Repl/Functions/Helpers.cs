@@ -6,6 +6,7 @@
     using Mages.Core.Vm;
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Text;
     using System.Threading.Tasks;
@@ -37,23 +38,11 @@
             return dict;
         }
 
-        public static String GetAllTopics(IDictionary<String, Object> globals)
+        public static Double Measure(Function f)
         {
-            var sb = new StringBuilder();
-            sb.Append("Available functions: ");
-
-            foreach (var global in globals)
-            {
-                if (global.Value is Function)
-                {
-                    sb.AppendLine();
-                    sb.Append("   ");
-                    sb.Append(global.Key);
-                    sb.Append("()");
-                }
-            }
-
-            return sb.ToString();
+            var sw = Stopwatch.StartNew();
+            f.Invoke(new Object[0]);
+            return sw.Elapsed.TotalMilliseconds;
         }
 
         public static String ShowIl(Engine engine, String source)

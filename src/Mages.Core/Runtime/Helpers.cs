@@ -4,7 +4,6 @@
     using Mages.Core.Runtime.Functions;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection;
 
     static class Helpers
@@ -190,24 +189,6 @@
             return obj;
         }
 
-        public static Double Sign(this Double value)
-        {
-            return (Double)Math.Sign(value);
-        }
-
-        public static Double Factorial(this Double value)
-        {
-            var result = (Double)Math.Sign(value);
-            var n = (Int32)Math.Floor(result * value);
-
-            while (n > 0)
-            {
-                result *= n--;
-            }
-
-            return result;
-        }
-
         public static WrapperObject Expose(this Type type)
         {
             return WrapperObject.CreateFor(type);
@@ -235,7 +216,7 @@
                 {
                     var result = Curry.Min(parameters.Length, f, args);
 
-                    if (result == null && method.TryMatch(parameters, args))
+                    if (result == null && method.TryMatch(parameters, ref args))
                     {
                         result = method.Call(target, args);
                     }

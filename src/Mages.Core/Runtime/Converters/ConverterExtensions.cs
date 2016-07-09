@@ -5,8 +5,16 @@
     using System.Globalization;
     using System.Linq;
 
-    static class ConverterExtensions
+    /// <summary>
+    /// A set of useful extension methods for type conversions.
+    /// </summary>
+    public static class ConverterExtensions
     {
+        /// <summary>
+        /// Returns the type of the given value.
+        /// </summary>
+        /// <param name="value">The value to get the type of.</param>
+        /// <returns>The MAGES type string.</returns>
         public static String ToType(this Object value)
         {
             if (value is Double) return "Number";
@@ -18,6 +26,12 @@
             return "Undefined";
         }
 
+        /// <summary>
+        /// Converts the given value to the specified type.
+        /// </summary>
+        /// <param name="value">The type to convert.</param>
+        /// <param name="type">The destination type.</param>
+        /// <returns>The converted value.</returns>
         public static Object To(this Object value, String type)
         {
             switch (type)
@@ -34,6 +48,11 @@
             return null;
         }
 
+        /// <summary>
+        /// Returns the boolean representation of the given value.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The boolean representation of the value.</returns>
         public static Boolean ToBoolean(this Object value)
         {
             if (value is Boolean)
@@ -70,26 +89,51 @@
             return false;
         }
 
+        /// <summary>
+        /// Returns the boolean representation of the given numeric value.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The boolean representation of the value.</returns>
         public static Boolean ToBoolean(this Double value)
         {
             return value != 0.0;;
         }
 
+        /// <summary>
+        /// Returns the boolean representation of the given string value.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The boolean representation of the value.</returns>
         public static Boolean ToBoolean(this String value)
         {
             return value.Length > 0;
         }
 
+        /// <summary>
+        /// Returns the boolean representation of the given matrix value.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The boolean representation of the value.</returns>
         public static Boolean ToBoolean(this Double[,] matrix)
         {
             return matrix.AnyTrue();
         }
 
+        /// <summary>
+        /// Returns the boolean representation of the given object value.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The boolean representation of the value.</returns>
         public static Boolean ToBoolean(this IDictionary<String, Object> obj)
         {
             return obj.Count > 0;
         }
 
+        /// <summary>
+        /// Returns the object representation of the given value.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The object representation of the value.</returns>
         public static IDictionary<String, Object> ToObject(this Object value)
         {
             if (value is IDictionary<String, Object>)
@@ -126,6 +170,11 @@
             }
         }
 
+        /// <summary>
+        /// Returns the number representation of the given value.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The number representation of the value.</returns>
         public static Double ToNumber(this Object value)
         {
             if (value is Double)
@@ -160,6 +209,11 @@
             return value ? 1.0 : 0.0;
         }
 
+        /// <summary>
+        /// Returns the number representation of the given value.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The number representation of the value.</returns>
         public static Double ToNumber(this String value)
         {
             var result = default(Double);
@@ -172,6 +226,11 @@
             return result;
         }
 
+        /// <summary>
+        /// Returns the number representation of the given matrix value.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The number representation of the value.</returns>
         public static Double ToNumber(this Double[,] matrix)
         {
             if (matrix.GetRows() == 1 && matrix.GetColumns() == 1)
@@ -182,22 +241,42 @@
             return Double.NaN;
         }
 
+        /// <summary>
+        /// Returns the matrix representation of the given number value.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The matrix representation of the value.</returns>
         public static Double[,] ToMatrix(this Double value)
         {
             return new Double[1, 1] { { value } };
         }
 
+        /// <summary>
+        /// Returns the matrix representation of the given boolean value.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The matrix representation of the value.</returns>
         public static Double[,] ToMatrix(this Boolean value)
         {
             return new Double[1, 1] { { value.ToNumber() } };
         }
 
+        /// <summary>
+        /// Returns the matrix representation of the given numeric values.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The matrix representation of the value.</returns>
         public static Double[,] ToMatrix(this IEnumerable<Double> value)
         {
             var source = value.ToList();
             return source.ToMatrix();
         }
 
+        /// <summary>
+        /// Returns the matrix representation of the given numeric values.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The matrix representation of the value.</returns>
         public static Double[,] ToMatrix(this List<Double> value)
         {
             var length = value.Count;
@@ -211,6 +290,11 @@
             return matrix;
         }
 
+        /// <summary>
+        /// Returns the vector representation of the given matrix value.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The matrix representation of the value.</returns>
         public static Double[] ToVector(this Double[,] matrix)
         {
             var rows = matrix.GetLength(0);
@@ -229,6 +313,11 @@
             return vec;
         }
 
+        /// <summary>
+        /// Returns the list representation of the given matrix value.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The list representation of the value.</returns>
         public static List<Double> ToList(this Double[,] matrix)
         {
             var rows = matrix.GetRows();
@@ -246,6 +335,12 @@
             return list;
         }
 
+        /// <summary>
+        /// Tries to get the index supplied from the given object.
+        /// </summary>
+        /// <param name="obj">The object to convert.</param>
+        /// <param name="value">The retrieved index.</param>
+        /// <returns>True if the index could be retrieved, otherwise false.</returns>
         public static Boolean TryGetIndex(this Object obj, out Int32 value)
         {
             if (obj is Double && ((Double)obj).IsInteger())

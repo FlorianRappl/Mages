@@ -718,7 +718,7 @@
         [Test]
         public void ComparisonStandardFunctionsAreCurried()
         {
-            var result = "equals() == equals".Eval();
+            var result = "eq() == eq".Eval();
             Assert.AreEqual(true, result);
         }
 
@@ -789,7 +789,7 @@
         [Test]
         public void PipeOperatorAfterMinusOnCurriedMultiplyYieldsResult()
         {
-            var result = "2 - 4 | multiply(3)".Eval();
+            var result = "2 - 4 | mul(3)".Eval();
             Assert.IsInstanceOf<Double>(result);
             Assert.AreEqual(-6.0, result);
         }

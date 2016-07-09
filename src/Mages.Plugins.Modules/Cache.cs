@@ -8,10 +8,9 @@
     {
         private static readonly Dictionary<Engine, Object> _exports = new Dictionary<Engine, Object>();
 
-        public static void Init(Engine engine, String path)
+        public static void Add(Engine engine)
         {
-            engine.Globals[Variables.Path] = path;
-            Assign(engine, null);
+            _exports[engine] = null;
         }
 
         public static void Assign(Engine engine, Object value)
@@ -35,7 +34,7 @@
         {
             foreach (var engine in _exports.Keys)
             {
-                var path = engine.Globals[Variables.Path] as String;
+                var path = engine.GetPath();
 
                 if (modulePath.Equals(path, StringComparison.Ordinal))
                 {

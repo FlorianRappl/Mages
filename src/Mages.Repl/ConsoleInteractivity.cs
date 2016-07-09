@@ -18,7 +18,7 @@
 
         public void WritePrompt()
         {
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.ForegroundColor = ConsoleColor.Magenta;
             Console.Write("SWM> ");
             Console.ResetColor();
         }

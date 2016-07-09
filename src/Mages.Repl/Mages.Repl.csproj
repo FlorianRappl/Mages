@@ -64,10 +64,12 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Functions\HelpFunctions.cs" />
     <Compile Include="IFileReader.cs" />
     <Compile Include="InteractivityExtensions.cs" />
     <Compile Include="Modules\DotnetModuleFileReader.cs" />
     <Compile Include="Modules\MagesModuleFileReader.cs" />
+    <Compile Include="Modules\ModuleHelpers.cs" />
     <Compile Include="Modules\NugetModuleFileReader.cs" />
     <Compile Include="OpenFileReader.cs" />
     <Compile Include="Options.cs" />
@@ -76,7 +78,7 @@
     <Compile Include="Functions\ProcessObject.cs" />
     <Compile Include="Functions\ReplFunctions.cs" />
     <Compile Include="Functions\Helpers.cs" />
-    <Compile Include="Functions\ReplObject.cs" />
+    <Compile Include="Functions\ConsoleFunctions.cs" />
     <Compile Include="IInteractivity.cs" />
     <Compile Include="Plugins\ReplPlugins.cs" />
     <Compile Include="Program.cs" />

@@ -17,8 +17,9 @@
             engine.SetFunction("import", new Function(args =>
             {
                 var id = engine.Globals["import"] as Function;
+                var directory = engine.GetDirectory();
                 return Curry.MinOne(id, args) ??
-                    If.Is<String>(args, fileName => importer.From(fileName));
+                    If.Is<String>(args, fileName => importer.From(fileName, directory));
             }));
             engine.SetFunction("export", new Function(args =>
             {
