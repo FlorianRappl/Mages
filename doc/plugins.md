@@ -44,6 +44,30 @@ static class MyPlugin
 
 The great advantage of a plugin is the ability to remove it. This makes searching for still existing functionality unnecessary. Also further checks are applied to keep keys that have been overwritten since the plugin has been introduced.
 
-### Existing Plugins
+## Existing Plugins
 
 The REPL comes with some handy plugins already loaded. The main purpose of these plugins is to supply further functionality and make small tasks (e.g., saving some text in a file) much simpler.
+
+### Draw
+
+`canvas`
+
+### FileSystem
+
+`file`, `path`, and `dir`. `toBase64` and `fromBase64`
+
+### LinearAlgebra
+
+`cg`, `cholesky`, `det`, `eigen`, `givens`, `gmres`, `householder`, `inverse`, `lu`, `qr`, `solve`, `svg`, and `trace`
+
+### Modules
+
+`import` and `export`
+
+### Plots
+
+`plot`
+
+### Random
+
+`rng`

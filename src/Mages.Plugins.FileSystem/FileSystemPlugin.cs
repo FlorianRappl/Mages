@@ -18,7 +18,7 @@
             get { return typeof(PathFunctions); }
         }
 
-        public static Type Directory
+        public static Type Dir
         {
             get { return typeof(DirectoryFunctions); }
         }
