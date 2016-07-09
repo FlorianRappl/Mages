@@ -22,8 +22,8 @@
             var range = 80;
             var message = error.Code.GetMessage();
             var middle = (end + start) / 2;
-            var ss = Math.Max(middle - range / 2, 0);
-            var se = Math.Min(middle + range / 2, source.Length);
+            var ss = Math.Min(source.Length, Math.Max(middle - range / 2, 0));
+            var se = Math.Min(Math.Max(0, middle + range / 2), source.Length);
             var snippet = source.Substring(ss, se - ss);
             interactivity.Error(snippet);
             interactivity.Error(Environment.NewLine);
