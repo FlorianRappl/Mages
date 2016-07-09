@@ -4,6 +4,7 @@
     using Mages.Plugins.Modules;
     using Mages.Repl.Tutorial;
     using System;
+    using System.IO;
 
     sealed class ReplCore
     {
@@ -19,7 +20,20 @@
         public void Run(String file)
         {
             var import = _engine.Globals["import"] as Function;
-            import?.Invoke(new[] { file });
+
+            try
+            {
+                import?.Invoke(new[] { file });
+            }
+            catch (ParseException ex)
+            {
+                var content = File.ReadAllText(file);
+                _interactivity.Display(ex.Error, content);
+            }
+            catch (Exception ex)
+            {
+                _interactivity.Error(ex.Message);
+            }
         }
 
         public void Run()

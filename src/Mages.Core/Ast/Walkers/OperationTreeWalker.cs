@@ -402,12 +402,13 @@
 
         void ITreeWalker.Visit(InterpolatedExpression expression)
         {
-            var length = expression.Replacements.Length + 1;
+            var replacements = expression.Replacements;
+            var length = replacements.Length + 1;
             expression.Validate(this);
 
-            foreach (var replacement in expression.Replacements)
+            for (var i = replacements.Length - 1; i >= 0; i--)
             {
-                replacement.Accept(this);
+                replacements[i].Accept(this);
             }
 
             expression.Format.Accept(this);
