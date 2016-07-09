@@ -569,6 +569,19 @@
             Assert.AreEqual(true, result);
         }
 
+        [Test]
+        public void PropertyShouldConvertTypeByUnpackingIfInterfaceMatches()
+        {
+            var engine = new Engine();
+            engine.SetStatic<Bar>().WithDefaultName();
+            engine.SetStatic<SampleFoo>().WithDefaultName();
+            var result = engine.Interpret("var bar = Bar.create(); bar.sample = SampleFoo.create(); bar") as WrapperObject;
+
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<Bar>(result.Content);
+            Assert.IsNotNull(((Bar)result.Content).Sample);
+        }
+
         sealed class Point
         {
             public Double x;
@@ -629,6 +642,21 @@
                 get;
                 private set;
             }
+        }
+
+        public interface IFoo
+        {
+
+        }
+
+        class SampleFoo : IFoo
+        {
+
+        }
+
+        public class Bar
+        {
+            public IFoo Sample { get; set; }
         }
     }
 }

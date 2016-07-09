@@ -78,6 +78,19 @@
             return null;
         }
 
+        public static Object Convert(this Type source, Object value, Type target)
+        {
+            var wrapper = value as WrapperObject;
+
+            if (wrapper == null || !target.IsInstanceOfType(wrapper.Content))
+            {
+                var converter = Helpers.Converters.FindConverter(source, target);
+                return converter.Invoke(value);
+            }
+
+            return wrapper.Content;
+        }
+
         public static Boolean TryMatch(this MethodBase method, ParameterInfo[] actualParameters, ref Object[] arguments)
         {
             var currentParameters = arguments.Select(m => m.GetType()).ToArray();
@@ -97,17 +110,7 @@
                 {
                     var source = currentParameters[i];
                     var target = actualParameters[i].ParameterType;
-                    var wrapper = arguments[i] as WrapperObject;
-
-                    if (wrapper == null || wrapper.Type != target)
-                    {
-                        var converter = Helpers.Converters.FindConverter(source, target);
-                        values[i] = converter.Invoke(arguments[i]);
-                    }
-                    else
-                    {
-                        values[i] = wrapper.Content;
-                    }
+                    values[i] = source.Convert(arguments[i], target);
 
                     if (values[i] == null)
                     {

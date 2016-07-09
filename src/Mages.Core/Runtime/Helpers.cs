@@ -237,8 +237,8 @@
             if (value != null)
             {
                 var type = value.GetType();
-                var primitive = type.FindPrimitive();
-                var converter = Converters.FindConverter(type, primitive);
+                var target = type.FindPrimitive();
+                var converter = Converters.FindConverter(type, target);
                 return converter.Invoke(value);
             }
 

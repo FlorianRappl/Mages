@@ -25,8 +25,7 @@
         protected Object Convert(Object value, Type target)
         {
             var source = value != null ? value.GetType() : target;
-            var converter = Helpers.Converters.FindConverter(source, target);
-            return converter.Invoke(value);
+            return source.Convert(value, target);
         }
 
         private Object Convert(Object value)
@@ -37,7 +36,9 @@
             }
             else if (value != null)
             {
-                return Convert(value, value.GetType().FindPrimitive());
+                var source = value.GetType();
+                var target = source.FindPrimitive();
+                return source.Convert(value, target);
             }
 
             return null;
