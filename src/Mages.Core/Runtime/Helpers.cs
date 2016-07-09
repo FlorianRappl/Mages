@@ -205,6 +205,19 @@
             return WrapFunction(func.Method, func.Target);
         }
 
+        public static IDictionary<String, Object> WrapArray(this Array array)
+        {
+            var l = array.Length;
+            var o = new Object[l];
+
+            for (var i = 0; i < l; i++)
+            {
+                o[i] = array.GetValue(i).WrapObject();
+            }
+
+            return o.ToArrayObject();
+        }
+
         public static Function WrapFunction(this MethodInfo method, Object target)
         {
             var parameters = method.GetParameters();

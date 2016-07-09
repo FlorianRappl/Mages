@@ -582,6 +582,20 @@
             Assert.IsNotNull(((Bar)result.Content).Sample);
         }
 
+        [Test]
+        public void ReturnArrayOfElementsAsObjectList()
+        {
+            var engine = new Engine();
+            engine.SetStatic(typeof(Functions)).Scattered();
+
+            var result = engine.Interpret("many()") as IDictionary<String, Object>;
+            Assert.IsNotNull(result);
+            Assert.AreEqual(3, result.Count);
+            Assert.AreEqual("Foo", result["0"]);
+            Assert.AreEqual("Bar", result["1"]);
+            Assert.AreEqual("Baz", result["2"]);
+        }
+
         sealed class Point
         {
             public Double x;
@@ -617,6 +631,11 @@
             public static String Bar()
             {
                 return "bar1";
+            }
+
+            public static String[] Many()
+            {
+                return new[] { "Foo", "Bar", "Baz" };
             }
 
             public static Double Xyz(Double x, Double y, Double z)

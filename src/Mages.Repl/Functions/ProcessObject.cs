@@ -17,6 +17,11 @@
             _env = Environment.GetEnvironmentVariables().OfType<DictionaryEntry>().ToDictionary(m => (String)m.Key, m => m.Value);
         }
 
+        public String[] argv
+        {
+            get { return Environment.GetCommandLineArgs(); }
+        }
+
         public Int32 id
         {
             get { return _process.Id; }
