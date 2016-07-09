@@ -112,7 +112,7 @@
         /// <summary>
         /// Returns the boolean representation of the given matrix value.
         /// </summary>
-        /// <param name="value">The value to convert.</param>
+        /// <param name="matrix">The matrix to convert.</param>
         /// <returns>The boolean representation of the value.</returns>
         public static Boolean ToBoolean(this Double[,] matrix)
         {
@@ -122,7 +122,7 @@
         /// <summary>
         /// Returns the boolean representation of the given object value.
         /// </summary>
-        /// <param name="value">The value to convert.</param>
+        /// <param name="obj">The obj to convert.</param>
         /// <returns>The boolean representation of the value.</returns>
         public static Boolean ToBoolean(this IDictionary<String, Object> obj)
         {
@@ -204,13 +204,18 @@
             return Double.NaN;
         }
 
+        /// <summary>
+        /// Returns the number representation of the given boolean value.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The number representation of the value.</returns>
         public static Double ToNumber(this Boolean value)
         {
             return value ? 1.0 : 0.0;
         }
 
         /// <summary>
-        /// Returns the number representation of the given value.
+        /// Returns the number representation of the given string value.
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The number representation of the value.</returns>
@@ -229,7 +234,7 @@
         /// <summary>
         /// Returns the number representation of the given matrix value.
         /// </summary>
-        /// <param name="value">The value to convert.</param>
+        /// <param name="matrix">The matrix to convert.</param>
         /// <returns>The number representation of the value.</returns>
         public static Double ToNumber(this Double[,] matrix)
         {
@@ -293,7 +298,7 @@
         /// <summary>
         /// Returns the vector representation of the given matrix value.
         /// </summary>
-        /// <param name="value">The value to convert.</param>
+        /// <param name="matrix">The matrix to convert.</param>
         /// <returns>The matrix representation of the value.</returns>
         public static Double[] ToVector(this Double[,] matrix)
         {
@@ -316,7 +321,7 @@
         /// <summary>
         /// Returns the list representation of the given matrix value.
         /// </summary>
-        /// <param name="value">The value to convert.</param>
+        /// <param name="matrix">The matrix to convert.</param>
         /// <returns>The list representation of the value.</returns>
         public static List<Double> ToList(this Double[,] matrix)
         {
