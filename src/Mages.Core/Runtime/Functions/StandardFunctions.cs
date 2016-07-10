@@ -678,5 +678,23 @@
                 If.Is<String>(args, s => 
                     String.Format(s, args.Skip(1).Select(Stringify.This).ToArray()));
         });
+
+        /// <summary>
+        /// Contains the hasKey function.
+        /// </summary>
+        public static readonly Function HasKey = new Function(args =>
+        {
+            return Curry.MinTwo(HasKey, args) ??
+                If.Is<String, IDictionary<String, Object>>(args, (name, obj) => obj.ContainsKey(name));
+        });
+
+        /// <summary>
+        /// Contains the getValue function.
+        /// </summary>
+        public static readonly Function GetValue = new Function(args =>
+        {
+            return Curry.MinTwo(GetValue, args) ??
+                If.Is<String, IDictionary<String, Object>>(args, (name, obj) => obj.GetProperty(name));
+        });
     }
 }

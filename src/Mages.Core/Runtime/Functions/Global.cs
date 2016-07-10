@@ -89,6 +89,8 @@
             { "intersect", StandardFunctions.Intersection },
             { "union", StandardFunctions.Union },
             { "except", StandardFunctions.Except },
+            { "hasKey", StandardFunctions.HasKey },
+            { "getValue", StandardFunctions.GetValue },
         };
     }
 }
