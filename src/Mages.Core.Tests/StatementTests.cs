@@ -4,6 +4,7 @@
     using Mages.Core.Ast.Expressions;
     using Mages.Core.Ast.Statements;
     using Mages.Core.Ast.Walkers;
+    using Mages.Core.Runtime;
     using NUnit.Framework;
     using System;
     using System.Collections.Generic;
@@ -307,6 +308,54 @@
             var errors = Validate(statements);
 
             Assert.AreEqual(1, errors.Count);
+        }
+
+        [Test]
+        public void MultipleIfStatementsAreTriggeredCorrectly()
+        {
+            var engine = new Engine();
+            engine.SetStatic(typeof(System.Net.Mail.MailMessage)).WithDefaultName();
+            engine.SetStatic(typeof(System.Net.NetworkCredential)).WithDefaultName();
+            engine.SetStatic(typeof(System.Net.Mail.SmtpClient)).WithDefaultName();
+            var source = @"var isBasic = is(""String"");
+var isExtended = x => is(""Object"", x) && x(""name"") && x(""mail"");
+var getMail = address => {
+	if (isBasic(address)) {
+		return MailAddress.create(address);
+	}
+
+	if (isExtended(address)) {
+		return MailAddress.create(address.mail, address.name);
+	}
+};
+var f = (host, port, user, pass, sender, recipient, subject, body) => 
+{
+	var smtp = SmtpClient.create(host, port);
+	var message = MailMessage.create();
+
+	if (user || pass) {
+		smtp.credentials = NetworkCredential.create(user, pass);
+	}
+
+	message.from = sender | getMail;
+	message.to.add(recipient | getMail);
+	message.subject = subject;
+	message.body = body;
+	return message;
+};
+
+f(""foo"", 25, ""x@foo"", ""baz"", new { name: ""F"", mail: ""origin@foo"" }, new { name: ""R"", mail: ""dest@foo"" }, ""Subj"", ""Body"")";
+            var result = engine.Interpret(source) as WrapperObject;
+            Assert.IsNotNull(result);
+            var mailMessage = (System.Net.Mail.MailMessage)result.Content;
+            Assert.IsNotNull(mailMessage.From);
+            Assert.AreEqual("Body", mailMessage.Body);
+            Assert.AreEqual("Subj", mailMessage.Subject);
+            Assert.AreEqual("origin@foo", mailMessage.From.Address);
+            Assert.AreEqual("F", mailMessage.From.DisplayName);
+            Assert.AreEqual(1, mailMessage.To.Count);
+            Assert.AreEqual("dest@foo", mailMessage.To[0].Address);
+            Assert.AreEqual("R", mailMessage.To[0].DisplayName);
         }
 
         private static List<ParseError> Validate(List<IStatement> statements)
