@@ -13,7 +13,7 @@
         public static Object Lu(Double[,] matrix)
         {
             var lu = new LUDecomposition(matrix);
-            return Helpers.CreateObject(
+            return ObjectHelpers.CreateObject(
                 "l", lu.L, 
                 "u", lu.U, 
                 "pivot", lu.Pivot, 
@@ -24,7 +24,7 @@
         public static Object Qr(Double[,] matrix)
         {
             var qr = QRDecomposition.Create(matrix);
-            return Helpers.CreateObject(
+            return ObjectHelpers.CreateObject(
                 "q", qr.Q,
                 "r", qr.R,
                 "full", qr.HasFullRank
@@ -34,7 +34,7 @@
         public static Object Cholesky(Double[,] matrix)
         {
             var chol = new CholeskyDecomposition(matrix);
-            return Helpers.CreateObject(
+            return ObjectHelpers.CreateObject(
                 "l", chol.L,
                 "spd", chol.IsSpd
             );
@@ -43,7 +43,7 @@
         public static Object Householder(Double[,] matrix)
         {
             var qr = new HouseholderDecomposition(matrix);
-            return Helpers.CreateObject(
+            return ObjectHelpers.CreateObject(
                 "q", qr.Q,
                 "r", qr.R,
                 "h", qr.H,
@@ -54,7 +54,7 @@
         public static Object Givens(Double[,] matrix)
         {
             var qr = new GivensDecomposition(matrix);
-            return Helpers.CreateObject(
+            return ObjectHelpers.CreateObject(
                 "q", qr.Q,
                 "r", qr.R,
                 "full", qr.HasFullRank
@@ -87,7 +87,7 @@
         public static Object Svd(Double[,] matrix)
         {
             var svd = new SingularValueDecomposition(matrix);
-            return Helpers.CreateObject(
+            return ObjectHelpers.CreateObject(
                 "condition", svd.Condition,
                 "s", svd.S,
                 "v", svd.V,
@@ -143,10 +143,10 @@
             return cg.Solve(b);
         }
 
-        public static Object Eigen(Double[,] A)
+        public static Object Eigen(Double[,] matrix)
         {
-            var ev = new Eigenvalues(A);
-            return Helpers.CreateObject(
+            var ev = new Eigenvalues(matrix);
+            return ObjectHelpers.CreateObject(
                 "real", Helpers.ToMatrix(ev.RealEigenvalues),
                 "imag", Helpers.ToMatrix(ev.ImagEigenvalues),
                 "vec", ev.Eigenvectors

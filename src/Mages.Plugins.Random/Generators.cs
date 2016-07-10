@@ -8,99 +8,119 @@
 
     static class Generators
     {
-        public static Object Weibull(Double alpha, Double beta)
+        public static IGenerator Mt19937()
         {
-            var rng = GetGenerator();
+            return new MT19937Generator();
+        }
+
+        public static IGenerator Mt19937(Int32 seed)
+        {
+            return new MT19937Generator(seed);
+        }
+
+        public static IGenerator Standard()
+        {
+            return new StandardGenerator();
+        }
+
+        public static IGenerator Standard(Int32 seed)
+        {
+            return new StandardGenerator(seed);
+        }
+
+        public static IGenerator XorShift128()
+        {
+            return new XorShift128Generator();
+        }
+
+        public static IGenerator XorShift128(Int32 seed)
+        {
+            return new NR3Generator(seed);
+        }
+
+        public static IGenerator Nr3()
+        {
+            return new NR3Generator();
+        }
+
+        public static IGenerator Nr3(Int32 seed)
+        {
+            return new NR3Generator(seed);
+        }
+
+        public static Object Weibull(IGenerator rng, Double alpha, Double beta)
+        {
             return AsFunction(new WeibullDistribution(rng, alpha, beta));
         }
 
-        public static Object Gamma(Double alpha, Double beta)
+        public static Object Gamma(IGenerator rng, Double alpha, Double beta)
         {
-            var rng = GetGenerator();
             return AsFunction(new GammaDistribution(rng, alpha, beta));
         }
 
-        public static Object Exp(Double lambda)
+        public static Object Exp(IGenerator rng, Double lambda)
         {
-            var rng = GetGenerator();
             return AsFunction(new ExponentialDistribution(rng, lambda));
         }
 
-        public static Object Chisq(Int32 alpha)
+        public static Object Chisq(IGenerator rng, Int32 alpha)
         {
-            var rng = GetGenerator();
             return AsFunction(new ChiSquareDistribution(rng, alpha));
         }
 
-        public static Object Beta(Double alpha, Double beta)
+        public static Object Beta(IGenerator rng, Double alpha, Double beta)
         {
-            var rng = GetGenerator();
             return AsFunction(new BetaDistribution(rng, alpha, beta));
         }
 
-        public static Object Gauss(Double mu, Double sigma)
+        public static Object Gauss(IGenerator rng, Double mu, Double sigma)
         {
-            var rng = GetGenerator();
             return AsFunction(new NormalDistribution(rng, mu, sigma));
         }
 
-        public static Object Laplace(Double alpha, Double mu)
+        public static Object Laplace(IGenerator rng, Double alpha, Double mu)
         {
-            var rng = GetGenerator();
             return AsFunction(new LaplaceDistribution(rng, alpha, mu));
         }
 
-        public static Object Pow(Double alpha, Double beta)
+        public static Object Pow(IGenerator rng, Double alpha, Double beta)
         {
-            var rng = GetGenerator();
             return AsFunction(new PowerDistribution(rng, alpha, beta));
         }
 
-        public static Object StudT(Int32 nu)
+        public static Object StudT(IGenerator rng, Int32 nu)
         {
-            var rng = GetGenerator();
             return AsFunction(new StudentsTDistribution(rng, nu));
         }
 
-        public static Object Pareto(Double alpha, Double beta)
+        public static Object Pareto(IGenerator rng, Double alpha, Double beta)
         {
-            var rng = GetGenerator();
             return AsFunction(new ParetoDistribution(rng, alpha, beta));
         }
 
-        public static Object Cauchy(Double alpha, Double gamma)
+        public static Object Cauchy(IGenerator rng, Double alpha, Double gamma)
         {
-            var rng = GetGenerator();
             return AsFunction(new CauchyDistribution(rng, alpha, gamma));
         }
 
-        public static Object Uni(Double alpha, Double beta)
+        public static Object Uni(IGenerator rng, Double alpha, Double beta)
         {
-            var rng = GetGenerator();
             return AsFunction(new ContinuousUniformDistribution(rng, alpha, beta));
         }
 
-        public static Object Disc(Int32 alpha, Int32 beta)
+        public static Object Disc(IGenerator rng, Int32 alpha, Int32 beta)
         {
-            var rng = GetGenerator();
             return AsFunction(new DiscreteUniformDistribution(rng, alpha, beta));
         }
 
-        public static Object Bernoulli(Double alpha)
+        public static Object Bernoulli(IGenerator rng, Double alpha)
         {
-            var rng = GetGenerator();
             return AsFunction(new BernoulliDistribution(rng, alpha));
         }
 
-        public static Object Poisson(Double lambda)
+        public static Object Poisson(IGenerator rng, Double lambda)
         {
-            var rng = GetGenerator();
             return AsFunction(new PoissonDistribution(rng, lambda));
-        }
-
-        private static IGenerator GetGenerator()
-        {
-            return new MT19937Generator();
         }
 
         private static Func<Object[], Object> AsFunction(IDistribution dist)

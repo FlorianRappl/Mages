@@ -1,8 +1,6 @@
 ﻿namespace Mages.Plugins.LinearAlgebra
 {
-    using Decompositions;
     using System;
-    using System.Collections.Generic;
 
     static class Helpers
     {        
@@ -339,18 +337,6 @@
             }
 
             return sum;
-        }
-
-        public static IDictionary<String, Object> CreateObject(params Object[] keyValues)
-        {
-            var dict = new Dictionary<String, Object>();
-
-            for (var i = 0; i < keyValues.Length; i += 2)
-            {
-                dict[(String)keyValues[i]] = keyValues[i + 1];
-            }
-
-            return dict;
         }
 
         public static Boolean IsSymmetric(Double[,] matrix)

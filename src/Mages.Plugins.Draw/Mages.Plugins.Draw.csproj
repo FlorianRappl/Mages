@@ -44,6 +44,12 @@
     <Compile Include="DrawPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mages.Plugins.Common\Mages.Plugins.Common.csproj">
+      <Project>{62f70cc4-cac2-4477-8e72-39366d185b68}</Project>
+      <Name>Mages.Plugins.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

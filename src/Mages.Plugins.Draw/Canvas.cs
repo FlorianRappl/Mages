@@ -15,14 +15,33 @@
         private GraphicsPath _path;
         private PointF _current;
 
-        public Canvas(Double width, Double height)
+        public static Canvas Load(Byte[] content)
         {
-            _bmp = new Bitmap((Int32)width, (Int32)height);
+            using (var ms = new MemoryStream(content))
+            {
+                var bitmap = new Bitmap(ms);
+                return new Canvas(bitmap);
+            }
+        }
+
+        private Canvas(Bitmap bmp)
+        {
+            _bmp = bmp;
             _g = Graphics.FromImage(_bmp);
             _pen = new Pen(ColorTranslator.FromHtml("black"), 1.0f);
             _current = new PointF(0f, 0f);
             _path = new GraphicsPath();
             _brush = new SolidBrush(_pen.Color);
+        }
+
+        public Canvas(Double width, Double height)
+            : this(new Bitmap((Int32)width, (Int32)height))
+        {
+        }
+
+        public String Color()
+        {
+            return ColorTranslator.ToHtml(_pen.Color);
         }
 
         public Canvas Color(String color)
@@ -31,10 +50,27 @@
             return this;
         }
 
+        public Double Thickness()
+        {
+            return _pen.Width;
+        }
+
         public Canvas Thickness(Double thickness)
         {
             _pen.Width = (Single)thickness;
             return this;
+        }
+
+        public String SolidBrush()
+        {
+            var brush = _brush as SolidBrush;
+
+            if (brush != null)
+            {
+                return ColorTranslator.ToHtml(brush.Color);
+            }
+
+            return null;
         }
 
         public Canvas SolidBrush(String color)

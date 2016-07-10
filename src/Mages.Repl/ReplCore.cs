@@ -23,7 +23,7 @@
 
             try
             {
-                import?.Invoke(new[] { file });
+                import.Invoke(new[] { file });
             }
             catch (ParseException ex)
             {

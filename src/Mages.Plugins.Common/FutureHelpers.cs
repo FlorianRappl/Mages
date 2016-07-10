@@ -1,10 +1,10 @@
-﻿namespace Mages.Plugins.FileSystem
+﻿namespace Mages.Plugins
 {
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    static class Helpers
+    public static class FutureHelpers
     {
         public static Object AsFuture(this Task task, Action cleanup)
         {
@@ -12,18 +12,27 @@
             {
                 { "done", false },
                 { "result", null },
-                { "error", null }
+                { "error", null },
+                { "notify", null }
             };
             task.ContinueWith(tc =>
             {
                 cleanup.Invoke();
+                var notify = obj["notify"] as Delegate;
+                var error = default(String);
 
                 if (tc.IsFaulted)
                 {
-                    obj["error"] = tc.Exception.InnerException.Message;
+                    error = tc.Exception.InnerException.Message;
                 }
 
+                obj["error"] = error;
                 obj["done"] = true;
+
+                if (notify != null)
+                {
+                    notify.DynamicInvoke(new Object[] { new Object[] { null, error } });
+                }
             });
 
             return obj;
@@ -40,22 +49,33 @@
             {
                 { "done", false },
                 { "result", null },
-                { "error", null }
+                { "error", null },
+                { "notify", null }
             };
             task.ContinueWith(tc =>
             {
                 cleanup.Invoke();
+                var notify = obj["notify"] as Delegate;
+                var error = default(String);
+                var result = default(Object);
 
                 if (tc.IsFaulted)
                 {
-                    obj["error"] = tc.Exception.InnerException.Message;
+                    error = tc.Exception.InnerException.Message;
                 }
                 else
                 {
-                    obj["result"] = transformer.Invoke(tc.Result);
+                    result = transformer.Invoke(tc.Result);
                 }
 
+                obj["error"] = error;
                 obj["done"] = true;
+                obj["result"] = result;
+
+                if (notify != null)
+                {
+                    notify.DynamicInvoke(new Object[] { new Object[] { result, error } });
+                }
             });
 
             return obj;
