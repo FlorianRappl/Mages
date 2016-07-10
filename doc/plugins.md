@@ -76,7 +76,14 @@ The `content()` function yields the image's current binary representation.
 
 The file system plugin exposes three objects: `file`, `path`, and `dir`. Additionally, two handy helper functions are introduced: `toBase64` and `fromBase64`. These helpers are able to convert a byte array into a base64 string and vice versa.
 
-In general the functions used by the `file` object return futures.
+In general the functions used by the `file` object return futures to prevent a blocking of the UI. These futures have the following API:
+
+* `done` (boolean)
+* `error` (error message if any)
+* `result` (result if any)
+* `notify` (optional callback to be notified when `done` switches from `false` to `true`)
+
+The futures are used in many plugins and REPL-induced functions.
 
 ### LinearAlgebra
 
