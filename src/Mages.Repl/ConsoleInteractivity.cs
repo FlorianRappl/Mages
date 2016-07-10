@@ -74,7 +74,7 @@
             var inputStream = Console.OpenStandardInput(4096);
             var bytes = new Byte[4096];
             var outputLength = inputStream.Read(bytes, 0, 4096);
-            return Encoding.UTF7.GetString(bytes, 0, outputLength);
+            return Console.InputEncoding.GetString(bytes, 0, outputLength);
         }
 
         struct CancellationRegistration : IDisposable
