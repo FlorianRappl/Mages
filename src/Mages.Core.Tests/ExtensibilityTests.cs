@@ -626,6 +626,46 @@
             Assert.AreEqual("My Bar", message.To[0].DisplayName);
         }
 
+        [Test]
+        public void UseParamsFunctionShouldAcceptZeroArguments()
+        {
+            var engine = new Engine();
+            engine.SetStatic(typeof(Functions)).Scattered();
+
+            var result = engine.Interpret("params()");
+            Assert.AreEqual(0.0, result);
+        }
+
+        [Test]
+        public void UseParamsFunctionShouldAcceptSingleArguments()
+        {
+            var engine = new Engine();
+            engine.SetStatic(typeof(Functions)).Scattered();
+
+            var result = engine.Interpret("params(\"hi\")");
+            Assert.AreEqual(1.0, result);
+        }
+
+        [Test]
+        public void UseParamsFunctionShouldAcceptManyArguments()
+        {
+            var engine = new Engine();
+            engine.SetStatic(typeof(Functions)).Scattered();
+
+            var result = engine.Interpret("params(\"hi\", \"ho\", \"ha\")");
+            Assert.AreEqual(3.0, result);
+        }
+
+        [Test]
+        public void UseParamsFunctionShouldAcceptAndConvertManyArguments()
+        {
+            var engine = new Engine();
+            engine.SetStatic(typeof(Functions)).Scattered();
+
+            var result = engine.Interpret("params(\"hi\", null, \"ha\", \"\")");
+            Assert.AreEqual(2.0, result);
+        }
+
         sealed class Point
         {
             public Double x;
@@ -671,6 +711,11 @@
             public static Double Xyz(Double x, Double y, Double z)
             {
                 return x + 2 * y + 3 * z;
+            }
+
+            public static Double Params(params String[] str)
+            {
+                return str.Where(m => !String.IsNullOrEmpty(m)).Count();
             }
         }
 
