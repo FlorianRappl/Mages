@@ -311,9 +311,10 @@
         }
 
         [Test]
-        public void MultipleIfStatementsAreTriggeredCorrectly()
+        public void JumpsInFunctionStatementsAreTreatedCorrectly()
         {
             var engine = new Engine();
+            engine.SetStatic(typeof(System.Net.Mail.MailAddress)).WithDefaultName();
             engine.SetStatic(typeof(System.Net.Mail.MailMessage)).WithDefaultName();
             engine.SetStatic(typeof(System.Net.NetworkCredential)).WithDefaultName();
             engine.SetStatic(typeof(System.Net.Mail.SmtpClient)).WithDefaultName();
@@ -324,12 +325,11 @@ var getMail = address => {
 		return MailAddress.create(address);
 	}
 
-	if (isExtended(address)) {
+    if (isExtended(address)) {
 		return MailAddress.create(address.mail, address.name);
 	}
 };
-var f = (host, port, user, pass, sender, recipient, subject, body) => 
-{
+var f = (host, port, user, pass, sender, recipient, subject, body) => {
 	var smtp = SmtpClient.create(host, port);
 	var message = MailMessage.create();
 
@@ -344,17 +344,17 @@ var f = (host, port, user, pass, sender, recipient, subject, body) =>
 	return message;
 };
 
-f(""foo"", 25, ""x@foo"", ""baz"", new { name: ""F"", mail: ""origin@foo"" }, new { name: ""R"", mail: ""dest@foo"" }, ""Subj"", ""Body"")";
+f(""foo.com"", 25, ""x@foo"", ""baz"", new { name: ""F"", mail: ""origin@foo.com"" }, new { name: ""R"", mail: ""dest@foo.com"" }, ""Subj"", ""Body"")";
             var result = engine.Interpret(source) as WrapperObject;
             Assert.IsNotNull(result);
             var mailMessage = (System.Net.Mail.MailMessage)result.Content;
             Assert.IsNotNull(mailMessage.From);
             Assert.AreEqual("Body", mailMessage.Body);
             Assert.AreEqual("Subj", mailMessage.Subject);
-            Assert.AreEqual("origin@foo", mailMessage.From.Address);
+            Assert.AreEqual("origin@foo.com", mailMessage.From.Address);
             Assert.AreEqual("F", mailMessage.From.DisplayName);
             Assert.AreEqual(1, mailMessage.To.Count);
-            Assert.AreEqual("dest@foo", mailMessage.To[0].Address);
+            Assert.AreEqual("dest@foo.com", mailMessage.To[0].Address);
             Assert.AreEqual("R", mailMessage.To[0].DisplayName);
         }
 

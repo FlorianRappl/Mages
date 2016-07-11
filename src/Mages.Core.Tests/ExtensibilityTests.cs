@@ -596,6 +596,36 @@
             Assert.AreEqual("Baz", result["2"]);
         }
 
+        [Test]
+        public void UseStringForOverloadedFunctionInvocation()
+        {
+            var engine = new Engine();
+            engine.SetStatic(typeof(System.Net.Mail.MailAddress)).WithDefaultName();
+            engine.SetStatic(typeof(System.Net.Mail.MailMessage)).WithDefaultName();
+
+            var result = engine.Interpret("var message = MailMessage.create(); message.to.add(\"my@bar\"); message") as WrapperObject;
+            Assert.IsNotNull(result);
+            var message = (System.Net.Mail.MailMessage)result.Content;
+            Assert.AreEqual(1, message.To.Count);
+            Assert.AreEqual("my@bar", message.To[0].Address);
+            Assert.AreEqual("", message.To[0].DisplayName);
+        }
+
+        [Test]
+        public void UseComplexObjectForOverloadedFunctionInvocation()
+        {
+            var engine = new Engine();
+            engine.SetStatic(typeof(System.Net.Mail.MailAddress)).WithDefaultName();
+            engine.SetStatic(typeof(System.Net.Mail.MailMessage)).WithDefaultName();
+
+            var result = engine.Interpret("var message = MailMessage.create(); message.to.add(MailAddress.create(\"my@bar\", \"My Bar\")); message") as WrapperObject;
+            Assert.IsNotNull(result);
+            var message = (System.Net.Mail.MailMessage)result.Content;
+            Assert.AreEqual(1, message.To.Count);
+            Assert.AreEqual("my@bar", message.To[0].Address);
+            Assert.AreEqual("My Bar", message.To[0].DisplayName);
+        }
+
         sealed class Point
         {
             public Double x;
