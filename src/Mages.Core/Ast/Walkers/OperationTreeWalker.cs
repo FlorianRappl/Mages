@@ -100,8 +100,12 @@
             {
                 statement.Accept(this);
             }
-        }
 
+            if (_loops.Count > 0)
+            {
+                _operations.Add(new ConstOperation(null));
+            }
+        }
 
         void ITreeWalker.Visit(SimpleStatement statement)
         {

@@ -225,7 +225,7 @@
         [Test]
         public void CallFunctionWithStatementsReturningObject()
         {
-            var result = "((x, y) => { var a = x + y; var b = x - y; new { a: a, b: b}; })(2, 3)".Eval();
+            var result = "((x, y) => { var a = x + y; var b = x - y; return new { a: a, b: b}; })(2, 3)".Eval();
             var obj = result as IDictionary<String, Object>;
             Assert.IsNotNull(obj);
             Assert.AreEqual(5.0, obj["a"]);
@@ -284,7 +284,7 @@
         [Test]
         public void VariableArgumentsOverwrittenIfLocalVariableExists()
         {
-            var result = "f = ()=>{ var args = 1; length(args); }; f(1, 2, 3, 4)".Eval();
+            var result = "f = ()=>{ var args = 1; return length(args); }; f(1, 2, 3, 4)".Eval();
             Assert.AreEqual(1.0, result);
         }
 
