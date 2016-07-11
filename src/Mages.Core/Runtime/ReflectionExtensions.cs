@@ -95,6 +95,21 @@
             return null;
         }
 
+        public static Object ConvertParams(this Type[] sources, Object[] arguments, Type target, Int32 offset)
+        {
+            var rest = sources.Length - offset;
+            var bag = Array.CreateInstance(target, rest);
+
+            for (var j = 0; j < rest; j++)
+            {
+                var i = offset + j;
+                var source = sources[i];
+                bag.SetValue(source.Convert(arguments[i], target), j);
+            }
+
+            return bag;
+        }
+
         public static Boolean TryMatch(this MethodBase method, ParameterInfo[] actualParameters, ref Object[] arguments)
         {
             var currentParameters = arguments.Select(m => m.GetType()).ToArray();
@@ -120,7 +135,7 @@
                     if (isParams)
                     {
                         var element = target.GetElementType();
-                        value = currentParameters.ConvertAll(arguments, element, i);
+                        value = currentParameters.ConvertParams(arguments, element, i);
                     }
                     else
                     {
@@ -142,23 +157,18 @@
                     return true;
                 }
             }
-
-            return false;
-        }
-
-        private static Object ConvertAll(this Type[] sources, Object[] arguments, Type target, Int32 offset)
-        {
-            var rest = sources.Length - offset;
-            var bag = Array.CreateInstance(target, rest);
-
-            for (var j = 0; j < rest; j++)
+            else if (currentParameters.Length == length - 1 && actualParameters[length - 1].GetCustomAttributes(typeof(ParamArrayAttribute), false).Length > 0)
             {
-                var i = offset + j;
-                var source = sources[i];
-                bag.SetValue(source.Convert(arguments[i], target), j);
+                var extendedPara = new Type[length];
+                var extendedArgs = new Object[length];
+                arguments.CopyTo(extendedArgs, 0);
+                currentParameters.CopyTo(extendedPara, 0);
+                arguments = extendedArgs;
+                extendedPara[length - 1] = actualParameters[length - 1].ParameterType.GetElementType();
+                return method.TryMatch(actualParameters, extendedPara, ref arguments);
             }
 
-            return bag;
+            return false;
         }
 
         public static Dictionary<String, BaseProxy> GetStaticProxies(this Type type, WrapperObject target)
