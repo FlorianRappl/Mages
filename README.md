@@ -12,13 +12,13 @@ MAGES is the official successor to YAMP. It is a very simple, yet powerful, expr
 
 ### Current Status
 
-Currently, the tokenization, parsing, interpretation, some extensions, as well as most of the standard functions are implemented. The whole library is about to be completed very soon.
+The first stable version 1.0.0 has been released. The library contains everything to perform lightweight scripting operations in C#. A [CodeProject article](www.codeproject.com/Articles/1108939/MAGES-Ultimate-Scripting-for-NET) about the library (also containing some background and performance comparisons) is also available.
 
 ### Installation
 
 MAGES itself does not have any dependencies, however, the tests are dependent on NUnit and the benchmarks use BenchmarkDotNet. Usually, MAGES should be installed via the NuGet package source. If this does not work for you, then clone the source and build MAGES yourself. Make sure that all unit tests pass.
 
-The whole library was designed to be consumed from .NET 4 (or higher) applications. This means it is (amongst others) compatible with Unity / Mono 2.6. The NuGet package is available via [the official package feed](https://www.nuget.org/packages/MAGES).
+The whole library was designed to be consumed from .NET 3.5 (or higher) applications. This means it is (amongst others) compatible with Unity / Mono 2.6. The NuGet package is available via [the official package feed](https://www.nuget.org/packages/MAGES).
 
 ### Get Me Started!
 
@@ -61,7 +61,6 @@ The documentation is given in form of Markdown documents being placed in the *do
 * [Included functions](doc/functions.md)
 * [Type system](doc/types.md)
 * [Performance evaluations](doc/performance.md)
-* [Contribution guidelines](doc/contributing.md)
 
 If anything is missing, unclear, or wrong then either submit a PR or file an issue. See the following section on contributions for more information.
 
