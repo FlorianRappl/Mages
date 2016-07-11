@@ -138,9 +138,9 @@
             _loops.Push(new LoopInfo { Break = jump, Continue = start });
             statement.Body.Accept(this);
             _loops.Pop();
-            _operations.Add(new JumpOperation(start - 1));
+            InsertJump(start - 1);
             var end = _operations.Count;
-            _operations[jump] = new JumpOperation(end - 1);
+            InsertJump(jump, end - 1);
         }
 
         void ITreeWalker.Visit(IfStatement statement)
@@ -153,22 +153,22 @@
             var jumpToEnd = InsertMarker();
             statement.Secondary.Accept(this);
             var end = _operations.Count;
-            _operations[jumpToElse] = new JumpOperation(jumpToEnd);
-            _operations[jumpToEnd] = new JumpOperation(end - 1);
+            InsertJump(jumpToElse, jumpToEnd);
+            InsertJump(jumpToEnd, end - 1);
         }
 
         void ITreeWalker.Visit(BreakStatement statement)
         {
             statement.Validate(this);
-            var position = _loops.Peek().Break - 1;
-            _operations.Add(new JumpOperation(position));
+            var position = _loops.Peek().Break;
+            InsertJump(position - 1);
         }
 
         void ITreeWalker.Visit(ContinueStatement statement)
         {
             statement.Validate(this);
-            var position = _loops.Peek().Continue - 1;
-            _operations.Add(new JumpOperation(position));
+            var position = _loops.Peek().Continue;
+            InsertJump(position - 1);
         }
 
         void ITreeWalker.Visit(EmptyExpression expression)
@@ -431,6 +431,17 @@
         #endregion
 
         #region Helpers
+
+        private void InsertJump(Int32 target)
+        {
+            var index = _operations.Count;
+            _operations.Add(new JumpOperation(target - index));
+        }
+
+        private void InsertJump(Int32 index, Int32 target)
+        {
+            _operations[index] = new JumpOperation(target - index);
+        }
 
         private Int32 InsertMarker()
         {
