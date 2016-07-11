@@ -82,13 +82,17 @@
         {
             var wrapper = value as WrapperObject;
 
-            if (wrapper == null || !target.IsInstanceOfType(wrapper.Content))
+            if (wrapper == null)
             {
                 var converter = Helpers.Converters.FindConverter(source, target);
                 return converter.Invoke(value);
             }
+            else if (target.IsInstanceOfType(wrapper.Content))
+            {
+                return wrapper.Content;
+            }
 
-            return wrapper.Content;
+            return null;
         }
 
         public static Boolean TryMatch(this MethodBase method, ParameterInfo[] actualParameters, ref Object[] arguments)
