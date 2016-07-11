@@ -49,6 +49,13 @@
                         return converter.Converter;
                     }
                 }
+                
+                if (typeof(Array).IsAssignableFrom(to))
+                {
+                    var element = to.GetElementType();
+                    var converter = FindConverter(element);
+                    return ArrayConverters.Get(from, element, converter);
+                }
 
                 return StandardConverters.Default;
             }

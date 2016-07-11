@@ -102,6 +102,7 @@
     <Compile Include="ParseException.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Runtime\Container.cs" />
+    <Compile Include="Runtime\Converters\ArrayConverters.cs" />
     <Compile Include="Runtime\Converters\CamelNameSelector.cs" />
     <Compile Include="Runtime\Converters\INameSelector.cs" />
     <Compile Include="ITextRange.cs" />
