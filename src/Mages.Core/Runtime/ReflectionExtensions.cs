@@ -114,13 +114,25 @@
                 {
                     var source = currentParameters[i];
                     var target = actualParameters[i].ParameterType;
-                    values[i] = source.Convert(arguments[i], target);
+                    var isParams = i == length - 1 && actualParameters[i].GetCustomAttributes(typeof(ParamArrayAttribute), false).Length > 0;
+                    var value = default(Object);
 
-                    if (values[i] == null)
+                    if (isParams)
+                    {
+                        var element = target.GetElementType();
+                        value = currentParameters.ConvertAll(arguments, element, i);
+                    }
+                    else
+                    {
+                        value = source.Convert(arguments[i], target);
+                    }
+
+                    if (value == null)
                     {
                         break;
                     }
 
+                    values[i] = value;
                     i++;
                 }
 
@@ -132,6 +144,21 @@
             }
 
             return false;
+        }
+
+        private static Object ConvertAll(this Type[] sources, Object[] arguments, Type target, Int32 offset)
+        {
+            var rest = sources.Length - offset;
+            var bag = Array.CreateInstance(target, rest);
+
+            for (var j = 0; j < rest; j++)
+            {
+                var i = offset + j;
+                var source = sources[i];
+                bag.SetValue(source.Convert(arguments[i], target), j);
+            }
+
+            return bag;
         }
 
         public static Dictionary<String, BaseProxy> GetStaticProxies(this Type type, WrapperObject target)
