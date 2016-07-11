@@ -1,3 +1,17 @@
+# 1.0.0
+
+- Add more standard functions (#48)
+- Document existing plugins (#47)
+- Refine existing functions (#46)
+- `this` for member functions (#45)
+- Random plugin (#44)
+- Include Nuget packages (#43)
+- Include .NET Libraries (#42)
+- Fixed some bugs
+- Use relative jump instructions
+- Extended `is` function to check objects
+- Various REPL improvements
+
 # 0.9.0
 
 - Some improvements and fixes
