@@ -81,9 +81,37 @@ In general the functions used by the `file` object return futures to prevent a b
 * `done` (boolean)
 * `error` (error message if any)
 * `result` (result if any)
-* `notify` (optional callback to be notified when `done` switches from `false` to `true`)
+* `notify` (optional callback to be notified when `done` changes from `false` to `true`)
 
-The futures are used in many plugins and REPL-induced functions.
+The futures are used in many plugins and REPL-induced functions, e.g., `spawn`.
+
+The `file` object hosts the following functions:
+
+* `exists(fn)`
+* `create(fn, content)`
+* `append(fn, content)`
+* `readText(fn)`
+* `readBinary(fn)`
+* `delete(fn)`
+* `move(source, target)`
+
+The `dir` object hosts the following functions:
+
+* `exists(dn)`
+* `create(dn)`
+* `delete(dn)`
+* `allFiles(dn)`
+* `getFiles(dn, pattern)`
+
+The `path` object hosts the following functions:
+
+* `dirName(path)`
+* `fileName(path)`
+* `extension(path)`
+* `root(path)`
+* `isRelative(path)`
+* `isAbsolute(path)`
+* `combine(paths ...)`
 
 ### LinearAlgebra
 

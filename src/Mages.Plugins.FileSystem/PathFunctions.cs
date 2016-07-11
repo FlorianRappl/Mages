@@ -5,7 +5,7 @@
 
     static class PathFunctions
     {
-        public static String DirectoryName(String path)
+        public static String DirName(String path)
         {
             return Path.GetDirectoryName(path);
         }
