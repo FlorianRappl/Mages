@@ -96,6 +96,10 @@
       <Project>{b0698a2a-bfe9-4568-9055-82302f325452}</Project>
       <Name>Mages.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Mages.Plugins.Common\Mages.Plugins.Common.csproj">
+      <Project>{62f70cc4-cac2-4477-8e72-39366d185b68}</Project>
+      <Name>Mages.Plugins.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mages.Plugins.Draw\Mages.Plugins.Draw.csproj">
       <Project>{d9a3af85-2b7f-4240-bbb4-54a75a599efc}</Project>
       <Name>Mages.Plugins.Draw</Name>

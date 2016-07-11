@@ -6,7 +6,7 @@
 
     public static class FutureHelpers
     {
-        public static Object AsFuture(this Task task, Action cleanup)
+        public static IDictionary<String, Object> AsFuture(this Task task, Action cleanup)
         {
             var obj = new Dictionary<String, Object>
             {
@@ -38,12 +38,22 @@
             return obj;
         }
 
-        public static Object AsFuture<T>(this Task<T> task, Action cleanup)
+        public static IDictionary<String, Object> AsFuture<T>(this Task<T> task)
+        {
+            return task.AsFuture(m => m);
+        }
+
+        public static IDictionary<String, Object> AsFuture<T>(this Task<T> task, Action cleanup)
         {
             return task.AsFuture(cleanup, m => m);
         }
 
-        public static Object AsFuture<T>(this Task<T> task, Action cleanup, Func<T, Object> transformer)
+        public static IDictionary<String, Object> AsFuture<T>(this Task<T> task, Func<T, Object> transformer)
+        {
+            return task.AsFuture(() => { }, transformer);
+        }
+
+        public static IDictionary<String, Object> AsFuture<T>(this Task<T> task, Action cleanup, Func<T, Object> transformer)
         {
             var obj = new Dictionary<String, Object>
             {
