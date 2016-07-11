@@ -72,30 +72,17 @@
         {
             var current = tokens.Current;
 
-            if (current.Is(Keywords.Var))
-            {
-                return ParseVarStatement(tokens);
-            }
-            else if (current.Is(Keywords.Return))
-            {
-                return ParseReturnStatement(tokens);
-            }
-            else if (current.Is(Keywords.While))
-            {
-                return ParseWhileStatement(tokens);
-            }
-            else if (current.Is(Keywords.If))
-            {
-                return ParseIfStatement(tokens);
-            }
-            else if (current.Is(Keywords.Break))
-            {
-                return ParseBreakStatement(tokens);
-            }
-            else if (current.Is(Keywords.Continue))
-            {
-                return ParseContinueStatement(tokens);
-            }
+            if (current.Is(Keywords.Var)) return ParseVarStatement(tokens);
+
+            if (current.Is(Keywords.Return)) return ParseReturnStatement(tokens);
+
+            if (current.Is(Keywords.If)) return ParseIfStatement(tokens);
+
+            if (current.Is(Keywords.While)) return ParseWhileStatement(tokens);
+
+            if (current.Is(Keywords.Break)) return ParseBreakStatement(tokens);
+
+            if (current.Is(Keywords.Continue)) return ParseContinueStatement(tokens);
 
             return ParseSimpleStatement(tokens);
         }
