@@ -78,8 +78,6 @@
 
             if (current.Is(Keywords.If)) return ParseIfStatement(tokens);
 
-            if (current.Is(Keywords.Each)) return ParseEachStatement(tokens);
-
             if (current.Is(Keywords.While)) return ParseWhileStatement(tokens);
 
             if (current.Is(Keywords.Break)) return ParseBreakStatement(tokens);
@@ -87,11 +85,6 @@
             if (current.Is(Keywords.Continue)) return ParseContinueStatement(tokens);
 
             return ParseSimpleStatement(tokens);
-        }
-
-        private IStatement ParseEachStatement(IEnumerator<IToken> tokens)
-        {
-            throw new NotImplementedException();
         }
 
         private SimpleStatement ParseSimpleStatement(IEnumerator<IToken> tokens)

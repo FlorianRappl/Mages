@@ -7,6 +7,7 @@
     {
         public static readonly IDictionary<String, Object> Mapping = new Dictionary<String, Object>
         {
+            { "each", IterationFunctions.Each },
             { "abs", StandardOperators.Abs },
             { "not", StandardOperators.Not },
             { "type", StandardOperators.Type },

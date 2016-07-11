@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Core", "Mages.Core\Mages.Core.csproj", "{B0698A2A-BFE9-4568-9055-82302F325452}"
 EndProject
@@ -20,6 +20,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Plugins.Draw", "Mages.Plugins.Draw\Mages.Plugins.Draw.csproj", "{D9A3AF85-2B7F-4240-BBB4-54A75A599EFC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Plugins.Plots", "Mages.Plugins.Plots\Mages.Plugins.Plots.csproj", "{152E57B3-2AC2-434C-9695-73BB91E9D772}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleProject", "..\..\..\SampleProject\SampleProject.csproj", "{D4D11189-C372-4CD6-A9BF-AF561BCAC716}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{152E57B3-2AC2-434C-9695-73BB91E9D772}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{152E57B3-2AC2-434C-9695-73BB91E9D772}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{152E57B3-2AC2-434C-9695-73BB91E9D772}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4D11189-C372-4CD6-A9BF-AF561BCAC716}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4D11189-C372-4CD6-A9BF-AF561BCAC716}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4D11189-C372-4CD6-A9BF-AF561BCAC716}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4D11189-C372-4CD6-A9BF-AF561BCAC716}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

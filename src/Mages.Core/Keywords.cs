@@ -58,12 +58,6 @@
         /// </summary>
         public const String Do = "do";
 
-
-        /// <summary>
-        /// The do keyword.
-        /// </summary>
-        public const String Each = "each";
-
         /// <summary>
         /// The module keyword.
         /// </summary>
@@ -143,7 +137,7 @@
             For,
             While,
             Do,
-            Each,
+            //Each,
             Module,
             If,
             Else,

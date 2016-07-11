@@ -122,6 +122,7 @@
     <Compile Include="Runtime\Functions\Curry.cs" />
     <Compile Include="Runtime\Functions\Global.cs" />
     <Compile Include="Runtime\Functions\If.cs" />
+    <Compile Include="Runtime\Functions\IterationFunctions.cs" />
     <Compile Include="Runtime\Functions\Procedure.cs" />
     <Compile Include="Runtime\Functions\SimpleRandom.cs" />
     <Compile Include="Runtime\Functions\StandardOperators.cs" />
