@@ -12,7 +12,7 @@ MAGES is the official successor to YAMP. It is a very simple, yet powerful, expr
 
 ### Current Status
 
-The first stable version 1.0.0 has been released. The library contains everything to perform lightweight scripting operations in C#. A [CodeProject article](www.codeproject.com/Articles/1108939/MAGES-Ultimate-Scripting-for-NET) about the library (also containing some background and performance comparisons) is also available.
+The first stable version 1.0.0 has been released. The library contains everything to perform lightweight scripting operations in C#. A [CodeProject article](http://www.codeproject.com/Articles/1108939/MAGES-Ultimate-Scripting-for-NET) about the library (also containing some background and performance comparisons) is also available.
 
 ### Installation
 
