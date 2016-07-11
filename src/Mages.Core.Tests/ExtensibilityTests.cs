@@ -666,16 +666,26 @@
             Assert.AreEqual(2.0, result);
         }
 
+        [Test]
+        public void ByteArrayTransformationIsAccepted()
+        {
+            var engine = new Engine();
+            engine.SetStatic(typeof(Functions)).Scattered();
+
+            var result = engine.Interpret("4 | loadBin | takeBin");
+            Assert.AreEqual(6.0, result);
+        }
+
         sealed class Point
         {
-            public Double x;
-            public Double y;
+            public Double x = 0;
+            public Double y = 0;
         }
 
         sealed class Index
         {
-            public Int32 col;
-            public UInt16 row;
+            public Int32 col = 0;
+            public UInt16 row = 0;
         }
 
         sealed class PropertyTest
@@ -716,6 +726,30 @@
             public static Double Params(params String[] str)
             {
                 return str.Where(m => !String.IsNullOrEmpty(m)).Count();
+            }
+
+            public static Byte[] LoadBin(Int32 count)
+            {
+                var content = new Byte[count];
+
+                for (var i = 0; i < count; i++)
+                {
+                    content[i] = (Byte)i;
+                }
+
+                return content;
+            }
+
+            public static Double TakeBin(Byte[] content)
+            {
+                var sum = 0.0;
+
+                for (var i = 0; i < content.Length; i++)
+                {
+                    sum += content[i];
+                }
+
+                return sum;
             }
         }
 
