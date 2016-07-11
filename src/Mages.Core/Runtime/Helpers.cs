@@ -67,6 +67,37 @@
             return result;
         }
 
+        public static Boolean Satisfies(this IDictionary<String, Object> constraints, Object value)
+        {
+            var obj = value as IDictionary<String, Object>;
+
+            if (obj != null && obj.Count >= constraints.Count)
+            {
+                foreach (var constraint in constraints)
+                {
+                    var val = default(Object);
+
+                    if (obj.TryGetValue(constraint.Key, out val))
+                    {
+                        var simple = constraint.Value as String;
+                        var extended = constraint.Value as IDictionary<String, Object>;
+
+                        if ((simple == null || val.ToType() == simple) &&
+                            (extended == null || extended.Satisfies(val)))
+                        {
+                            continue;
+                        }
+                    }
+                    
+                    return false;
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
         public static Boolean AllTrue(this IDictionary<String, Object> obj)
         {
             foreach (var item in obj)

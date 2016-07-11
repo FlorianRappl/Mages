@@ -541,7 +541,7 @@
         {
             return Curry.MinOne(Any, args) ??
                 If.Is<Double[,]>(args, x => x.AnyTrue()) ??
-                If.Is<Dictionary<String, Object>>(args, x => x.AnyTrue()) ??
+                If.Is<IDictionary<String, Object>>(args, x => x.AnyTrue()) ??
                 args[0].ToBoolean();
         });
 
@@ -552,7 +552,7 @@
         {
             return Curry.MinOne(All, args) ??
                 If.Is<Double[,]>(args, x => x.AllTrue()) ??
-                If.Is<Dictionary<String, Object>>(args, x => x.AllTrue()) ??
+                If.Is<IDictionary<String, Object>>(args, x => x.AllTrue()) ??
                 args[0].ToBoolean();
         });
 
@@ -562,7 +562,8 @@
         public static readonly Function Is = new Function(args =>
         {
             return Curry.MinTwo(Is, args) ?? 
-                If.Is<String>(args, type => type == args[1].ToType());
+                If.Is<String>(args, type => type == args[1].ToType()) ??
+                If.Is<IDictionary<String, Object>>(args, type => type.Satisfies(args[1]));
         });
 
         /// <summary>
