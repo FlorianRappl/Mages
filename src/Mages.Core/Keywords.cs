@@ -11,112 +11,119 @@
         /// <summary>
         /// The true keyword.
         /// </summary>
-        public static readonly String True = "true";
+        public const String True = "true";
 
         /// <summary>
         /// The false keyword.
         /// </summary>
-        public static readonly String False = "false";
+        public const String False = "false";
 
         /// <summary>
         /// The pi constant.
         /// </summary>
-        public static readonly String Pi = "pi";
+        public const String Pi = "pi";
 
         /// <summary>
         /// The var keyword.
         /// </summary>
-        public static readonly String Var = "var";
+        public const String Var = "var";
 
         /// <summary>
         /// The return keyword.
         /// </summary>
-        public static readonly String Return = "return";
+        public const String Return = "return";
 
         /// <summary>
         /// The let keyword.
         /// </summary>
-        public static readonly String Let = "let";
+        public const String Let = "let";
 
         /// <summary>
         /// The const keyword.
         /// </summary>
-        public static readonly String Const = "const";
+        public const String Const = "const";
 
         /// <summary>
         /// The for keyword.
         /// </summary>
-        public static readonly String For = "for";
+        public const String For = "for";
 
         /// <summary>
         /// The while keyword.
         /// </summary>
-        public static readonly String While = "while";
+        public const String While = "while";
 
         /// <summary>
         /// The do keyword.
         /// </summary>
-        public static readonly String Do = "do";
+        public const String Do = "do";
+
+
+        /// <summary>
+        /// The do keyword.
+        /// </summary>
+        public const String Each = "each";
 
         /// <summary>
         /// The module keyword.
         /// </summary>
-        public static readonly String Module = "module";
+        public const String Module = "module";
 
         /// <summary>
         /// The if keyword.
         /// </summary>
-        public static readonly String If = "if";
+        public const String If = "if";
 
         /// <summary>
         /// The else keyword.
         /// </summary>
-        public static readonly String Else = "else";
+        public const String Else = "else";
 
         /// <summary>
         /// The break keyword.
         /// </summary>
-        public static readonly String Break = "break";
+        public const String Break = "break";
 
         /// <summary>
         /// The continue keyword.
         /// </summary>
-        public static readonly String Continue = "continue";
+        public const String Continue = "continue";
 
         /// <summary>
         /// The yield keyword.
         /// </summary>
-        public static readonly String Yield = "yield";
+        public const String Yield = "yield";
 
         /// <summary>
         /// The async keyword.
         /// </summary>
-        public static readonly String Async = "async";
+        public const String Async = "async";
 
         /// <summary>
         /// The await keyword.
         /// </summary>
-        public static readonly String Await = "await";
+        public const String Await = "await";
 
         /// <summary>
         /// The class keyword.
         /// </summary>
-        public static readonly String Class = "class";
+        public const String Class = "class";
 
         /// <summary>
         /// The static keyword.
         /// </summary>
-        public static readonly String Static = "static";
+        public const String Static = "static";
 
         /// <summary>
         /// The new keyword.
         /// </summary>
-        public static readonly String New = "new";
+        public const String New = "new";
 
         /// <summary>
         /// The delete keyword.
         /// </summary>
-        public static readonly String Delete = "delete";
+        public const String Delete = "delete";
+
 
         private static readonly Dictionary<String, Object> KeywordConstants = new Dictionary<String, Object>
         {
@@ -136,6 +143,7 @@
             For,
             While,
             Do,
+            Each,
             Module,
             If,
             Else,
