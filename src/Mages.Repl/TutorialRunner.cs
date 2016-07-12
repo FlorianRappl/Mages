@@ -1,11 +1,11 @@
-﻿namespace Mages.Repl.Tutorial
+﻿namespace Mages.Repl
 {
     using System;
     using System.Collections.Generic;
 
-    static class Tutorials
+    sealed class TutorialRunner : ITutorialRunner
     {
-        public static void RunAll(IInteractivity interactivity, IDictionary<String, Object> scope, Action<String> evaluate)
+        public void RunAll(IInteractivity interactivity, IDictionary<String, Object> scope, Action<String> evaluate)
         {
             var snippets = GetAllTutorials();
             interactivity.Write(Environment.NewLine);

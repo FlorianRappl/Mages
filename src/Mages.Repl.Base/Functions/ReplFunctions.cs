@@ -8,8 +8,9 @@
 
     static class ReplFunctions
     {
-        public static void Integrate(Engine engine)
+        public static void Integrate(Engine engine, IInteractivity interactivity)
         {
+            var console = new ConsoleFunctions(interactivity);
             var help = new HelpFunctions(engine.Globals, engine.Scope);
             engine.SetFunction("spawn", new Function(args =>
             {
@@ -48,9 +49,9 @@
             }));
             engine.SetConstant("console", new Dictionary<String, Object>
             {
-                { "read", ConsoleFunctions.Read },
-                { "write", ConsoleFunctions.Write },
-                { "writeln", ConsoleFunctions.WriteLine }
+                { "read", console.Read },
+                { "write", console.Write },
+                { "writeln", console.WriteLine }
             });
         }
     }

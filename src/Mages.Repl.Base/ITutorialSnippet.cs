@@ -1,9 +1,9 @@
-﻿namespace Mages.Repl.Tutorial
+﻿namespace Mages.Repl
 {
     using System;
     using System.Collections.Generic;
 
-    interface ITutorialSnippet
+    public interface ITutorialSnippet
     {
         String Title { get; }
 

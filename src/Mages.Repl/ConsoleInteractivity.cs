@@ -1,8 +1,6 @@
 ﻿namespace Mages.Repl
 {
-    using Mages.Core.Runtime;
     using System;
-    using System.Text;
 
     sealed class ConsoleInteractivity : IInteractivity
     {
@@ -41,7 +39,7 @@
             return ReadLine();
         }
 
-        public void Info(Object result)
+        public void Info(String result)
         {
             if (result == null)
             {
@@ -52,7 +50,7 @@
             else
             {
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.Write(Stringify.This(result));
+                Console.Write(result);
                 Console.ResetColor();
             }
         }

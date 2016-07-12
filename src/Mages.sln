@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Core", "Mages.Core\Mages.Core.csproj", "{B0698A2A-BFE9-4568-9055-82302F325452}"
 EndProject
@@ -30,6 +30,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Plugins.Modules", "Mages.Plugins.Modules\Mages.Plugins.Modules.csproj", "{16E1BAF8-6CE0-404F-85D8-E8841CC48ECA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Plugins.Common", "Mages.Plugins.Common\Mages.Plugins.Common.csproj", "{62F70CC4-CAC2-4477-8E72-39366D185B68}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Repl.Tests", "Mages.Repl.Tests\Mages.Repl.Tests.csproj", "{92BAD61F-F5B6-4E6D-A34A-939B994B2910}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Repl.Base", "Mages.Repl.Base\Mages.Repl.Base.csproj", "{18E9CD99-8F61-4E77-A59A-8EFDC588042E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,6 +89,14 @@ Global
 		{62F70CC4-CAC2-4477-8E72-39366D185B68}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62F70CC4-CAC2-4477-8E72-39366D185B68}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62F70CC4-CAC2-4477-8E72-39366D185B68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92BAD61F-F5B6-4E6D-A34A-939B994B2910}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92BAD61F-F5B6-4E6D-A34A-939B994B2910}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92BAD61F-F5B6-4E6D-A34A-939B994B2910}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92BAD61F-F5B6-4E6D-A34A-939B994B2910}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18E9CD99-8F61-4E77-A59A-8EFDC588042E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18E9CD99-8F61-4E77-A59A-8EFDC588042E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18E9CD99-8F61-4E77-A59A-8EFDC588042E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18E9CD99-8F61-4E77-A59A-8EFDC588042E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

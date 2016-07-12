@@ -1,12 +1,12 @@
 ﻿namespace Mages.Repl
 {
     using Mages.Core;
+    using Mages.Core.Runtime;
     using Mages.Plugins.Modules;
-    using Mages.Repl.Tutorial;
     using System;
     using System.IO;
 
-    sealed class ReplCore
+    public sealed class ReplCore
     {
         private readonly IInteractivity _interactivity;
         private readonly Engine _engine;
@@ -43,7 +43,7 @@
             Teardown();
         }
 
-        public void Tutorial()
+        public void Tutorial(ITutorialRunner tutorials)
         {
             Startup();
 
@@ -51,7 +51,7 @@
             _interactivity.Write("Welcome to MAGES! Press ENTER to to start the interactive tutorial ...");
             _interactivity.Read();
             _interactivity.IsPromptShown = true;
-            Tutorials.RunAll(_interactivity, _engine.Scope, input => Evaluate(input, true));
+            tutorials.RunAll(_interactivity, _engine.Scope, input => Evaluate(input, true));
             
             Teardown();
         }
@@ -102,7 +102,14 @@
 
                 if (showOutput)
                 {
-                    _interactivity.Info(result);
+                    var output = default(String);
+
+                    if (result != null)
+                    {
+                        output = Stringify.This(result);
+                    }
+
+                    _interactivity.Info(output);
                     _engine.Scope["ans"] = result;
                 }
             }

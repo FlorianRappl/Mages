@@ -8,11 +8,13 @@
 
     sealed class MagesCreator : IEngineCreator
     {
+        private readonly IInteractivity _interactivity;
         private readonly IEnumerable<IModuleFileReader> _readers;
 
-        public MagesCreator(IEnumerable<IModuleFileReader> readers)
+        public MagesCreator(IEnumerable<IModuleFileReader> readers, IInteractivity interactivity)
         {
             _readers = readers;
+            _interactivity = interactivity;
         }
 
         public Engine CreateEngine()
@@ -24,7 +26,7 @@
                 IsThisAvailable = true,
             };
             var engine = new Engine(configuration);
-            ReplFunctions.Integrate(engine);
+            ReplFunctions.Integrate(engine, _interactivity);
             ReplPlugins.Integrate(engine);
             engine.AllowModules(_readers, this);
             return engine;

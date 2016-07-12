@@ -1,4 +1,4 @@
-﻿namespace Mages.Repl.Tutorial
+﻿namespace Mages.Repl
 {
     using System;
     using System.Collections.Generic;

@@ -2,7 +2,7 @@
 {
     using System;
 
-    interface IFileReader
+    public interface IFileReader
     {
         String GetContent(String fileName);
     }

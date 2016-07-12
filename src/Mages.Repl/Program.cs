@@ -38,7 +38,7 @@
                 }
                 else if (options.IsTutorial)
                 {
-                    repl.Tutorial();
+                    repl.Tutorial(new TutorialRunner());
                 }
                 else
                 {

@@ -40,16 +40,8 @@
       <HintPath>..\packages\CommandLineParser.2.0.275-beta\lib\net45\CommandLine.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Web.XmlTransform, Version=2.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Web.Xdt.2.1.1\lib\net40\Microsoft.Web.XmlTransform.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="NuGet.Core, Version=2.11.1.812, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\NuGet.Core.2.11.1\lib\net40-Client\NuGet.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -64,72 +56,26 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Functions\HelpFunctions.cs" />
-    <Compile Include="IFileReader.cs" />
-    <Compile Include="InteractivityExtensions.cs" />
-    <Compile Include="Modules\DotnetModuleFileReader.cs" />
-    <Compile Include="Modules\MagesModuleFileReader.cs" />
-    <Compile Include="Modules\ModuleHelpers.cs" />
-    <Compile Include="Modules\NugetModuleFileReader.cs" />
     <Compile Include="OpenFileReader.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="ConsoleInteractivity.cs" />
-    <Compile Include="ErrorCodeExtensions.cs" />
-    <Compile Include="Functions\ProcessObject.cs" />
-    <Compile Include="Functions\ReplFunctions.cs" />
-    <Compile Include="Functions\Helpers.cs" />
-    <Compile Include="Functions\ConsoleFunctions.cs" />
-    <Compile Include="IInteractivity.cs" />
-    <Compile Include="Plugins\ReplPlugins.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReplCore.cs" />
     <Compile Include="ReplServices.cs" />
-    <Compile Include="MagesCreator.cs" />
     <Compile Include="Starter.cs" />
-    <Compile Include="Tutorial\ITutorialSnippet.cs" />
-    <Compile Include="Tutorial\StandardSnippet.cs" />
-    <Compile Include="Tutorial\Tutorials.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Mages.Core\Mages.Core.csproj">
-      <Project>{b0698a2a-bfe9-4568-9055-82302f325452}</Project>
-      <Name>Mages.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Mages.Plugins.Common\Mages.Plugins.Common.csproj">
-      <Project>{62f70cc4-cac2-4477-8e72-39366d185b68}</Project>
-      <Name>Mages.Plugins.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Mages.Plugins.Draw\Mages.Plugins.Draw.csproj">
-      <Project>{d9a3af85-2b7f-4240-bbb4-54a75a599efc}</Project>
-      <Name>Mages.Plugins.Draw</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Mages.Plugins.FileSystem\Mages.Plugins.FileSystem.csproj">
-      <Project>{df8d8e0e-87bc-4b70-8560-14b2de02c424}</Project>
-      <Name>Mages.Plugins.FileSystem</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Mages.Plugins.LinearAlgebra\Mages.Plugins.LinearAlgebra.csproj">
-      <Project>{84965e3e-b7e6-49e7-adf1-46a3cb7ebea6}</Project>
-      <Name>Mages.Plugins.LinearAlgebra</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Mages.Plugins.Modules\Mages.Plugins.Modules.csproj">
-      <Project>{16e1baf8-6ce0-404f-85d8-e8841cc48eca}</Project>
-      <Name>Mages.Plugins.Modules</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Mages.Plugins.Plots\Mages.Plugins.Plots.csproj">
-      <Project>{152e57b3-2ac2-434c-9695-73bb91e9d772}</Project>
-      <Name>Mages.Plugins.Plots</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Mages.Plugins.Random\Mages.Plugins.Random.csproj">
-      <Project>{75fc4f51-4bb7-4f30-a0ca-80d91a5bdd62}</Project>
-      <Name>Mages.Plugins.Random</Name>
-    </ProjectReference>
+    <Compile Include="StandardSnippet.cs" />
+    <Compile Include="TutorialRunner.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Mages.Repl.Base\Mages.Repl.Base.csproj">
+      <Project>{18e9cd99-8f61-4e77-a59a-8efdc588042e}</Project>
+      <Name>Mages.Repl.Base</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

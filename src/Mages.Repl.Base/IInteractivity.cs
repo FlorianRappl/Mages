@@ -2,7 +2,7 @@
 {
     using System;
 
-    interface IInteractivity
+    public interface IInteractivity
     {
         IDisposable HandleCancellation(Action callback);
 
@@ -14,7 +14,7 @@
 
         void Write(String output);
 
-        void Info(Object result);
+        void Info(String result);
 
         void Error(String message);
     }
