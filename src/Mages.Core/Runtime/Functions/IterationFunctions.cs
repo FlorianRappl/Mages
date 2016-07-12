@@ -31,8 +31,8 @@ namespace Mages.Core.Runtime.Functions
                 if (args[0] is Function)
                     return new Function(innerArg =>
                     {
-                        var f = innerArg[0] as Function;
-                        var enu = (args[0] as Function).Invoke(new object[]{ }) as IEnumerable;
+                        var f = args[0] as Function;
+                        var enu = innerArg[0] as IEnumerable;
 
                         foreach (var item in enu)
                         {
