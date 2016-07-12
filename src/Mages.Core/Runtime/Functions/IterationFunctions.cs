@@ -1,4 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace Mages.Core.Runtime.Functions
 {
@@ -9,31 +13,27 @@ namespace Mages.Core.Runtime.Functions
         /// </summary>
         public static readonly Function Each = new Function(args =>
         {
-            if (args.Length == 0) return null;
-
-            var outer = args[0] as Function;
-
-            if (args.Length == 1 && outer!=null)
-                return new Function(arr =>
-                {
-                    var inner = arr[0] as IEnumerable;
-
-                    foreach (var item in inner)
-                    {
-                        outer.Invoke(new[] { item });
-                    }
-                    return arr[0];
-                });
-
-            var f = args[1] as Function;
-
-            if (args.Length == 2 && f!=null)
+            if(args.Length == 1)
             {
-                var enu = args[0] as IEnumerable;
-
-                if (enu!=null)
-                    return new Function(arr =>
+                if (args[0] is IEnumerable)
+                    return new Function(innerArg =>
                     {
+                        var f = innerArg[0] as Function;
+                        var enu = args[0] as IEnumerable;
+
+                        foreach (var item in enu)
+                        {
+                            f.Invoke(new[] { item });
+                        }
+                        return args[0];
+                    });
+
+                if (args[0] is Function)
+                    return new Function(innerArg =>
+                    {
+                        var f = innerArg[0] as Function;
+                        var enu = (args[0] as Function).Invoke(new object[]{ }) as IEnumerable;
+
                         foreach (var item in enu)
                         {
                             f.Invoke(new[] { item });
@@ -42,6 +42,17 @@ namespace Mages.Core.Runtime.Functions
                     });
             }
 
+            if (args.Length == 2 && args[0] is IEnumerable && args[1] is Function)
+            {
+                var enu = args[0] as IEnumerable;
+                var f = args[1] as Function;
+
+                foreach (var item in enu)
+                {
+                    f.Invoke(new[] { item });
+                }
+                return args[0];
+            }
             return null;
         });
     }
