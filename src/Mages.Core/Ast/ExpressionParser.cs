@@ -60,7 +60,8 @@
             {
                 return ParseKeywordStatement(tokens);
             }
-            else if (current.Type == TokenType.OpenScope)
+
+            if (current.Type == TokenType.OpenScope)
             {
                 return ParseBlockStatement(tokens);
             }
@@ -72,30 +73,17 @@
         {
             var current = tokens.Current;
 
-            if (current.Is(Keywords.Var))
-            {
-                return ParseVarStatement(tokens);
-            }
-            else if (current.Is(Keywords.Return))
-            {
-                return ParseReturnStatement(tokens);
-            }
-            else if (current.Is(Keywords.While))
-            {
-                return ParseWhileStatement(tokens);
-            }
-            else if (current.Is(Keywords.If))
-            {
-                return ParseIfStatement(tokens);
-            }
-            else if (current.Is(Keywords.Break))
-            {
-                return ParseBreakStatement(tokens);
-            }
-            else if (current.Is(Keywords.Continue))
-            {
-                return ParseContinueStatement(tokens);
-            }
+            if (current.Is(Keywords.Var)) return ParseVarStatement(tokens);
+
+            if (current.Is(Keywords.Return)) return ParseReturnStatement(tokens);
+
+            if (current.Is(Keywords.While)) return ParseWhileStatement(tokens);
+
+            if (current.Is(Keywords.If)) return ParseIfStatement(tokens);
+
+            if (current.Is(Keywords.Break)) return ParseBreakStatement(tokens);
+
+            if (current.Is(Keywords.Continue)) return ParseContinueStatement(tokens);
 
             return ParseSimpleStatement(tokens);
         }
@@ -293,7 +281,8 @@
                 var y = ParseAssignment(tokens.NextNonIgnorable());
                 return new AssignmentExpression(x, y);
             }
-            else if (mode == TokenType.Lambda)
+
+            if (mode == TokenType.Lambda)
             {
                 var parameters = GetParameters(x);
                 return ParseFunction(parameters, tokens.NextNonIgnorable());

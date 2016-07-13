@@ -18,7 +18,7 @@
         public void Invoke(IExecutionContext context)
         {
             var value = context.Pop();
-            context.Scope.SetProperty(_name, value);
+            context.Scope[_name]=value;
             context.Push(value);
         }
 

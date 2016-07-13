@@ -19,7 +19,7 @@
         public static String GetPath(this Engine engine)
         {
             var value = default(Object);
-            engine.Globals.TryGetValue(PathKey, out value);
+            engine.Scope.TryGetValue(PathKey, out value);
             return value as String;
         }
 
@@ -31,12 +31,12 @@
 
         public static void SetPath(this Engine engine, String value)
         {
-            engine.Globals[PathKey] = value;
+            engine.Scope[PathKey] = value;
         }
 
         public static void SetCache(this Engine engine)
         {
-            engine.Globals[CacheKey] = DefaultCache;
+            engine.Scope[CacheKey] = DefaultCache;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace Mages.Core.Vm
 {
+    using Runtime;
     using System;
     using System.Collections.Generic;
 
@@ -21,7 +22,7 @@
         /// <summary>
         /// Gets the currently used execution scope.
         /// </summary>
-        IDictionary<String, Object> Scope { get; }
+        Scope Scope { get; }
 
         /// <summary>
         /// Pushes a new value on the stack.

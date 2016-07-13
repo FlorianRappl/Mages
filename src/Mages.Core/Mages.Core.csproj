@@ -111,7 +111,7 @@
     <Compile Include="Engine.cs" />
     <Compile Include="ErrorCode.cs" />
     <Compile Include="Ast\ParserExtensions.cs" />
-    <Compile Include="Runtime\BaseScope.cs" />
+    <Compile Include="Runtime\Scope.cs" />
     <Compile Include="Runtime\BinaryOperators.cs" />
     <Compile Include="Runtime\Converters\ConverterExtensions.cs" />
     <Compile Include="Runtime\Converters\StandardConverters.cs" />
@@ -121,7 +121,6 @@
     <Compile Include="Runtime\EntryChangedArgs.cs" />
     <Compile Include="Runtime\Functions\AttachedProperties.cs" />
     <Compile Include="Runtime\Functions\Curry.cs" />
-    <Compile Include="Runtime\Functions\Global.cs" />
     <Compile Include="Runtime\Functions\If.cs" />
     <Compile Include="Runtime\Functions\Procedure.cs" />
     <Compile Include="Runtime\Functions\SimpleRandom.cs" />
@@ -148,7 +147,6 @@
     <Compile Include="Runtime\ReflectionExtensions.cs" />
     <Compile Include="Runtime\Stringify.cs" />
     <Compile Include="Runtime\UnaryOperators.cs" />
-    <Compile Include="Runtime\LocalScope.cs" />
     <Compile Include="Runtime\WrapperObject.cs" />
     <Compile Include="Source\ScannerExtensions.cs" />
     <Compile Include="StringExtensions.cs" />

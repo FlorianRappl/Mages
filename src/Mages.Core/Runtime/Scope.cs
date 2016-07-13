@@ -4,27 +4,48 @@
     using System.Collections;
     using System.Collections.Generic;
 
-    abstract class BaseScope : IDictionary<String, Object>
+    public class Scope:IEnumerable
     {
         protected readonly IDictionary<String, Object> _scope;
-        protected readonly IDictionary<String, Object> _parent;
+        protected readonly Scope _parent;
 
-        public BaseScope(IDictionary<String, Object> scope, IDictionary<String, Object> parent)
+        public Scope(Scope parent)
         {
-            _scope = scope;
+            _scope = new Dictionary<string, object>();
             _parent = parent;
         }
 
-        public IDictionary<String, Object> Parent
+        public Scope Parent
         {
             get { return _parent; }
         }
 
-        public Object this[String key]
+        public virtual object this[string key]
         {
-            get { return _scope[key]; }
-            set { SetValue(key, value); }
+            get
+            {
+                object value;
+                if (_scope.TryGetValue(key, out value))
+                    return value;
+
+                return _parent[key];
+            }
+            set
+            {
+                if (_scope.ContainsKey(key))
+                {
+                    _scope[key] = value;
+                    return;
+                }
+                _parent[key] = value;
+            }
         }
+
+        public virtual Boolean TryGetValue(String key, out Object value)
+        {
+            return _scope.TryGetValue(key, out value) || _parent.TryGetValue(key, out value);
+        }
+
 
         public Int32 Count
         {
@@ -89,13 +110,6 @@
         {
             return _scope.Remove(key);
         }
-
-        public Boolean TryGetValue(String key, out Object value)
-        {
-            return _scope.TryGetValue(key, out value) || _parent.TryGetValue(key, out value);
-        }
-
-        protected abstract void SetValue(String key, Object value);
 
         IEnumerator IEnumerable.GetEnumerator()
         {

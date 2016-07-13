@@ -10,29 +10,29 @@
     {
         public static void Integrate(Engine engine)
         {
-            var help = new HelpFunctions(engine.Globals, engine.Scope);
+            var help = new HelpFunctions(engine.Scope, engine.Scope);
             engine.SetFunction("spawn", new Function(args =>
             {
-                var id = engine.Globals["spawn"] as Function;
+                var id = engine.Scope["spawn"] as Function;
                 return Curry.MinOne(id, args) ??
                     If.Is<Function>(args, f => Helpers.Spawn(f, args.Skip(1).ToArray()));
             }));
             engine.SetFunction("il", new Function(args =>
             {
-                var id = engine.Globals["il"] as Function;
+                var id = engine.Scope["il"] as Function;
                 return Curry.MinOne(id, args) ??
                     If.Is<String>(args, source => Helpers.ShowIl(engine, source));
             }));
             engine.SetFunction("ast", new Function(args =>
             {
-                var id = engine.Globals["ast"] as Function;
+                var id = engine.Scope["ast"] as Function;
                 return Curry.MinOne(id, args) ??
                     If.Is<String>(args, source => Helpers.ShowAst(engine, source));
             }));
             engine.SetConstant("process", new ProcessObject());
             engine.SetConstant("measure", new Function(args =>
             {
-                var id = engine.Globals["measure"] as Function;
+                var id = engine.Scope["measure"] as Function;
                 return Curry.MinOne(id, args) ??
                     If.Is<Function>(args, f => Helpers.Measure(f));
             }));

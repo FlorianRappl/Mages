@@ -1,13 +1,14 @@
 ﻿namespace Mages.Repl.Tutorial
 {
+    using Core.Runtime;
     using System;
     using System.Collections.Generic;
 
     sealed class StandardSnippet<T> : ITutorialSnippet
     {
-        private readonly Func<T, IDictionary<String, Object>, Boolean> _checker;
+        private readonly Func<T, Scope, Boolean> _checker;
 
-        public StandardSnippet(Func<T, IDictionary<String, Object>, Boolean> checker)
+        public StandardSnippet(Func<T, Scope, Boolean> checker)
         {
             _checker = checker;
         }
@@ -48,7 +49,7 @@
             set;
         }
 
-        public Boolean Check(IDictionary<String, Object> scope)
+        public Boolean Check(Scope scope)
         {
             var value = scope["ans"];
             return value is T ? _checker.Invoke((T)value, scope) : false;

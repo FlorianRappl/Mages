@@ -34,11 +34,11 @@
 
         sealed class InternalFunction
         {
-            private readonly IDictionary<String, Object> _parentScope;
+            private readonly Scope _parentScope;
             private readonly IOperation[] _operations;
             private readonly Function _pointer;
 
-            public InternalFunction(IDictionary<String, Object> parentScope, IOperation[] operations)
+            public InternalFunction(Scope parentScope, IOperation[] operations)
             {
                 _parentScope = parentScope;
                 _operations = operations;
@@ -52,7 +52,7 @@
 
             public Object Invoke(Object[] arguments)
             {
-                var scope = new LocalScope(_parentScope);
+                var scope = new Scope(_parentScope);
                 var ctx = new ExecutionContext(_operations, scope);
                 ctx.Push(_pointer);
                 ctx.Push(arguments);

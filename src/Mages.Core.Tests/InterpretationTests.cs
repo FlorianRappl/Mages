@@ -1,6 +1,7 @@
 ﻿namespace Mages.Core.Tests
 {
     using NUnit.Framework;
+    using Runtime;
     using System;
     using System.Collections.Generic;
 
@@ -320,7 +321,7 @@
             Test("n = 0; i = 3; if (i < 2) n = 1; else n = -1; n", -1.0);
         }
 
-        private static IDictionary<String, Object> Test(String sourceCode, Double expected, Double tolerance = 0.0)
+        private static Scope Test(String sourceCode, Double expected, Double tolerance = 0.0)
         {
             var engine = new Engine();
             var result = engine.Interpret(sourceCode) as Double?;

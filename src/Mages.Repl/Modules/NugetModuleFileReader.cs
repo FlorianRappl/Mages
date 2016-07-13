@@ -106,8 +106,8 @@
         {
             if (TryInsertLibrary(files, engine))
             {
-                var export = engine.Globals["export"] as Function;
-                export.Call(engine.Globals[LibName]);
+                var export = engine.Scope["export"] as Function;
+                export.Call(engine.Scope[LibName]);
             }
         }
 

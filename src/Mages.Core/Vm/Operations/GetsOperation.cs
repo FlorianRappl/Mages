@@ -17,7 +17,9 @@
 
         public void Invoke(IExecutionContext context)
         {
-            var value = context.Scope.GetProperty(_name);
+            object value;
+
+            context.Scope.TryGetValue(_name, out value);
             context.Push(value);
         }
 

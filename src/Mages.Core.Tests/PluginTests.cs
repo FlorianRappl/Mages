@@ -62,7 +62,7 @@
             content["a"] = new Function(args => (Double)args.Length);
             var plugin = new Plugin(metaData, content);
             var engine = new Engine();
-            engine.Globals["a"] = content["a"];
+            engine.Scope["a"] = content["a"];
             engine.RemovePlugin(plugin);
 
             var three = engine.Interpret("a(1, 2, 3)");

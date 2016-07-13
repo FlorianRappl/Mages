@@ -1,5 +1,6 @@
 ﻿namespace Mages.Core.Vm
 {
+    using Runtime;
     using System;
     using System.Collections.Generic;
 
@@ -10,7 +11,7 @@
     {
         private readonly Stack<Object> _stack;
         private readonly IOperation[] _operations;
-        private readonly IDictionary<String, Object> _scope;
+        private readonly Scope _scope;
         private Int32 _position;
 
         /// <summary>
@@ -18,7 +19,7 @@
         /// </summary>
         /// <param name="operations">The operations to use.</param>
         /// <param name="scope">The global scope to use.</param>
-        public ExecutionContext(IOperation[] operations, IDictionary<String, Object> scope)
+        public ExecutionContext(IOperation[] operations, Scope scope)
         {
             _stack = new Stack<Object>();
             _operations = operations;
@@ -46,7 +47,7 @@
         /// <summary>
         /// Gets the currently used scope of the execution context.
         /// </summary>
-        public IDictionary<String, Object> Scope
+        public Scope Scope
         {
             get { return _scope; }
         }

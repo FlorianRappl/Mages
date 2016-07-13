@@ -9,10 +9,10 @@
 
     sealed class HelpFunctions
     {
-        private readonly IDictionary<String, Object> _globals;
-        private readonly IDictionary<String, Object> _scope;
+        private readonly Scope _globals;
+        private readonly Scope _scope;
 
-        public HelpFunctions(IDictionary<String, Object> globals, IDictionary<String, Object> scope)
+        public HelpFunctions(Scope globals, Scope scope)
         {
             _globals = globals;
             _scope = scope;
@@ -42,7 +42,7 @@
             return Info(topic, value);
         }
 
-        private static void Print(StringBuilder sb, IDictionary<String, Object> items)
+        private static void Print(StringBuilder sb, Scope items)
         {
             foreach (var item in items)
             {

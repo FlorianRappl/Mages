@@ -51,17 +51,9 @@
         /// <summary>
         /// Gets the used global scope.
         /// </summary>
-        public IDictionary<String, Object> Scope
+        public Scope Scope
         {
             get { return _scope; }
-        }
-
-        /// <summary>
-        /// Gets the used global function layer.
-        /// </summary>
-        public IDictionary<String, Object> Globals
-        {
-            get { return _scope.Parent; }
         }
 
         /// <summary>
@@ -100,9 +92,9 @@
                 
                 foreach (var item in plugin.Content)
                 {
-                    if (!Globals.ContainsKey(item.Key))
+                    if (!Scope.ContainsKey(item.Key))
                     {
-                        Globals[item.Key] = item.Value;
+                        Scope[item.Key] = item.Value;
                     }
                 }
             }
@@ -122,9 +114,9 @@
                 {
                     var value = default(Object);
 
-                    if (Globals.TryGetValue(item.Key, out value) && value == item.Value)
+                    if (Scope.TryGetValue(item.Key, out value) && value == item.Value)
                     {
-                        Globals.Remove(item.Key);
+                        Scope.Remove(item.Key);
                     }
                 }
             }
