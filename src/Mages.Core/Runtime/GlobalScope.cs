@@ -18,7 +18,6 @@
             {
                 LoadType(typeof(StandardFunctions));
                 LoadType(typeof(StandardOperators));
-                LoadType(typeof(IterationFunctions));
                 return;
             }
 

@@ -3,6 +3,7 @@
     using Mages.Core.Runtime.Converters;
     using Mages.Core.Runtime.Functions;
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Reflection;
 
@@ -10,6 +11,12 @@
     {
         public static readonly TypeConverterMap Converters = new TypeConverterMap();
         private static readonly Object[] Empty = new Object[0];
+
+        public static IEnumerable YieldAround<T>(this IEnumerable enu, Func<object, T> sel)
+        {
+            foreach (var item in enu)
+                yield return sel(item);
+        }
 
         public static Object Getter(this String str, Object[] arguments)
         {

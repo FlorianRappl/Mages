@@ -1,9 +1,10 @@
 ﻿namespace Mages.Core.Runtime
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Globalization;
-
+    using System.Linq;
     /// <summary>
     /// Helpers to stringify objects used by MAGES.
     /// </summary>
@@ -75,6 +76,11 @@
             return sb.Stringify();
         }
 
+        public static String This(IEnumerable value)
+        {
+            return string.Join(",",value.YieldAround(x=>Stringify.This(x)).Cast<string>().ToArray());
+        }
+
         /// <summary>
         /// Converts the object to a string.
         /// </summary>
@@ -105,36 +111,23 @@
         /// </summary>
         public static String This(Object value)
         {
-            if (value == null)
-            {
-                return Undefined();
-            }
-            else if (value is Function)
-            {
-                return This((Function)value);
-            }
-            else if (value is IDictionary<String, Object>)
-            {
-                return This((IDictionary<String, Object>)value);
-            }
-            else if (value is Double[,])
-            {
-                return This((Double[,])value);
-            }
-            else if (value is String)
-            {
-                return This((String)value);
-            }
-            else if (value is Double)
-            {
-                return This((Double)value);
-            }
-            else if (value is Boolean)
-            {
-                return This((Boolean)value);
-            }
+            if (value == null) return Undefined();
 
-            return "(unknown)";
+            if (value is Function) return This((Function)value);
+
+            if (value is IDictionary<String, Object>) return This((IDictionary<String, Object>)value);
+
+            if (value is Double[,]) return This((Double[,])value);
+
+            if (value is String) return This((String)value);
+
+            if (value is IEnumerable) return This(value as IEnumerable);
+
+            if (value is Double) return This((Double)value);
+
+            if (value is Boolean) return This((Boolean)value);
+
+            return "(unknown)"+value.GetType().Name;
         }
 
         /// <summary>

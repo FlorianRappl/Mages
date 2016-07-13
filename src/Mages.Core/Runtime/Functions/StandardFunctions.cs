@@ -16,11 +16,13 @@
         /// </summary>
         public static readonly Function Sqrt = new Function(args => 
         {
-            return Curry.MinOne(Sqrt, args) ??
+            var dbg=  Curry.MinOne(Sqrt, args) ??
                 If.Is<Double>(args, x => Math.Sqrt(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Math.Sqrt)) ??
                 If.Is<IDictionary<String, Object>>(args, o => o.Map(Sqrt)) ??
                 Math.Sqrt(args[0].ToNumber());
+
+            return dbg;
         });
 
         /// <summary>
@@ -598,12 +600,7 @@
                         var f = innerArg[0] as Function;
                         var enu = args[0] as IEnumerable;
 
-                        var list = new List<object>();
-                        foreach (var item in enu)
-                        {
-                            list.Add(f.Invoke(new[] { item }));
-                        }
-                        return list;
+                        return enu.YieldAround(item => f.Invoke(new[] { item }));
                     });
 
                 if (args[0] is Function)
@@ -612,12 +609,7 @@
                         var f = args[0] as Function;
                         var enu = innerArg[0] as IEnumerable;
 
-                        var list = new List<object>();
-                        foreach (var item in enu)
-                        {
-                            list.Add(f.Invoke(new[] { item }));
-                        }
-                        return list;
+                        return enu.YieldAround(item => f.Invoke(new[] { item }));
                     });
             }
 
@@ -626,12 +618,7 @@
                 var enu = args[0] as IEnumerable;
                 var f = args[1] as Function;
 
-                var list = new List<object>();
-                foreach (var item in enu)
-                {
-                    list.Add(f.Invoke(new[] { item }));
-                }
-                return list;
+                return enu.YieldAround(item => f.Invoke(new[] { item }));
             }
             return null;
         });
