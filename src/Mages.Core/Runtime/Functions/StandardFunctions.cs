@@ -551,7 +551,7 @@
                         var f = innerArg[0] as Function;
                         var enu = args[0] as IEnumerable;
 
-                        return enu.YieldAround(f);
+                        return enu.Each(f);
                     });
 
                 if (args[0] is Function)
@@ -560,7 +560,7 @@
                         var f = args[0] as Function;
                         var enu = innerArg[0] as IEnumerable;
 
-                        return enu.YieldAround(f);
+                        return enu.Each(f);
                     });
             }
 
@@ -569,7 +569,7 @@
                 var enu = args[0] as IEnumerable;
                 var f = args[1] as Function;
 
-                return enu.YieldAround(f);
+                return enu.Each(f);
             }
             return null;
         });
@@ -659,6 +659,7 @@
         {
             return Curry.MinTwo(Where, args) ??
                 If.Is<Function, Double[,]>(args, (f, m) => m.Where(f)) ??
+                If.Is<Function, IEnumerable>(args, (f, enu) => enu.Where(f)) ??
                 If.Is<Function, IDictionary<String, Object>>(args, (f, o) => o.Where(f)) ??
                 If.Is<Function>(args, f => f(new[] { args[1] }).ToBoolean() ? args[1] : null);
         });

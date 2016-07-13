@@ -5,9 +5,9 @@
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
-    /// <summary>
-    /// Helpers to stringify objects used by MAGES.
-    /// </summary>
+    using System.Text;    /// <summary>
+                          /// Helpers to stringify objects used by MAGES.
+                          /// </summary>
     public static class Stringify
     {
         /// <summary>
@@ -78,7 +78,7 @@
 
         public static String This(IEnumerable value)
         {
-            return string.Join(",",value.YieldAround(x=>Stringify.This(x)).Cast<string>().ToArray());
+            return "[" + string.Join(",", value.Each(x => This(x)).ToArray())+"]";
         }
 
         /// <summary>

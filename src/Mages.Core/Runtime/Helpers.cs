@@ -12,13 +12,31 @@
         public static readonly TypeConverterMap Converters = new TypeConverterMap();
         private static readonly Object[] Empty = new Object[0];
 
-        public static IEnumerable YieldAround(this IEnumerable enu, Function sel)
+        public static IEnumerable Where(this IEnumerable enu, Function sel)
+        {
+            foreach (var item in enu)
+            {
+                var d = sel.Invoke(new[] { item });
+
+                if ((bool) d)
+                    yield return item;
+            }
+        }
+
+        public static IEnumerable Where(this IEnumerable enu, Func<object, bool> sel)
+        {
+            foreach (var item in enu)
+                if (sel(new[] { item }))
+                    yield return item;
+        }
+
+        public static IEnumerable Each(this IEnumerable enu, Function sel)
         {
             foreach (var item in enu)
                 yield return sel(new[] { item });
         }
 
-        public static IEnumerable YieldAround<T>(this IEnumerable enu, Func<object, T> sel)
+        public static IEnumerable<T> Each<T>(this IEnumerable enu, Func<object, T> sel)
         {
             foreach (var item in enu)
                 yield return sel(item);
