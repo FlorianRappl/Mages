@@ -57,6 +57,7 @@
     <Compile Include="Functions\HelpFunctions.cs" />
     <Compile Include="Functions\ProcessObject.cs" />
     <Compile Include="Functions\ReplFunctions.cs" />
+    <Compile Include="IFileSystem.cs" />
     <Compile Include="ITutorialRunner.cs" />
     <Compile Include="MagesCreator.cs" />
     <Compile Include="Modules\DotnetModuleFileReader.cs" />

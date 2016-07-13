@@ -3,15 +3,20 @@
     using Mages.Core;
     using Mages.Plugins.Modules;
     using System;
-    using System.IO;
 
     sealed class MagesModuleFileReader : IModuleFileReader
     {
         private static readonly String[] AllowedExtensions = new[] { ".ms", ".mages", ".txt", ".m" };
+        private readonly IFileSystem _fs;
+
+        public MagesModuleFileReader(IFileSystem fs)
+        {
+            _fs = fs;
+        }
 
         public Action<Engine> Prepare(String path)
         {
-            var content = File.ReadAllText(path);
+            var content = _fs.RealText(path);
             return engine => engine.Interpret(content);
         }
 

@@ -13,6 +13,12 @@
     {
         private static readonly String LibName = "__lib";
         private static readonly String[] AllowedExtensions = new[] { ".nupkg", ".nuget", ".pkg" };
+        private readonly Mages.Repl.IFileSystem _fs;
+
+        public NugetModuleFileReader(Mages.Repl.IFileSystem fs)
+        {
+            _fs = fs;
+        }
 
         public Action<Engine> Prepare(String path)
         {
@@ -35,7 +41,7 @@
                 {
                     return true;
                 }
-                else if (Path.GetDirectoryName(fileName).Length == 0)
+                else if (_fs.GetDirectory(fileName).Length == 0)
                 {
                     path = fileName;
                     return true;
@@ -46,9 +52,9 @@
             return false;
         }
 
-        private static IPackage GetPackage(String path)
+        private IPackage GetPackage(String path)
         {
-            if (!Path.IsPathRooted(path))
+            if (_fs.IsRelative(path))
             {
                 var info = ParsePackageInfo(path);
                 var manager = GetPackageManager();
@@ -66,17 +72,17 @@
             return new ZipPackage(path);
         }
 
-        private static PackageManager GetPackageManager()
+        private PackageManager GetPackageManager()
         {
             var repository = PackageRepositoryFactory.Default.CreateRepository("https://packages.nuget.org/api/v2");
-            var baseDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var packageDirectory = Path.Combine(baseDirectory, "packages");
+            var baseDirectory = _fs.GetDirectory(Assembly.GetExecutingAssembly().Location);
+            var packageDirectory = _fs.GetPath(baseDirectory, "packages");
             return new PackageManager(repository, packageDirectory);
         }
 
-        private static PackageInfo ParsePackageInfo(String path)
+        private PackageInfo ParsePackageInfo(String path)
         {
-            var packageId = Path.GetFileNameWithoutExtension(path);
+            var packageId = _fs.GetFileName(path);
             var parts = packageId.Split('.');
             var version = default(SemanticVersion);
             var offset = parts[0].Length + 1;

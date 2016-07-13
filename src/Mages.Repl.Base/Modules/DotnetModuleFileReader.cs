@@ -3,19 +3,25 @@
     using Mages.Core;
     using Mages.Plugins.Modules;
     using System;
-    using System.IO;
     using System.Reflection;
 
     sealed class DotnetModuleFileReader : IModuleFileReader
     {
         private static readonly String[] AllowedExtensions = new[] { ".dll" };
         private static readonly String LibName = "__lib";
+        private readonly IFileSystem _fs;
+
+        public DotnetModuleFileReader(IFileSystem fs)
+        {
+            _fs = fs;
+        }
 
         public Action<Engine> Prepare(String path)
         {
             try
             {
-                var lib = Assembly.LoadFile(path);
+                var content = _fs.ReadRaw(path);
+                var lib = Assembly.Load(content);
                 return engine => 
                 {
                     engine.SetStatic(lib).WithName(LibName);
@@ -35,9 +41,8 @@
             {
                 if (!ModuleHelpers.TryFindPath(fileName, directory, out path))
                 {
-                    var windows = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
-                    var baseDir = Path.Combine(windows, "Microsoft.NET", "assembly");
-                    var results = Directory.GetFiles(baseDir, fileName, SearchOption.AllDirectories);
+                    var baseDir = _fs.GetGacDirectory();
+                    var results = _fs.GetAllFiles(baseDir, fileName);
 
                     if (results.Length == 0)
                     {

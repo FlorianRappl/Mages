@@ -7,6 +7,7 @@
         public override void Load()
         {
             Bind<IInteractivity>().ToConstant(new ConsoleInteractivity());
+            Bind<IFileSystem>().ToConstant(new RealFileSystem());
             //Bind<IModuleFileReader>().ToConstant(new MagesModuleFileReader());
             //Bind<IModuleFileReader>().ToConstant(new DotnetModuleFileReader());
             //Bind<IModuleFileReader>().ToConstant(new NugetModuleFileReader());
