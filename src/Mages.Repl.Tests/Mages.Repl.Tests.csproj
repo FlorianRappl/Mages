@@ -50,12 +50,18 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="FunctionsTests.cs" />
+    <Compile Include="Mocks\PseudoInteractivity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mages.Core\Mages.Core.csproj">
       <Project>{b0698a2a-bfe9-4568-9055-82302f325452}</Project>
       <Name>Mages.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mages.Plugins.Modules\Mages.Plugins.Modules.csproj">
+      <Project>{16e1baf8-6ce0-404f-85d8-e8841cc48eca}</Project>
+      <Name>Mages.Plugins.Modules</Name>
     </ProjectReference>
     <ProjectReference Include="..\Mages.Repl.Base\Mages.Repl.Base.csproj">
       <Project>{18e9cd99-8f61-4e77-a59a-8efdc588042e}</Project>
