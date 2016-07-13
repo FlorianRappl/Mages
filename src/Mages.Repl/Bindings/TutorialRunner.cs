@@ -1,4 +1,4 @@
-﻿namespace Mages.Repl
+﻿namespace Mages.Repl.Bindings
 {
     using System;
     using System.Collections.Generic;

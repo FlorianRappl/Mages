@@ -56,16 +56,16 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="RealFileSystem.cs" />
-    <Compile Include="OpenFileReader.cs" />
+    <Compile Include="Bindings\RealFileSystem.cs" />
+    <Compile Include="Bindings\OpenFileReader.cs" />
     <Compile Include="Options.cs" />
-    <Compile Include="ConsoleInteractivity.cs" />
+    <Compile Include="Bindings\ConsoleInteractivity.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Bindings\ReplResolver.cs" />
     <Compile Include="ReplServices.cs" />
-    <Compile Include="Starter.cs" />
     <Compile Include="StandardSnippet.cs" />
-    <Compile Include="TutorialRunner.cs" />
+    <Compile Include="Bindings\TutorialRunner.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

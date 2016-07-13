@@ -42,7 +42,7 @@
             }
             else
             {
-                Starter.Run();
+                Mages.Repl.Program.Run();
             }
         }
     }

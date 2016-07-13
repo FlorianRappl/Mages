@@ -7,11 +7,16 @@
     using System.IO;
     using System.Security.Principal;
 
-    static class Program
+    public static class Program
     {
         internal static void Main(String[] arguments)
         {
             Parser.Default.ParseArguments<Options>(arguments).WithParsed(Run);
+        }
+
+        public static void Run()
+        {
+            Main(new String[0]);
         }
 
         private static void Run(Options options)
@@ -34,11 +39,13 @@
 
                 if (!String.IsNullOrEmpty(options.ScriptFile))
                 {
-                    repl.Run(options.ScriptFile);
+                    var file = options.ScriptFile;
+                    repl.Run(file);
                 }
                 else if (options.IsTutorial)
                 {
-                    repl.Tutorial(new TutorialRunner());
+                    var runner = kernel.Get<ITutorialRunner>();
+                    repl.Tutorial(runner);
                 }
                 else
                 {

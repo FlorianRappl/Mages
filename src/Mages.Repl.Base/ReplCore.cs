@@ -2,7 +2,6 @@
 {
     using Mages.Core;
     using Mages.Core.Runtime;
-    using Mages.Plugins.Modules;
     using System;
     using System.IO;
 
@@ -11,10 +10,10 @@
         private readonly IInteractivity _interactivity;
         private readonly Engine _engine;
 
-        public ReplCore(IInteractivity interactivity, IEngineCreator creator)
+        public ReplCore(IResolver resolver)
         {
-            _interactivity = interactivity;
-            _engine = creator.CreateEngine();
+            _interactivity = resolver.Interactivity;
+            _engine = resolver.CreateEngine();
         }
 
         public void Run(String file)
