@@ -551,11 +551,7 @@
                         var f = innerArg[0] as Function;
                         var enu = args[0] as IEnumerable;
 
-                        foreach (var item in enu)
-                        {
-                            f.Invoke(new[] { item });
-                        }
-                        return args[0];
+                        return enu.YieldAround(f);
                     });
 
                 if (args[0] is Function)
@@ -564,11 +560,7 @@
                         var f = args[0] as Function;
                         var enu = innerArg[0] as IEnumerable;
 
-                        foreach (var item in enu)
-                        {
-                            f.Invoke(new[] { item });
-                        }
-                        return args[0];
+                        return enu.YieldAround(f);
                     });
             }
 
@@ -577,52 +569,10 @@
                 var enu = args[0] as IEnumerable;
                 var f = args[1] as Function;
 
-                foreach (var item in enu)
-                {
-                    f.Invoke(new[] { item });
-                }
-                return args[0];
+                return enu.YieldAround(f);
             }
             return null;
         });
-
-        /// <summary>
-        /// Linq style Select
-        /// </summary>
-        /// FIXME: Standardize format
-        public static readonly Function Select = new Function(args =>
-        {
-            if (args.Length == 1)
-            {
-                if (args[0] is IEnumerable)
-                    return new Function(innerArg =>
-                    {
-                        var f = innerArg[0] as Function;
-                        var enu = args[0] as IEnumerable;
-
-                        return enu.YieldAround(item => f.Invoke(new[] { item }));
-                    });
-
-                if (args[0] is Function)
-                    return new Function(innerArg =>
-                    {
-                        var f = args[0] as Function;
-                        var enu = innerArg[0] as IEnumerable;
-
-                        return enu.YieldAround(item => f.Invoke(new[] { item }));
-                    });
-            }
-
-            if (args.Length == 2 && args[0] is IEnumerable && args[1] is Function)
-            {
-                var enu = args[0] as IEnumerable;
-                var f = args[1] as Function;
-
-                return enu.YieldAround(item => f.Invoke(new[] { item }));
-            }
-            return null;
-        });
-
 
         /// <summary>
         /// Contains the any function.
