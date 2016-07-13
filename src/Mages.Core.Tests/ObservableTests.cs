@@ -40,11 +40,11 @@
         public void ChangeWrapperObjectToBeObservable()
         {
             var engine = new Engine(new Configuration { IsEngineExposed = true });
-            var engineObj = engine.Globals["engine"] as IDictionary<String, Object>;
+            var engineObj = engine.Scope["engine"] as IDictionary<String, Object>;
             var obs = new ObservableDictionary(engineObj);
             var keys = new List<String>();
             var version = obs["version"];
-            engine.Globals["engine"] = obs;
+            engine.Scope["engine"] = obs;
             obs.Changed += (s, ev) => keys.Add(ev.Key);
             engine.Interpret("engine.version = \"my version\"");
 

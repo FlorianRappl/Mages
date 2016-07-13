@@ -12,7 +12,7 @@
         {
             var source = "";
             var engine = new Engine();
-            engine.Globals.Clear();
+            engine.Scope.Clear();
             var autocomplete = engine.GetCompletionAt(source, 0).ToArray();
             var available = Keywords.GlobalStatementKeywords.Concat(Keywords.ExpressionKeywords);
 
@@ -25,7 +25,7 @@
             var source = "";
             var engine = new Engine();
             var autocomplete = engine.GetCompletionAt(source, 0).ToArray();
-            var available = Keywords.GlobalStatementKeywords.Concat(Keywords.ExpressionKeywords).Concat(engine.Globals.Keys);
+            var available = Keywords.GlobalStatementKeywords.Concat(Keywords.ExpressionKeywords).Concat(engine.Scope.Keys);
 
             CollectionAssert.AreEquivalent(available, autocomplete);
         }
@@ -35,7 +35,7 @@
         {
             var source = "(() => { var x = 5; })";
             var engine = new Engine();
-            engine.Globals.Clear();
+            engine.Scope.Clear();
             var autocomplete = engine.GetCompletionAt(source, source.Length - 2).ToArray();
             var available = Keywords.GlobalStatementKeywords.Concat(Keywords.ExpressionKeywords).Concat(new[] { "x" });
 
@@ -47,7 +47,7 @@
         {
             var source = "(() => { var x = 5; });";
             var engine = new Engine();
-            engine.Globals.Clear();
+            engine.Scope.Clear();
             var autocomplete = engine.GetCompletionAt(source, source.Length).ToArray();
             var available = Keywords.GlobalStatementKeywords.Concat(Keywords.ExpressionKeywords);
 
@@ -59,7 +59,7 @@
         {
             var source = "x = 5; var y = 9; 7 +";
             var engine = new Engine();
-            engine.Globals.Clear();
+            engine.Scope.Clear();
             var autocomplete = engine.GetCompletionAt(source, source.Length).ToArray();
             var available = Keywords.ExpressionKeywords.Concat(new []{ "x", "y" });
 
@@ -71,7 +71,7 @@
         {
             var source = "((a, b, c) => { var x = 5; })";
             var engine = new Engine();
-            engine.Globals.Clear();
+            engine.Scope.Clear();
             var autocomplete = engine.GetCompletionAt(source, source.Length - 2).ToArray();
             var available = Keywords.GlobalStatementKeywords.Concat(Keywords.ExpressionKeywords).Concat(new[] { "x", "a", "b", "c" });
 
@@ -83,7 +83,7 @@
         {
             var source = "((a, b, c) => { var x = 5; })";
             var engine = new Engine();
-            engine.Globals.Clear();
+            engine.Scope.Clear();
             var autocomplete = engine.GetCompletionAt(source, 3).ToArray();
             var available = new String[0];
 

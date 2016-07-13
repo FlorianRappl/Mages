@@ -21,7 +21,7 @@
         /// <param name="function">The function to be integrated.</param>
         public static void SetFunction(this Engine engine, String name, Function function)
         {
-            engine.Globals[name] = function;
+            engine.Scope[name] = function;
         }
 
         /// <summary>
@@ -33,7 +33,7 @@
         /// <param name="function">The function to be wrapped.</param>
         public static void SetFunction(this Engine engine, String name, Delegate function)
         {
-            engine.Globals[name] = function.WrapFunction();
+            engine.Scope[name] = function.WrapFunction();
         }
 
         /// <summary>
@@ -46,7 +46,7 @@
         /// <param name="target">The optional target object of the method.</param>
         public static void SetFunction(this Engine engine, String name, MethodInfo method, Object target = null)
         {
-            engine.Globals[name] = method.WrapFunction(target);
+            engine.Scope[name] = method.WrapFunction(target);
         }
 
         /// <summary>
@@ -58,7 +58,7 @@
         /// <param name="value">The value to interact with.</param>
         public static void SetConstant(this Engine engine, String name, Object value)
         {
-            engine.Globals[name] = value.WrapObject();
+            engine.Scope[name] = value.WrapObject();
         }
 
         /// <summary>
@@ -80,7 +80,7 @@
         /// <param name="type">The type to expose.</param>
         public static IPlacement SetStatic(this Engine engine, Type type)
         {
-            var name = engine.Globals.Keys.FindName(type);
+            var name = engine.Scope.Keys.FindName(type);
             var obj = type.Expose();
             return new Placement(engine, name, obj);
         }
@@ -149,7 +149,7 @@
                 var symbol = symbols[i];
                 var name = symbol.Name;
 
-                if (engine.Scope.ContainsKey(name) || engine.Globals.ContainsKey(name))
+                if (engine.Scope.ContainsKey(name) || engine.Scope.ContainsKey(name))
                 {
                     symbols.RemoveAt(i);
                 }
@@ -252,7 +252,7 @@
                 yield return item.Key;
             }
 
-            foreach (var item in engine.Globals)
+            foreach (var item in engine.Scope)
             {
                 yield return item.Key;
             }
@@ -314,7 +314,7 @@
                     throw new ArgumentException("The given name has to be non-empty.", "name");
                 }
 
-                _engine.Globals[name] = _obj;
+                _engine.Scope[name] = _obj;
             }
 
             public void WithDefaultName()
@@ -326,7 +326,7 @@
             {
                 foreach (var item in _obj)
                 {
-                    _engine.Globals[item.Key] = item.Value;
+                    _engine.Scope[item.Key] = item.Value;
                 }
             }
         }

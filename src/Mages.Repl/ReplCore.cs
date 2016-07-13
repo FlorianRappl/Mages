@@ -19,7 +19,7 @@
 
         public void Run(String file)
         {
-            var import = _engine.Globals["import"] as Function;
+            var import = _engine.Scope["import"] as Function;
 
             try
             {

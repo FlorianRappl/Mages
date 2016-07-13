@@ -149,7 +149,7 @@
         public void AddingAGlobalConstant()
         {
             var engine = new Engine();
-            engine.Globals["Answer"] = 42.0;
+            engine.Scope["Answer"] = 42.0;
 
             var result = engine.Interpret("Answer / 2");
             Assert.AreEqual(21.0, result);

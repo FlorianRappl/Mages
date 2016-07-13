@@ -1,11 +1,12 @@
 ﻿namespace Mages.Repl.Tutorial
 {
+    using Core.Runtime;
     using System;
     using System.Collections.Generic;
 
     static class Tutorials
     {
-        public static void RunAll(IInteractivity interactivity, IDictionary<String, Object> scope, Action<String> evaluate)
+        public static void RunAll(IInteractivity interactivity, Scope scope, Action<String> evaluate)
         {
             var snippets = GetAllTutorials();
             interactivity.Write(Environment.NewLine);
@@ -41,7 +42,7 @@
             interactivity.Write(Environment.NewLine);
         }
 
-        private static Boolean TryToLearn(IInteractivity interactivity, IDictionary<String, Object> scope, Action<String> evaluate, ITutorialSnippet snippet)
+        private static Boolean TryToLearn(IInteractivity interactivity, Scope scope, Action<String> evaluate, ITutorialSnippet snippet)
         {
             var hints = snippet.Hints.GetEnumerator();
             var success = true;

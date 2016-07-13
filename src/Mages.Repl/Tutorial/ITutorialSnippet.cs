@@ -1,5 +1,6 @@
 ﻿namespace Mages.Repl.Tutorial
 {
+    using Core.Runtime;
     using System;
     using System.Collections.Generic;
 
@@ -17,6 +18,6 @@
 
         IEnumerable<String> Hints { get; }
 
-        Boolean Check(IDictionary<String, Object> scope);
+        Boolean Check(Scope scope);
     }
 }

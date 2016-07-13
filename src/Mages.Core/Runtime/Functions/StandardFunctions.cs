@@ -2,6 +2,7 @@
 {
     using Mages.Core.Runtime.Converters;
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -15,11 +16,13 @@
         /// </summary>
         public static readonly Function Sqrt = new Function(args => 
         {
-            return Curry.MinOne(Sqrt, args) ??
+            var dbg=  Curry.MinOne(Sqrt, args) ??
                 If.Is<Double>(args, x => Math.Sqrt(x)) ??
                 If.Is<Double[,]>(args, x => x.ForEach(Math.Sqrt)) ??
                 If.Is<IDictionary<String, Object>>(args, o => o.Map(Sqrt)) ??
                 Math.Sqrt(args[0].ToNumber());
+
+            return dbg;
         });
 
         /// <summary>
@@ -535,6 +538,43 @@
         });
 
         /// <summary>
+        /// Foreach runtime implementation
+        /// </summary>
+        /// FIXME: Standardize the format
+        public static readonly Function Each = new Function(args =>
+        {
+            if (args.Length == 1)
+            {
+                if (args[0] is IEnumerable)
+                    return new Function(innerArg =>
+                    {
+                        var f = innerArg[0] as Function;
+                        var enu = args[0] as IEnumerable;
+
+                        return enu.Each(f);
+                    });
+
+                if (args[0] is Function)
+                    return new Function(innerArg =>
+                    {
+                        var f = args[0] as Function;
+                        var enu = innerArg[0] as IEnumerable;
+
+                        return enu.Each(f);
+                    });
+            }
+
+            if (args.Length == 2 && args[0] is IEnumerable && args[1] is Function)
+            {
+                var enu = args[0] as IEnumerable;
+                var f = args[1] as Function;
+
+                return enu.Each(f);
+            }
+            return null;
+        });
+
+        /// <summary>
         /// Contains the any function.
         /// </summary>
         public static readonly Function Any = new Function(args =>
@@ -619,6 +659,7 @@
         {
             return Curry.MinTwo(Where, args) ??
                 If.Is<Function, Double[,]>(args, (f, m) => m.Where(f)) ??
+                If.Is<Function, IEnumerable>(args, (f, enu) => enu.Where(f)) ??
                 If.Is<Function, IDictionary<String, Object>>(args, (f, o) => o.Where(f)) ??
                 If.Is<Function>(args, f => f(new[] { args[1] }).ToBoolean() ? args[1] : null);
         });

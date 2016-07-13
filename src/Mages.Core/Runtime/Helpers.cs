@@ -3,6 +3,7 @@
     using Mages.Core.Runtime.Converters;
     using Mages.Core.Runtime.Functions;
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Reflection;
 
@@ -10,6 +11,36 @@
     {
         public static readonly TypeConverterMap Converters = new TypeConverterMap();
         private static readonly Object[] Empty = new Object[0];
+
+        public static IEnumerable Where(this IEnumerable enu, Function sel)
+        {
+            foreach (var item in enu)
+            {
+                var d = sel.Invoke(new[] { item });
+
+                if ((bool) d)
+                    yield return item;
+            }
+        }
+
+        public static IEnumerable Where(this IEnumerable enu, Func<object, bool> sel)
+        {
+            foreach (var item in enu)
+                if (sel(new[] { item }))
+                    yield return item;
+        }
+
+        public static IEnumerable Each(this IEnumerable enu, Function sel)
+        {
+            foreach (var item in enu)
+                yield return sel(new[] { item });
+        }
+
+        public static IEnumerable<T> Each<T>(this IEnumerable enu, Func<object, T> sel)
+        {
+            foreach (var item in enu)
+                yield return sel(item);
+        }
 
         public static Object Getter(this String str, Object[] arguments)
         {

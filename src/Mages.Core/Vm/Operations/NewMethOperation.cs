@@ -39,11 +39,11 @@
         sealed class InternalMethod
         {
             private readonly Object _self;
-            private readonly IDictionary<String, Object> _parentScope;
+            private readonly Scope _parentScope;
             private readonly IOperation[] _operations;
             private readonly Function _pointer;
 
-            public InternalMethod(Object self, IDictionary<String, Object> parentScope, IOperation[] operations)
+            public InternalMethod(Object self, Scope parentScope, IOperation[] operations)
             {
                 _self = self;
                 _parentScope = parentScope;
@@ -58,7 +58,7 @@
 
             public Object Invoke(Object[] arguments)
             {
-                var scope = new LocalScope(_parentScope);
+                var scope = new Scope(_parentScope);
                 var ctx = new ExecutionContext(_operations, scope);
                 scope.Add("this", _self);
                 ctx.Push(_pointer);
