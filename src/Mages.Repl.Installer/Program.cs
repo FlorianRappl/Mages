@@ -3,7 +3,7 @@
     using CommandLine;
     using System;
 
-    class Program
+    public static class Program
     {
         internal static void Main(String[] arguments)
         {

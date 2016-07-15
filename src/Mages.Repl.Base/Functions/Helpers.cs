@@ -19,6 +19,11 @@
             return Task.Run(() => function.Invoke(arguments)).AsFuture();
         }
 
+        public static IDictionary<String, Object> Sleep(Double time)
+        {
+            return Task.Delay(TimeSpan.FromMilliseconds(time)).AsFuture();
+        }
+
         public static Double Measure(Function f)
         {
             var sw = Stopwatch.StartNew();

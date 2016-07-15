@@ -63,7 +63,7 @@
             {
                 input = _interactivity.Read();
 
-                if (!String.IsNullOrEmpty(input))
+                if (!String.IsNullOrEmpty(input.Trim()))
                 {
                     EvaluateCompleted(input);
                 }

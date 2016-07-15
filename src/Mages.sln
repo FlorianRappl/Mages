@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Core", "Mages.Core\Mages.Core.csproj", "{B0698A2A-BFE9-4568-9055-82302F325452}"
 EndProject
@@ -9,8 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Core.Tests", "Mages.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Repl", "Mages.Repl\Mages.Repl.csproj", "{027A32F7-4411-4083-AA01-0550EEA0E5A3}"
 	ProjectSection(ProjectDependencies) = postProject
-		{75FC4F51-4BB7-4F30-A0CA-80D91A5BDD62} = {75FC4F51-4BB7-4F30-A0CA-80D91A5BDD62}
-		{16E1BAF8-6CE0-404F-85D8-E8841CC48ECA} = {16E1BAF8-6CE0-404F-85D8-E8841CC48ECA}
+		{18E9CD99-8F61-4E77-A59A-8EFDC588042E} = {18E9CD99-8F61-4E77-A59A-8EFDC588042E}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Core.Performance", "Mages.Core.Performance\Mages.Core.Performance.csproj", "{15B324FD-3EE3-467A-BDDA-A6F571FEA4C8}"

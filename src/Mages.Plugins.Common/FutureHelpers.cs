@@ -6,36 +6,29 @@
 
     public static class FutureHelpers
     {
+        public static IDictionary<String, Object> AsFuture(this Task task)
+        {
+            return task.AsFuture(() => { });
+        }
+
         public static IDictionary<String, Object> AsFuture(this Task task, Action cleanup)
         {
-            var obj = new Dictionary<String, Object>
-            {
-                { "done", false },
-                { "result", null },
-                { "error", null },
-                { "notify", null }
-            };
+            var future = new Future();
             task.ContinueWith(tc =>
             {
                 cleanup.Invoke();
-                var notify = obj["notify"] as Delegate;
-                var error = default(String);
 
                 if (tc.IsFaulted)
                 {
-                    error = tc.Exception.InnerException.Message;
+                    future.SetError(tc.Exception.InnerException.Message);
                 }
-
-                obj["error"] = error;
-                obj["done"] = true;
-
-                if (notify != null)
+                else
                 {
-                    notify.DynamicInvoke(new Object[] { new Object[] { null, error } });
+                    future.SetResult(null);
                 }
             });
 
-            return obj;
+            return future;
         }
 
         public static IDictionary<String, Object> AsFuture<T>(this Task<T> task)
@@ -55,40 +48,56 @@
 
         public static IDictionary<String, Object> AsFuture<T>(this Task<T> task, Action cleanup, Func<T, Object> transformer)
         {
-            var obj = new Dictionary<String, Object>
-            {
-                { "done", false },
-                { "result", null },
-                { "error", null },
-                { "notify", null }
-            };
+            var future = new Future();
             task.ContinueWith(tc =>
             {
                 cleanup.Invoke();
-                var notify = obj["notify"] as Delegate;
-                var error = default(String);
-                var result = default(Object);
 
                 if (tc.IsFaulted)
                 {
-                    error = tc.Exception.InnerException.Message;
+                    future.SetError(tc.Exception.InnerException.Message);
                 }
                 else
                 {
-                    result = transformer.Invoke(tc.Result);
+                    future.SetResult(transformer.Invoke(tc.Result));
                 }
+            });
 
-                obj["error"] = error;
-                obj["done"] = true;
-                obj["result"] = result;
+            return future;
+        }
+
+        sealed class Future : Dictionary<String, Object>
+        {
+            public Future()
+            {
+                Add("done", false);
+                Add("result", null);
+                Add("error", null);
+                Add("notify", null);
+            }
+
+            public void SetResult(Object result)
+            {
+                this["result"] = result;
+                SetDone(result, null);
+            }
+
+            public void SetError(String error)
+            {
+                this["error"] = error;
+                SetDone(null, error);
+            }
+
+            public void SetDone(Object result, String error)
+            {
+                var notify = this["notify"] as Delegate;
+                this["done"] = true;
 
                 if (notify != null)
                 {
                     notify.DynamicInvoke(new Object[] { new Object[] { result, error } });
                 }
-            });
-
-            return obj;
+            }
         }
     }
 }

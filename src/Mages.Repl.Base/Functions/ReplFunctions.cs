@@ -18,6 +18,12 @@
                 return Curry.MinOne(id, args) ??
                     If.Is<Function>(args, f => Helpers.Spawn(f, args.Skip(1).ToArray()));
             }));
+            engine.SetFunction("sleep", new Function(args =>
+            {
+                var id = engine.Globals["sleep"] as Function;
+                return Curry.MinOne(id, args) ??
+                    If.Is<Double>(args, time => Helpers.Sleep(time));
+            }));
             engine.SetFunction("il", new Function(args =>
             {
                 var id = engine.Globals["il"] as Function;
