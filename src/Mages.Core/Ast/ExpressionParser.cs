@@ -88,6 +88,10 @@
             {
                 return ParseIfStatement(tokens);
             }
+            else if (current.Is(Keywords.For))
+            {
+                return ParseForStatement(tokens);
+            }
             else if (current.Is(Keywords.Break))
             {
                 return ParseBreakStatement(tokens);
@@ -133,6 +137,17 @@
             var condition = ParseCondition(tokens.NextNonIgnorable());
             var body = ParseAfterCondition(tokens);
             return new WhileStatement(condition, body, start);
+        }
+
+        private IStatement ParseForStatement(IEnumerator<IToken> tokens)
+        {
+            var start = tokens.Current.Start;
+            var declared = false;
+            var initialization = default(IExpression);
+            var condition = ParseCondition(tokens.NextNonIgnorable());
+            var afterthought = default(IExpression);
+            var body = ParseAfterCondition(tokens);
+            return new ForStatement(declared, initialization, afterthought, condition, body, start);
         }
 
         private IStatement ParseReturnStatement(IEnumerator<IToken> tokens)

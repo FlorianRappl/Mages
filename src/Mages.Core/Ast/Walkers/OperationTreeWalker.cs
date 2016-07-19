@@ -143,6 +143,23 @@
             InsertJump(jump, end - 1);
         }
 
+        void ITreeWalker.Visit(ForStatement statement)
+        {
+            statement.Validate(this);
+            statement.Initialization.Accept(this);
+            var start = _operations.Count;
+            statement.Condition.Accept(this);
+            _operations.Add(PopIfOperation.Instance);
+            var jump = InsertMarker();
+            _loops.Push(new LoopInfo { Break = jump, Continue = start });
+            statement.Body.Accept(this);
+            statement.AfterThought.Accept(this);
+            _loops.Pop();
+            InsertJump(start - 1);
+            var end = _operations.Count;
+            InsertJump(jump, end - 1);
+        }
+
         void ITreeWalker.Visit(IfStatement statement)
         {
             statement.Validate(this);
