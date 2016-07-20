@@ -145,7 +145,8 @@
             var declared = false;
             var initialization = ParseInitialization(tokens.NextNonIgnorable(), ref declared);
             var condition = ParseAssignment(tokens);
-            var afterthought = ParseAssignment(tokens.NextNonIgnorable());
+            CheckProperlyTerminated(tokens, ref condition);
+            var afterthought = ParseAssignment(tokens);
             var body = ParseAfterCondition(tokens);
             return new ForStatement(declared, initialization, condition, afterthought, body, start);
         }
@@ -310,7 +311,7 @@
                 }
 
                 var expr = ParseAssignment(tokens);
-                tokens.NextNonIgnorable();
+                CheckProperlyTerminated(tokens, ref expr);
                 return expr;
             }
 
@@ -891,6 +892,19 @@
             }
 
             return false;
+        }
+
+        private static void CheckProperlyTerminated(IEnumerator<IToken> tokens, ref IExpression expr)
+        {
+            if (tokens.Current.Type == TokenType.SemiColon)
+            {
+                tokens.NextNonIgnorable();
+            }
+            else
+            {
+                var invalid = new InvalidExpression(ErrorCode.TerminatorExpected, tokens.Current);
+                expr = new BinaryExpression.Multiply(expr, invalid);
+            }
         }
 
         private static void CheckProperStatementEnd(IEnumerator<IToken> tokens, ref IExpression expr)
