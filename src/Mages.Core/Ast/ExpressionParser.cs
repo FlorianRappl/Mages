@@ -143,11 +143,11 @@
         {
             var start = tokens.Current.Start;
             var declared = false;
-            var initialization = default(IExpression);
-            var condition = ParseCondition(tokens.NextNonIgnorable());
-            var afterthought = default(IExpression);
+            var initialization = ParseInitialization(tokens.NextNonIgnorable(), ref declared);
+            var condition = ParseAssignment(tokens);
+            var afterthought = ParseAssignment(tokens.NextNonIgnorable());
             var body = ParseAfterCondition(tokens);
-            return new ForStatement(declared, initialization, afterthought, condition, body, start);
+            return new ForStatement(declared, initialization, condition, afterthought, body, start);
         }
 
         private IStatement ParseReturnStatement(IEnumerator<IToken> tokens)
@@ -295,6 +295,26 @@
             }
 
             return new InvalidExpression(ErrorCode.OpenGroupExpected, current);
+        }
+
+        private IExpression ParseInitialization(IEnumerator<IToken> tokens, ref Boolean declared)
+        {
+            if (tokens.Current.Type == TokenType.OpenGroup)
+            {
+                var current = tokens.NextNonIgnorable().Current;
+
+                if (current.Is(Keywords.Var))
+                {
+                    declared = true;
+                    tokens.NextNonIgnorable();
+                }
+
+                var expr = ParseAssignment(tokens);
+                tokens.NextNonIgnorable();
+                return expr;
+            }
+
+            return new InvalidExpression(ErrorCode.OpenGroupExpected, tokens.Current);
         }
 
         private IExpression ParseAssignment(IEnumerator<IToken> tokens)
