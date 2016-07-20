@@ -311,6 +311,22 @@
         }
 
         [Test]
+        public void ForStatementWithEmptyBodyShouldBeOkay()
+        {
+            var source = "for(k = 0; k ~= 2; k++) { }";
+            var parser = new ExpressionParser();
+            var statements = parser.ParseStatements(source);
+
+            Assert.AreEqual(1, statements.Count);
+            Assert.IsInstanceOf<ForStatement>(statements[0]);
+            Assert.IsInstanceOf<BlockStatement>(((ForStatement)statements[0]).Body);
+
+            var errors = Validate(statements);
+
+            Assert.AreEqual(0, errors.Count);
+        }
+
+        [Test]
         public void JumpsInFunctionStatementsAreTreatedCorrectly()
         {
             var engine = new Engine();

@@ -42,6 +42,38 @@
             IsInvalid(stmt);
         }
 
+        [Test]
+        public void ForStatementWithMissingOperandsShouldFail()
+        {
+            var stmt = "for() { }".ToStatement();
+            Assert.IsInstanceOf<ForStatement>(stmt);
+            IsInvalid(stmt);
+        }
+
+        [Test]
+        public void ForStatementWithIncompleteBlockShouldFail()
+        {
+            var stmt = "for() { ".ToStatement();
+            Assert.IsInstanceOf<ForStatement>(stmt);
+            IsInvalid(stmt);
+        }
+
+        [Test]
+        public void ForStatementWithMissingRestShouldFail()
+        {
+            var stmt = "for(k=0 { }".ToStatement();
+            Assert.IsInstanceOf<ForStatement>(stmt);
+            IsInvalid(stmt);
+        }
+
+        [Test]
+        public void ForStatementWithCommasInHeadShouldFail()
+        {
+            var stmt = "for(k=0, k ~= 2, k++) { }".ToStatement();
+            Assert.IsInstanceOf<ForStatement>(stmt);
+            IsInvalid(stmt);
+        }
+
         private static void IsInvalid(IWalkable element)
         {
             var errors = new List<ParseError>();
