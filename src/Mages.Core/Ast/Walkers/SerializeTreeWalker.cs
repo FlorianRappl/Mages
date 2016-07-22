@@ -103,6 +103,15 @@
             WriteProperty("Body", statement.Body);
         }
 
+        void ITreeWalker.Visit(ForStatement statement)
+        {
+            Header("Statement/For");
+            WriteProperty("Initialization", statement.Initialization);
+            WriteProperty("Condition", statement.Condition);
+            WriteProperty("AfterThought", statement.AfterThought);
+            WriteProperty("Body", statement.Body);
+        }
+
         void ITreeWalker.Visit(IfStatement statement)
         {
             Header("Statement/If");

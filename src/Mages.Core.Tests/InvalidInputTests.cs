@@ -42,6 +42,70 @@
             IsInvalid(stmt);
         }
 
+        [Test]
+        public void ForStatementWithMissingOperandsShouldFail()
+        {
+            var stmt = "for() { }".ToStatement();
+            Assert.IsInstanceOf<ForStatement>(stmt);
+            IsInvalid(stmt);
+        }
+
+        [Test]
+        public void ForStatementWithIncompleteBlockShouldFail()
+        {
+            var stmt = "for() { ".ToStatement();
+            Assert.IsInstanceOf<ForStatement>(stmt);
+            IsInvalid(stmt);
+        }
+
+        [Test]
+        public void ForStatementWithMissingRestShouldFail()
+        {
+            var stmt = "for(k=0 { }".ToStatement();
+            Assert.IsInstanceOf<ForStatement>(stmt);
+            IsInvalid(stmt);
+        }
+
+        [Test]
+        public void ForStatementWithCommasInHeadShouldFail()
+        {
+            var stmt = "for(k=0, k ~= 2, k++) { }".ToStatement();
+            Assert.IsInstanceOf<ForStatement>(stmt);
+            IsInvalid(stmt);
+        }
+
+        [Test]
+        public void ForStatementWithIncompleteInitializationShouldFail()
+        {
+            var stmt = "for(k=; k ~= 2 ; k++) { }".ToStatement();
+            Assert.IsInstanceOf<ForStatement>(stmt);
+            IsInvalid(stmt);
+        }
+
+        [Test]
+        public void ForStatementWithStatementInInitializationShouldFail()
+        {
+            var stmt = "for(break; k ~= 2 ; k++) { }".ToStatement();
+            Assert.IsInstanceOf<ForStatement>(stmt);
+            IsInvalid(stmt);
+        }
+
+        [Test]
+        public void ForStatementWithStatementInAfterThoughtShouldFail()
+        {
+            var stmt = "for(; ; var k = 0) { }".ToStatement();
+            Assert.IsInstanceOf<ForStatement>(stmt);
+            IsInvalid(stmt);
+        }
+
+        [Test]
+        public void ForStatementWithoutBodyShouldFail()
+        {
+            var stmt = "for(; ; )".ToStatement();
+            Assert.IsInstanceOf<ForStatement>(stmt);
+            IsInvalid(stmt);
+        }
+
         private static void IsInvalid(IWalkable element)
         {
             var errors = new List<ParseError>();

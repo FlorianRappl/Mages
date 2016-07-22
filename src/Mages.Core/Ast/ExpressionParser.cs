@@ -88,6 +88,10 @@
             {
                 return ParseIfStatement(tokens);
             }
+            else if (current.Is(Keywords.For))
+            {
+                return ParseForStatement(tokens);
+            }
             else if (current.Is(Keywords.Break))
             {
                 return ParseBreakStatement(tokens);
@@ -133,6 +137,18 @@
             var condition = ParseCondition(tokens.NextNonIgnorable());
             var body = ParseAfterCondition(tokens);
             return new WhileStatement(condition, body, start);
+        }
+
+        private IStatement ParseForStatement(IEnumerator<IToken> tokens)
+        {
+            var start = tokens.Current.Start;
+            var declared = false;
+            var initialization = ParseInitialization(tokens.NextNonIgnorable(), ref declared);
+            var condition = ParseAssignment(tokens);
+            CheckProperlyTerminated(tokens, ref condition);
+            var afterthought = ParseAssignment(tokens);
+            var body = ParseAfterCondition(tokens);
+            return new ForStatement(declared, initialization, condition, afterthought, body, start);
         }
 
         private IStatement ParseReturnStatement(IEnumerator<IToken> tokens)
@@ -280,6 +296,26 @@
             }
 
             return new InvalidExpression(ErrorCode.OpenGroupExpected, current);
+        }
+
+        private IExpression ParseInitialization(IEnumerator<IToken> tokens, ref Boolean declared)
+        {
+            if (tokens.Current.Type == TokenType.OpenGroup)
+            {
+                var current = tokens.NextNonIgnorable().Current;
+
+                if (current.Is(Keywords.Var))
+                {
+                    declared = true;
+                    tokens.NextNonIgnorable();
+                }
+
+                var expr = ParseAssignment(tokens);
+                CheckProperlyTerminated(tokens, ref expr);
+                return expr;
+            }
+
+            return new InvalidExpression(ErrorCode.OpenGroupExpected, tokens.Current);
         }
 
         private IExpression ParseAssignment(IEnumerator<IToken> tokens)
@@ -856,6 +892,19 @@
             }
 
             return false;
+        }
+
+        private static void CheckProperlyTerminated(IEnumerator<IToken> tokens, ref IExpression expr)
+        {
+            if (tokens.Current.Type == TokenType.SemiColon)
+            {
+                tokens.NextNonIgnorable();
+            }
+            else
+            {
+                var invalid = new InvalidExpression(ErrorCode.TerminatorExpected, tokens.Current);
+                expr = new BinaryExpression.Multiply(expr, invalid);
+            }
         }
 
         private static void CheckProperStatementEnd(IEnumerator<IToken> tokens, ref IExpression expr)

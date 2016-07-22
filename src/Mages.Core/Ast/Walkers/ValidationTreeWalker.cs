@@ -67,6 +67,17 @@
             _loops.Pop();
         }
 
+        void ITreeWalker.Visit(ForStatement statement)
+        {
+            statement.Validate(this);
+            statement.Initialization.Accept(this);
+            statement.Condition.Accept(this);
+            _loops.Push(statement);
+            statement.Body.Accept(this);
+            _loops.Pop();
+            statement.AfterThought.Accept(this);
+        }
+
         void ITreeWalker.Visit(IfStatement statement)
         {
             statement.Validate(this);

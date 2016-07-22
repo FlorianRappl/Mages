@@ -1,6 +1,5 @@
 ﻿namespace Mages.Core.Ast.Walkers
 {
-    using System;
     using Mages.Core.Ast.Expressions;
     using Mages.Core.Ast.Statements;
 
@@ -51,6 +50,17 @@
         {
             statement.Condition.Accept(this);
             statement.Body.Accept(this);
+        }
+
+        /// <summary>
+        /// Visits a for statement - accepts the initialization, condition, afterthought, and body.
+        /// </summary>
+        public virtual void Visit(ForStatement statement)
+        {
+            statement.Initialization.Accept(this);
+            statement.Condition.Accept(this);
+            statement.Body.Accept(this);
+            statement.AfterThought.Accept(this);
         }
 
         /// <summary>
