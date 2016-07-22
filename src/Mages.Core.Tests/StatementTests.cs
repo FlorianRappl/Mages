@@ -276,6 +276,10 @@
             Assert.IsNotNull(return1);
 
             Assert.AreEqual("x", assignment1.VariableName);
+
+            var errors = Validate(statements);
+
+            Assert.AreEqual(0, errors.Count);
         }
 
         [Test]
@@ -320,18 +324,58 @@
             Assert.AreEqual(1, statements.Count);
             Assert.IsInstanceOf<ForStatement>(statements[0]);
             Assert.IsInstanceOf<SimpleStatement>(((ForStatement)statements[0]).Body);
+
+            var errors = Validate(statements);
+
+            Assert.AreEqual(0, errors.Count);
         }
 
         [Test]
         public void ForStatementWithEmptyHeadShouldBeOkay()
         {
-            var source = "for(; ;) { }";
+            var source = "for(; ;) {}";
             var parser = new ExpressionParser();
             var statements = parser.ParseStatements(source);
 
             Assert.AreEqual(1, statements.Count);
             Assert.IsInstanceOf<ForStatement>(statements[0]);
             Assert.IsInstanceOf<BlockStatement>(((ForStatement)statements[0]).Body);
+
+            var errors = Validate(statements);
+
+            Assert.AreEqual(0, errors.Count);
+        }
+
+        [Test]
+        public void ForStatementWithRelaxedEmptyHeadShouldBeOkay()
+        {
+            var source = "for( ;  ; ) {  }";
+            var parser = new ExpressionParser();
+            var statements = parser.ParseStatements(source);
+
+            Assert.AreEqual(1, statements.Count);
+            Assert.IsInstanceOf<ForStatement>(statements[0]);
+            Assert.IsInstanceOf<BlockStatement>(((ForStatement)statements[0]).Body);
+
+            var errors = Validate(statements);
+
+            Assert.AreEqual(0, errors.Count);
+        }
+
+        [Test]
+        public void ForStatementWithTightEmptyHeadShouldBeOkay()
+        {
+            var source = "for(;;){}";
+            var parser = new ExpressionParser();
+            var statements = parser.ParseStatements(source);
+
+            Assert.AreEqual(1, statements.Count);
+            Assert.IsInstanceOf<ForStatement>(statements[0]);
+            Assert.IsInstanceOf<BlockStatement>(((ForStatement)statements[0]).Body);
+
+            var errors = Validate(statements);
+
+            Assert.AreEqual(0, errors.Count);
         }
 
         [Test]
