@@ -146,7 +146,7 @@
             var initialization = ParseInitialization(tokens.NextNonIgnorable(), ref declared);
             var condition = ParseAssignment(tokens);
             CheckProperlyTerminated(tokens, ref condition);
-            var afterthought = ParseAssignment(tokens);
+            var afterthought = ParseAfterthought(tokens);
             var body = ParseAfterCondition(tokens);
             return new ForStatement(declared, initialization, condition, afterthought, body, start);
         }
@@ -296,6 +296,18 @@
             }
 
             return new InvalidExpression(ErrorCode.OpenGroupExpected, current);
+        }
+
+        private IExpression ParseAfterthought(IEnumerator<IToken> tokens)
+        {
+            var current = tokens.Current;
+
+            if (current.Type != TokenType.CloseGroup)
+            {
+                return ParseAssignment(tokens);
+            }
+
+            return new EmptyExpression(current.Start);
         }
 
         private IExpression ParseInitialization(IEnumerator<IToken> tokens, ref Boolean declared)
