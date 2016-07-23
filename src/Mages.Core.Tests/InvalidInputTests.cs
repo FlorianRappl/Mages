@@ -106,6 +106,38 @@
             IsInvalid(stmt);
         }
 
+        [Test]
+        public void DeleteWithoutPayloadIsInvalid()
+        {
+            var stmt = "delete".ToStatement();
+            Assert.IsInstanceOf<DeleteStatement>(stmt);
+            IsInvalid(stmt);
+        }
+
+        [Test]
+        public void DeleteWithNumberPayloadIsInvalid()
+        {
+            var stmt = "delete 2".ToStatement();
+            Assert.IsInstanceOf<DeleteStatement>(stmt);
+            IsInvalid(stmt);
+        }
+
+        [Test]
+        public void DeleteWithCallExpressionPayloadIsInvalid()
+        {
+            var stmt = "delete foo()".ToStatement();
+            Assert.IsInstanceOf<DeleteStatement>(stmt);
+            IsInvalid(stmt);
+        }
+
+        [Test]
+        public void DeleteWithBinaryExpressionPayloadIsInvalid()
+        {
+            var stmt = "delete foo+bar".ToStatement();
+            Assert.IsInstanceOf<DeleteStatement>(stmt);
+            IsInvalid(stmt);
+        }
+
         private static void IsInvalid(IWalkable element)
         {
             var errors = new List<ParseError>();

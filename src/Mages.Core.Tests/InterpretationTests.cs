@@ -350,6 +350,22 @@
             Test("i = -1; sum = 0; for (i = 0; i < 5; ++i) sum += i; i", 5.0);
         }
 
+        [Test]
+        public void DeleteRemovesGlobalVariable()
+        {
+            var scope = Test("x = 5; delete x; 1.0", 1.0);
+            Assert.IsFalse(scope.ContainsKey("x"));
+        }
+
+        [Test]
+        public void DeleteRemovesKeyOfObject()
+        {
+            var scope = Test("x = 5; o = new { z: 5 }; delete o.z; x", 5.0);
+            Assert.IsTrue(scope.ContainsKey("x"));
+            Assert.IsTrue(scope.ContainsKey("o"));
+            Assert.AreEqual(0, ((IDictionary<String, Object>)scope["o"]).Count);
+        }
+
         private static IDictionary<String, Object> Test(String sourceCode, Double expected, Double tolerance = 0.0)
         {
             var engine = new Engine();
