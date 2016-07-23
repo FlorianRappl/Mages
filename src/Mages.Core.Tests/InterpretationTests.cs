@@ -351,10 +351,30 @@
         }
 
         [Test]
+        public void DeleteDoesNotRemoveLocalVariable()
+        {
+            var scope = Test("y = 1; x = 5; (() => { var x = 7; delete y; return x; })()", 7.0);
+            Assert.IsTrue(scope.ContainsKey("y"));
+        }
+
+        [Test]
+        public void DeleteRemovesLocalVariable()
+        {
+            Test("x = 5; (() => { var x = 7; delete x; return x; })()", 5.0);
+        }
+
+        [Test]
         public void DeleteRemovesGlobalVariable()
         {
             var scope = Test("x = 5; delete x; 1.0", 1.0);
             Assert.IsFalse(scope.ContainsKey("x"));
+        }
+
+        [Test]
+        public void DeleteDoesNotRemoveGlobalVariable()
+        {
+            var scope = Test("x = 5; delete y; 1.0", 1.0);
+            Assert.IsTrue(scope.ContainsKey("x"));
         }
 
         [Test]
@@ -364,6 +384,35 @@
             Assert.IsTrue(scope.ContainsKey("x"));
             Assert.IsTrue(scope.ContainsKey("o"));
             Assert.AreEqual(0, ((IDictionary<String, Object>)scope["o"]).Count);
+        }
+
+        [Test]
+        public void DeleteDoesNotRemoveInvalidKeyOfObject()
+        {
+            var scope = Test("x = 5; o = new { z: 5 }; delete o.y; x", 5.0);
+            Assert.IsTrue(scope.ContainsKey("x"));
+            Assert.IsTrue(scope.ContainsKey("o"));
+            Assert.AreEqual(1, ((IDictionary<String, Object>)scope["o"]).Count);
+        }
+
+        [Test]
+        public void DeleteRemovesKeyOfObjectInObject()
+        {
+            var scope = Test("x = 5; o = new { o: new { x: 5, y: 3 } }; delete o.o.y; x", 5.0);
+            Assert.IsTrue(scope.ContainsKey("x"));
+            Assert.IsTrue(scope.ContainsKey("o"));
+            Assert.AreEqual(1, ((IDictionary<String, Object>)scope["o"]).Count);
+            Assert.AreEqual(1, ((IDictionary<String, Object>)((IDictionary<String, Object>)scope["o"])["o"]).Count);
+        }
+
+        [Test]
+        public void DeleteDoesNotRemoveInvalidKeyOfObjectInObject()
+        {
+            var scope = Test("x = 5; o = new { o: new { x: 5, y: 3 } }; delete o.o.z; x", 5.0);
+            Assert.IsTrue(scope.ContainsKey("x"));
+            Assert.IsTrue(scope.ContainsKey("o"));
+            Assert.AreEqual(1, ((IDictionary<String, Object>)scope["o"]).Count);
+            Assert.AreEqual(2, ((IDictionary<String, Object>)((IDictionary<String, Object>)scope["o"])["o"]).Count);
         }
 
         private static IDictionary<String, Object> Test(String sourceCode, Double expected, Double tolerance = 0.0)

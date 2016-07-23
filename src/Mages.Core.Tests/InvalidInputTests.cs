@@ -123,6 +123,22 @@
         }
 
         [Test]
+        public void DeleteWithBooleanPayloadIsInvalid()
+        {
+            var stmt = "delete true".ToStatement();
+            Assert.IsInstanceOf<DeleteStatement>(stmt);
+            IsInvalid(stmt);
+        }
+
+        [Test]
+        public void DeleteWithMemberCallPayloadIsInvalid()
+        {
+            var stmt = "delete a.b()".ToStatement();
+            Assert.IsInstanceOf<DeleteStatement>(stmt);
+            IsInvalid(stmt);
+        }
+
+        [Test]
         public void DeleteWithCallExpressionPayloadIsInvalid()
         {
             var stmt = "delete foo()".ToStatement();
