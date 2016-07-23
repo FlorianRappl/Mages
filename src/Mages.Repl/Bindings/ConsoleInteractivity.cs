@@ -69,10 +69,11 @@
 
         private static String ReadLine()
         {
+            var newLineLength = Environment.NewLine.Length;
             var inputStream = Console.OpenStandardInput(4096);
             var bytes = new Byte[4096];
             var outputLength = inputStream.Read(bytes, 0, 4096);
-            return Console.InputEncoding.GetString(bytes, 0, outputLength);
+            return Console.InputEncoding.GetString(bytes, 0, outputLength - newLineLength);
         }
 
         struct CancellationRegistration : IDisposable
