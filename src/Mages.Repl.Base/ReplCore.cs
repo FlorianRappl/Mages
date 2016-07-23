@@ -80,7 +80,7 @@
             while (!input.IsCompleted())
             {
                 _interactivity.IsPromptShown = false;
-                _interactivity.Info("...> ");
+                _interactivity.Prompt("   ");
                 var rest = _interactivity.Read();
                 _interactivity.IsPromptShown = true;
 

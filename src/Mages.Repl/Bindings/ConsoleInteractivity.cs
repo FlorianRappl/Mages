@@ -17,10 +17,11 @@
             set;
         }
 
-        public void WritePrompt()
+        public void Prompt(String custom = null)
         {
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.Write("SWM> ");
+            Console.Write(custom ?? "SWM");
+            Console.Write("> ");
             Console.ResetColor();
         }
 
@@ -33,7 +34,7 @@
         {
             if (IsPromptShown)
             {
-                WritePrompt();
+                Prompt();
             }
 
             return ReadLine();

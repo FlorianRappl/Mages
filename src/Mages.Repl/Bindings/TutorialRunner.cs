@@ -34,7 +34,7 @@
         {
             interactivity.Write("Solution:");
             interactivity.Write(Environment.NewLine);
-            interactivity.WritePrompt();
+            interactivity.Prompt();
             interactivity.Write(snippet.Solution);
             interactivity.Write(Environment.NewLine);
             evaluate.Invoke(snippet.Solution);
@@ -73,7 +73,7 @@
         {
             interactivity.Write("Example:");
             interactivity.Write(Environment.NewLine);
-            interactivity.WritePrompt();
+            interactivity.Prompt();
             interactivity.Write(snippet.ExampleCommand);
             interactivity.Write(Environment.NewLine);
             evaluate.Invoke(snippet.ExampleCommand);

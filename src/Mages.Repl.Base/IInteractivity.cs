@@ -8,9 +8,9 @@
 
         Boolean IsPromptShown { get; set; }
 
-        String Read();
+        void Prompt(String custom = null);
 
-        void WritePrompt();
+        String Read();
 
         void Write(String output);
 

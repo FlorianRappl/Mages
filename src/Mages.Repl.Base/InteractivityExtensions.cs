@@ -19,8 +19,7 @@
                 end++;
             }
 
-            var range = 80;
-            var message = error.Code.GetMessage();
+            var range = 48;
             var middle = (end + start) / 2;
             var ss = Math.Min(source.Length, Math.Max(middle - range / 2, 0));
             var se = Math.Min(Math.Max(0, middle + range / 2), source.Length);
@@ -30,8 +29,14 @@
             interactivity.Error(new String(' ', Math.Max(0, start - ss)));
             interactivity.Error(new String('^', Math.Max(0, end - start)));
             interactivity.Error(Environment.NewLine);
-            interactivity.Error("Error: ");
-            interactivity.Error(message);
+            interactivity.Display(error);
+        }
+        
+        public static void Display(this IInteractivity interactivity, ParseError error)
+        {
+            var message = error.Code.GetMessage();
+            var hint = String.Format("Line {1}, Column {2}: {0}", message, error.Start.Row, error.Start.Column);
+            interactivity.Error(hint);
         }
 
         public static Object Run(this IInteractivity interactivity, Engine engine, String source)
