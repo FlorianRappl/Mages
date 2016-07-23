@@ -146,7 +146,9 @@
         void ITreeWalker.Visit(ForStatement statement)
         {
             statement.Validate(this);
+            _declaring = statement.IsDeclared;
             statement.Initialization.Accept(this);
+            _declaring = false;
             var start = _operations.Count;
             statement.Condition.Accept(this);
             _operations.Add(PopIfOperation.Instance);

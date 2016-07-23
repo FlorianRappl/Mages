@@ -35,6 +35,14 @@
         #region Properties
 
         /// <summary>
+        /// Gets if the initialization variable is declared.
+        /// </summary>
+        public Boolean IsDeclared
+        {
+            get { return _declared; }
+        }
+
+        /// <summary>
         /// Gets the stored initialization.
         /// </summary>
         public IExpression Initialization

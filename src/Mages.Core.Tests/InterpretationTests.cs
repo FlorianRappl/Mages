@@ -327,9 +327,21 @@
         }
 
         [Test]
-        public void ForDeclaresVariableInCustomScope()
+        public void ForDeclaresVariableInLocalScope()
         {
-            Test("i = -1; sum = 0; for (var i = 0; i < 5; ++i) sum += i; i", -1.0);
+            Test("i = -1; sum = 0; (() => { for (var i = 0; i < 5; ++i) sum += i; })(); i", -1.0);
+        }
+
+        [Test]
+        public void ForUsesVariableInGlobalScope()
+        {
+            Test("i = -1; sum = 0; (() => { for (i = 0; i < 5; ++i) sum += i; })(); i", 5.0);
+        }
+
+        [Test]
+        public void ForLoopChangesGlobalVariableIfNotScoped()
+        {
+            Test("i = -1; sum = 0; for (var i = 0; i < 5; ++i) sum += i; i", 5.0);
         }
 
         [Test]
