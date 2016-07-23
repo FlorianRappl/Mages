@@ -128,6 +128,33 @@
             _operations.Add(RetOperation.Instance);
         }
 
+        void ITreeWalker.Visit(DeleteStatement statement)
+        {
+            statement.Validate(this);
+            var variable = statement.Expression as VariableExpression;
+            var member = statement.Expression as MemberExpression;
+
+            if (variable != null)
+            {
+                variable.Validate(this);
+                var op = new DelVarOperation(variable.Name);
+                _operations.Add(op);
+            }
+            else if (member != null)
+            {
+                member.Validate(this);
+                variable = member.Member as VariableExpression;
+
+                if (variable != null)
+                {
+                    member.Object.Accept(this);
+                    variable.Validate(this);
+                    var op = new DelKeyOperation(variable.Name);
+                    _operations.Add(op);
+                }
+            }
+        }
+
         void ITreeWalker.Visit(WhileStatement statement)
         {
             statement.Validate(this);

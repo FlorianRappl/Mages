@@ -49,7 +49,7 @@
         /// <param name="visitor">The visitor walking the tree.</param>
         public void Accept(ITreeWalker visitor)
         {
-            //visitor.Visit(this);
+            visitor.Visit(this);
         }
 
         /// <summary>

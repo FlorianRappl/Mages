@@ -35,6 +35,12 @@
         /// <summary>
         /// Visits the given statement.
         /// </summary>
+        /// <param name="statement">Delete statement.</param>
+        void Visit(DeleteStatement statement);
+
+        /// <summary>
+        /// Visits the given statement.
+        /// </summary>
         /// <param name="statement">While statement.</param>
         void Visit(WhileStatement statement);
 

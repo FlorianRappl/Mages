@@ -44,6 +44,14 @@
         }
 
         /// <summary>
+        /// Visits a delete statement - accepts the payload.
+        /// </summary>
+        public virtual void Visit(DeleteStatement statement)
+        {
+            statement.Expression.Accept(this);
+        }
+
+        /// <summary>
         /// Visits a while statement - accepts the condition and body.
         /// </summary>
         public virtual void Visit(WhileStatement statement)
