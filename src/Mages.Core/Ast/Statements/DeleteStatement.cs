@@ -1,6 +1,6 @@
 ﻿namespace Mages.Core.Ast.Statements
 {
-    using System;
+    using Mages.Core.Ast.Expressions;
 
     /// <summary>
     /// Represents a return statement.
@@ -58,6 +58,21 @@
         /// <param name="context">The validator to report errors to.</param>
         public void Validate(IValidationContext context)
         {
+            var expression = _expression;
+            var member = _expression as MemberExpression;
+            var isIdentifier = _expression is VariableExpression;
+
+            if (member != null)
+            {
+                expression = member.Member;
+                isIdentifier = expression is IdentifierExpression;
+            }
+
+            if (!isIdentifier)
+            {
+                var error = new ParseError(ErrorCode.IdentifierExpected, expression);
+                context.Report(error);
+            }
         }
 
         #endregion

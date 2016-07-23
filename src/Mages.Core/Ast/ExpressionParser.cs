@@ -100,6 +100,10 @@
             {
                 return ParseContinueStatement(tokens);
             }
+            else if (current.Is(Keywords.Delete))
+            {
+                return ParseDeleteStatement(tokens);
+            }
 
             return ParseSimpleStatement(tokens);
         }
@@ -158,6 +162,15 @@
             var end = tokens.Current.End;
             CheckProperStatementEnd(tokens, ref expr);
             return new ReturnStatement(expr, start, end);
+        }
+
+        private IStatement ParseDeleteStatement(IEnumerator<IToken> tokens)
+        {
+            var start = tokens.Current.Start;
+            var expr = ParseAssignment(tokens.NextNonIgnorable());
+            var end = tokens.Current.End;
+            CheckProperStatementEnd(tokens, ref expr);
+            return new DeleteStatement(expr, start, end);
         }
 
         private IStatement ParseContinueStatement(IEnumerator<IToken> tokens)

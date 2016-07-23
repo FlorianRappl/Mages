@@ -131,25 +131,29 @@
         void ITreeWalker.Visit(DeleteStatement statement)
         {
             statement.Validate(this);
-            var variable = statement.Expression as VariableExpression;
             var member = statement.Expression as MemberExpression;
 
-            if (variable != null)
+            if (member != null)
             {
-                variable.Validate(this);
-                var op = new DelVarOperation(variable.Name);
-                _operations.Add(op);
-            }
-            else if (member != null)
-            {
+                var variable = member.Member as IdentifierExpression;
                 member.Validate(this);
-                variable = member.Member as VariableExpression;
 
                 if (variable != null)
                 {
                     member.Object.Accept(this);
                     variable.Validate(this);
                     var op = new DelKeyOperation(variable.Name);
+                    _operations.Add(op);
+                }
+            }
+            else
+            {
+                var variable = statement.Expression as VariableExpression;
+
+                if (variable != null)
+                {
+                    variable.Validate(this);
+                    var op = new DelVarOperation(variable.Name);
                     _operations.Add(op);
                 }
             }
