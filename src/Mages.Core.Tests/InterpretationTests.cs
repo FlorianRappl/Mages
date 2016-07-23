@@ -320,6 +320,24 @@
             Test("n = 0; i = 3; if (i < 2) n = 1; else n = -1; n", -1.0);
         }
 
+        [Test]
+        public void ForLoopWorksWithStandardWay()
+        {
+            Test("sum = 0; for (var i = 0; i < 5; ++i) sum += i; sum", 10.0);
+        }
+
+        [Test]
+        public void ForDeclaresVariableInCustomScope()
+        {
+            Test("i = -1; sum = 0; for (var i = 0; i < 5; ++i) sum += i; i", -1.0);
+        }
+
+        [Test]
+        public void ForLoopChangesGlobalVariableIfNotDeclared()
+        {
+            Test("i = -1; sum = 0; for (i = 0; i < 5; ++i) sum += i; i", 5.0);
+        }
+
         private static IDictionary<String, Object> Test(String sourceCode, Double expected, Double tolerance = 0.0)
         {
             var engine = new Engine();
