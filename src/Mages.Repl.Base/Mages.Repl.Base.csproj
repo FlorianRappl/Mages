@@ -51,6 +51,9 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AutoCompleteHandler.cs" />
+    <Compile Include="Completion.cs" />
+    <Compile Include="InputInfo.cs" />
     <Compile Include="ErrorCodeExtensions.cs" />
     <Compile Include="Functions\ConsoleFunctions.cs" />
     <Compile Include="Functions\Helpers.cs" />

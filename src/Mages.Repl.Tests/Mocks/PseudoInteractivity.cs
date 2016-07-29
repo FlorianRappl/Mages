@@ -10,12 +10,6 @@
             set;
         }
 
-        public String Prompt
-        {
-            get;
-            set;
-        }
-
         public Action<String> OnError
         {
             get;
@@ -87,9 +81,9 @@
             }
         }
 
-        public void WritePrompt()
+        public void Prompt(String prompt = null)
         {
-            Write(Prompt ?? String.Empty);
+            Write(prompt ?? String.Empty);
         }
     }
 }

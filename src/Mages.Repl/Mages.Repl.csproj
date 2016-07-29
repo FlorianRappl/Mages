@@ -58,6 +58,10 @@
     </Compile>
     <Compile Include="Bindings\RealFileSystem.cs" />
     <Compile Include="Bindings\OpenFileReader.cs" />
+    <Compile Include="CompletionState.cs" />
+    <Compile Include="Handler.cs" />
+    <Compile Include="History.cs" />
+    <Compile Include="LineEditor.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Bindings\ConsoleInteractivity.cs" />
     <Compile Include="Program.cs" />

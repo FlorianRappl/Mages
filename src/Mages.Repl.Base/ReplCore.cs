@@ -75,6 +75,14 @@
         {
         }
 
+        private void OnConsoleKeyPressed(InputInfo input)
+        {
+            if (input.Info.Key == ConsoleKey.Tab)
+            {
+                
+            }
+        }
+
         private void EvaluateCompleted(String input)
         {
             while (!input.IsCompleted())
