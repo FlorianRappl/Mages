@@ -46,6 +46,7 @@
         public LineEditor(History history)
         {
             _killBuffer = String.Empty;
+            _search = String.Empty;
             _done = false;
             _handlers = new[]
             {
@@ -89,7 +90,7 @@
 
         #region Properties
 
-        public Boolean TabAtStartCompletes 
+        public Boolean IsFirstTabCompleting 
         { 
             get; 
             set; 
@@ -137,7 +138,7 @@
                     Thread.ResetAbort();
                     Console.WriteLine();
                     SetPrompt(prompt);
-                    SetText("");
+                    SetText(String.Empty);
                 }
             }
             while (!_done);
@@ -163,14 +164,6 @@
 
             _history.Close();
             return null;
-        }
-
-        public void SaveHistory()
-        {
-            if (_history != null)
-            {
-                _history.Close();
-            }
         }
 
         public static void SaveExcursion(Action code)
@@ -518,7 +511,9 @@
         private void Render()
         {
             var max = Math.Max(_renderedText.Length + _shownPrompt.Length, _maxRendered);
+            Console.ForegroundColor = ConsoleColor.Magenta;
             Console.Write(_shownPrompt);
+            Console.ResetColor();
             Console.Write(_renderedText);
 
             for (var i = _renderedText.Length + _shownPrompt.Length; i < _maxRendered; i++)
@@ -829,22 +824,24 @@
                 _matchAt = -1;
                 _lastSearch = _search;
                 _searching = -1;
-                _search = "";
-                SetSearchPrompt("");
+                _search = String.Empty;
+                SetSearchPrompt(String.Empty);
             }
             else
             {
-                if (_search == "")
+                if (String.IsNullOrEmpty(_search))
                 {
-                    if (_lastSearch != "" && _lastSearch != null)
+                    if (!String.IsNullOrEmpty(_lastSearch))
                     {
                         _search = _lastSearch;
                         SetSearchPrompt(_search);
 
                         ReverseSearch();
                     }
+
                     return;
                 }
+
                 ReverseSearch();
             }
         }
@@ -960,7 +957,7 @@
 
             if (AutoCompleteEvent != null)
             {
-                if (TabAtStartCompletes)
+                if (IsFirstTabCompleting)
                 {
                     complete = true;
                 }
