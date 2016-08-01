@@ -201,6 +201,19 @@
             }
         }
 
+        /// <summary>
+        /// Visits a variable expression.
+        /// </summary>
+        public override void Visit(VariableExpression expression)
+        {
+            if (Within(expression))
+            {
+                var length = _position.Index - expression.Start.Index;
+                var prefix = expression.Name.Substring(0, length);
+                AddExpressionKeywords(prefix);
+            }
+        }
+
         private void AddStatementKeywords()
         {
             _completion.AddRange(Keywords.GlobalStatementKeywords);
@@ -213,9 +226,24 @@
 
         private void AddExpressionKeywords()
         {
-            var symbols = _variables.SelectMany(m => m).Concat(_symbols).Distinct();
-            _completion.AddRange(Keywords.ExpressionKeywords);
-            _completion.AddRange(symbols);            
+            AddExpressionKeywords(String.Empty);
+        }
+
+        private void AddExpressionKeywords(String prefix)
+        {
+            var symbols = _variables.
+                SelectMany(m => m).
+                Concat(_symbols).
+                Concat(Keywords.ExpressionKeywords).
+                Distinct();
+
+            if (!String.IsNullOrEmpty(prefix))
+            {
+                symbols = symbols.Where(m => m.StartsWith(prefix)).
+                    Select(m => String.Concat(prefix, "|", m.Substring(prefix.Length)));
+            }
+
+            _completion.AddRange(symbols);
         }
 
         private Boolean Within(ITextRange range)

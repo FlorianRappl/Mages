@@ -40,7 +40,7 @@
 
         public TextPosition GetPositionAt(Int32 index)
         {
-            return new TextPosition(0, 0, index);
+            return new TextPosition(0, 0, index + 1);
         }
 
         public Boolean MoveNext()
