@@ -1,3 +1,12 @@
+# 1.1.0
+
+- Autocomplete for the REPL (#54)
+- Improved error display (#55)
+- `delete` existing variables (#61)
+- Enable `for` loops (#53)
+- Autocompletion enhancements (#54)
+- Minor bug fixes
+
 # 1.0.0
 
 - Add more standard functions (#48)

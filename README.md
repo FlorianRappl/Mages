@@ -12,7 +12,7 @@ MAGES is the official successor to YAMP. It is a very simple, yet powerful, expr
 
 ### Current Status
 
-The first stable version 1.0.0 has been released. The library contains everything to perform lightweight scripting operations in C#. A [CodeProject article](http://www.codeproject.com/Articles/1108939/MAGES-Ultimate-Scripting-for-NET) about the library (also containing some background and performance comparisons) is also available.
+The first stable version has been released. The current version 1.1.0 contains an improved REPL. The library contains everything to perform lightweight scripting operations in C#. A [CodeProject article](http://www.codeproject.com/Articles/1108939/MAGES-Ultimate-Scripting-for-NET) about the library (also containing some background and performance comparisons) is also available.
 
 ### Installation
 
@@ -29,7 +29,7 @@ var engine = new Mages.Core.Engine();
 var result = engine.Interpret("sin(2) * cos(pi / 4)"); // 0.642970376623918
 ```
 
-You can also go-ahead and make re-usable blocks from snippets.
+You can also go-ahead and make reusable blocks from snippets.
 
 ```cs
 var expOne = engine.Compile("exp(1)");
