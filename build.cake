@@ -271,7 +271,8 @@ Task("Publish-GitHub-Release")
             Credentials = new Credentials(githubToken)
         };
 
-        var release = github.Repository.Release.Create("FlorianRappl", "Mages", new NewRelease("v" + version) 
+        var newRelease = github.Repository.Release;
+        var release = newRelease.Create("FlorianRappl", "Mages", new NewRelease("v" + version) 
         {
             Name = version,
             Body = String.Join(Environment.NewLine, releaseNotes.Notes),
@@ -285,7 +286,7 @@ Task("Publish-GitHub-Release")
 
         using (var libStream = System.IO.File.OpenRead(libPath.Path.FullPath))
         {
-            github.Release.UploadAsset(release, new ReleaseAssetUpload("Mages.Core.dll", "application/x-msdownload", libStream, null)).Wait();
+            newRelease.UploadAsset(release, new ReleaseAssetUpload("Mages.Core.dll", "application/x-msdownload", libStream, null)).Wait();
         }
 
         foreach (var file in releaseFiles)
@@ -299,7 +300,7 @@ Task("Publish-GitHub-Release")
 
             using (var fileStream = System.IO.File.OpenRead(file.FullPath))
             {
-                github.Release.UploadAsset(release, new ReleaseAssetUpload(name, "application/x-msdownload", fileStream, null)).Wait();
+                newRelease.UploadAsset(release, new ReleaseAssetUpload(name, "application/x-msdownload", fileStream, null)).Wait();
             }
         }
     });
