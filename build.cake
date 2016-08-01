@@ -271,7 +271,7 @@ Task("Publish-GitHub-Release")
             Credentials = new Credentials(githubToken)
         };
 
-        var release = github.Release.Create("FlorianRappl", "Mages", new NewRelease("v" + version) 
+        var release = github.Repository.Release.Create("FlorianRappl", "Mages", new NewRelease("v" + version) 
         {
             Name = version,
             Body = String.Join(Environment.NewLine, releaseNotes.Notes),
