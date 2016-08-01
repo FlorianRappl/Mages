@@ -40,6 +40,24 @@
         }
 
         /// <summary>
+        /// Finds the suggestions for the given list of statements.
+        /// </summary>
+        /// <param name="statements">The statements to use.</param>
+        public void FindSuggestions(IEnumerable<IStatement> statements)
+        {
+            foreach (var statement in statements)
+            {
+                statement.Accept(this);
+            }
+
+            if (_completion.Count == 0)
+            {
+                AddExpressionKeywords();
+                AddStatementKeywords();
+            }
+        }
+
+        /// <summary>
         /// Visits a block statement - accepts all childs.
         /// </summary>
         public override void Visit(BlockStatement block)
@@ -48,8 +66,8 @@
 
             if (_completion.Count == 0 && Within(block))
             {
-                AddStatementKeywords();
                 AddExpressionKeywords();
+                AddStatementKeywords();
             }
         }
 
@@ -106,17 +124,6 @@
         /// Visits an invalid expression.
         /// </summary>
         public override void Visit(InvalidExpression expression)
-        {
-            if (Within(expression))
-            {
-                AddExpressionKeywords();
-            }
-        }
-
-        /// <summary>
-        /// Visits a binary expression - accepts the left and right value.
-        /// </summary>
-        public override void Visit(BinaryExpression expression)
         {
             if (Within(expression))
             {
@@ -211,6 +218,7 @@
                 var length = _position.Index - expression.Start.Index;
                 var prefix = expression.Name.Substring(0, length);
                 AddExpressionKeywords(prefix);
+                _completion.Add(String.Empty);
             }
         }
 
@@ -226,7 +234,10 @@
 
         private void AddExpressionKeywords()
         {
-            AddExpressionKeywords(String.Empty);
+            if (_completion.Count == 0)
+            {
+                AddExpressionKeywords(String.Empty);
+            }
         }
 
         private void AddExpressionKeywords(String prefix)

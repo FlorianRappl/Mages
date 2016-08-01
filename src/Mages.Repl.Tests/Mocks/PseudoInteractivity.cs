@@ -4,11 +4,7 @@
 
     sealed class PseudoInteractivity : IInteractivity
     {
-        public Boolean IsPromptShown
-        {
-            get;
-            set;
-        }
+        public event AutoCompleteHandler AutoComplete;
 
         public Action<String> OnError
         {
@@ -32,6 +28,12 @@
         {
             get;
             set;
+        }
+
+        public String GetLine(String prompt)
+        {
+            Write(prompt ?? String.Empty);
+            return ReadLine();
         }
 
         public void Error(String message)
@@ -79,11 +81,6 @@
             {
                 handler.Invoke(output);
             }
-        }
-
-        public void Prompt(String prompt = null)
-        {
-            Write(prompt ?? String.Empty);
         }
     }
 }

@@ -94,7 +94,7 @@
         public static IEnumerable<String> GetCompletionAt(this IEnumerable<IStatement> statements, TextPosition position, IEnumerable<String> symbols)
         {
             var walker = new CompletionTreeWalker(position, symbols);
-            statements.ToBlock().Accept(walker);
+            walker.FindSuggestions(statements);
             return walker.Suggestions;
         }
     }

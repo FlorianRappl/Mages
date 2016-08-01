@@ -4,7 +4,6 @@
     using Mages.Core.Runtime;
     using System;
     using System.IO;
-    using System.Linq;
 
     public sealed class ReplCore
     {
@@ -127,21 +126,7 @@
         private Completion ShowAutoComplete(String text, Int32 position)
         {
             var autocomplete = _engine.GetCompletionAt(text, position);
-            var entries = autocomplete.ToArray();
-            var prefix = String.Empty;
-
-            if (entries.Length > 0 && entries[0].Contains("|"))
-            {
-                var index = entries[0].IndexOf('|');
-                prefix = entries[0].Substring(0, index);
-
-                for (var i = 0; i < entries.Length; i++)
-                {
-                    entries[i] = entries[i].Substring(index + 1);
-                }
-            }
-
-            return new Completion(prefix, entries);
+            return Completion.From(autocomplete);
         }
 
         private void Startup()
