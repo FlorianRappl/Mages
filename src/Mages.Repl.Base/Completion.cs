@@ -4,6 +4,8 @@
 
     public class Completion
     {
+        public static readonly Completion Empty = new Completion(null, null);
+
         public Completion(String prefix, String[] result)
         {
             Prefix = prefix;

@@ -5,24 +5,18 @@
     sealed class ConsoleInteractivity : IInteractivity
     {
         private const Int32 BufferSize = 4096;
+        private readonly LineEditor _editor;
+
+        public event AutoCompleteHandler AutoComplete
+        {
+            add { _editor.AutoCompleteEvent += value; }
+            remove { _editor.AutoCompleteEvent -= value; }
+        }
 
         public ConsoleInteractivity()
         {
-            IsPromptShown = true;
-        }
-
-        public Boolean IsPromptShown
-        {
-            get;
-            set;
-        }
-
-        public void Prompt(String custom = null)
-        {
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.Write(custom ?? "SWM");
-            Console.Write("> ");
-            Console.ResetColor();
+            var history = new History("Mages.Repl", 300);
+            _editor = new LineEditor(history);
         }
 
         public void Write(String output)
@@ -30,14 +24,14 @@
             Console.Write(output);
         }
 
-        public String Read()
+        public String ReadLine()
         {
-            if (IsPromptShown)
-            {
-                Prompt();
-            }
+            return Console.ReadLine();
+        }
 
-            return ReadLine();
+        public String GetLine(String prompt)
+        {
+            return _editor.Edit(prompt, String.Empty);
         }
 
         public void Info(String result)
@@ -66,15 +60,6 @@
         public IDisposable HandleCancellation(Action callback)
         {
             return new CancellationRegistration(callback);
-        }
-
-        private static String ReadLine()
-        {
-            var newLineLength = Environment.NewLine.Length;
-            var inputStream = Console.OpenStandardInput(4096);
-            var bytes = new Byte[4096];
-            var outputLength = inputStream.Read(bytes, 0, 4096);
-            return Console.InputEncoding.GetString(bytes, 0, outputLength - newLineLength);
         }
 
         struct CancellationRegistration : IDisposable

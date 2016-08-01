@@ -43,7 +43,7 @@
 
         #region ctor
 
-        public LineEditor(String name, Int32 histsize = 30)
+        public LineEditor(History history)
         {
             _killBuffer = String.Empty;
             _done = false;
@@ -82,7 +82,7 @@
             };
             _renderedText = new StringBuilder();
             _availableText = new StringBuilder();
-            _history = new History(name, histsize);
+            _history = history;
         }
 
         #endregion
@@ -282,23 +282,14 @@
                 {
                     var t = handler.CKI;
 
-                    if (t.Key == cki.Key && t.Modifiers == mod)
+                    if ((t.Key == cki.Key && t.Modifiers == mod) || (t.KeyChar == cki.KeyChar && t.Key == ConsoleKey.Zoom))
                     {
                         handled = true;
 
                         if (handler.ResetCompletion)
+                        {
                             HideCompletions();
-
-                        handler.KeyHandler();
-                        _lastHandler = handler.KeyHandler;
-                        break;
-                    }
-                    else if (t.KeyChar == cki.KeyChar && t.Key == ConsoleKey.Zoom)
-                    {
-                        handled = true;
-
-                        if (handler.ResetCompletion)
-                            HideCompletions();
+                        }
 
                         handler.KeyHandler();
                         _lastHandler = handler.KeyHandler;
@@ -549,7 +540,7 @@
         private void RenderFrom(Int32 pos)
         {
             var rpos = TextToRenderPos(pos);
-            var i = 0;
+            var i = rpos;
 
             while (i < _renderedText.Length)
             {

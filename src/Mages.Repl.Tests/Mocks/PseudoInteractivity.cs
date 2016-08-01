@@ -59,7 +59,7 @@
             }
         }
 
-        public String Read()
+        public String ReadLine()
         {
             var handler = OnRead;
 

@@ -4,13 +4,13 @@
 
     public interface IInteractivity
     {
+        event AutoCompleteHandler AutoComplete;
+
         IDisposable HandleCancellation(Action callback);
 
-        Boolean IsPromptShown { get; set; }
+        String ReadLine();
 
-        void Prompt(String custom = null);
-
-        String Read();
+        String GetLine(String prompt);
 
         void Write(String output);
 

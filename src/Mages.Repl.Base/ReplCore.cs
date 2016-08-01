@@ -46,10 +46,8 @@
         {
             Startup();
 
-            _interactivity.IsPromptShown = false;
             _interactivity.Write("Welcome to MAGES! Press ENTER to to start the interactive tutorial ...");
-            _interactivity.Read();
-            _interactivity.IsPromptShown = true;
+            _interactivity.ReadLine();
             tutorials.RunAll(_interactivity, _engine.Scope, input => Evaluate(input, true));
             
             Teardown();
@@ -61,7 +59,9 @@
 
             do
             {
-                input = _interactivity.Read();
+                _interactivity.AutoComplete += ShowAutoComplete;
+                input = _interactivity.GetLine("SWM> ");
+                _interactivity.AutoComplete -= ShowAutoComplete;
 
                 if (!String.IsNullOrEmpty(input.Trim()))
                 {
@@ -75,22 +75,13 @@
         {
         }
 
-        private void OnConsoleKeyPressed(InputInfo input)
-        {
-            if (input.Info.Key == ConsoleKey.Tab)
-            {
-                
-            }
-        }
-
         private void EvaluateCompleted(String input)
         {
             while (!input.IsCompleted())
             {
-                _interactivity.IsPromptShown = false;
-                _interactivity.Prompt("   ");
-                var rest = _interactivity.Read();
-                _interactivity.IsPromptShown = true;
+                _interactivity.AutoComplete += ShowAutoComplete;
+                var rest = _interactivity.GetLine("   > ");
+                _interactivity.AutoComplete -= ShowAutoComplete;
 
                 if (String.IsNullOrEmpty(rest))
                     break;
@@ -130,6 +121,11 @@
             }
 
             _interactivity.Write(Environment.NewLine);
+        }
+
+        private Completion ShowAutoComplete(String text, Int32 position)
+        {
+            return Completion.Empty;
         }
 
         private void Startup()

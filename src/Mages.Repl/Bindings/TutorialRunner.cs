@@ -34,7 +34,7 @@
         {
             interactivity.Write("Solution:");
             interactivity.Write(Environment.NewLine);
-            interactivity.Prompt();
+            interactivity.Write("SWM> ");
             interactivity.Write(snippet.Solution);
             interactivity.Write(Environment.NewLine);
             evaluate.Invoke(snippet.Solution);
@@ -54,7 +54,7 @@
                     interactivity.Write(Environment.NewLine);
                 }
 
-                var input = interactivity.Read();
+                var input = interactivity.ReadLine();
                 evaluate.Invoke(input);
                 success = snippet.Check(scope);
             }
@@ -69,11 +69,11 @@
             interactivity.Write(Environment.NewLine);
         }
 
-        private static void WriteExample(IInteractivity interactivity, Action<string> evaluate, ITutorialSnippet snippet)
+        private static void WriteExample(IInteractivity interactivity, Action<String> evaluate, ITutorialSnippet snippet)
         {
             interactivity.Write("Example:");
             interactivity.Write(Environment.NewLine);
-            interactivity.Prompt();
+            interactivity.Write("SWM> ");
             interactivity.Write(snippet.ExampleCommand);
             interactivity.Write(Environment.NewLine);
             evaluate.Invoke(snippet.ExampleCommand);

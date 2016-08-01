@@ -31,11 +31,7 @@
 
         private Object PerformRead()
         {
-            var current = _interactivity.IsPromptShown;
-            _interactivity.IsPromptShown = false;
-            var result = _interactivity.Read();
-            _interactivity.IsPromptShown = current;
-            return result;
+            return _interactivity.ReadLine();
         }
 
         private Object PerformWrite(Object value)
