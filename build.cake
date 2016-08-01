@@ -249,7 +249,7 @@ Task("Publish-Chocolatey-Package")
 
         ChocolateyPush(package, new ChocolateyPushSettings
         { 
-            Source = "https://chocolatey.org/packages",
+            Source = "https://chocolatey.org/",
             ApiKey = apiKey 
         });
     });
