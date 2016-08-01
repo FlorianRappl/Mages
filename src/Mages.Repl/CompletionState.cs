@@ -80,7 +80,9 @@
                 _selected++;
 
                 if (_selected - _top >= Height)
+                {
                     _top++;
+                }
 
                 LineEditor.SaveExcursion(DrawSelection);
             }
@@ -93,7 +95,9 @@
                 _selected--;
 
                 if (_selected < _top)
+                {
                     _top = _selected;
+                }
 
                 LineEditor.SaveExcursion(DrawSelection);
             }
@@ -112,7 +116,9 @@
                 Console.CursorTop = Row + r;
 
                 for (var space = 0; space <= Width; space++)
+                {
                     Console.Write(" ");
+                }
             }
         }
 
@@ -122,12 +128,11 @@
             {
                 var item_idx = _top + r;
                 var selected = (item_idx == _selected);
+                var item = Prefix + Completions[item_idx];
 
                 Console.ForegroundColor = selected ? ConsoleColor.Black : ConsoleColor.Gray;
                 Console.BackgroundColor = selected ? ConsoleColor.Cyan : ConsoleColor.Blue;
-
-                var item = Prefix + Completions[item_idx];
-
+                
                 if (item.Length > Width)
                 {
                     item = item.Substring(0, Width);

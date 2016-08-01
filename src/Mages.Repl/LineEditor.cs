@@ -8,6 +8,7 @@
     {
         #region Constants
 
+        private const Int32 MinWidth = 12;
         private const Int32 MaxWidth = 50;
 
         #endregion
@@ -83,7 +84,7 @@
             };
             _renderedText = new StringBuilder();
             _availableText = new StringBuilder();
-            _history = history;
+            _history = history; 
         }
 
         #endregion
@@ -94,6 +95,12 @@
         { 
             get; 
             set; 
+        }
+
+        public Boolean IsDotCompleting
+        {
+            get;
+            set;
         }
 
         public Int32 LineCount
@@ -201,7 +208,7 @@
                 return insertedChar != ' ';
             }
 
-            if (insertedChar == '.')
+            if (IsDotCompleting && insertedChar == '.')
             {
                 if (_cursorPosition > 1 && Char.IsDigit(_availableText[_cursorPosition - 2]))
                 {
@@ -210,10 +217,14 @@
                         var c = _availableText[p];
 
                         if (Char.IsDigit(c))
+                        {
                             continue;
+                        }
 
                         if (c == '_' || Char.IsLetter(c) || Char.IsPunctuation(c) || Char.IsSymbol(c) || Char.IsControl(c))
+                        {
                             return true;
+                        }
                     }
 
                     return false;
@@ -655,49 +666,43 @@
 
         private void ShowCompletions(String prefix, String[] completions)
         {
-            // Ensure we have space, determine window size
-            var window_height = Math.Min(completions.Length, Console.WindowHeight / 5);
-            var target_line = Console.WindowHeight - window_height - 1;
-            var window_width = 12;
-            var plen = prefix.Length;
+            var height = Math.Min(completions.Length, Console.WindowHeight / 5);
+            var width = MinWidth;
+            var current = Console.CursorTop;
 
-            if (Console.CursorTop > target_line)
+            if (current >= Console.WindowHeight - height)
             {
-                var saved_left = Console.CursorLeft;
-                var delta = Console.CursorTop - target_line;
-                Console.CursorLeft = 0;
-                Console.CursorTop = Console.WindowHeight - 1;
+                Console.SetCursorPosition(0, current + 1);
 
-                for (var i = 0; i < delta + 1; i++)
+                for (var i = 0; i < height; i++)
                 {
                     for (var c = Console.WindowWidth; c > 0; c--)
                     {
-                        Console.Write(" ");
+                        Console.Write(' ');
                     }
                 }
 
-                Console.CursorTop = target_line;
-                Console.CursorLeft = 0;
+                Console.SetCursorPosition(0, current);
                 Render();
             }
 
             foreach (var s in completions)
             {
-                window_width = Math.Max(plen + s.Length, window_width);
+                width = Math.Max(prefix.Length + s.Length, width);
             }
 
-            window_width = Math.Min(window_width, MaxWidth);
+            width = Math.Min(width, MaxWidth);
 
             if (_completion == null)
             {
                 var left = Console.CursorLeft - prefix.Length;
 
-                if (left + window_width + 1 >= Console.WindowWidth)
+                if (left + width + 1 >= Console.WindowWidth)
                 {
-                    left = Console.WindowWidth - window_width - 1;
+                    left = Console.WindowWidth - width - 1;
                 }
 
-                _completion = new CompletionState(left, Console.CursorTop + 1, window_width, window_height)
+                _completion = new CompletionState(left, Console.CursorTop + 1, width, height)
                 {
                     Prefix = prefix,
                     Completions = completions,
