@@ -8,13 +8,23 @@
 
     sealed class ExpressionParser : IParser
     {
+        #region Fields
+
         private readonly AbstractScopeStack _scopes;
+
+        #endregion
+
+        #region ctor
 
         public ExpressionParser()
         {
             var root = new AbstractScope(null);
             _scopes = new AbstractScopeStack(root);
         }
+
+        #endregion
+
+        #region Methods
 
         public List<IStatement> ParseStatements(IEnumerator<IToken> tokens)
         {
@@ -38,6 +48,10 @@
 
             return expr;
         }
+
+        #endregion
+
+        #region Statements
 
         private List<IStatement> ParseNextStatements(IEnumerator<IToken> tokens)
         {
@@ -250,6 +264,10 @@
 
             return ParseNextStatement(tokens);
         }
+
+        #endregion
+
+        #region Expressions
 
         private List<IExpression> ParseExpressions(IEnumerator<IToken> tokens)
         {
@@ -894,6 +912,10 @@
             return expr;
         }
 
+        #endregion
+
+        #region Helpers
+
         private static ParameterExpression GetParameters(IExpression x)
         {
             var args = x as ArgumentsExpression;
@@ -944,5 +966,7 @@
                 expr = new BinaryExpression.Multiply(expr, invalid);
             }
         }
+
+        #endregion
     }
 }
