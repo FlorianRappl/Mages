@@ -50,6 +50,7 @@
     <Compile Include="Ast\Expressions\ArgumentsExpression.cs" />
     <Compile Include="Ast\Expressions\AssignableExpression.cs" />
     <Compile Include="Ast\Expressions\AssignmentExpression.cs" />
+    <Compile Include="Ast\Expressions\AwaitExpression.cs" />
     <Compile Include="Ast\Expressions\BaseExpression.cs" />
     <Compile Include="Ast\Expressions\BinaryExpression.cs" />
     <Compile Include="Ast\Expressions\CallExpression.cs" />

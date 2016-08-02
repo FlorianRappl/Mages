@@ -110,6 +110,14 @@
         }
 
         /// <summary>
+        /// Visits an awaitable expression.
+        /// </summary>
+        public virtual void Visit(AwaitExpression expression)
+        {
+            expression.Payload.Accept(this);
+        }
+
+        /// <summary>
         /// Visits an arguments expression - accepts all arguments.
         /// </summary>
         public virtual void Visit(ArgumentsExpression expression)

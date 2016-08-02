@@ -124,6 +124,12 @@
             expression.Validate(this);
         }
 
+        void ITreeWalker.Visit(AwaitExpression expression)
+        {
+            expression.Validate(this);
+            expression.Payload.Accept(this);
+        }
+
         void ITreeWalker.Visit(ArgumentsExpression expression)
         {
             expression.Validate(this);

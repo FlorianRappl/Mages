@@ -187,5 +187,11 @@
         /// </summary>
         /// <param name="expression">Variable expression.</param>
         void Visit(VariableExpression expression);
+
+        /// <summary>
+        /// Visits the given experssion.
+        /// </summary>
+        /// <param name="expression">Await expression.</param>
+        void Visit(AwaitExpression expression);
     }
 }

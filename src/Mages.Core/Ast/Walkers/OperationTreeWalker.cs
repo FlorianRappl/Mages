@@ -234,6 +234,11 @@
             _operations.Add(new ConstOperation(constant));
         }
 
+        void ITreeWalker.Visit(AwaitExpression expression)
+        {
+            //TODO
+        }
+
         void ITreeWalker.Visit(ArgumentsExpression expression)
         {
             var arguments = expression.Arguments;

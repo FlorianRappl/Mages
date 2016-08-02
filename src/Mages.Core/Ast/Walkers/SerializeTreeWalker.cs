@@ -233,6 +233,12 @@
             WriteProperty("Body", expression.Body);
         }
 
+        void ITreeWalker.Visit(AwaitExpression expression)
+        {
+            Header("Expression/Await");
+            WriteProperty("Payload", expression.Payload);
+        }
+
         void ITreeWalker.Visit(InvalidExpression expression)
         {
             Header("Expression/Invalid");
