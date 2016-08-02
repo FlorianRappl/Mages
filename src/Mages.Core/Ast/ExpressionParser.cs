@@ -730,6 +730,13 @@
             return expressions;
         }
 
+        private IExpression ParseAwait(IEnumerator<IToken> tokens)
+        {
+            var start = tokens.Current.Start;
+            var payload = ParseExpression(tokens.NextNonIgnorable());
+            return new AwaitExpression(start, payload);
+        }
+
         private IExpression ParseObject(IEnumerator<IToken> tokens)
         {
             var start = tokens.Current;
@@ -869,6 +876,10 @@
             if (token.Is(Keywords.New))
             {
                 return ParseObject(tokens);
+            }
+            else if (token.Is(Keywords.Await))
+            {
+                return ParseAwait(tokens);
             }
             else if (Keywords.TryGetConstant(token.Payload, out constant))
             {
