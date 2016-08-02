@@ -733,7 +733,7 @@
         private IExpression ParseAwait(IEnumerator<IToken> tokens)
         {
             var start = tokens.Current.Start;
-            var payload = ParseExpression(tokens.NextNonIgnorable());
+            var payload = ParsePrimary(tokens.NextNonIgnorable());
             return new AwaitExpression(start, payload);
         }
 
