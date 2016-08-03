@@ -48,7 +48,7 @@
         /// </summary>
         public virtual void Visit(DeleteExpression expression)
         {
-            expression.Expression.Accept(this);
+            expression.Payload.Accept(this);
         }
 
         /// <summary>

@@ -131,7 +131,7 @@
         void ITreeWalker.Visit(DeleteExpression expression)
         {
             expression.Validate(this);
-            var member = expression.Expression as MemberExpression;
+            var member = expression.Payload as MemberExpression;
 
             if (member != null)
             {
@@ -148,7 +148,7 @@
             }
             else
             {
-                var variable = expression.Expression as VariableExpression;
+                var variable = expression.Payload as VariableExpression;
 
                 if (variable != null)
                 {

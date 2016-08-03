@@ -7,7 +7,7 @@
     {
         #region Fields
 
-        private readonly IExpression _expression;
+        private readonly IExpression _payload;
 
         #endregion
 
@@ -17,11 +17,11 @@
         /// Creates a new delete statement with the given payload.
         /// </summary>
         /// <param name="start">The start position.</param>
-        /// <param name="expression">The payload to transport.</param>
-        public DeleteExpression(TextPosition start, IExpression expression)
-            : base(start, expression.End)
+        /// <param name="payload">The payload to transport.</param>
+        public DeleteExpression(TextPosition start, IExpression payload)
+            : base(start, payload.End)
         {
-            _expression = expression;
+            _payload = payload;
         }
 
         #endregion
@@ -31,9 +31,9 @@
         /// <summary>
         /// Gets the stored payload.
         /// </summary>
-        public IExpression Expression
+        public IExpression Payload
         {
-            get { return _expression; }
+            get { return _payload; }
         }
 
         #endregion
@@ -55,9 +55,9 @@
         /// <param name="context">The validator to report errors to.</param>
         public void Validate(IValidationContext context)
         {
-            var expression = _expression;
-            var member = _expression as MemberExpression;
-            var isIdentifier = _expression is VariableExpression;
+            var expression = _payload;
+            var member = _payload as MemberExpression;
+            var isIdentifier = _payload is VariableExpression;
 
             if (member != null)
             {

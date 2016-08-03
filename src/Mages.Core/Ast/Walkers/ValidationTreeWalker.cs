@@ -105,7 +105,7 @@
         void ITreeWalker.Visit(DeleteExpression expression)
         {
             expression.Validate(this);
-            expression.Expression.Accept(this);
+            expression.Payload.Accept(this);
         }
 
         void ITreeWalker.Visit(ReturnStatement statement)
