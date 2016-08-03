@@ -44,11 +44,11 @@
         }
 
         /// <summary>
-        /// Visits a delete statement - accepts the payload.
+        /// Visits a delete expression - accepts the payload.
         /// </summary>
-        public virtual void Visit(DeleteStatement statement)
+        public virtual void Visit(DeleteExpression expression)
         {
-            statement.Expression.Accept(this);
+            expression.Expression.Accept(this);
         }
 
         /// <summary>

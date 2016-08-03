@@ -35,12 +35,6 @@
         /// <summary>
         /// Visits the given statement.
         /// </summary>
-        /// <param name="statement">Delete statement.</param>
-        void Visit(DeleteStatement statement);
-
-        /// <summary>
-        /// Visits the given statement.
-        /// </summary>
         /// <param name="statement">While statement.</param>
         void Visit(WhileStatement statement);
 
@@ -187,6 +181,12 @@
         /// </summary>
         /// <param name="expression">Variable expression.</param>
         void Visit(VariableExpression expression);
+
+        /// <summary>
+        /// Visits the given expression.
+        /// </summary>
+        /// <param name="statement">Delete expression.</param>
+        void Visit(DeleteExpression expression);
 
         /// <summary>
         /// Visits the given experssion.

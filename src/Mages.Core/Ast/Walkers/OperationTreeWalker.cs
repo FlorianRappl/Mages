@@ -128,10 +128,10 @@
             _operations.Add(RetOperation.Instance);
         }
 
-        void ITreeWalker.Visit(DeleteStatement statement)
+        void ITreeWalker.Visit(DeleteExpression expression)
         {
-            statement.Validate(this);
-            var member = statement.Expression as MemberExpression;
+            expression.Validate(this);
+            var member = expression.Expression as MemberExpression;
 
             if (member != null)
             {
@@ -148,7 +148,7 @@
             }
             else
             {
-                var variable = statement.Expression as VariableExpression;
+                var variable = expression.Expression as VariableExpression;
 
                 if (variable != null)
                 {
@@ -236,7 +236,22 @@
 
         void ITreeWalker.Visit(AwaitExpression expression)
         {
-            //TODO
+            //TODO: Transform
+            // FROM =
+            /*
+                await expr
+                rest()
+            */
+            // TO =
+            /*
+                handleRest(expr, (res, err) => {
+                    if (err) {
+                        throw err;
+                    } else {
+                        rest()
+                    }
+                })
+            */
         }
 
         void ITreeWalker.Visit(ArgumentsExpression expression)

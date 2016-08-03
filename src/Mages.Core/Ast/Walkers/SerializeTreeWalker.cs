@@ -96,10 +96,10 @@
             WriteProperty("Payload", statement.Expression);
         }
 
-        void ITreeWalker.Visit(DeleteStatement statement)
+        void ITreeWalker.Visit(DeleteExpression expression)
         {
             Header("Statement/Delete");
-            WriteProperty("Payload", statement.Expression);
+            WriteProperty("Payload", expression.Expression);
         }
 
         void ITreeWalker.Visit(WhileStatement statement)

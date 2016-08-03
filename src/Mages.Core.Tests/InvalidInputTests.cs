@@ -110,7 +110,7 @@
         public void DeleteWithoutPayloadIsInvalid()
         {
             var stmt = "delete".ToStatement();
-            Assert.IsInstanceOf<DeleteStatement>(stmt);
+            Assert.IsInstanceOf<SimpleStatement>(stmt);
             IsInvalid(stmt);
         }
 
@@ -118,7 +118,7 @@
         public void DeleteWithNumberPayloadIsInvalid()
         {
             var stmt = "delete 2".ToStatement();
-            Assert.IsInstanceOf<DeleteStatement>(stmt);
+            Assert.IsInstanceOf<SimpleStatement>(stmt);
             IsInvalid(stmt);
         }
 
@@ -126,7 +126,7 @@
         public void DeleteWithBooleanPayloadIsInvalid()
         {
             var stmt = "delete true".ToStatement();
-            Assert.IsInstanceOf<DeleteStatement>(stmt);
+            Assert.IsInstanceOf<SimpleStatement>(stmt);
             IsInvalid(stmt);
         }
 
@@ -134,7 +134,7 @@
         public void DeleteWithMemberCallPayloadIsInvalid()
         {
             var stmt = "delete a.b()".ToStatement();
-            Assert.IsInstanceOf<DeleteStatement>(stmt);
+            Assert.IsInstanceOf<SimpleStatement>(stmt);
             IsInvalid(stmt);
         }
 
@@ -142,15 +142,15 @@
         public void DeleteWithCallExpressionPayloadIsInvalid()
         {
             var stmt = "delete foo()".ToStatement();
-            Assert.IsInstanceOf<DeleteStatement>(stmt);
+            Assert.IsInstanceOf<SimpleStatement>(stmt);
             IsInvalid(stmt);
         }
 
         [Test]
         public void DeleteWithBinaryExpressionPayloadIsInvalid()
         {
-            var stmt = "delete foo+bar".ToStatement();
-            Assert.IsInstanceOf<DeleteStatement>(stmt);
+            var stmt = "delete (foo+bar)".ToStatement();
+            Assert.IsInstanceOf<SimpleStatement>(stmt);
             IsInvalid(stmt);
         }
 

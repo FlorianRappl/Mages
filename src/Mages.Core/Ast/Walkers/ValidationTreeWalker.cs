@@ -102,10 +102,10 @@
             statement.Expression.Accept(this);
         }
 
-        void ITreeWalker.Visit(DeleteStatement statement)
+        void ITreeWalker.Visit(DeleteExpression expression)
         {
-            statement.Validate(this);
-            statement.Expression.Accept(this);
+            expression.Validate(this);
+            expression.Expression.Accept(this);
         }
 
         void ITreeWalker.Visit(ReturnStatement statement)

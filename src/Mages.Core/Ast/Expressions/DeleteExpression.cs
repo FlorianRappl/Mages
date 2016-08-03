@@ -1,11 +1,9 @@
-﻿namespace Mages.Core.Ast.Statements
+﻿namespace Mages.Core.Ast.Expressions
 {
-    using Mages.Core.Ast.Expressions;
-
     /// <summary>
-    /// Represents a return statement.
+    /// Represents a delete expression.
     /// </summary>
-    public sealed class DeleteStatement : BaseStatement, IStatement
+    public sealed class DeleteExpression : ComputingExpression, IExpression
     {
         #region Fields
 
@@ -18,11 +16,10 @@
         /// <summary>
         /// Creates a new delete statement with the given payload.
         /// </summary>
-        /// <param name="expression">The payload to transport.</param>
         /// <param name="start">The start position.</param>
-        /// <param name="end">The end position.</param>
-        public DeleteStatement(IExpression expression, TextPosition start, TextPosition end)
-            : base(start, end)
+        /// <param name="expression">The payload to transport.</param>
+        public DeleteExpression(TextPosition start, IExpression expression)
+            : base(start, expression.End)
         {
             _expression = expression;
         }
