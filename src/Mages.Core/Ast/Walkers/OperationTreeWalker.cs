@@ -236,6 +236,8 @@
 
         void ITreeWalker.Visit(AwaitExpression expression)
         {
+            expression.Validate(this);
+            expression.Payload.Accept(this);
             //TODO: Transform
             // FROM =
             /*

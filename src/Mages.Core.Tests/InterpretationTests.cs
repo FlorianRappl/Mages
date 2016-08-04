@@ -406,6 +406,24 @@
         }
 
         [Test]
+        public void DeleteIsAnExpressionWithBooleanResult()
+        {
+            Test("x = 3; y = delete x; y ? 1 : 0", 1.0);
+        }
+
+        [Test]
+        public void DeleteFailsReturnsFalse()
+        {
+            Test("x = 3; y = delete z; y ? 1 : 0", 0.0);
+        }
+
+        [Test]
+        public void DeleteCanBeUsedAsCondition()
+        {
+            Test("x = 0; y = 1; if (delete y) x = 5; x - 4", 1.0);
+        }
+
+        [Test]
         public void DeleteDoesNotRemoveInvalidKeyOfObjectInObject()
         {
             var scope = Test("x = 5; o = new { o: new { x: 5, y: 3 } }; delete o.o.z; x", 5.0);
