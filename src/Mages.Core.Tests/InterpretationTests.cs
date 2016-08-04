@@ -424,6 +424,36 @@
         }
 
         [Test]
+        public void OptionalArgumentRemainsUnused()
+        {
+            Test("f = (x, y = 3) => x * y; f(2, 5)", 10.0);
+        }
+
+        [Test]
+        public void OptionalArgumentIsUsedRespectively()
+        {
+            Test("f = (x, y = 3) => x * y; f(2)", 6.0);
+        }
+
+        [Test]
+        public void OptionalArgumentIsUsedFromCurriedVersion()
+        {
+            Test("f = (x, y = 3) => x * y; f()(2)", 6.0);
+        }
+
+        [Test]
+        public void OptionalArgumentIsNotUsedFromCurriedVersionIfAllSupplied()
+        {
+            Test("f = (x, y = 3) => x * y; f()(2, 4)", 8.0);
+        }
+
+        [Test]
+        public void MultipleOptionalArgumentsAreUsedAccordingly()
+        {
+            Test("f = (x = 1, y = 3, z = 5) => x + z * y; f()", 16.0);
+        }
+
+        [Test]
         public void DeleteDoesNotRemoveInvalidKeyOfObjectInObject()
         {
             var scope = Test("x = 5; o = new { o: new { x: 5, y: 3 } }; delete o.o.z; x", 5.0);
