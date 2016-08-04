@@ -187,6 +187,7 @@
     <Compile Include="Vm\IOperation.cs" />
     <Compile Include="Vm\Operations\ArgcOperation.cs" />
     <Compile Include="Vm\Operations\ArgoOperation.cs" />
+    <Compile Include="Vm\Operations\AwaitOperation.cs" />
     <Compile Include="Vm\Operations\DelKeyOperation.cs" />
     <Compile Include="Vm\Operations\DelVarOperation.cs" />
     <Compile Include="Vm\Operations\NewMethOperation.cs" />

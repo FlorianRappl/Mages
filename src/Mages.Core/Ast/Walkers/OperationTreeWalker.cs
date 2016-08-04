@@ -238,22 +238,7 @@
         {
             expression.Validate(this);
             expression.Payload.Accept(this);
-            //TODO: Transform
-            // FROM =
-            /*
-                await expr
-                rest()
-            */
-            // TO =
-            /*
-                handleRest(expr, (res, err) => {
-                    if (err) {
-                        throw err;
-                    } else {
-                        rest()
-                    }
-                })
-            */
+            _operations.Add(AwaitOperation.Instance);
         }
 
         void ITreeWalker.Visit(ArgumentsExpression expression)
