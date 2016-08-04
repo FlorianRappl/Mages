@@ -154,6 +154,22 @@
             IsInvalid(stmt);
         }
 
+        [Test]
+        public void OptionalArgumentsNeedToBeEnclosedInBrackets()
+        {
+            var expr = "x = 3 => x".ToExpression();
+            Assert.IsInstanceOf<AssignmentExpression>(expr);
+            IsInvalid(expr);
+        }
+
+        [Test]
+        public void OptionalArgumentsNeedValidAssignment()
+        {
+            var expr = "(x = , y = 3) => x".ToExpression();
+            Assert.IsInstanceOf<FunctionExpression>(expr);
+            IsInvalid(expr);
+        }
+
         private static void IsInvalid(IWalkable element)
         {
             var errors = new List<ParseError>();
