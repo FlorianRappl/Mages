@@ -192,5 +192,10 @@
         /// </summary>
         [Description("The statement requires an enclosing loop.")]
         LoopMissing,
+        /// <summary>
+        /// See description.
+        /// </summary>
+        [Description("All parameters following optional parameters need to be optional.")]
+        OptionalArgumentRequired,
     }
 }

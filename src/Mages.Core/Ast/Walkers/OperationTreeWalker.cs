@@ -445,9 +445,22 @@
 
             for (var i = 0; i < expressions.Length; i++)
             {
-                var identifier = (VariableExpression)expressions[i];
-                var name = identifier.Name;
+                var identifier = expressions[i] as VariableExpression;
+                
+                if (identifier == null)
+                {
+                    var assignment = expressions[i] as AssignmentExpression;
+                    identifier = (VariableExpression)assignment.Variable;
+                    _operations.Add(new ArgcOperation(i));
+                    _operations.Add(PopIfOperation.Instance);
+                    var marker = InsertMarker();
+                    assignment.Value.Accept(this);
+                    _operations.Add(new ArgoOperation(i));
+                    var end = _operations.Count;
+                    InsertJump(marker, end - 1);
+                }
 
+                var name = identifier.Name;
                 _operations.Add(new ArgOperation(i, name));
             }
 

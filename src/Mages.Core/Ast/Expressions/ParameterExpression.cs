@@ -54,9 +54,34 @@
         /// <param name="context">The validator to report errors to.</param>
         public void Validate(IValidationContext context)
         {
+            var containsOptional = false;
+
             foreach (var parameter in _parameters)
             {
-                if (parameter is VariableExpression == false)
+                if (parameter is VariableExpression)
+                {
+                    if (containsOptional)
+                    {
+                        var error = new ParseError(ErrorCode.OptionalArgumentRequired, parameter);
+                        context.Report(error);
+                    }
+                }
+                else if (parameter is AssignmentExpression)
+                {
+                    var assignment = (AssignmentExpression)parameter;
+
+                    if (assignment.VariableName == null)
+                    {
+                        var error = new ParseError(ErrorCode.OptionalArgumentRequired, parameter);
+                        context.Report(error);
+                    }
+                    else
+                    {
+                        containsOptional = true;
+                        parameter.Validate(context);
+                    }
+                }
+                else
                 {
                     var error = new ParseError(ErrorCode.IdentifierExpected, parameter);
                     context.Report(error);
