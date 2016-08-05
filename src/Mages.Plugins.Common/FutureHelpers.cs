@@ -1,5 +1,6 @@
 ﻿namespace Mages.Plugins
 {
+    using Mages.Core.Runtime;
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -64,40 +65,6 @@
             });
 
             return future;
-        }
-
-        sealed class Future : Dictionary<String, Object>
-        {
-            public Future()
-            {
-                Add("done", false);
-                Add("result", null);
-                Add("error", null);
-                Add("notify", null);
-            }
-
-            public void SetResult(Object result)
-            {
-                this["result"] = result;
-                SetDone(result, null);
-            }
-
-            public void SetError(String error)
-            {
-                this["error"] = error;
-                SetDone(null, error);
-            }
-
-            public void SetDone(Object result, String error)
-            {
-                var notify = this["notify"] as Delegate;
-                this["done"] = true;
-
-                if (notify != null)
-                {
-                    notify.DynamicInvoke(new Object[] { new Object[] { result, error } });
-                }
-            }
         }
     }
 }

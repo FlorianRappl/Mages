@@ -159,6 +159,29 @@
         }
 
         /// <summary>
+        /// Interprets the given source and returns the result in form of a future.
+        /// </summary>
+        /// <param name="source">The source to interpret.</param>
+        /// <returns>The result in form of a future. Any callbacks will be aggregated here.</returns>
+        public static Future InterpretAsync(this Engine engine, String source)
+        {
+            var future = new Future();
+            var result = engine.Interpret(source);
+            var promise = result as Future;
+
+            if (promise != null)
+            {
+                promise.ContinueWith(future);
+            }
+            else
+            {
+                future.SetResult(result);
+            }
+
+            return future;
+        }
+
+        /// <summary>
         /// Adds a plugin from the given type. This requires that the type represents a
         /// static class that ends with "Plugin". Meta-data is given in form of public
         /// static string fields, while static properties and methods are considered

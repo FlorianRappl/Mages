@@ -208,6 +208,27 @@
             return result;
         }
 
+        public static void ContinueWith(this Future promise, Future future)
+        {
+            promise.SetCallback((result, error) =>
+            {
+                var nestedPromise = result as Future;
+
+                if (nestedPromise != null)
+                {
+                    nestedPromise.ContinueWith(future);
+                }
+                else if (error != null)
+                {
+                    future.SetError(error);
+                }
+                else
+                {
+                    future.SetResult(result);
+                }
+            });
+        }
+
         public static IDictionary<String, Object> ToArrayObject(this Object[] arguments)
         {
             var obj = new Dictionary<String, Object>();

@@ -131,6 +131,7 @@
     <Compile Include="Runtime\Functions\StandardOperators.cs" />
     <Compile Include="Runtime\Functions\TypeFunctions.cs" />
     <Compile Include="Runtime\Functions\TypeProcedures.cs" />
+    <Compile Include="Runtime\Future.cs" />
     <Compile Include="Runtime\GlobalScope.cs" />
     <Compile Include="Runtime\Helpers.cs" />
     <Compile Include="Runtime\JsonSerializer.cs" />
