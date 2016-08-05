@@ -448,6 +448,18 @@
         }
 
         [Test]
+        public void OptionalArgumentsCanAccessArgumentsFromTheLeft()
+        {
+            Test("x = 10; f = (x, y = x) => x * y; f(3)", 9.0);
+        }
+
+        [Test]
+        public void OptionalArgumentsCannotAccessArgumentsFromTheRight()
+        {
+            Test("y = 5; f = (x = y, y = 4) => x * y; f()", 20.0);
+        }
+
+        [Test]
         public void MultipleOptionalArgumentsAreUsedAccordingly()
         {
             Test("f = (x = 1, y = 3, z = 5) => x + z * y; f()", 16.0);
