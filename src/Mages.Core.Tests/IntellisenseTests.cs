@@ -137,5 +137,41 @@
 
             CollectionAssert.AreEquivalent(available, autocomplete);
         }
+
+        [Test]
+        public void MemberOfNestedObjectShouldYieldInnerKeys()
+        {
+            var source = "o.cd.";
+            var engine = new Engine();
+            engine.Globals.Clear();
+            engine.Scope.Add("o", new Dictionary<String, Object>
+            {
+                { "abc", 0.0 },
+                { "abd", 5.0 },
+                { "cd", new Dictionary<String, Object> { { "a", 5.0 }, { "b", 7.0 } } }
+            });
+            var autocomplete = engine.GetCompletionAt(source, 5).ToArray();
+            var available = new[] { "a", "b" };
+
+            CollectionAssert.AreEquivalent(available, autocomplete);
+        }
+
+        [Test]
+        public void MemberOfNestedObjectWithCallShouldYieldNothing()
+        {
+            var source = "o.cd().";
+            var engine = new Engine();
+            engine.Globals.Clear();
+            engine.Scope.Add("o", new Dictionary<String, Object>
+            {
+                { "abc", 0.0 },
+                { "abd", 5.0 },
+                { "cd", new Dictionary<String, Object> { { "a", 5.0 }, { "b", 7.0 } } }
+            });
+            var autocomplete = engine.GetCompletionAt(source, 7).ToArray();
+            var available = new String[0];
+
+            CollectionAssert.AreEquivalent(available, autocomplete);
+        }
     }
 }

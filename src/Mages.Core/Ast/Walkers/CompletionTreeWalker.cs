@@ -242,8 +242,7 @@
             {
                 var member = expression.Member as IdentifierExpression;
                 var prefix = String.Empty;
-                var variable = expression.Object as VariableExpression;
-                var value = default(Object);
+                var obj = Resolve(expression.Object);
 
                 if (member != null)
                 {
@@ -251,14 +250,9 @@
                     prefix = member.Name.Substring(0, length);
                 }
 
-                if (variable != null && _symbols.TryGetValue(variable.Name, out value))
+                if (obj != null)
                 {
-                    var obj = value as IDictionary<String, Object>;
-
-                    if (obj != null)
-                    {
-                        AddSuggestions(prefix, obj.Keys);
-                    }
+                    AddSuggestions(prefix, obj.Select(m => m.Key));
                 }
 
                 _completion.Add(String.Empty);
@@ -272,6 +266,42 @@
         #endregion
 
         #region Helpers
+
+        private IDictionary<String, Object> Resolve(IExpression expression)
+        {
+            var value = default(Object);
+            var member = expression as MemberExpression;
+            var host = _symbols;
+            var name = default(String);
+
+            if (member != null)
+            {
+                var child = member.Member as IdentifierExpression;
+
+                if (child != null)
+                {
+                    host = Resolve(member.Object);
+                    name = child.Name;
+                }
+            }
+            else
+            {
+                var variable = expression as VariableExpression;
+
+                if (variable != null)
+                {
+                    name = variable.Name;
+                }
+            }
+
+            if (!String.IsNullOrEmpty(name) && host != null)
+            {
+                host.TryGetValue(name, out value);
+                return value as IDictionary<String, Object>;
+            }
+
+            return null;
+        }
 
         private void AddStatementKeywords()
         {
