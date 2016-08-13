@@ -2,6 +2,7 @@
 {
     using NUnit.Framework;
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     [TestFixture]
@@ -85,6 +86,53 @@
             var engine = new Engine();
             engine.Globals.Clear();
             var autocomplete = engine.GetCompletionAt(source, 3).ToArray();
+            var available = new String[0];
+
+            CollectionAssert.AreEquivalent(available, autocomplete);
+        }
+
+        [Test]
+        public void MemberOfObjectShouldYieldKeysDirectly()
+        {
+            var source = "o.";
+            var engine = new Engine();
+            engine.Globals.Clear();
+            engine.Scope.Add("o", new Dictionary<String, Object>
+            {
+                { "abc", 0.0 },
+                { "abd", 5.0 },
+            });
+            var autocomplete = engine.GetCompletionAt(source, 2).ToArray();
+            var available = new [] { "abc", "abd" };
+
+            CollectionAssert.AreEquivalent(available, autocomplete);
+        }
+
+        [Test]
+        public void MemberOfObjectShouldYieldKeysWithPrefix()
+        {
+            var source = "o.a";
+            var engine = new Engine();
+            engine.Globals.Clear();
+            engine.Scope.Add("o", new Dictionary<String, Object>
+            {
+                { "abc", 0.0 },
+                { "abd", 5.0 },
+            });
+            var autocomplete = engine.GetCompletionAt(source, 3).ToArray();
+            var available = new[] { "a|bc", "a|bd" };
+
+            CollectionAssert.AreEquivalent(available, autocomplete);
+        }
+
+        [Test]
+        public void MemberOfNonObjectShouldYieldNothing()
+        {
+            var source = "o.";
+            var engine = new Engine();
+            engine.Globals.Clear();
+            engine.Scope.Add("o", 23.0);
+            var autocomplete = engine.GetCompletionAt(source, 2).ToArray();
             var available = new String[0];
 
             CollectionAssert.AreEquivalent(available, autocomplete);

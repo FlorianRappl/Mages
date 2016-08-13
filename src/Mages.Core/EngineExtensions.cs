@@ -267,18 +267,22 @@
         /// Gets the currently stored global symbols.
         /// </summary>
         /// <param name="engine">The engine containing the global scope.</param>
-        /// <returns>The enumeration over all global symbols.</returns>
-        public static IEnumerable<String> GetGlobalSymbols(this Engine engine)
+        /// <returns>The dictionary with all global symbols.</returns>
+        public static IDictionary<String, Object> GetGlobalSymbols(this Engine engine)
         {
-            foreach (var item in engine.Scope)
-            {
-                yield return item.Key;
-            }
+            var symbols = new Dictionary<String, Object>();
 
             foreach (var item in engine.Globals)
             {
-                yield return item.Key;
+                symbols.Add(item.Key, item.Value);
             }
+
+            foreach (var item in engine.Scope)
+            {
+                symbols[item.Key] = item.Value;
+            }
+
+            return symbols;
         }
 
         /// <summary>

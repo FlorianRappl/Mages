@@ -91,7 +91,7 @@
         /// <param name="position">The position to look for completions.</param>
         /// <param name="symbols">The existing global symbols.</param>
         /// <returns>The list of completions for the given position.</returns>
-        public static IEnumerable<String> GetCompletionAt(this IEnumerable<IStatement> statements, TextPosition position, IEnumerable<String> symbols)
+        public static IEnumerable<String> GetCompletionAt(this IEnumerable<IStatement> statements, TextPosition position, IDictionary<String, Object> symbols)
         {
             var walker = new CompletionTreeWalker(position, symbols);
             walker.FindSuggestions(statements);

@@ -11,16 +11,22 @@
     /// </summary>
     public sealed class CompletionTreeWalker : BaseTreeWalker
     {
+        #region Fields
+
         private readonly TextPosition _position;
-        private readonly IEnumerable<String> _symbols;
+        private readonly IDictionary<String, Object> _symbols;
         private readonly List<List<String>> _variables;
         private readonly List<String> _completion;
         private readonly Stack<Boolean> _breakable;
 
+        #endregion
+
+        #region ctor
+
         /// <summary>
         /// Creates a new completition tree walker for the given position.
         /// </summary>
-        public CompletionTreeWalker(TextPosition position, IEnumerable<String> symbols)
+        public CompletionTreeWalker(TextPosition position, IDictionary<String, Object> symbols)
         {
             _position = position;
             _symbols = symbols;
@@ -31,6 +37,10 @@
             _variables.Add(new List<String>());
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// Gets the list of autocomplete suggestions.
         /// </summary>
@@ -38,6 +48,10 @@
         {
             get { return _completion.Where(m => !String.IsNullOrEmpty(m)).OrderBy(m => m, StringComparer.Ordinal); }
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Finds the suggestions for the given list of statements.
@@ -222,6 +236,43 @@
             }
         }
 
+        public override void Visit(MemberExpression expression)
+        {
+            if (Within(expression.Member))
+            {
+                var member = expression.Member as IdentifierExpression;
+                var prefix = String.Empty;
+                var variable = expression.Object as VariableExpression;
+                var value = default(Object);
+
+                if (member != null)
+                {
+                    var length = _position.Index - member.Start.Index;
+                    prefix = member.Name.Substring(0, length);
+                }
+
+                if (variable != null && _symbols.TryGetValue(variable.Name, out value))
+                {
+                    var obj = value as IDictionary<String, Object>;
+
+                    if (obj != null)
+                    {
+                        AddSuggestions(prefix, obj.Keys);
+                    }
+                }
+
+                _completion.Add(String.Empty);
+            }
+            else
+            {
+                base.Visit(expression);
+            }
+        }
+
+        #endregion
+
+        #region Helpers
+
         private void AddStatementKeywords()
         {
             _completion.AddRange(Keywords.GlobalStatementKeywords);
@@ -244,10 +295,15 @@
         {
             var symbols = _variables.
                 SelectMany(m => m).
-                Concat(_symbols).
+                Concat(_symbols.Keys).
                 Concat(Keywords.ExpressionKeywords).
                 Distinct();
 
+            AddSuggestions(prefix, symbols);
+        }
+
+        private void AddSuggestions(String prefix, IEnumerable<String> symbols)
+        {
             if (!String.IsNullOrEmpty(prefix))
             {
                 symbols = symbols.Where(m => m.StartsWith(prefix)).
@@ -261,5 +317,7 @@
         {
             return _position >= range.Start && _position <= range.End;
         }
+
+        #endregion
     }
 }
