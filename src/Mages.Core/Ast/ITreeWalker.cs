@@ -185,7 +185,7 @@
         /// <summary>
         /// Visits the given expression.
         /// </summary>
-        /// <param name="statement">Delete expression.</param>
+        /// <param name="expression">Delete expression.</param>
         void Visit(DeleteExpression expression);
 
         /// <summary>

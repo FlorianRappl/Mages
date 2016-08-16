@@ -161,6 +161,7 @@
         /// <summary>
         /// Interprets the given source and returns the result in form of a future.
         /// </summary>
+        /// <param name="engine">The engine.</param>
         /// <param name="source">The source to interpret.</param>
         /// <returns>The result in form of a future. Any callbacks will be aggregated here.</returns>
         public static Future InterpretAsync(this Engine engine, String source)

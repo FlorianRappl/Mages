@@ -236,6 +236,9 @@
             }
         }
 
+        /// <summary>
+        /// Visits a member expression.
+        /// </summary>
         public override void Visit(MemberExpression expression)
         {
             if (Within(expression.Member))

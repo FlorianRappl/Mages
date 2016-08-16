@@ -1,3 +1,11 @@
+# 1.2.0
+
+- Auto completion for member operator (#66)
+- Move delete from statement to expression (#62)
+- Await to resolve futures (#59)
+- Optional arguments language (#57)
+- Smaller bug fixes
+
 # 1.1.0
 
 - Autocomplete for the REPL (#54)
