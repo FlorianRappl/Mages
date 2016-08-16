@@ -173,5 +173,17 @@
 
             CollectionAssert.AreEquivalent(available, autocomplete);
         }
+
+        [Test]
+        public void ParameterOfFunctionShouldBeFoundWithPrefix()
+        {
+            var source = "abc => { ab";
+            var engine = new Engine();
+            engine.Globals.Clear();
+            var autocomplete = engine.GetCompletionAt(source, 11).ToArray();
+            var available = new[] { "ab|c" };
+
+            CollectionAssert.AreEquivalent(available, autocomplete);
+        }
     }
 }

@@ -115,7 +115,7 @@
         /// </summary>
         public override void Visit(SimpleStatement statement)
         {
-            if (statement.Start == _position)
+            if (_completion.Count == 0 && statement.Start == _position)
             {
                 AddStatementKeywords();
             }

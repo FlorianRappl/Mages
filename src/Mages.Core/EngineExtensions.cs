@@ -266,9 +266,27 @@
         /// <summary>
         /// Gets the currently stored global symbols.
         /// </summary>
+        /// <param name="engine">The engine containing the global symbols.</param>
+        /// <returns>The enumeration over all global symbols.</returns>
+        public static IEnumerable<String> GetGlobalSymbols(this Engine engine)
+        {
+            foreach (var item in engine.Scope)
+            {
+                yield return item.Key;
+            }
+
+            foreach (var item in engine.Globals)
+            {
+                yield return item.Key;
+            }
+        }
+
+        /// <summary>
+        /// Gets the currently stored global items, i.e., key-value pairs.
+        /// </summary>
         /// <param name="engine">The engine containing the global scope.</param>
-        /// <returns>The dictionary with all global symbols.</returns>
-        public static IDictionary<String, Object> GetGlobalSymbols(this Engine engine)
+        /// <returns>The dictionary with all global items.</returns>
+        public static IDictionary<String, Object> GetGlobalItems(this Engine engine)
         {
             var symbols = new Dictionary<String, Object>();
 
@@ -297,9 +315,9 @@
             var scanner = source.GetScanner();
             var stream = scanner.ToTokenStream();
             var ast = engine.Parser.ParseStatements(stream);
-            var symbols = engine.GetGlobalSymbols();
+            var items = engine.GetGlobalItems();
             var position = scanner.GetPositionAt(index);
-            return ast.GetCompletionAt(position, symbols);
+            return ast.GetCompletionAt(position, items);
         }
 
         internal static void Apply(this Engine engine, Configuration configuration)
