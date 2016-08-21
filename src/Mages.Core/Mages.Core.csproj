@@ -135,6 +135,7 @@
     <Compile Include="Runtime\GlobalScope.cs" />
     <Compile Include="Runtime\Helpers.cs" />
     <Compile Include="Runtime\JsonSerializer.cs" />
+    <Compile Include="Runtime\LocalFunction.cs" />
     <Compile Include="Runtime\Logic.cs" />
     <Compile Include="Runtime\Mathx.cs" />
     <Compile Include="Runtime\Matrix.cs" />
