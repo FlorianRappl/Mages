@@ -252,6 +252,27 @@
             return selector.Select(names, member);
         }
 
+        public static String Where(this String str, Function f)
+        {
+            var args = new Object[2];
+            var result = new Char[str.Length];
+            var length = 0;
+            var index = 0;
+
+            foreach (var chr in str)
+            {
+                args[0] = chr.ToString();
+                args[1] = index++;
+
+                if (f(args).ToBoolean())
+                {
+                    result[length++] = chr;
+                }
+            }
+
+            return new String(result, 0, length);
+        }
+
         public static Function WrapFunction(this Delegate func)
         {
             return WrapFunction(func.Method, func.Target);
