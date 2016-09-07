@@ -26,6 +26,18 @@
             return false;
         }
 
+        public static Int32 Peek(this IScanner scanner)
+        {
+            if (scanner.MoveNext())
+            {
+                var character = scanner.Current;
+                scanner.MoveBack();
+                return character;
+            }
+
+            return CharacterTable.End;
+        }
+
         public static IEnumerator<IToken> ToTokenStream(this IScanner scanner)
         {
             var token = default(IToken);

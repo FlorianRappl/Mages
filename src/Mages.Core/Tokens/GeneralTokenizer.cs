@@ -65,6 +65,19 @@
 
             switch (scanner.Current)
             {
+                case CharacterTable.At:
+                    var next = scanner.Peek();
+
+                    if (next == CharacterTable.CurvedQuotationMark)
+                    {
+                        return _interpolated.Next(scanner);
+                    }
+                    else if (next == CharacterTable.DoubleQuotationMark)
+                    {
+                        return _string.Next(scanner);
+                    }
+
+                    return ScanName(scanner);
                 case CharacterTable.FullStop:
                     return _number.Next(scanner);
                 case CharacterTable.Comma:

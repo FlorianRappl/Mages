@@ -17,7 +17,13 @@
 
         public IToken Next(IScanner scanner)
         {
-            var state = new StringState(scanner);
+            var literal = scanner.Current == CharacterTable.At;
+            var state = new StringState(scanner, literal);
+
+            if (literal)
+            {
+                scanner.MoveNext();
+            }
 
             if (scanner.MoveNext())
             {
@@ -35,16 +41,18 @@
         {
             private readonly IScanner _scanner;
             private readonly TextPosition _start;
+            private readonly Boolean _literal;
 
             private StringBuilder _buffer;
             private List<ParseError> _errors;
 
-            public StringState(IScanner scanner)
+            public StringState(IScanner scanner, Boolean literal)
             {
                 _buffer = StringBuilderPool.Pull();
                 _scanner = scanner;
                 _start = scanner.Position;
                 _errors = null;
+                _literal = literal;
             }
 
             public IToken Normal()
@@ -53,11 +61,11 @@
                 {
                     var current = _scanner.Current;
 
-                    if (current == CharacterTable.DoubleQuotationMark)
+                    if (current == CharacterTable.DoubleQuotationMark && (!_literal || !_scanner.PeekMoveNext(CharacterTable.DoubleQuotationMark)))
                     {
                         return Emit();
                     }
-                    else if (current == CharacterTable.Backslash)
+                    else if (!_literal && current == CharacterTable.Backslash)
                     {
                         return Escaped();
                     }

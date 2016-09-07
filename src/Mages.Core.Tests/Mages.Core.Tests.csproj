@@ -80,6 +80,7 @@
     <Compile Include="ScannerTests.cs" />
     <Compile Include="StatementTests.cs" />
     <Compile Include="StringifyTests.cs" />
+    <Compile Include="StringLiteralTests.cs" />
     <Compile Include="StringTests.cs" />
     <Compile Include="SymbolTests.cs" />
     <Compile Include="TokenizerTests.cs" />
