@@ -4,41 +4,41 @@
 
     struct Handler
     {
-        public ConsoleKeyInfo CKI;
-        public Action KeyHandler;
-        public Boolean ResetCompletion;
+        public readonly ConsoleKeyInfo KeyInfo;
+        public readonly Action KeyHandler;
+        public readonly Boolean ResetCompletion;
 
         public Handler(ConsoleKey key, Action h, Boolean resetCompletion = true)
         {
-            CKI = new ConsoleKeyInfo((char)0, key, false, false, false);
+            KeyInfo = new ConsoleKeyInfo((Char)0, key, false, false, false);
             KeyHandler = h;
             ResetCompletion = resetCompletion;
         }
 
         public Handler(Char c, Action h, Boolean resetCompletion = true)
         {
-            KeyHandler = h;
             // Use the "Zoom" as a flag that we only have a character.
-            CKI = new ConsoleKeyInfo(c, ConsoleKey.Zoom, false, false, false);
+            KeyInfo = new ConsoleKeyInfo(c, ConsoleKey.Zoom, false, false, false);
+            KeyHandler = h;
             ResetCompletion = resetCompletion;
         }
 
         public Handler(ConsoleKeyInfo cki, Action h, Boolean resetCompletion = true)
         {
-            CKI = cki;
+            KeyInfo = cki;
             KeyHandler = h;
             ResetCompletion = resetCompletion;
         }
 
-        public static Handler Control(char c, Action h, bool resetCompletion = true)
+        public static Handler Control(Char c, Action h, Boolean resetCompletion = true)
         {
-            return new Handler((char)(c - 'A' + 1), h, resetCompletion);
+            return new Handler((Char)(c - 'A' + 1), h, resetCompletion);
         }
 
-        public static Handler Alt(char c, ConsoleKey k, Action h)
+        public static Handler Alt(Char c, ConsoleKey k, Action h)
         {
-            ConsoleKeyInfo cki = new ConsoleKeyInfo((char)c, k, false, true, false);
-            return new Handler(cki, h);
+            var keyInfo = new ConsoleKeyInfo((Char)c, k, false, true, false);
+            return new Handler(keyInfo, h);
         }
     }
 }

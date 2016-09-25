@@ -284,7 +284,7 @@
 
                 foreach (var handler in _handlers)
                 {
-                    var t = handler.CKI;
+                    var t = handler.KeyInfo;
 
                     if ((t.Key == cki.Key && t.Modifiers == mod) || (t.KeyChar == cki.KeyChar && t.Key == ConsoleKey.Zoom))
                     {

@@ -46,7 +46,7 @@
             }
         }
 
-        public IDisposable HandleCancellation(Action callback)
+        public IDisposable HandleCancellation(Func<Boolean> callback)
         {
             return null;
         }

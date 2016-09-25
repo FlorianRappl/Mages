@@ -47,11 +47,20 @@
             var operations = statements.MakeRunnable();
             var context = new ExecutionContext(operations, scope);
 
-            using (interactivity.HandleCancellation(() => context.Stop()))
+            using (interactivity.HandleCancellation(TriggerStop(context)))
             {
                 context.Execute();
                 return context.Pop();
             }
+        }
+
+        private static Func<Boolean> TriggerStop(ExecutionContext context)
+        {
+            return () =>
+            {
+                context.Stop(); 
+                return true;
+            };
         }
     }
 }

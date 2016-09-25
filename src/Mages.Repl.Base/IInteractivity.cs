@@ -6,7 +6,7 @@
     {
         event AutoCompleteHandler AutoComplete;
 
-        IDisposable HandleCancellation(Action callback);
+        IDisposable HandleCancellation(Func<Boolean> shouldCancel);
 
         String ReadLine();
 

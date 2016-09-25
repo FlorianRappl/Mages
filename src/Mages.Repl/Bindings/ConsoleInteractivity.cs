@@ -57,18 +57,18 @@
             Console.ResetColor();
         }
 
-        public IDisposable HandleCancellation(Action callback)
+        public IDisposable HandleCancellation(Func<Boolean> shouldCancel)
         {
-            return new CancellationRegistration(callback);
+            return new CancellationRegistration(shouldCancel);
         }
 
         struct CancellationRegistration : IDisposable
         {
-            private readonly Action _callback;
+            private readonly Func<Boolean> _shouldCancel;
 
-            public CancellationRegistration(Action callback)
+            public CancellationRegistration(Func<Boolean> shouldCancel)
             {
-                _callback = callback;
+                _shouldCancel = shouldCancel;
                 Console.CancelKeyPress += OnCancelled;
             }
 
@@ -79,8 +79,7 @@
 
             private void OnCancelled(Object sender, ConsoleCancelEventArgs e)
             {
-                _callback.Invoke();
-                e.Cancel = true;
+                e.Cancel = _shouldCancel.Invoke();
             }
         }
     }
