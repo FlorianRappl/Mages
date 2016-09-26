@@ -31,6 +31,14 @@
             interactivity.Error(Environment.NewLine);
             interactivity.Display(error);
         }
+
+        public static String GetLine(this IInteractivity interactivity, String prompt, AutoCompleteHandler handler)
+        {
+            interactivity.AutoComplete += handler;
+            var line = interactivity.GetLine(prompt);
+            interactivity.AutoComplete -= handler;
+            return line;
+        }
         
         public static void Display(this IInteractivity interactivity, ParseError error)
         {
@@ -58,7 +66,7 @@
         {
             return () =>
             {
-                context.Stop(); 
+                context.Stop();
                 return true;
             };
         }
