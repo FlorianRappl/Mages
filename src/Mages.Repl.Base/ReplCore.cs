@@ -59,16 +59,14 @@
 
             do
             {
-                _interactivity.AutoComplete += ShowAutoComplete;
-                input = _interactivity.GetLine("SWM> ");
-                _interactivity.AutoComplete -= ShowAutoComplete;
+                input = _interactivity.GetLine("SWM> ", ShowAutoComplete);
 
-                if (!String.IsNullOrEmpty(input.Trim()))
+                if (input != null && input.Trim().Length > 0)
                 {
                     EvaluateCompleted(input);
                 }
             }
-            while (input != null);
+            while (true);
         }
 
         private void Teardown()
@@ -79,11 +77,12 @@
         {
             while (!input.IsCompleted())
             {
-                _interactivity.AutoComplete += ShowAutoComplete;
-                var rest = _interactivity.GetLine("   > ");
-                _interactivity.AutoComplete -= ShowAutoComplete;
+                var rest = _interactivity.GetLine("   > ", ShowAutoComplete);
 
-                if (String.IsNullOrEmpty(rest))
+                if (rest == null)
+                    return;
+
+                if (rest.Length == 0)
                     break;
 
                 input = String.Concat(input, Environment.NewLine, rest);

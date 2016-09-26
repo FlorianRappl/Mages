@@ -103,32 +103,41 @@
             set;
         }
 
+        public String AvailableText
+        {
+            get { return _availableText.ToString(); }
+        }
+
         public Int32 LineCount
         {
             get { return (_shownPrompt.Length + _renderedText.Length) / Console.WindowWidth; }
         }
 
-        private String Prompt
+        public String Prompt
         {
             get { return _prompt; }
-            set { _prompt = value; }
         }
 
         #endregion
 
         #region Methods
 
+        public void Interrupt()
+        {
+            // Interrupt the editor
+            _editThread.Abort();
+        }
+
         public String Edit(String prompt, String initial)
         {
             _editThread = Thread.CurrentThread;
             _searching = 0;
-            Console.CancelKeyPress += InterruptEdit;
 
             _done = false;
             _history.CursorToEnd();
             _maxRendered = 0;
 
-            Prompt = prompt;
+            _prompt = prompt;
             _shownPrompt = prompt;
             InitText(initial);
             _history.Append(initial);
@@ -141,36 +150,26 @@
                 }
                 catch (ThreadAbortException)
                 {
-                    _searching = 0;
                     Thread.ResetAbort();
                     Console.WriteLine();
-                    SetPrompt(prompt);
-                    SetText(String.Empty);
+                    return null;
                 }
             }
             while (!_done);
 
             Console.WriteLine();
-            Console.CancelKeyPress -= InterruptEdit;
+            var result = _availableText.ToString();
 
-            if (_availableText != null)
+            if (String.IsNullOrEmpty(result))
             {
-                var result = _availableText.ToString();
-
-                if (String.IsNullOrEmpty(result))
-                {
-                    _history.RemoveLast();
-                }
-                else
-                {
-                    _history.Accept(result);
-                }
-
-                return result;
+                _history.RemoveLast();
+            }
+            else
+            {
+                _history.Accept(result);
             }
 
-            _history.Close();
-            return null;
+            return result;
         }
 
         public static void SaveExcursion(Action code)
@@ -191,15 +190,6 @@
         #endregion
 
         #region Helpers
-
-        private void InterruptEdit(Object sender, ConsoleCancelEventArgs a)
-        {
-            // Do not abort our program:
-            a.Cancel = true;
-
-            // Interrupt the editor
-            _editThread.Abort();
-        }
 
         private Boolean HeuristicAutoComplete(Boolean wasCompleting, Char insertedChar)
         {

@@ -1,11 +1,14 @@
 ﻿namespace Mages.Repl.Bindings
 {
     using System;
+    using System.Collections.Generic;
 
     sealed class ConsoleInteractivity : IInteractivity
     {
         private const Int32 BufferSize = 4096;
         private readonly LineEditor _editor;
+        private readonly List<CancellationRegistration> _blockers;
+        private Boolean _warned;
 
         public event AutoCompleteHandler AutoComplete
         {
@@ -17,6 +20,8 @@
         {
             var history = new History("Mages.Repl", 300);
             _editor = new LineEditor(history);
+            _blockers = new List<CancellationRegistration>();
+            Console.CancelKeyPress += OnCancelled;
         }
 
         public void Write(String output)
@@ -31,7 +36,17 @@
 
         public String GetLine(String prompt)
         {
-            return _editor.Edit(prompt, String.Empty);
+            using (HandleCancellation(ShouldNotStop))
+            {
+                var result = _editor.Edit(prompt, String.Empty);
+
+                if (result != null)
+                {
+                    _warned = false;
+                }
+
+                return result;
+            }
         }
 
         public void Info(String result)
@@ -57,29 +72,74 @@
             Console.ResetColor();
         }
 
-        public IDisposable HandleCancellation(Func<Boolean> shouldCancel)
+        private Boolean ShouldNotStop()
         {
-            return new CancellationRegistration(shouldCancel);
+            var preventExit = _editor.AvailableText.Length > 0 || _editor.Prompt.StartsWith(" ");
+            _editor.Interrupt();
+
+            if (preventExit)
+            {
+                _warned = false;
+                return true;
+            }
+
+            return WarnUserOrExit();
         }
 
-        struct CancellationRegistration : IDisposable
+        private Boolean WarnUserOrExit()
+        {
+            if (!_warned)
+            {
+                _warned = true;
+                Console.WriteLine();
+                Console.Write("(press ctrl + c again to exit)");
+                return true;
+            }
+
+            return false;
+        }
+
+        public IDisposable HandleCancellation(Func<Boolean> shouldCancel)
+        {
+            return new CancellationRegistration(shouldCancel, _blockers);
+        }
+
+        private void OnCancelled(Object sender, ConsoleCancelEventArgs e)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("^C");
+            Console.ResetColor();
+
+            foreach (var blocker in _blockers)
+            {
+                if (blocker.ShouldCancel())
+                {
+                    e.Cancel = true;
+                    break;
+                }
+            }
+        }
+
+        sealed class CancellationRegistration : IDisposable
         {
             private readonly Func<Boolean> _shouldCancel;
+            private readonly List<CancellationRegistration> _list;
 
-            public CancellationRegistration(Func<Boolean> shouldCancel)
+            public CancellationRegistration(Func<Boolean> shouldCancel, List<CancellationRegistration> list)
             {
                 _shouldCancel = shouldCancel;
-                Console.CancelKeyPress += OnCancelled;
+                _list = list;
+                _list.Add(this);
             }
 
             public void Dispose()
             {
-                Console.CancelKeyPress -= OnCancelled;
+                _list.Remove(this);
             }
 
-            private void OnCancelled(Object sender, ConsoleCancelEventArgs e)
+            public Boolean ShouldCancel()
             {
-                e.Cancel = _shouldCancel.Invoke();
+                return _shouldCancel.Invoke();
             }
         }
     }
