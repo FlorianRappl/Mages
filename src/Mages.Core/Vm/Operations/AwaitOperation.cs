@@ -22,7 +22,7 @@
                 {
                     var continuation = new Future();
                     var position = context.Position;
-                    context.Stop();
+                    context.Pause();
                     context.Push(continuation);
 
                     promise.SetCallback((result, error) =>

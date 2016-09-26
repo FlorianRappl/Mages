@@ -12,6 +12,7 @@
         private readonly IOperation[] _operations;
         private readonly IDictionary<String, Object> _scope;
         private Int32 _position;
+        private Boolean _ended;
 
         /// <summary>
         /// Creates a new execution context.
@@ -32,7 +33,7 @@
         public Int32 Position
         {
             get { return _position; }
-            set { _position = value; }
+            set { ChangePosition(value); }
         }
 
         /// <summary>
@@ -56,7 +57,7 @@
         /// </summary>
         public void Execute()
         {
-            while (_position < _operations.Length)
+            while (!_ended && _position < _operations.Length)
             {
                 _operations[_position].Invoke(this);
                 _position++;
@@ -79,6 +80,17 @@
         public Object Pop()
         {
             return _stack.Count > 0 ? _stack.Pop() : null;
+        }
+
+        private void ChangePosition(Int32 value)
+        {
+            if (value == Int32.MaxValue)
+            {
+                _ended = true;
+                value = End;
+            }
+
+            _position = value;
         }
     }
 }

@@ -23,14 +23,14 @@
 
             if (parameters.Length == 0)
             {
-                context.Stop();
+                context.Pause();
             }
             else if (parameters.Length == _index)
             {
                 var function = (Function)context.Pop();
                 var value = Curry.Min(_index + 1, function, parameters);
                 context.Push(value);
-                context.Stop();
+                context.Pause();
             }
             else
             {

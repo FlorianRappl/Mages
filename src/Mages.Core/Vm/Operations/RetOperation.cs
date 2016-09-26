@@ -15,7 +15,7 @@
 
         public void Invoke(IExecutionContext context)
         {
-            context.Stop();
+            context.Pause();
         }
 
         public override String ToString()
