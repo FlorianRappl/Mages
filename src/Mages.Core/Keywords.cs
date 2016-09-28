@@ -89,6 +89,11 @@
         public static readonly String Yield = "yield";
 
         /// <summary>
+        /// The match keyword.
+        /// </summary>
+        public static readonly String Match = "match";
+
+        /// <summary>
         /// The async keyword.
         /// </summary>
         public static readonly String Async = "async";
@@ -148,7 +153,8 @@
             Static,
             New,
             Delete,
-            Pi
+            Pi,
+            Match
         };
 
         /// <summary>
@@ -159,7 +165,8 @@
             Var,
             Return,
             While,
-            If
+            If,
+            Match
         };
 
         /// <summary>

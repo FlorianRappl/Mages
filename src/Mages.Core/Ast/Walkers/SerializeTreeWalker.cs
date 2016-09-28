@@ -120,6 +120,20 @@
             WriteProperty("Secondary", statement.Secondary);
         }
 
+        void ITreeWalker.Visit(MatchStatement statement)
+        {
+            Header("Statement/Match");
+            WriteProperty("Condition", statement.Condition);
+            WriteProperty("Block", statement.Block);
+        }
+
+        void ITreeWalker.Visit(CaseStatement statement)
+        {
+            Header("Statement/Case");
+            WriteProperty("Condition", statement.Condition);
+            WriteProperty("Block", statement.Block);
+        }
+
         void ITreeWalker.Visit(EmptyExpression expression)
         {
             Header("Expression/Empty");

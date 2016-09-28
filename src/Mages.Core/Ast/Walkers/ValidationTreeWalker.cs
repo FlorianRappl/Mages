@@ -86,6 +86,20 @@
             statement.Secondary.Accept(this);
         }
 
+        void ITreeWalker.Visit(MatchStatement statement)
+        {
+            statement.Validate(this);
+            statement.Condition.Accept(this);
+            statement.Block.Accept(this);
+        }
+
+        void ITreeWalker.Visit(CaseStatement statement)
+        {
+            statement.Validate(this);
+            statement.Condition.Accept(this);
+            statement.Block.Accept(this);
+        }
+
         void ITreeWalker.Visit(ContinueStatement statement)
         {
             statement.Validate(this);

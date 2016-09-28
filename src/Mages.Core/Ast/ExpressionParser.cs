@@ -114,6 +114,10 @@
             {
                 return ParseContinueStatement(tokens);
             }
+            else if (current.Is(Keywords.Match))
+            {
+                return ParseMatchStatement(tokens);
+            }
 
             return ParseSimpleStatement(tokens);
         }
@@ -124,6 +128,14 @@
             var end = tokens.Current.End;
             CheckProperStatementEnd(tokens, ref expr);
             return new SimpleStatement(expr, end);
+        }
+
+        private IStatement ParseMatchStatement(IEnumerator<IToken> tokens)
+        {
+            var start = tokens.Current.Start;
+            var condition = ParseCondition(tokens.NextNonIgnorable());
+            var block = ParseAfterMatch(tokens);
+            return new MatchStatement(condition, block, start);
         }
 
         private IStatement ParseIfStatement(IEnumerator<IToken> tokens)
@@ -237,6 +249,58 @@
             }
 
             return ParseExpectedStatement(tokens.NextNonIgnorable());
+        }
+
+        private IStatement ParseAfterMatch(IEnumerator<IToken> tokens)
+        {
+            var token = tokens.Current;
+
+            if (token.Type != TokenType.CloseGroup)
+            {
+                var invalid = new InvalidExpression(ErrorCode.BracketNotTerminated, token);
+                return new SimpleStatement(invalid, token.End);
+            }
+            
+            token = tokens.NextNonIgnorable().Current;
+
+            if (token.Type == TokenType.End)
+            {
+                var invalid = new InvalidExpression(ErrorCode.StatementExpected, token);
+                return new SimpleStatement(invalid, token.End);
+            }
+            else if (token.Type != TokenType.OpenScope)
+            {
+                var invalid = new InvalidExpression(ErrorCode.BracketExpected, token);
+                return new SimpleStatement(invalid, token.End);
+            }
+
+            var start = tokens.Current.Start;
+            token = tokens.NextNonIgnorable().Current;
+            var statements = new List<IStatement>();
+
+            while (token.Type != TokenType.CloseScope)
+            {
+                if (token.Type == TokenType.End)
+                {
+                    var invalid = new InvalidExpression(ErrorCode.BlockNotTerminated, token);
+                    var statement = new SimpleStatement(invalid, token.End);
+                    statements.Add(statement);
+                    break;
+                }
+                else
+                {
+                    var expr = ParsePrimary(tokens);
+                    var block = ParseBlockStatement(tokens);
+                    var stmt = new CaseStatement(expr, block);
+                    statements.Add(stmt);
+                }
+
+                token = tokens.Current;
+            }
+
+            var end = tokens.Current.End;
+            tokens.NextNonIgnorable();
+            return new BlockStatement(statements.ToArray(), start, end);
         }
 
         private IStatement ParseExpectedStatement(IEnumerator<IToken> tokens)

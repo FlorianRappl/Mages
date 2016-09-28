@@ -207,6 +207,16 @@
             InsertJump(jumpToEnd, end - 1);
         }
 
+        void ITreeWalker.Visit(MatchStatement statement)
+        {
+            throw new NotImplementedException();
+        }
+
+        void ITreeWalker.Visit(CaseStatement statement)
+        {
+            throw new NotImplementedException();
+        }
+
         void ITreeWalker.Visit(BreakStatement statement)
         {
             statement.Validate(this);

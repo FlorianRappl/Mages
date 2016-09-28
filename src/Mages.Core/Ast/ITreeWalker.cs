@@ -53,6 +53,18 @@
         /// <summary>
         /// Visits the given statement.
         /// </summary>
+        /// <param name="statement">Match statement.</param>
+        void Visit(MatchStatement statement);
+
+        /// <summary>
+        /// Visits the given statement.
+        /// </summary>
+        /// <param name="statement">Case statement.</param>
+        void Visit(CaseStatement statement);
+
+        /// <summary>
+        /// Visits the given statement.
+        /// </summary>
         /// <param name="statement">Continue statement.</param>
         void Visit(ContinueStatement statement);
 

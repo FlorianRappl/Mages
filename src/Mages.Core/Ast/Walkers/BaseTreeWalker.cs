@@ -82,6 +82,24 @@
         }
 
         /// <summary>
+        /// Visits a match statement - accepts the condition and body.
+        /// </summary>
+        public virtual void Visit(MatchStatement statement)
+        {
+            statement.Condition.Accept(this);
+            statement.Block.Accept(this);
+        }
+
+        /// <summary>
+        /// Visits a case statement - accepts the condition and body.
+        /// </summary>
+        public virtual void Visit(CaseStatement statement)
+        {
+            statement.Condition.Accept(this);
+            statement.Block.Accept(this);
+        }
+
+        /// <summary>
         /// Visits a continue statement.
         /// </summary>
         public virtual void Visit(ContinueStatement statement)
