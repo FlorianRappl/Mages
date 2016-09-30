@@ -959,5 +959,81 @@
             foo.b.bar()".Eval();
             Assert.AreEqual(4.0, result);
         }
+
+        [Test]
+        public void PatternMatchingWithReturnYieldsRightResult()
+        {
+            var result = @"x = 9;
+a = 0;
+match(x) {
+eq(8) {
+ a+=1;
+}
+eq(9) {
+ a+=2;
+}
+gt(8) {
+ a+=3;
+}
+lt(10) {
+ a+=4;
+}
+any {
+ return a;
+}
+}; return 0".Eval();
+            Assert.AreEqual(9.0, result);
+        }
+
+        [Test]
+        public void PatternMatchingWithBreakYieldsRightResult()
+        {
+            var result = @"x = 9;
+a = 0;
+match(x) {
+eq(8) {
+ a+=1;
+}
+eq(9) {
+ a+=2;
+}
+gt(8) {
+ a+=3;
+}
+lt(10) {
+ break;
+}
+any {
+ a+=5;
+}
+}; return a".Eval();
+            Assert.AreEqual(5.0, result);
+        }
+
+        [Test]
+        public void PatternMatchingWithContinueYieldsRightResult()
+        {
+            var result = @"x = 9;
+a = 0;
+match(x) {
+eq(8) {
+ a+=1;
+}
+eq(9) {
+ a+=2;
+}
+gt(8) {
+ a+=3;
+}
+lt(10) {
+ continue;
+ a+=4;
+}
+any {
+ a+=5;
+}
+}; return a".Eval();
+            Assert.AreEqual(10.0, result);
+        }
     }
 }

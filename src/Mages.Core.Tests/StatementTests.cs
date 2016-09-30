@@ -442,6 +442,22 @@ f(""foo.com"", 25, ""x@foo"", ""baz"", new { name: ""F"", mail: ""origin@foo.com
             Assert.AreEqual("R", mailMessage.To[0].DisplayName);
         }
 
+        [Test]
+        public void SimplePatternMatchingIsAlright()
+        {
+            var source = "match(2 + 3) { eq(5) { break; } any { } }";
+            var parser = new ExpressionParser();
+            var statements = parser.ParseStatements(source);
+
+            Assert.AreEqual(1, statements.Count);
+            Assert.IsInstanceOf<MatchStatement>(statements[0]);
+            Assert.IsInstanceOf<BlockStatement>(((MatchStatement)statements[0]).Cases);
+
+            var errors = Validate(statements);
+            
+            Assert.AreEqual(0, errors.Count);
+        }
+
         private static List<ParseError> Validate(List<IStatement> statements)
         {
             var errors = new List<ParseError>();

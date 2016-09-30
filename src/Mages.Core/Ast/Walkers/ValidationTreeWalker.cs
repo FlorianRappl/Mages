@@ -97,7 +97,9 @@
         {
             statement.Validate(this);
             statement.Condition.Accept(this);
+            _loops.Push(statement);
             statement.Body.Accept(this);
+            _loops.Pop();
         }
 
         void ITreeWalker.Visit(ContinueStatement statement)
