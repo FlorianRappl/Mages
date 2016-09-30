@@ -209,12 +209,34 @@
 
         void ITreeWalker.Visit(MatchStatement statement)
         {
-            throw new NotImplementedException();
+            var name = "^~#" + _loops.Count;
+            statement.Validate(this);
+            statement.Reference.Accept(this);
+            _operations.Add(new SetsOperation(name));
+            InsertJump(_operations.Count + 1);
+            var jumpToEnd = InsertMarker();
+            _loops.Push(new LoopInfo { Break = jumpToEnd, Continue = jumpToEnd });
+            statement.Cases.Accept(this);
+            _loops.Pop();
+            var end = _operations.Count;
+            _operations.Add(new DelVarOperation(name));
+            _operations.Add(PopOperation.Instance);
+            InsertJump(jumpToEnd, end - 1);
         }
 
         void ITreeWalker.Visit(CaseStatement statement)
         {
-            throw new NotImplementedException();
+            var loop = _loops.Pop();
+            statement.Validate(this);
+            _operations.Add(new GetsOperation("^~#" + _loops.Count));
+            statement.Condition.Accept(this);
+            _operations.Add(new GetcOperation(1));
+            _operations.Add(PopIfOperation.Instance);
+            var jumpToNext = InsertMarker();
+            _loops.Push(new LoopInfo { Break = loop.Break, Continue = jumpToNext });
+            statement.Body.Accept(this);
+            var end = _operations.Count;
+            InsertJump(jumpToNext, end - 1);
         }
 
         void ITreeWalker.Visit(BreakStatement statement)

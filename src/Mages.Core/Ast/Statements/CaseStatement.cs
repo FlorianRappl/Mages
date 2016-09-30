@@ -8,7 +8,7 @@
         #region Fields
 
         private readonly IExpression _condition;
-        private readonly IStatement _block;
+        private readonly IStatement _body;
 
         #endregion
 
@@ -17,11 +17,11 @@
         /// <summary>
         /// Creates a new case statement.
         /// </summary>
-        public CaseStatement(IExpression condition, IStatement block)
-            : base(condition.Start, block.End)
+        public CaseStatement(IExpression condition, IStatement body)
+            : base(condition.Start, body.End)
         {
             _condition = condition;
-            _block = block;
+            _body = body;
         }
 
         #endregion
@@ -37,11 +37,11 @@
         }
 
         /// <summary>
-        /// Gets the statement block.
+        /// Gets the stored body.
         /// </summary>
-        public IStatement Block
+        public IStatement Body
         {
-            get { return _block; }
+            get { return _body; }
         }
 
         #endregion

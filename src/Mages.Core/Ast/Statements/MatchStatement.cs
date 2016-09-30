@@ -7,8 +7,8 @@
     {
         #region Fields
 
-        private readonly IExpression _condition;
-        private readonly IStatement _block;
+        private readonly IExpression _reference;
+        private readonly IStatement _cases;
 
         #endregion
 
@@ -17,11 +17,11 @@
         /// <summary>
         /// Creates a new match statement.
         /// </summary>
-        public MatchStatement(IExpression condition, IStatement block, TextPosition start)
-            : base(start, block.End)
+        public MatchStatement(IExpression reference, IStatement cases, TextPosition start)
+            : base(start, cases.End)
         {
-            _condition = condition;
-            _block = block;
+            _reference = reference;
+            _cases = cases;
         }
 
         #endregion
@@ -29,19 +29,19 @@
         #region Properties
 
         /// <summary>
-        /// Gets the stored condition.
+        /// Gets the stored reference.
         /// </summary>
-        public IExpression Condition
+        public IExpression Reference
         {
-            get { return _condition; }
+            get { return _reference; }
         }
 
         /// <summary>
-        /// Gets the block statement.
+        /// Gets the associated cases.
         /// </summary>
-        public IStatement Block
+        public IStatement Cases
         {
-            get { return _block; }
+            get { return _cases; }
         }
 
         #endregion
@@ -63,6 +63,11 @@
         /// <param name="context">The validator to report errors to.</param>
         public void Validate(IValidationContext context)
         {
+            if (_cases is BlockStatement == false)
+            {
+                var error = new ParseError(ErrorCode.CasesExpected, _cases);
+                context.Report(error);
+            }
         }
 
         #endregion

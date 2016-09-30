@@ -86,8 +86,8 @@
         /// </summary>
         public virtual void Visit(MatchStatement statement)
         {
-            statement.Condition.Accept(this);
-            statement.Block.Accept(this);
+            statement.Reference.Accept(this);
+            statement.Cases.Accept(this);
         }
 
         /// <summary>
@@ -96,7 +96,7 @@
         public virtual void Visit(CaseStatement statement)
         {
             statement.Condition.Accept(this);
-            statement.Block.Accept(this);
+            statement.Body.Accept(this);
         }
 
         /// <summary>

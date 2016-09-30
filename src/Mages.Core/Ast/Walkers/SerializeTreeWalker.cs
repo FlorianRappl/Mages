@@ -123,15 +123,15 @@
         void ITreeWalker.Visit(MatchStatement statement)
         {
             Header("Statement/Match");
-            WriteProperty("Condition", statement.Condition);
-            WriteProperty("Block", statement.Block);
+            WriteProperty("Reference", statement.Reference);
+            WriteProperty("Cases", statement.Cases);
         }
 
         void ITreeWalker.Visit(CaseStatement statement)
         {
             Header("Statement/Case");
             WriteProperty("Condition", statement.Condition);
-            WriteProperty("Block", statement.Block);
+            WriteProperty("Body", statement.Body);
         }
 
         void ITreeWalker.Visit(EmptyExpression expression)

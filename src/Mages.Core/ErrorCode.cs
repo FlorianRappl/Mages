@@ -197,5 +197,10 @@
         /// </summary>
         [Description("All parameters following optional parameters need to be optional.")]
         OptionalArgumentRequired,
+        /// <summary>
+        /// See description.
+        /// </summary>
+        [Description("Match statementes require a set of cases to apply.")]
+        CasesExpected,
     }
 }

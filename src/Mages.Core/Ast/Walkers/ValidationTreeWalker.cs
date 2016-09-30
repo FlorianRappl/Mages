@@ -89,15 +89,15 @@
         void ITreeWalker.Visit(MatchStatement statement)
         {
             statement.Validate(this);
-            statement.Condition.Accept(this);
-            statement.Block.Accept(this);
+            statement.Reference.Accept(this);
+            statement.Cases.Accept(this);
         }
 
         void ITreeWalker.Visit(CaseStatement statement)
         {
             statement.Validate(this);
             statement.Condition.Accept(this);
-            statement.Block.Accept(this);
+            statement.Body.Accept(this);
         }
 
         void ITreeWalker.Visit(ContinueStatement statement)
