@@ -63,6 +63,12 @@
         /// <param name="context">The validator to report errors to.</param>
         public void Validate(IValidationContext context)
         {
+            if (_reference.IsEmpty())
+            {
+                var error = new ParseError(ErrorCode.ExpressionExpected, _reference);
+                context.Report(error);
+            }
+
             if (_cases is BlockStatement == false)
             {
                 var error = new ParseError(ErrorCode.CasesExpected, _cases);

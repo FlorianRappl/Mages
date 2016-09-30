@@ -170,6 +170,54 @@
             IsInvalid(expr);
         }
 
+        [Test]
+        public void PatternMatchingWithMissingReferenceShouldFail()
+        {
+            var stmt = "match() { }".ToStatement();
+            Assert.IsInstanceOf<MatchStatement>(stmt);
+            IsInvalid(stmt);
+        }
+
+        [Test]
+        public void PatternMatchingWithInvalidCaseShouldFail()
+        {
+            var stmt = "match(x) { y }".ToStatement();
+            Assert.IsInstanceOf<MatchStatement>(stmt);
+            IsInvalid(stmt);
+        }
+
+        [Test]
+        public void PatternMatchingWithMisplacedBreakShouldFail()
+        {
+            var stmt = "match(x) { y { } break; }".ToStatement();
+            Assert.IsInstanceOf<MatchStatement>(stmt);
+            IsInvalid(stmt);
+        }
+
+        [Test]
+        public void PatternMatchingWithMissingCaseBodyShouldFail()
+        {
+            var stmt = "match(x) { y z }".ToStatement();
+            Assert.IsInstanceOf<MatchStatement>(stmt);
+            IsInvalid(stmt);
+        }
+
+        [Test]
+        public void PatternMatchingWithMisplacedBracketsShouldFail()
+        {
+            var stmt = "match(x) { y [foo] }".ToStatement();
+            Assert.IsInstanceOf<MatchStatement>(stmt);
+            IsInvalid(stmt);
+        }
+
+        [Test]
+        public void PatternMatchingWithArithmeticExpressionShouldFail()
+        {
+            var stmt = "match(x) { 2+3 { } }".ToStatement();
+            Assert.IsInstanceOf<MatchStatement>(stmt);
+            IsInvalid(stmt);
+        }
+
         private static void IsInvalid(IWalkable element)
         {
             var errors = new List<ParseError>();

@@ -81,7 +81,17 @@
         public static Boolean IsEmpty(this IStatement statement)
         {
             var simple = statement as SimpleStatement;
-            return simple != null && simple.Expression is EmptyExpression;
+            return simple != null && simple.Expression.IsEmpty();
+        }
+
+        /// <summary>
+        /// Checks if the given expression is an empty expression.
+        /// </summary>
+        /// <param name="expression">The expression.</param>
+        /// <returns>True if the expression is empty, otherwise false.</returns>
+        public static Boolean IsEmpty(this IExpression expression)
+        {
+            return expression is EmptyExpression;
         }
 
         /// <summary>
