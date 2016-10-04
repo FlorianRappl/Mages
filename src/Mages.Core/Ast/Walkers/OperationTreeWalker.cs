@@ -418,7 +418,7 @@
             _loops.Push(default(LoopInfo));
             expression.Body.Accept(this);
             _loops.Pop();
-            var function = ExtractFunction(member, current);
+            var function = ExtractFunction(member, parameters.Names, current);
             _operations.Add(function);
         }
 
@@ -585,16 +585,16 @@
             return operation;
         }
 
-        private IOperation ExtractFunction(Boolean member, Int32 index)
+        private IOperation ExtractFunction(Boolean member, String[] parameters, Int32 index)
         {
             var operations = ExtractFrom(index);
 
             if (member)
             {
-                return new NewMethOperation(operations);
+                return new NewMethOperation(parameters, operations);
             }
 
-            return new NewFuncOperation(operations);
+            return new NewFuncOperation(parameters, operations);
         }
 
         private IOperation[] ExtractFrom(Int32 index)

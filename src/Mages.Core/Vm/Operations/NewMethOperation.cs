@@ -8,10 +8,12 @@
     /// </summary>
     sealed class NewMethOperation : IOperation
     {
+        private readonly String[] _parameters;
         private readonly IOperation[] _operations;
 
-        public NewMethOperation(IOperation[] operations)
+        public NewMethOperation(String[] parameters, IOperation[] operations)
         {
+            _parameters = parameters;
             _operations = operations;
         }
 
@@ -20,7 +22,7 @@
             var name = context.Pop();
             var obj = context.Pop();
             var parentScope = context.Scope;
-            var function = new LocalFunction(obj, parentScope, _operations);
+            var function = new LocalFunction(obj, parentScope, _parameters, _operations);
             context.Push(obj);
             context.Push(name);
             context.Push(function.Pointer);

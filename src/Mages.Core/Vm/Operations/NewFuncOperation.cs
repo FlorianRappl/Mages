@@ -8,17 +8,19 @@
     /// </summary>
     sealed class NewFuncOperation : IOperation
     {
+        private readonly String[] _parameters;
         private readonly IOperation[] _operations;
 
-        public NewFuncOperation(IOperation[] operations)
+        public NewFuncOperation(String[] parameters, IOperation[] operations)
         {
+            _parameters = parameters;
             _operations = operations;
         }
 
         public void Invoke(IExecutionContext context)
         {
             var parentScope = context.Scope;
-            var function = new LocalFunction(parentScope, _operations);
+            var function = new LocalFunction(parentScope, _parameters, _operations);
             context.Push(function.Pointer);
         }
 
