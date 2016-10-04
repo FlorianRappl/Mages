@@ -1,5 +1,7 @@
 ﻿namespace Mages.Core.Ast.Expressions
 {
+    using System;
+
     /// <summary>
     /// Represents an expression containing function parameters.
     /// </summary>
@@ -33,6 +35,35 @@
         public IExpression[] Parameters
         {
             get { return _parameters; }
+        }
+
+        /// <summary>
+        /// Gets the available parameter names.
+        /// </summary>
+        public String[] Names
+        {
+            get
+            {
+                var names = new String[_parameters.Length];
+
+                for (var i = 0; i < _parameters.Length; i++)
+                {
+                    var identifier = _parameters[i] as VariableExpression;
+                    var assignment = _parameters[i] as AssignmentExpression;
+
+                    if (assignment != null)
+                    {
+                        identifier = assignment.Variable as VariableExpression;
+                    }
+
+                    if (identifier != null)
+                    {
+                        names[i] = identifier.Name;
+                    }
+                }
+
+                return names;
+            }
         }
 
         #endregion
