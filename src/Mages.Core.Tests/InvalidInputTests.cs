@@ -171,6 +171,46 @@
         }
 
         [Test]
+        public void ListOfParameterNamesCanBeRetrievedIfAssignmentIsBroken()
+        {
+            var expr = "(x = , y = 3) => x".ToExpression();
+            Assert.IsInstanceOf<FunctionExpression>(expr);
+            var parameters = ((FunctionExpression)expr).Parameters;
+            CollectionAssert.AreEquivalent(new[] { "x", "y" }, parameters.Names);
+            IsInvalid(expr);
+        }
+
+        [Test]
+        public void ListOfParameterNamesCanBeRetrievedIfBodyIsMissing()
+        {
+            var expr = "(x,y,z) => {".ToExpression();
+            Assert.IsInstanceOf<FunctionExpression>(expr);
+            var parameters = ((FunctionExpression)expr).Parameters;
+            CollectionAssert.AreEquivalent(new[] { "x", "y", "z" }, parameters.Names);
+            IsInvalid(expr);
+        }
+
+        [Test]
+        public void ListOfParameterNamesCanBeRetrievedIfInvalidArgumentSpecified()
+        {
+            var expr = "(x,0,z) => {}".ToExpression();
+            Assert.IsInstanceOf<FunctionExpression>(expr);
+            var parameters = ((FunctionExpression)expr).Parameters;
+            CollectionAssert.AreEquivalent(new[] { "x", null, "z" }, parameters.Names);
+            IsInvalid(expr);
+        }
+
+        [Test]
+        public void ListOfParameterNamesCanBeRetrievedIfArgumentIsMissing()
+        {
+            var expr = "(x,,z) => {}".ToExpression();
+            Assert.IsInstanceOf<FunctionExpression>(expr);
+            var parameters = ((FunctionExpression)expr).Parameters;
+            CollectionAssert.AreEquivalent(new[] { "x", null, "z" }, parameters.Names);
+            IsInvalid(expr);
+        }
+
+        [Test]
         public void PatternMatchingWithMissingReferenceShouldFail()
         {
             var stmt = "match() { }".ToStatement();
