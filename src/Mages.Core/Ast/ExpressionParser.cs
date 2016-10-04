@@ -336,8 +336,14 @@
                 if (token.Type == TokenType.Comma)
                 {
                     allowNext = true;
-                    tokens.NextNonIgnorable();
-                    token = tokens.Current;
+                    token = tokens.NextNonIgnorable().Current;
+
+                    while (token.Type == TokenType.Comma)
+                    {
+                        var invalid = ParseInvalid(ErrorCode.ExpressionExpected, tokens);
+                        expressions.Add(invalid);
+                        token = tokens.Current;
+                    }
                 }
             }
 
@@ -414,22 +420,28 @@
 
         private IExpression ParseAssignment(IEnumerator<IToken> tokens)
         {
-            var x = ParseRange(tokens);
             var token = tokens.Current;
-            var mode = token.Type;
 
-            if (mode == TokenType.Assignment)
+            if (token.Type != TokenType.Comma)
             {
-                var y = ParseAssignment(tokens.NextNonIgnorable());
-                return new AssignmentExpression(x, y);
-            }
-            else if (mode == TokenType.Lambda)
-            {
-                var parameters = GetParameters(x);
-                return ParseFunction(parameters, tokens.NextNonIgnorable());
+                var x = ParseRange(tokens);
+                var mode = tokens.Current.Type;
+
+                if (mode == TokenType.Assignment)
+                {
+                    var y = ParseAssignment(tokens.NextNonIgnorable());
+                    return new AssignmentExpression(x, y);
+                }
+                else if (mode == TokenType.Lambda)
+                {
+                    var parameters = GetParameters(x);
+                    return ParseFunction(parameters, tokens.NextNonIgnorable());
+                }
+
+                return x;
             }
 
-            return x;
+            return new InvalidExpression(ErrorCode.ExpressionExpected, token);
         }
 
         private IExpression ParseRange(IEnumerator<IToken> tokens)
