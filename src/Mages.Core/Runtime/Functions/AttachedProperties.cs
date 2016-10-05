@@ -8,7 +8,10 @@
     /// </summary>
     public static class AttachedProperties
     {
-        private static readonly Dictionary<Type, Dictionary<String, Func<Object, Object>>> _properties = new Dictionary<Type, Dictionary<String, Func<Object, Object>>>();
+        private static readonly Dictionary<Type, Dictionary<String, Func<Object, Object>>> _properties = new Dictionary<Type, Dictionary<String, Func<Object, Object>>>
+        {
+            { typeof(Function), CreateFunctionProperties() }
+        };
 
         /// <summary>
         /// Registers the provided attached property.
@@ -73,6 +76,14 @@
 
             value = null;
             return false;
+        }
+
+        private static Dictionary<String, Func<Object, Object>> CreateFunctionProperties()
+        {
+            return new Dictionary<String, Func<Object, Object>>
+            {
+                { "params", obj => ((Function)obj).GetParameterNames().ToArrayObject() }
+            };
         }
     }
 }
