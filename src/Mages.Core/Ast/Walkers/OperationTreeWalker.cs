@@ -95,15 +95,16 @@
         void ITreeWalker.Visit(BlockStatement block)
         {
             block.Validate(this);
+            var isLoop = _loops.Count > 0;
 
             foreach (var statement in block.Statements)
             {
                 statement.Accept(this);
-            }
 
-            if (_loops.Count > 0)
-            {
-                _operations.Add(new ConstOperation(null));
+                if (isLoop && statement is SimpleStatement)
+                {
+                    _operations.Add(PopOperation.Instance);
+                }
             }
         }
 
