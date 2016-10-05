@@ -60,5 +60,29 @@
 
             return default(TResult);
         }
+        
+        /// <summary>
+        /// Gets the names of the parameters of the function.
+        /// </summary>
+        /// <param name="function">The function to inspect.</param>
+        /// <returns>The array with parameter names.</returns>
+        public static String[] GetParameterNames(this Function function)
+        {
+            var local = function.Target as LocalFunction;
+            var parameters = local?.Parameters;
+
+            if (parameters == null)
+            {
+                var nativeParams = function.Method.GetParameters();
+                parameters = new String[nativeParams.Length];
+
+                for (var i = 0; i < parameters.Length; i++)
+                {
+                    parameters[i] = nativeParams[i].Name;
+                }
+            }
+
+            return parameters;
+        }
     }
 }

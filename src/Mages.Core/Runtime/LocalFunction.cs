@@ -26,6 +26,11 @@
             _pointer = new Function(Invoke);
         }
 
+        public String[] Parameters
+        {
+            get { return _parameters; }
+        }
+
         public Function Pointer
         {
             get { return _pointer; }
