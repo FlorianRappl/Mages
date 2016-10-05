@@ -20,7 +20,7 @@
         {
             var installDirectory = GetInstallDirectory();
             var exeFile = "mages.exe";
-            var cmdContent = String.Format(@"@echo off{3}start ""Mages"" /b /wait ""{0}\app-{1}\{2}"" %*", installDirectory, version, exeFile, Environment.NewLine);
+            var cmdContent = String.Format(@"@echo off{3}""{0}\app-{1}\{2}"" %* & exit", installDirectory, version, exeFile, Environment.NewLine);
             var cmdPath = Path.Combine(installDirectory, Path.ChangeExtension(exeFile, ".cmd"));
             File.WriteAllText(cmdPath, cmdContent);
         }
