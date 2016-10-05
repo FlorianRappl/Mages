@@ -1,3 +1,9 @@
+# 1.3.0
+
+- Added pattern matching (#58)
+- Improved REPL termination (#67)
+- Allow literal strings (#63)
+
 # 1.2.0
 
 - Auto completion for member operator (#66)
