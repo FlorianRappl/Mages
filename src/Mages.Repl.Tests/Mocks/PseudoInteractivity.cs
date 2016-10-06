@@ -4,7 +4,9 @@
 
     sealed class PseudoInteractivity : IInteractivity
     {
+#pragma warning disable 67
         public event AutoCompleteHandler AutoComplete;
+#pragma warning restore 67
 
         public Action<String> OnError
         {

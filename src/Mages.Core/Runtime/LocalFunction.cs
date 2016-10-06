@@ -4,7 +4,7 @@
     using System;
     using System.Collections.Generic;
 
-    public class LocalFunction
+    sealed class LocalFunction
     {
         private readonly Object _self;
         private readonly IDictionary<String, Object> _parentScope;
