@@ -90,7 +90,7 @@
         {
             var foo = "(x, y) => x * y + y".Eval() as Function;
             var result = foo.Invoke(new Object[] { 2, 3 });
-            Assert.IsNull(result);
+            Assert.IsNaN((Double)result);
         }
 
         [Test]

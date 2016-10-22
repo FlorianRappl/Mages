@@ -14,6 +14,48 @@
         }
 
         [Test]
+        public void BinaryAddWithBooleansYieldsNumber()
+        {
+            var result = "true + false".Eval();
+            Assert.AreEqual(1.0, result);
+        }
+
+        [Test]
+        public void BinaryAddWithBooleanAndNumberYieldsNumber()
+        {
+            var result = "true + 3".Eval();
+            Assert.AreEqual(4.0, result);
+        }
+
+        [Test]
+        public void BinarySubtractWithBooleanAndNumberYieldsNumber()
+        {
+            var result = "4 - false".Eval();
+            Assert.AreEqual(4.0, result);
+        }
+
+        [Test]
+        public void BinaryMultiplyWithBooleanAndNumberYieldsNumber()
+        {
+            var result = "3 * true".Eval();
+            Assert.AreEqual(3.0, result);
+        }
+
+        [Test]
+        public void BinaryDivisionWithBooleanAndNumberYieldsNumber()
+        {
+            var result = "false / 5".Eval();
+            Assert.AreEqual(0.0, result);
+        }
+
+        [Test]
+        public void BinaryPowerWithBooleanAndNumberYieldsNumber()
+        {
+            var result = "2^true".Eval();
+            Assert.AreEqual(2.0, result);
+        }
+
+        [Test]
         public void BinaryAddWithNumberAndUnknownVariableYieldsNull()
         {
             var result = "2 + a".Eval();
