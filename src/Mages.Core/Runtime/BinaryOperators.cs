@@ -13,14 +13,16 @@
                 If.Is<Double[,], Double[,]>(args, (y, x) => x.Add(y)) ??
                 If.Is<String, String>(args, (y, x) => String.Concat(x, y)) ??
                 If.Is<Object, String>(args, (y, x) => String.Concat(x, Stringify.This(y))) ??
-                If.Is<String, Object>(args, (y, x) => String.Concat(Stringify.This(x), y));
+                If.Is<String, Object>(args, (y, x) => String.Concat(Stringify.This(x), y)) ??
+                If.IsNotNull(args, m => m.ToNumber(), (y, x) => x + y);
         }
 
         public static Object Sub(Object[] args)
         {
             return Curry.MinTwo(StandardOperators.Sub, args) ??
                 If.Is<Double, Double>(args, (y, x) => x - y) ??
-                If.Is<Double[,], Double[,]>(args, (y, x) => x.Subtract(y));
+                If.Is<Double[,], Double[,]>(args, (y, x) => x.Subtract(y)) ??
+                If.IsNotNull(args, m => m.ToNumber(), (y, x) => x - y);
         }
         
         public static Object Mul(Object[] args)
@@ -29,21 +31,24 @@
                 If.Is<Double, Double>(args, (y, x) => x * y) ??
                 If.Is<Double[,], Double[,]>(args, (y, x) => x.Multiply(y)) ??
                 If.Is<Double, Double[,]>(args, (y, x) => x.Multiply(y)) ??
-                If.Is<Double[,], Double>(args, Matrix.Multiply);
+                If.Is<Double[,], Double>(args, Matrix.Multiply) ??
+                If.IsNotNull(args, m => m.ToNumber(), (y, x) => x * y);
         }
 
         public static Object RDiv(Object[] args)
         {
             return Curry.MinTwo(StandardOperators.RDiv, args) ??
                 If.Is<Double, Double>(args, (y, x) => x / y) ??
-                If.Is<Double, Double[,]>(args, (y, x) => x.Divide(y));
+                If.Is<Double, Double[,]>(args, (y, x) => x.Divide(y)) ??
+                If.IsNotNull(args, m => m.ToNumber(), (y, x) => x / y);
         }
 
         public static Object LDiv(Object[] args)
         {
             return Curry.MinTwo(StandardOperators.LDiv, args) ??
                 If.Is<Double, Double>(args, (y, x) => y / x) ??
-                If.Is<Double[,], Double>(args, (y, x) => y.Divide(x));
+                If.Is<Double[,], Double>(args, (y, x) => y.Divide(x)) ??
+                If.IsNotNull(args, m => m.ToNumber(), (y, x) => y / x);
         }
 
         public static Object Pow(Object[] args)
@@ -52,13 +57,15 @@
                 If.Is<Double, Double>(args, (y, x) => Math.Pow(x, y)) ??
                 If.Is<Double[,], Double[,]>(args, (y, x) => x.Pow(y)) ??
                 If.Is<Double[,], Double>(args, (y, x) => x.Pow(y)) ??
-                If.Is<Double, Double[,]>(args, (y, x) => x.Pow(y));
+                If.Is<Double, Double[,]>(args, (y, x) => x.Pow(y)) ??
+                If.IsNotNull(args, m => m.ToNumber(), (y, x) => Math.Pow(x, y));
         }
 
         public static Object Mod(Object[] args)
         {
             return Curry.MinTwo(StandardOperators.Mod, args) ??
-                If.Is<Double, Double>(args, (y, x) => x % y);
+                If.Is<Double, Double>(args, (y, x) => x % y) ??
+                If.IsNotNull(args, m => m.ToNumber(), (y, x) => x % y);
         }
 
         public static Object And(Object[] args)

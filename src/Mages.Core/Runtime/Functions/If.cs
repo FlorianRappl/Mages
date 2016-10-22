@@ -78,5 +78,26 @@
         {
             return args[0] is T1 && args[2] is T3 ? f((T1)args[0], args[1], (T3)args[2]) : null;
         }
+
+        /// <summary>
+        /// Checks if the provided args are all non-null. Performs the conversion and invokes
+        /// the result if successful.
+        /// </summary>
+        /// <typeparam name="T">The type after the conversion.</typeparam>
+        /// <param name="args">The arguments to check.</param>
+        /// <param name="converter">The converter to use.</param>
+        /// <param name="result">The result function to use.</param>
+        /// <returns>The result or null if the check was not successful.</returns>
+        public static Object IsNotNull<T>(Object[] args, Func<Object, T> converter, Func<T, T, Object> result)
+        {
+            if (args[0] != null && args[1] != null)
+            {
+                var left = converter.Invoke(args[0]);
+                var right = converter.Invoke(args[1]);
+                return result.Invoke(left, right);
+            }
+
+            return null;
+        }
     }
 }
