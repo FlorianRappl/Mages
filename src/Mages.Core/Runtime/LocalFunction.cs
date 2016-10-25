@@ -36,7 +36,7 @@
             get { return _pointer; }
         }
 
-        public Object Invoke(Object[] arguments)
+        private Object Invoke(Object[] arguments)
         {
             var scope = new LocalScope(_parentScope);
             var ctx = new ExecutionContext(_operations, scope);
