@@ -520,5 +520,68 @@
             var result = "arcsch() == arcsch".Eval();
             Assert.AreEqual(true, result);
         }
+
+        [Test]
+        public void AnyWithOnlyFalseElementsIsFalse()
+        {
+            var result = "any(0, false, undefined)".Eval();
+            Assert.AreEqual(false, result);
+        }
+
+        [Test]
+        public void AnyWithOneTrueElementsIsTrue()
+        {
+            var result = "any(0, false, undefined, 5)".Eval();
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void AnyWithAllTrueElementsIsTrue()
+        {
+            var result = "any(1, true, `hello`, 5)".Eval();
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void AllWithOnlyFalseElementsIsFalse()
+        {
+            var result = "all(0, false, undefined)".Eval();
+            Assert.AreEqual(false, result);
+        }
+
+        [Test]
+        public void AllWithOneTrueElementsIsFalse()
+        {
+            var result = "all(0, false, undefined, 5)".Eval();
+            Assert.AreEqual(false, result);
+        }
+
+        [Test]
+        public void AllWithAllTrueElementsIsTrue()
+        {
+            var result = "all(1, true, `hello`, 5)".Eval();
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void MinWithMultipleArguments()
+        {
+            var result = "min(2, false, 5, -2, 9, 0)".Eval();
+            Assert.AreEqual(-2.0, result);
+        }
+
+        [Test]
+        public void MaxWithMultipleArguments()
+        {
+            var result = "max(2, true, 5, -2, 9, 0)".Eval();
+            Assert.AreEqual(9.0, result);
+        }
+
+        [Test]
+        public void SumWithMultipleArguments()
+        {
+            var result = "sum(2, true, 5, 2, -9, 0)".Eval();
+            Assert.AreEqual(1.0, result);
+        }
     }
 }
