@@ -76,9 +76,16 @@
                 var nativeParams = function.Method.GetParameters();
                 parameters = new String[nativeParams.Length];
 
-                for (var i = 0; i < parameters.Length; i++)
+                if (nativeParams.Length == 1 && nativeParams[0].ParameterType == typeof(Object[]))
                 {
-                    parameters[i] = nativeParams[i].Name;
+                    parameters[0] = "..." + nativeParams[0].Name;
+                }
+                else
+                {
+                    for (var i = 0; i < parameters.Length; i++)
+                    {
+                        parameters[i] = nativeParams[i].Name;
+                    }
                 }
             }
 
