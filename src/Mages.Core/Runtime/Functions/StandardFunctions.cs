@@ -442,7 +442,7 @@
             return Curry.MinOne(Sum, args) ??
                 If.Is<Double[,]>(args, x => x.Reduce((a, b) => a + b)) ??
                 If.Is<Dictionary<String, Object>>(args, obj => obj.Sum(m => m.Value.ToNumber())) ??
-                args[0].ToNumber();
+                args.Select(m => m.ToNumber()).Sum();
         });
 
         /// <summary>
@@ -453,7 +453,7 @@
             return Curry.MinOne(Min, args) ??
                 If.Is<Double[,]>(args, x => x.Reduce(Math.Min)) ??
                 If.Is<Dictionary<String, Object>>(args, obj => obj.Min(m => m.Value.ToNumber())) ??
-                args[0].ToNumber();
+                args.Select(m => m.ToNumber()).Min();
         });
 
         /// <summary>
@@ -464,7 +464,7 @@
             return Curry.MinOne(Max, args) ??
                 If.Is<Double[,]>(args, x => x.Reduce(Math.Max)) ??
                 If.Is<Dictionary<String, Object>>(args, obj => obj.Max(m => m.Value.ToNumber())) ??
-                args[0].ToNumber();
+                args.Select(m => m.ToNumber()).Max();
         });
 
         /// <summary>
@@ -474,7 +474,7 @@
         {
             return Curry.MinOne(Sort, args) ??
                 If.Is<Double[,]>(args, x => x.ToVector().OrderBy(y => y).ToMatrix()) ??
-                args[0];
+                args.Select(m => m.ToNumber()).OrderBy(y => y).ToMatrix();
         });
 
         /// <summary>
@@ -485,7 +485,7 @@
             return Curry.MinOne(Reverse, args) ??
                 If.Is<Double[,]>(args, x => x.ToVector().Reverse().ToMatrix()) ??
                 If.Is<String>(args, x => new String(x.Reverse().ToArray())) ??
-                args[0];
+                args.Reverse().ToArray();
         });
 
         /// <summary>
@@ -542,7 +542,7 @@
             return Curry.MinOne(Any, args) ??
                 If.Is<Double[,]>(args, x => x.AnyTrue()) ??
                 If.Is<IDictionary<String, Object>>(args, x => x.AnyTrue()) ??
-                args[0].ToBoolean();
+                args.Any(m => m.ToBoolean());
         });
 
         /// <summary>
@@ -553,7 +553,7 @@
             return Curry.MinOne(All, args) ??
                 If.Is<Double[,]>(args, x => x.AllTrue()) ??
                 If.Is<IDictionary<String, Object>>(args, x => x.AllTrue()) ??
-                args[0].ToBoolean();
+                args.All(m => m.ToBoolean());
         });
 
         /// <summary>
