@@ -1,3 +1,14 @@
+# 1.4.0
+
+- Added API support for callback functions
+- Allow multiple arguments for `min` (#73)
+- Allow multiple arguments for `max` (#73)
+- Allow multiple arguments for `sum` (#73)
+- Allow multiple arguments for `any` (#73)
+- Allow multiple arguments for `all` (#73)
+- Allow multiple arguments for `sort` (#73)
+- Cast bool to number (#70)
+
 # 1.3.0
 
 - Added pattern matching (#58)
