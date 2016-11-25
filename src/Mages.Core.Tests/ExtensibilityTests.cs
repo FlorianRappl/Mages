@@ -676,10 +676,58 @@
             Assert.AreEqual(6.0, result);
         }
 
+        [Test]
+        public void SingleActionCallbacksMayBeUsedInApis()
+        {
+            var engine = new Engine();
+            engine.SetStatic(typeof(SampleApi)).Scattered();
+
+            var result = engine.Interpret("var y = 0; perform(x => y = x); y");
+            Assert.AreEqual(3.0, result);
+        }
+
+        [Test]
+        public void DoubleFuncCallbacksMayBeUsedInApis()
+        {
+            var engine = new Engine();
+            engine.SetStatic(typeof(SampleApi)).Scattered();
+
+            var result = engine.Interpret("compute((x, y) => x + y)");
+            Assert.AreEqual(7.0, result);
+        }
+
+        [Test]
+        public void QuadFuncCallbacksMayBeUsedInApis()
+        {
+            var engine = new Engine();
+            engine.SetStatic(typeof(SampleApi)).Scattered();
+
+            var result = engine.Interpret("substr((str, start, length) => { var t = \"\"; var end = start + length; while (start < end) { t += str(start++); } return t; })");
+            Assert.AreEqual("ha", result);
+        }
+
         sealed class Point
         {
             public Double x = 0;
             public Double y = 0;
+        }
+
+        static class SampleApi
+        {
+            public static void Perform(Action<Double> handler)
+            {
+                handler.Invoke(3.0);
+            }
+
+            public static Double Compute(Func<Double, Double, Double> handler)
+            {
+                return handler.Invoke(3.0, 4.0);
+            }
+
+            public static String Substr(Func<String, Int32, Int32, String> handler)
+            {
+                return handler.Invoke("hallo", 0, 2);
+            }
         }
 
         sealed class Index

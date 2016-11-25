@@ -57,6 +57,22 @@
                     return ArrayConverters.Get(from, element, converter);
                 }
 
+                if (typeof(Delegate).IsAssignableFrom(to))
+                {
+                    var inv = to.GetMethod("Invoke");
+                    var p = inv.GetParameters();
+                    var t = TargetWrapper.Construct(inv.ReturnType, p);
+
+                    if (t != null)
+                    {
+                        return obj =>
+                        {
+                            var g = t.GetConstructor(new[] { typeof(Object) }).Invoke(new[] { obj });
+                            return Delegate.CreateDelegate(to, g, "Invoke");
+                        };
+                    }
+                }
+
                 return StandardConverters.Default;
             }
 

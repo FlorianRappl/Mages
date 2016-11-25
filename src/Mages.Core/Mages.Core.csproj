@@ -120,6 +120,7 @@
     <Compile Include="Runtime\BinaryOperators.cs" />
     <Compile Include="Runtime\Converters\ConverterExtensions.cs" />
     <Compile Include="Runtime\Converters\StandardConverters.cs" />
+    <Compile Include="Runtime\Converters\TargetWrapper.cs" />
     <Compile Include="Runtime\Converters\TypeCategories.cs" />
     <Compile Include="Runtime\Converters\TypeConverter.cs" />
     <Compile Include="Runtime\Converters\TypeConverterMap.cs" />
