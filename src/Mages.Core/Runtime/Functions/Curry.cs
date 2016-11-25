@@ -54,6 +54,73 @@
             return null;
         }
 
+        public static Function Shuffle(Object[] args)
+        {
+            var end = args.Length - 1;
+            var target = args[end] as Function;
+
+            if (target != null)
+            {
+                var wrapper = target.Target as LocalFunction;
+                var parameters = wrapper?.Parameters;
+
+                if (parameters != null)
+                {
+                    var indices = new Int32[parameters.Length];
+                    var start = 0;
+
+                    for (var i = 0; i < indices.Length; i++)
+                    {
+                        indices[i] = i;
+                    }
+
+                    foreach (var arg in args)
+                    {
+                        var s = arg as String;
+
+                        if (s != null)
+                        {
+                            for (var j = 0; j < parameters.Length; j++)
+                            {
+                                if (parameters[j].Equals(s, StringComparison.Ordinal))
+                                {
+                                    for (var i = 0; i < j; i++)
+                                    {
+                                        if (indices[i] >= start)
+                                        {
+                                            indices[i]++;
+                                        }
+                                    }
+
+                                    indices[j] = start++;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    return new Function(oldArgs =>
+                    {
+                        var newArgs = new Object[indices.Length];
+
+                        for (var i = 0; i < newArgs.Length; i++)
+                        {
+                            var index = indices[i];
+
+                            if (index < oldArgs.Length)
+                            {
+                                newArgs[i] = oldArgs[index];
+                            }
+                        }
+
+                        return target.Invoke(newArgs);
+                    });
+                }
+            }
+
+            return target;
+        }
+
         private static Object[] Recombine2(Object[] oldArgs, Object[] newArgs)
         {
             return newArgs.Length > 0 ? new[] { oldArgs[0], newArgs[0] } : oldArgs;

@@ -698,5 +698,15 @@
             return Curry.MinTwo(GetValue, args) ??
                 If.Is<String, IDictionary<String, Object>>(args, (name, obj) => obj.GetProperty(name));
         });
+
+        /// <summary>
+        /// Contains the shuffle function.
+        /// </summary>
+        public static readonly Function Shuffle = new Function(args =>
+        {
+            return Curry.MinOne(Shuffle, args) ??
+                Curry.Shuffle(args) ?? 
+                Curry.Min(args.Length + 1, Shuffle, args);
+        });
     }
 }
