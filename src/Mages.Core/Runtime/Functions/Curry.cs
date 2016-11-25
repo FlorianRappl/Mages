@@ -30,7 +30,7 @@
         {
             if (args.Length < 2)
             {
-                return args.Length == 0 ? function : _ => function(Recombine2(args, _));
+                return args.Length == 0 ? function : rest => function(Recombine2(args, rest));
             }
 
             return null;
@@ -48,7 +48,7 @@
         {
             if (args.Length < count)
             {
-                return args.Length == 0 ? function : _ => function(RecombineN(args, _));
+                return args.Length == 0 ? function : rest => function(RecombineN(args, rest));
             }
 
             return null;
