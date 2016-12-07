@@ -152,8 +152,8 @@
                         case CharacterTable.Zero: _buffer.Append('\0'); _scanner.MoveNext(); break;
                         case CharacterTable.Backslash: _buffer.Append('\\'); _scanner.MoveNext(); break;
                         case CharacterTable.QuestionMark: _buffer.Append('?'); _scanner.MoveNext(); break;
-                        case CharacterTable.OpenScope: _buffer.Append('{'); _scanner.MoveNext(); break;
-                        case CharacterTable.CloseScope: _buffer.Append('}'); _scanner.MoveNext(); break;
+                        case CharacterTable.OpenScope: _buffer.Append("{{"); _scanner.MoveNext(); break;
+                        case CharacterTable.CloseScope: _buffer.Append("}}"); _scanner.MoveNext(); break;
                         case CharacterTable.CurvedQuotationMark: _buffer.Append('`'); _scanner.MoveNext(); break;
                         case CharacterTable.SingleQuotationMark: _buffer.Append('\''); _scanner.MoveNext(); break;
                         case CharacterTable.DoubleQuotationMark: _buffer.Append('\"'); _scanner.MoveNext(); break;
