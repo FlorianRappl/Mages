@@ -27,6 +27,27 @@
         }
 
         [Test]
+        public void StartingExpressionWithAnInterpolatedStringNotEscapingBrackets()
+        {
+            var result = @"`{2+3}`".Eval();
+            Assert.AreEqual("5", result);
+        }
+
+        [Test]
+        public void StartingExpressionWithAnInterpolatedStringEscapingBrackets()
+        {
+            var result = @"`\{2+3\}`".Eval();
+            Assert.AreEqual("{2+3}", result);
+        }
+
+        [Test]
+        public void StartingExpressionWithAnInterpolatedStringMixingEscapingAndNotEscapingBrackets()
+        {
+            var result = @"`\{ The Result is {2+3}\}, right \{{sin(0)}\}`".Eval();
+            Assert.AreEqual("{ The Result is 5}, right {0}", result);
+        }
+
+        [Test]
         public void UsingInterpolatedStringWithMultipleReversedPlaceholders()
         {
             var result = "x = 5; y = 7; z = 9; `five not {z} seven not {x} nine not {y}`".Eval();
