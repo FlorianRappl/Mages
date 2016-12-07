@@ -91,6 +91,7 @@
             { "except", StandardFunctions.Except },
             { "hasKey", StandardFunctions.HasKey },
             { "getValue", StandardFunctions.GetValue },
+            { "regex", StandardFunctions.Regex }
         };
     }
 }

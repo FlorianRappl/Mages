@@ -698,5 +698,15 @@
             return Curry.MinTwo(GetValue, args) ??
                 If.Is<String, IDictionary<String, Object>>(args, (name, obj) => obj.GetProperty(name));
         });
+
+        /// <summary>
+        /// Contains the regex function.
+        /// </summary>
+        public static readonly Function Regex = new Function(args =>
+        {
+            return Curry.MinTwo(Regex, args) ??
+                If.Is<String, String>(args, (test, value) => Helpers.MatchString(test, value)) ??
+                false;
+        });
     }
 }
