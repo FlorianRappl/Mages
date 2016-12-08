@@ -583,5 +583,61 @@
             var result = "sum(2, true, 5, 2, -9, 0)".Eval();
             Assert.AreEqual(1.0, result);
         }
+
+        [Test]
+        public void RegexWithSimpleStringContainingNumber()
+        {
+            var result = "regex(`[0-9]+`, `Hello 20!`).success".Eval();
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void RegexWithSimpleStringOnlyWords()
+        {
+            var result = "regex(`[0-9]+`, `Hello world!`).success".Eval();
+            Assert.AreEqual(false, result);
+        }
+
+        [Test]
+        public void RegexCanBeChained()
+        {
+            var result = @"(`Hiho mum` | regex(""[A-Za-z]{4}"")).success".Eval();
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void RegexIdentifierTokenMatches()
+        {
+            var result = "(`Hello there how are you` | regex(`[A-Za-z]+`)).matches.count".Eval();
+            Assert.AreEqual(5.0, result);
+        }
+
+        [Test]
+        public void RegexIdentifierGroupMatchesCount()
+        {
+            var result = @"(`1.2.3.4` | regex(@`^([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)$`)).matches(0).count".Eval();
+            Assert.AreEqual(5.0, result);
+        }
+
+        [Test]
+        public void RegexIdentifierGroupMatchesValue()
+        {
+            var result = @"(`1.2.3.4` | regex(@`^([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)$`)).matches(0)(1)".Eval();
+            Assert.AreEqual("1", result);
+        }
+
+        [Test]
+        public void RegexToCheckValidMailAddress()
+        {
+            var result = @"(`test@mail.com` | regex(@""^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"")).success".Eval();
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void RegexToCheckInvalidMailAddress()
+        {
+            var result = @"(`Jürgen Meier` | regex(@""^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"")).success".Eval();
+            Assert.AreEqual(false, result);
+        }
     }
 }
