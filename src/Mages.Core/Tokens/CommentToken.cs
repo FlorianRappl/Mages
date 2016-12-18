@@ -4,14 +4,12 @@
 
     sealed class CommentToken : IToken
     {
-        private readonly TokenType _type;
         private readonly String _comment;
         private readonly TextPosition _start;
         private readonly TextPosition _end;
 
-        public CommentToken(TokenType type, String comment, TextPosition start, TextPosition end)
+        public CommentToken(String comment, TextPosition start, TextPosition end)
         {
-            _type = type;
             _comment = comment;
             _start = start;
             _end = end;
@@ -19,7 +17,7 @@
 
         public TokenType Type
         {
-            get { return _type; }
+            get { return TokenType.Comment; }
         }
 
         public String Payload

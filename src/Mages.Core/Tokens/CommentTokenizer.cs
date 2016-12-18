@@ -43,7 +43,7 @@
                 sb.Append(Char.ConvertFromUtf32(scanner.Current));
             }
 
-            return new CommentToken(TokenType.Comment, sb.Stringify(), start, scanner.Position);
+            return new CommentToken(sb.Stringify(), start, scanner.Position);
         }
 
         private static IToken ScanBlock(IScanner scanner, TextPosition start)
@@ -67,7 +67,7 @@
                 sb.Append(Char.ConvertFromUtf32(scanner.Current));
             }
 
-            return new CommentToken(TokenType.Comment, sb.Stringify(), start, scanner.Position);
+            return new CommentToken(sb.Stringify(), start, scanner.Position);
         }
 
         #endregion
