@@ -188,7 +188,7 @@
                         return Final();
                     }
 
-                    AddError(new ParseError(ErrorCode.FloatingMismatch, _scanner.Position.From(_start)));
+                    AddError(ErrorCode.FloatingMismatch, _scanner.Position.From(_start));
                 }
 
                 if (_scanner.Current == CharacterTable.SmallE || _scanner.Current == CharacterTable.BigE)
@@ -230,7 +230,7 @@
 
                 if (num == 0)
                 {
-                    AddError(new ParseError(ErrorCode.ScientificMismatch, _scanner.Position.From(_start)));
+                    AddError(ErrorCode.ScientificMismatch, _scanner.Position.From(_start));
                 }
 
                 _powers = sign * _powers;
@@ -243,14 +243,14 @@
                 return new NumberToken(Number, _errors, _start, _scanner.Position);
             }
 
-            private void AddError(ParseError error)
+            private void AddError(ErrorCode code, ITextRange range)
             {
                 if (_errors == null)
                 {
                     _errors = new List<ParseError>();
                 }
 
-                _errors.Add(error);
+                _errors.Add(new ParseError(code, range));
             }
         }
 

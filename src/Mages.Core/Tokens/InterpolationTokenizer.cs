@@ -81,8 +81,29 @@
                     }
                     else if (current == CharacterTable.OpenScope)
                     {
-                        _buffer.Append('{').Append(_parts.Count).Append('}');
-                        Collect();
+                        if (!_literal || _scanner.Peek() != CharacterTable.OpenScope)
+                        {
+                            _buffer.Append('{').Append(_parts.Count).Append('}');
+                            Collect();
+                        }
+                        else
+                        {
+                            _buffer.Append("{{");
+                            _scanner.MoveNext();
+                        }
+                    }
+                    else if (current == CharacterTable.CloseScope && _literal)
+                    {
+                        if (_scanner.Peek() != CharacterTable.CloseScope)
+                        {
+                            _buffer.Append('}');
+                            AddError(ErrorCode.PlaceHolderNotEscaped, _scanner.Position.ToRange());
+                        }
+                        else
+                        {
+                            _scanner.MoveNext();
+                            _buffer.Append("}}");
+                        }
                     }
                     else if (!_literal && current == CharacterTable.Backslash)
                     {
@@ -130,7 +151,7 @@
 
             public IToken Error()
             {
-                AddError(new ParseError(ErrorCode.StringMismatch, _scanner.Position.ToRange()));
+                AddError(ErrorCode.StringMismatch, _scanner.Position.ToRange());
                 return Emit();
             }
 
@@ -157,7 +178,7 @@
                         case CharacterTable.CurvedQuotationMark: _buffer.Append('`'); _scanner.MoveNext(); break;
                         case CharacterTable.SingleQuotationMark: _buffer.Append('\''); _scanner.MoveNext(); break;
                         case CharacterTable.DoubleQuotationMark: _buffer.Append('\"'); _scanner.MoveNext(); break;
-                        default: AddError(new ParseError(ErrorCode.EscapeSequenceInvalid, _scanner.Position.ToRange())); break;
+                        default: AddError(ErrorCode.EscapeSequenceInvalid, _scanner.Position.ToRange()); break;
                     }
 
                     if (_scanner.Current != CharacterTable.End)
@@ -185,7 +206,7 @@
                     }
                 }
 
-                AddError(new ParseError(ErrorCode.AsciiSequenceInvalid, _scanner.Position.From(start)));
+                AddError(ErrorCode.AsciiSequenceInvalid, _scanner.Position.From(start));
                 return String.Empty;
             }
 
@@ -198,7 +219,7 @@
                 {
                     if (!_scanner.MoveNext() || !_scanner.Current.IsHex())
                     {
-                        AddError(new ParseError(ErrorCode.UnicodeSequenceInvalid, _scanner.Position.From(start)));
+                        AddError(ErrorCode.UnicodeSequenceInvalid, _scanner.Position.From(start));
                         return String.Empty;
                     }
 
@@ -216,14 +237,14 @@
                 return new InterpolatedToken(content, _parts, _errors, _start, _scanner.Position);
             }
 
-            private void AddError(ParseError error)
+            private void AddError(ErrorCode code, ITextRange range)
             {
                 if (_errors == null)
                 {
                     _errors = new List<ParseError>();
                 }
 
-                _errors.Add(error);
+                _errors.Add(new ParseError(code, range));
             }
         }
 
