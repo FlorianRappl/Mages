@@ -41,6 +41,20 @@
         }
 
         [Test]
+        public void StartingExpressionWithALiteralInterpolatedStringNotEscapingBrackets()
+        {
+            var result = @"@`{2+3}`".Eval();
+            Assert.AreEqual("5", result);
+        }
+
+        [Test]
+        public void StartingExpressionWithALiteralInterpolatedStringEscapingBrackets()
+        {
+            var result = @"@`{{2+3}}`".Eval();
+            Assert.AreEqual("{2+3}", result);
+        }
+
+        [Test]
         public void StartingExpressionWithAnInterpolatedStringMixingEscapingAndNotEscapingBrackets()
         {
             var result = @"`\{ The Result is {2+3}\}, right \{{sin(0)}\}`".Eval();
