@@ -171,9 +171,31 @@
                     return new CharacterToken(TokenType.CloseScope, CharacterTable.CloseScope, start);
                 case CharacterTable.End:
                     return new EndToken(start);
+                case CharacterTable.Hash:
+                    return Preprocessor(scanner);
             }
 
             return new CharacterToken(TokenType.Unknown, scanner.Current, start);
+        }
+
+        private IToken Preprocessor(IScanner scanner)
+        {
+            var start = scanner.Position;
+            var sb = StringBuilderPool.Pull();
+
+            while (scanner.MoveNext())
+            {
+                var current = scanner.Current;
+
+                if (current == CharacterTable.LineFeed)
+                    break;
+
+                sb.Append(Char.ConvertFromUtf32(current));
+            }
+
+            var end = scanner.Position;
+            var payload = sb.Stringify();
+            return new PreprocessorToken(payload, start, end);
         }
 
         private static IToken ScanName(IScanner scanner)

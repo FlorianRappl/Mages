@@ -13,8 +13,7 @@
 
         public static Boolean IsIgnorable(this IToken token)
         {
-            var type = token.Type;
-            return type == TokenType.Space || type == TokenType.Comment;
+            return (int)token.Type > 65519;
         }
 
         public static Boolean IsNeither(this IToken token, TokenType a, TokenType b)
