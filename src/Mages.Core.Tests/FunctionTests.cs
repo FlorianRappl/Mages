@@ -639,5 +639,68 @@
             var result = @"(`Jürgen Meier` | regex(@""^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"")).success".Eval();
             Assert.AreEqual(false, result);
         }
+
+        [Test]
+        public void ClampWithStandardMinCaseHit()
+        {
+            var result = "clamp(0, 5, -1)".Eval();
+            Assert.AreEqual(0.0, result);
+        }
+
+        [Test]
+        public void ClampWithStandardMaxCaseHit()
+        {
+            var result = "clamp(0, 5, 10)".Eval();
+            Assert.AreEqual(5.0, result);
+        }
+
+        [Test]
+        public void ClampWithStandardValueCaseHit()
+        {
+            var result = "clamp(0, 5, 3)".Eval();
+            Assert.AreEqual(3.0, result);
+        }
+
+        [Test]
+        public void ClampWithoutArgumentsIsReference()
+        {
+            var result = "clamp() == clamp".Eval();
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void ClampMinCaseHitWhenCurried()
+        {
+            var result = "5 | clamp(20, 30) ".Eval();
+            Assert.AreEqual(20.0, result);
+        }
+
+        [Test]
+        public void ClampWithStringMinCaseHit()
+        {
+            var result = "clamp(1, 4, \"\") ".Eval();
+            Assert.AreEqual(" ", result);
+        }
+
+        [Test]
+        public void ClampWithStringMaxCaseHit()
+        {
+            var result = "clamp(1, 3, \"florian\") ".Eval();
+            Assert.AreEqual("flo", result);
+        }
+
+        [Test]
+        public void ClampWithStringValueCaseHit()
+        {
+            var result = "clamp(1, 30, \"florian\") ".Eval();
+            Assert.AreEqual("florian", result);
+        }
+
+        [Test]
+        public void ClampWithMatrixAllCasesHit()
+        {
+            var result = "clamp(-5, 5, [1, 2; -10, -5; 10, 5])".Eval();
+            CollectionAssert.AreEquivalent(new[,] { { 1.0, 2.0 }, { -5.0, -5.0 }, { 5.0, 5.0 } }, (Double[,])result);
+        }
     }
 }
