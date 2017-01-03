@@ -702,5 +702,26 @@
             var result = "clamp(-5, 5, [1, 2; -10, -5; 10, 5])".Eval();
             CollectionAssert.AreEquivalent(new[,] { { 1.0, 2.0 }, { -5.0, -5.0 }, { 5.0, 5.0 } }, (Double[,])result);
         }
+
+        [Test]
+        public void LerpWithInterpolationInBounds()
+        {
+            var result = "lerp(0, 5, 0.2)".Eval();
+            Assert.AreEqual(1.0, result);
+        }
+
+        [Test]
+        public void LerpWithInterpolationOutOfBounds()
+        {
+            var result = "lerp(0, 5, 1.2)".Eval();
+            Assert.AreEqual(5.0, result);
+        }
+
+        [Test]
+        public void LerpWithInterpolationOfMatrix()
+        {
+            var result = "lerp(-5, 5, [0, 0.5, 0.75; 0.1, 0.2, 0.4])".Eval();
+            CollectionAssert.AreEquivalent(new[,] { { -5.0, 0.0, 2.5 }, { -4.0, -3.0, -1.0 } }, (Double[,])result);
+        }
     }
 }
