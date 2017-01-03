@@ -71,6 +71,12 @@
             return null;
         }
 
+        /// <summary>
+        /// Creates a function that shuffles the arguments of a given function
+        /// according to the current arguments.
+        /// </summary>
+        /// <param name="args">The arguments to create the shuffle function.</param>
+        /// <returns>The created shuffle function.</returns>
         public static Function Shuffle(Object[] args)
         {
             var end = args.Length - 1;
@@ -84,11 +90,18 @@
                 if (parameters != null)
                 {
                     var indices = new Int32[parameters.Length];
+                    var result = default(Function);
+                    var required = 0;
                     var start = 0;
 
                     for (var i = 0; i < indices.Length; i++)
                     {
                         indices[i] = i;
+
+                        if (parameters[i].IsRequired)
+                        {
+                            required++;
+                        }
                     }
 
                     foreach (var arg in args)
@@ -99,7 +112,7 @@
                         {
                             for (var j = 0; j < parameters.Length; j++)
                             {
-                                if (parameters[j].Equals(s, StringComparison.Ordinal))
+                                if (parameters[j].Name.Equals(s, StringComparison.Ordinal))
                                 {
                                     for (var i = 0; i < j; i++)
                                     {
@@ -116,22 +129,36 @@
                         }
                     }
 
-                    return new Function(oldArgs =>
+                    result = new Function(shuffledArgs =>
                     {
-                        var newArgs = new Object[indices.Length];
+                        var length = indices.Length;
+                        var normalArgs = new Object[length];
+                        var matchedRequired = 0;
 
-                        for (var i = 0; i < newArgs.Length; i++)
+                        for (var i = 0; i < length; i++)
                         {
                             var index = indices[i];
 
-                            if (index < oldArgs.Length)
+                            if (index < shuffledArgs.Length)
                             {
-                                newArgs[i] = oldArgs[index];
+                                normalArgs[i] = shuffledArgs[index];
+
+                                if (parameters[i].IsRequired)
+                                {
+                                    matchedRequired++;
+                                }
                             }
                         }
 
-                        return target.Invoke(newArgs);
+                        if (matchedRequired < required)
+                        {
+                            return Curry.Min(length + 1, result, shuffledArgs);
+                        }
+
+                        return target.Invoke(normalArgs);
                     });
+
+                    return result;
                 }
             }
 
