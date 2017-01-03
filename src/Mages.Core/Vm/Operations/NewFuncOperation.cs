@@ -8,10 +8,10 @@
     /// </summary>
     sealed class NewFuncOperation : IOperation
     {
-        private readonly String[] _parameters;
+        private readonly ParameterDefinition[] _parameters;
         private readonly IOperation[] _operations;
 
-        public NewFuncOperation(String[] parameters, IOperation[] operations)
+        public NewFuncOperation(ParameterDefinition[] parameters, IOperation[] operations)
         {
             _parameters = parameters;
             _operations = operations;

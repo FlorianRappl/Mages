@@ -1,7 +1,5 @@
 ﻿namespace Mages.Core.Ast.Expressions
 {
-    using System;
-
     /// <summary>
     /// Represents an expression containing function parameters.
     /// </summary>
@@ -40,25 +38,26 @@
         /// <summary>
         /// Gets the available parameter names.
         /// </summary>
-        public String[] Names
+        public ParameterDefinition[] Names
         {
             get
             {
-                var names = new String[_parameters.Length];
+                var names = new ParameterDefinition[_parameters.Length];
 
                 for (var i = 0; i < _parameters.Length; i++)
                 {
                     var identifier = _parameters[i] as VariableExpression;
                     var assignment = _parameters[i] as AssignmentExpression;
+                    var required = assignment == null;
 
-                    if (assignment != null)
+                    if (!required)
                     {
                         identifier = assignment.Variable as VariableExpression;
                     }
 
                     if (identifier != null)
                     {
-                        names[i] = identifier.Name;
+                        names[i] = new ParameterDefinition(identifier.Name, required);
                     }
                 }
 

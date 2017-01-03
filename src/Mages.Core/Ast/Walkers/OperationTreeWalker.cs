@@ -586,7 +586,7 @@
             return operation;
         }
 
-        private IOperation ExtractFunction(Boolean member, String[] parameters, Int32 index)
+        private IOperation ExtractFunction(Boolean member, ParameterDefinition[] parameters, Int32 index)
         {
             var operations = ExtractFrom(index);
 

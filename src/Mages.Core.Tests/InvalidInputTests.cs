@@ -6,6 +6,7 @@
     using Mages.Core.Ast.Walkers;
     using NUnit.Framework;
     using System.Collections.Generic;
+    using System;
 
     [TestFixture]
     public class InvalidInputTests
@@ -176,7 +177,7 @@
             var expr = "(x = , y = 3) => x".ToExpression();
             Assert.IsInstanceOf<FunctionExpression>(expr);
             var parameters = ((FunctionExpression)expr).Parameters;
-            CollectionAssert.AreEquivalent(new[] { "x", "y" }, parameters.Names);
+            CollectionAssert.AreEquivalent(new[] { Po("x"), Po("y") }, parameters.Names);
             IsInvalid(expr);
         }
 
@@ -186,7 +187,7 @@
             var expr = "(x,y,z) => {".ToExpression();
             Assert.IsInstanceOf<FunctionExpression>(expr);
             var parameters = ((FunctionExpression)expr).Parameters;
-            CollectionAssert.AreEquivalent(new[] { "x", "y", "z" }, parameters.Names);
+            CollectionAssert.AreEquivalent(new[] { Pr("x"), Pr("y"), Pr("z") }, parameters.Names);
             IsInvalid(expr);
         }
 
@@ -196,7 +197,7 @@
             var expr = "(x,0,z) => {}".ToExpression();
             Assert.IsInstanceOf<FunctionExpression>(expr);
             var parameters = ((FunctionExpression)expr).Parameters;
-            CollectionAssert.AreEquivalent(new[] { "x", null, "z" }, parameters.Names);
+            CollectionAssert.AreEquivalent(new[] { Pr("x"), Pr(null), Pr("z") }, parameters.Names);
             IsInvalid(expr);
         }
 
@@ -206,7 +207,7 @@
             var expr = "(x,,z) => {}".ToExpression();
             Assert.IsInstanceOf<FunctionExpression>(expr);
             var parameters = ((FunctionExpression)expr).Parameters;
-            CollectionAssert.AreEquivalent(new[] { "x", null, "z" }, parameters.Names);
+            CollectionAssert.AreEquivalent(new[] { Pr("x"), Pr(null), Pr("z") }, parameters.Names);
             IsInvalid(expr);
         }
 
@@ -264,6 +265,26 @@
             var validator = new ValidationTreeWalker(errors);
             element.Accept(validator);
             Assert.IsTrue(errors.Count > 0);
+        }
+
+        private static ParameterDefinition Pr(String v)
+        {
+            return P(v, true);
+        }
+
+        private static ParameterDefinition Po(String v)
+        {
+            return P(v, false);
+        }
+
+        private static ParameterDefinition P(String v, Boolean r)
+        {
+            if (v != null)
+            {
+                return new ParameterDefinition(v, r);
+            }
+
+            return default(ParameterDefinition);
         }
     }
 }

@@ -8,10 +8,10 @@
     /// </summary>
     sealed class NewMethOperation : IOperation
     {
-        private readonly String[] _parameters;
+        private readonly ParameterDefinition[] _parameters;
         private readonly IOperation[] _operations;
 
-        public NewMethOperation(String[] parameters, IOperation[] operations)
+        public NewMethOperation(ParameterDefinition[] parameters,IOperation[] operations)
         {
             _parameters = parameters;
             _operations = operations;

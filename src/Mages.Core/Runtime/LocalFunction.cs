@@ -8,16 +8,16 @@
     {
         private readonly Object _self;
         private readonly IDictionary<String, Object> _parentScope;
-        private readonly String[] _parameters;
+        private readonly ParameterDefinition[] _parameters;
         private readonly IOperation[] _operations;
         private readonly Function _pointer;
 
-        public LocalFunction(IDictionary<String, Object> parentScope, String[] parameters, IOperation[] operations)
+        public LocalFunction(IDictionary<String, Object> parentScope, ParameterDefinition[] parameters, IOperation[] operations)
             : this(null, parentScope, parameters, operations)
         {
         }
 
-        public LocalFunction(Object self, IDictionary<String, Object> parentScope, String[] parameters, IOperation[] operations)
+        public LocalFunction(Object self, IDictionary<String, Object> parentScope, ParameterDefinition[] parameters, IOperation[] operations)
         {
             _self = self;
             _parentScope = parentScope;
@@ -26,7 +26,7 @@
             _pointer = new Function(Invoke);
         }
 
-        public String[] Parameters
+        public ParameterDefinition[] Parameters
         {
             get { return _parameters; }
         }

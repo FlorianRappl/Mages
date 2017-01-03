@@ -74,22 +74,33 @@
             if (parameters == null)
             {
                 var nativeParams = function.Method.GetParameters();
-                parameters = new String[nativeParams.Length];
+                var parameterNames = new String[nativeParams.Length];
 
                 if (nativeParams.Length == 1 && nativeParams[0].ParameterType == typeof(Object[]))
                 {
-                    parameters[0] = "..." + nativeParams[0].Name;
+                    parameterNames[0] = "..." + nativeParams[0].Name;
                 }
                 else
                 {
-                    for (var i = 0; i < parameters.Length; i++)
+                    for (var i = 0; i < parameterNames.Length; i++)
                     {
-                        parameters[i] = nativeParams[i].Name;
+                        parameterNames[i] = nativeParams[i].Name;
                     }
                 }
-            }
 
-            return parameters;
+                return parameterNames;
+            }
+            else
+            {
+                var parameterNames = new String[parameters.Length];
+
+                for (var i = 0; i < parameterNames.Length; i++)
+                {
+                    parameterNames[i] = parameters[i].Name;
+                }
+
+                return parameterNames;
+            }
         }
     }
 }

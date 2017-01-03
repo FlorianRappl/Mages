@@ -143,6 +143,7 @@
     <Compile Include="Runtime\Mathx.cs" />
     <Compile Include="Runtime\Matrix.cs" />
     <Compile Include="Runtime\ObservableDictionary.cs" />
+    <Compile Include="ParameterDefinition.cs" />
     <Compile Include="Runtime\PrimeNumber.cs" />
     <Compile Include="Runtime\Proxies\BaseProxy.cs" />
     <Compile Include="Runtime\Proxies\ConstructorProxy.cs" />
