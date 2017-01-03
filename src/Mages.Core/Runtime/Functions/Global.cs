@@ -91,7 +91,9 @@
             { "except", StandardFunctions.Except },
             { "hasKey", StandardFunctions.HasKey },
             { "getValue", StandardFunctions.GetValue },
-            { "regex", StandardFunctions.Regex }
+            { "regex", StandardFunctions.Regex },
+            { "lerp", StandardFunctions.Lerp },
+            { "clamp", StandardFunctions.Clamp }
         };
     }
 }

@@ -37,6 +37,23 @@
         }
 
         /// <summary>
+        /// Checks if the provided args deliver at least three arguments.
+        /// Otherwise returns null.
+        /// </summary>
+        /// <param name="function">The function to return or capture.</param>
+        /// <param name="args">The args to check and potentially capture.</param>
+        /// <returns>A curried function or null.</returns>
+        public static Object MinThree(Function function, Object[] args)
+        {
+            if (args.Length < 3)
+            {
+                return args.Length == 0 ? function : rest => function(RecombineN(args, rest));
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Checks if the provided args deliver at least count argument(s).
         /// Otherwise returns null.
         /// </summary>
