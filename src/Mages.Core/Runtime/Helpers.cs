@@ -68,6 +68,32 @@
             return result;
         }
 
+        public static String Clamp(this String value, Int32 min, Int32 max)
+        {
+            if (value.Length < min)
+            {
+                return value.PadRight(min, ' ');
+            }
+            else if (value.Length > max)
+            {
+                return value.Substring(0, max);
+            }
+
+            return value;
+        }
+
+        public static Double Clamp(this Double value, Double min, Double max)
+        {
+            return Math.Max(Math.Min(value, max), min);
+        }
+
+        public static Double Lerp(this Double value, Double min, Double max)
+        {
+            var rho = value.Clamp(0.0, 1.0);
+            var delta = max - min;
+            return rho * delta + min;
+        }
+
         public static Boolean Satisfies(this IDictionary<String, Object> constraints, Object value)
         {
             var obj = value as IDictionary<String, Object>;
