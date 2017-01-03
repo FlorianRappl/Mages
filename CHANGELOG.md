@@ -1,3 +1,12 @@
+# 1.5.0
+
+- Added support for named arguments (#65)
+- Included `clamp` and `lerp` function (#80)
+- Preprocessor token (#78)
+- Allow variable escaping in literal interpolated string (#79)
+- Included regular expressions function (#77)
+- Fixed onterpolated string escape sequence (#75)
+
 # 1.4.0
 
 - Added API support for callback functions

@@ -181,6 +181,7 @@
     <Compile Include="Tokens\NumberTokenizer.cs" />
     <Compile Include="Tokens\OperatorToken.cs" />
     <Compile Include="Tokens\InterpolatedToken.cs" />
+    <Compile Include="Tokens\PreprocessorToken.cs" />
     <Compile Include="Tokens\StringToken.cs" />
     <Compile Include="Tokens\StringTokenizer.cs" />
     <Compile Include="Tokens\TextPositionExtensions.cs" />

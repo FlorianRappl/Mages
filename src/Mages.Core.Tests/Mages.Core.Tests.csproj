@@ -74,6 +74,7 @@
     <Compile Include="ObservableTests.cs" />
     <Compile Include="OperationTests.cs" />
     <Compile Include="PluginTests.cs" />
+    <Compile Include="PreprocessorTests.cs" />
     <Compile Include="PrimeNumberTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RangeTests.cs" />

@@ -5,6 +5,7 @@
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+    using System.Text.RegularExpressions;
 
     static class Helpers
     {
@@ -65,6 +66,32 @@
             }
 
             return result;
+        }
+
+        public static String Clamp(this String value, Int32 min, Int32 max)
+        {
+            if (value.Length < min)
+            {
+                return value.PadRight(min, ' ');
+            }
+            else if (value.Length > max)
+            {
+                return value.Substring(0, max);
+            }
+
+            return value;
+        }
+
+        public static Double Clamp(this Double value, Double min, Double max)
+        {
+            return Math.Max(Math.Min(value, max), min);
+        }
+
+        public static Double Lerp(this Double value, Double min, Double max)
+        {
+            var rho = value.Clamp(0.0, 1.0);
+            var delta = max - min;
+            return rho * delta + min;
         }
 
         public static Boolean Satisfies(this IDictionary<String, Object> constraints, Object value)
@@ -361,6 +388,55 @@
             }
 
             return result;
+        }
+
+        public static Object MatchString(String pattern, String value)
+        {
+            var rx = new Regex(pattern, RegexOptions.ECMAScript | RegexOptions.CultureInvariant);
+            var mc = rx.Matches(value);
+
+            var result = new Dictionary<String, Object>
+            {
+                { "matches", WrapMatches(mc) },
+                { "success", mc.Count > 0 }
+            };
+
+            return result;
+        }
+
+        private static Object WrapMatches(MatchCollection mc)
+        {
+            var results = new Dictionary<String, Object>
+            {
+                { "count", (Double)mc.Count }
+            };
+
+            for (var i = 0; i < mc.Count; i++)
+            {
+                results[i.ToString()] = WrapMatch(mc[i]);
+            }
+
+            return results;
+        }
+
+        private static Object WrapMatch(Match match)
+        {
+            var results = new Dictionary<String, Object>
+            {
+                { "value", match.Value },
+                { "index", (Double)match.Index },
+                { "count", (Double)match.Groups.Count }
+            };
+
+            for (var i = 0; i < match.Groups.Count; i++)
+            {
+                if (match.Groups[i].Success)
+                {
+                    results[i.ToString()] = match.Groups[i].Value;
+                }
+            }
+
+            return results;
         }
     }
 }

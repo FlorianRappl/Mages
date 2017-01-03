@@ -202,5 +202,10 @@
         /// </summary>
         [Description("Match statementes require a set of cases to apply.")]
         CasesExpected,
+        /// <summary>
+        /// See description.
+        /// </summary>
+        [Description("The closing placeholder '}' was not properly escaped (use two curly braces '}}').")]
+        PlaceHolderNotEscaped,
     }
 }

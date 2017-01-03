@@ -705,8 +705,38 @@
         public static readonly Function Shuffle = new Function(args =>
         {
             return Curry.MinOne(Shuffle, args) ??
-                Curry.Shuffle(args) ?? 
+                Curry.Shuffle(args) ??
                 Curry.Min(args.Length + 1, Shuffle, args);
+        });
+
+        /// Contains the regex function.
+        /// </summary>
+        public static readonly Function Regex = new Function(args =>
+        {
+            return Curry.MinTwo(Regex, args) ??
+                If.Is<String, String>(args, (test, value) => Helpers.MatchString(test, value)) ??
+                false;
+        });
+
+        /// <summary>
+        /// Contains the clamp function.
+        /// </summary>
+        public static readonly Function Clamp = new Function(args =>
+        {
+            return Curry.MinThree(Clamp, args) ??
+                If.Is<Double, Double, Double>(args, (min, max, value) => value.Clamp(min, max)) ??
+                If.Is<Double, Double, Double[,]>(args, (min, max, mat) => mat.ForEach(x => x.Clamp(min, max))) ??
+                If.Is<Double, Double, String>(args, (min, max, value) => value.Clamp((int)min, (int)max));
+        });
+
+        /// <summary>
+        /// Contains the lerp function.
+        /// </summary>
+        public static readonly Function Lerp = new Function(args =>
+        {
+            return Curry.MinThree(Lerp, args) ??
+                If.Is<Double, Double, Double>(args, (min, max, value) => value.Lerp(min, max)) ??
+                If.Is<Double, Double, Double[,]>(args, (min, max, mat) => mat.ForEach(x => x.Lerp(min, max)));
         });
     }
 }

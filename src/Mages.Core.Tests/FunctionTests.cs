@@ -583,5 +583,145 @@
             var result = "sum(2, true, 5, 2, -9, 0)".Eval();
             Assert.AreEqual(1.0, result);
         }
+
+        [Test]
+        public void RegexWithSimpleStringContainingNumber()
+        {
+            var result = "regex(`[0-9]+`, `Hello 20!`).success".Eval();
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void RegexWithSimpleStringOnlyWords()
+        {
+            var result = "regex(`[0-9]+`, `Hello world!`).success".Eval();
+            Assert.AreEqual(false, result);
+        }
+
+        [Test]
+        public void RegexCanBeChained()
+        {
+            var result = @"(`Hiho mum` | regex(""[A-Za-z]{4}"")).success".Eval();
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void RegexIdentifierTokenMatches()
+        {
+            var result = "(`Hello there how are you` | regex(`[A-Za-z]+`)).matches.count".Eval();
+            Assert.AreEqual(5.0, result);
+        }
+
+        [Test]
+        public void RegexIdentifierGroupMatchesCount()
+        {
+            var result = @"(`1.2.3.4` | regex(@`^([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)$`)).matches(0).count".Eval();
+            Assert.AreEqual(5.0, result);
+        }
+
+        [Test]
+        public void RegexIdentifierGroupMatchesValue()
+        {
+            var result = @"(`1.2.3.4` | regex(@`^([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)$`)).matches(0)(1)".Eval();
+            Assert.AreEqual("1", result);
+        }
+
+        [Test]
+        public void RegexToCheckValidMailAddress()
+        {
+            var result = @"(`test@mail.com` | regex(@""^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"")).success".Eval();
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void RegexToCheckInvalidMailAddress()
+        {
+            var result = @"(`Jürgen Meier` | regex(@""^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"")).success".Eval();
+            Assert.AreEqual(false, result);
+        }
+
+        [Test]
+        public void ClampWithStandardMinCaseHit()
+        {
+            var result = "clamp(0, 5, -1)".Eval();
+            Assert.AreEqual(0.0, result);
+        }
+
+        [Test]
+        public void ClampWithStandardMaxCaseHit()
+        {
+            var result = "clamp(0, 5, 10)".Eval();
+            Assert.AreEqual(5.0, result);
+        }
+
+        [Test]
+        public void ClampWithStandardValueCaseHit()
+        {
+            var result = "clamp(0, 5, 3)".Eval();
+            Assert.AreEqual(3.0, result);
+        }
+
+        [Test]
+        public void ClampWithoutArgumentsIsReference()
+        {
+            var result = "clamp() == clamp".Eval();
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
+        public void ClampMinCaseHitWhenCurried()
+        {
+            var result = "5 | clamp(20, 30) ".Eval();
+            Assert.AreEqual(20.0, result);
+        }
+
+        [Test]
+        public void ClampWithStringMinCaseHit()
+        {
+            var result = "clamp(1, 4, \"\") ".Eval();
+            Assert.AreEqual(" ", result);
+        }
+
+        [Test]
+        public void ClampWithStringMaxCaseHit()
+        {
+            var result = "clamp(1, 3, \"florian\") ".Eval();
+            Assert.AreEqual("flo", result);
+        }
+
+        [Test]
+        public void ClampWithStringValueCaseHit()
+        {
+            var result = "clamp(1, 30, \"florian\") ".Eval();
+            Assert.AreEqual("florian", result);
+        }
+
+        [Test]
+        public void ClampWithMatrixAllCasesHit()
+        {
+            var result = "clamp(-5, 5, [1, 2; -10, -5; 10, 5])".Eval();
+            CollectionAssert.AreEquivalent(new[,] { { 1.0, 2.0 }, { -5.0, -5.0 }, { 5.0, 5.0 } }, (Double[,])result);
+        }
+
+        [Test]
+        public void LerpWithInterpolationInBounds()
+        {
+            var result = "lerp(0, 5, 0.2)".Eval();
+            Assert.AreEqual(1.0, result);
+        }
+
+        [Test]
+        public void LerpWithInterpolationOutOfBounds()
+        {
+            var result = "lerp(0, 5, 1.2)".Eval();
+            Assert.AreEqual(5.0, result);
+        }
+
+        [Test]
+        public void LerpWithInterpolationOfMatrix()
+        {
+            var result = "lerp(-5, 5, [0, 0.5, 0.75; 0.1, 0.2, 0.4])".Eval();
+            CollectionAssert.AreEquivalent(new[,] { { -5.0, 0.0, 2.5 }, { -4.0, -3.0, -1.0 } }, (Double[,])result);
+        }
     }
 }

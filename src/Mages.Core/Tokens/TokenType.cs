@@ -150,36 +150,40 @@
         /// </summary>
         Transpose = 35,
         /// <summary>
-        /// Any kind of space symbol.
-        /// </summary>
-        Space = 36,
-        /// <summary>
         /// Assignment operator.
         /// </summary>
-        Assignment = 37,
+        Assignment = 36,
         /// <summary>
         /// Lambda operator.
         /// </summary>
-        Lambda = 38,
+        Lambda = 37,
         /// <summary>
         /// Type operator.
         /// </summary>
-        Type = 39,
+        Type = 38,
         /// <summary>
         /// Pipe operator.
         /// </summary>
-        Pipe = 40,
+        Pipe = 39,
         /// <summary>
         /// Semicolon symbol.
         /// </summary>
-        SemiColon = 0xff,
+        SemiColon = 0x40,
+        /// <summary>
+        /// EOF.
+        /// </summary>
+        End = 0xeeee,
+        /// <summary>
+        /// Any kind of space symbol.
+        /// </summary>
+        Space = 0xfff0,
+        /// <summary>
+        /// Preprocessor token.
+        /// </summary>
+        Preprocessor = 0xfff7,
         /// <summary>
         /// Comment token.
         /// </summary>
         Comment = 0xfffe,
-        /// <summary>
-        /// EOF.
-        /// </summary>
-        End = 0xffff,
     }
 }
