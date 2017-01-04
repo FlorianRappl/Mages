@@ -43,7 +43,7 @@ boolean ::= 'true' | 'false'
 The full list of keywords is actually a bit longer. These values are reserved (even though most are not used in the current specification):
 
 ```
-keywords ::= 'true' | 'false' | 'return' | 'var' | 'let' | 'const' | 'for' | 'while' | 'do' | 'module' | 'if' | 'else' | 'break' | 'continue' | 'yield' | 'async' | 'await' | 'class' | 'static' | 'new' | 'delete' | 'pi'
+keywords ::= 'true' | 'false' | 'return' | 'var' | 'let' | 'const' | 'for' | 'while' | 'do' | 'module' | 'if' | 'else' | 'break' | 'continue' | 'yield' | 'async' | 'await' | 'class' | 'static' | 'new' | 'delete' | 'pi' | 'match'
 ```
 
 The `pi` keyword resolves to the known mathematical constant. It is a really strong version of a `constant` allowing many optimizations and disallowing any kind of shadowing.
@@ -52,8 +52,29 @@ A string literal is specified as follows:
 
 ```
 string_character ::= [#x0 - #xffff] - '"'
-escape_character ::= '\' 
-string ::= '"' (string_character | escape_character)* '"'
+escape_sequence ::= '\' valid_escape_character
+escaped_simple_string ::= '"' (string_character | escape_sequence)* '"'
+literal_simple_string ::= '@"' (string_character | '""')* '"'
+simple_string ::= escaped_simple_string | literal_simple_string
+```
+
+Here the `valid_escape_character` is one of the allowed escape characters (e.g., `n` places a new line character, `t` a tab character, ...).
+
+In addition to the double-quoted string literal we also have the interpolated string. An interpolated string literal is specified as follows:
+
+```
+intstr_character ::= [#x0 - #xffff] - '`'
+escaped_interpolated_string ::= '`' (intstr_character | escape_sequence | '{{' | '}}' | '{' expr '}')* '`'
+literal_interpolated_string ::= '@`' (intstr_character | '``' | '{{' | '}}' | '{' expr '}')* '`'
+interpolated_string ::= escaped_interpolated_string | literal_interpolated_string
+```
+
+The `expr` is defined later. It refers to a general expression.
+
+Overall, the `string` is thus defined by being either a simple or an interpolated string.
+
+```
+string ::= simple_string | interpolated_string
 ```
 
 Identifiers are given by:
@@ -192,7 +213,7 @@ ret_stmt ::= 'return' (space+ expr)?
 Variables live in their local scope. Scopes are implicitely created by functions or by a block statement:
 
 ```
-block_stmt ::= '{' space* stmt* space* '}'
+block_stmt ::= '{' space* (stmt space*)* '}'
 ```
 
 For having loops the `while` keyword has been introduced. Statements are then built as follows:
@@ -210,9 +231,17 @@ cont_stmt ::= 'continue'
 
 These statements are unique in that sense, that their validation is not only dependent on the syntax rules defined here, but also of the context in which they are used. They require a loop to be controlled, hence they need to be nested within at least one loop. They always control the loop, which is the closest ancestor from the AST point of view.
 
+A powerful construct in MAGES is the pattern matching `match` statement:
+
+```
+match_case ::= expr space* block_stmt
+match_body ::= '{' space* (match_case space*)* '}'
+match_stmt ::= 'match' space* '(' space* expr space* ')' space* match_body
+```
+
 Statements are generally given by the following construct:
 
 ```
-stmt ::= (expr | var_stmt | ret_stmt | block_stmt | while_stmt | break_stmt | cont_stmt) space* ';'
+stmt ::= (expr | var_stmt | ret_stmt | block_stmt | while_stmt | break_stmt | cont_stmt | match_stmt) space* ';'
 ```
 

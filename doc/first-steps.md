@@ -37,7 +37,7 @@ while (true)
 }
 ```
 
-At this point the user is free to start interacting with the MAGES `Engine` instance. At this point it makes sense to see how we can interact with the engine in our applications.
+Now the user is free to start interacting with the MAGES `Engine` instance. At this point it makes sense to see how we can interact with the engine in our applications.
 
 ## Interaction
 

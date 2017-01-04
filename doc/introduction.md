@@ -108,7 +108,7 @@ On starting the REPL we see the following:
 SWM>
 ```
 
-The prompt `SWM` means "Spielwiese MAGES" (German for "MAGES playground"). The REPL will not evaluate expressions but also provide error hints in case of syntax problems. Consider the following missing bracket.
+The prompt `SWM` means "SpielWiese Mages" (German for "MAGES playground"). The REPL will not evaluate expressions but also provide error hints in case of syntax problems. Consider the following missing bracket.
 
 ```plain
 SWM> x = (2 + 3) * (4 - 5

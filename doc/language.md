@@ -4,6 +4,38 @@ The language that comes with MAGES is nothing spectacular. Instead, it tries to 
 
 There are some nice features, but nothing that has not been seen before. In general, programmers with a JavaScript or C# background should feel fairly familiar right away. The matrix usage is a little bit inspired from MATLAB without going as far as YAMP.
 
+## Strings
+
+MAGES contains direct support for (interpolated) strings.
+
+### Literals
+
+There are multiple string literals in MAGES. The double-quoted literal behaves like the one in most programming languages:
+
+```C
+str = "Hello World!" // string with content "Hello World!"
+str = "This\nhas\nnew\nlines" // string with multiple (4) lines
+str = "Hello \"Mum\"" //string with "Hello "Mum""
+```
+
+The escape sequences are the usual ones. The escape sequences can be avoided by prefixing the literal with an at-symbol.
+
+```C
+str = @"Hello\tim" // string with content "Hello\tim"; not with "Hello    im"
+str = @"Hello ""Mum""" // string with content "Hello "Mum"", quotes escaped
+```
+
+Besides the double-quoted strings we can also use backtick-quoted strings - these are called *interpolated* strings. They allow to use expressions inside curly brackets `{}`, e.g., a variable name.
+
+```C
+name = "Test"
+str = `Hello {name}` // string with content "Hello Test"
+str = `2 + 3 = {2 + 3}` // string with content "2 + 3 = 5"
+str = `Hello {{name}} // stirng with content "Hello {name}"
+```
+
+Like the double-quoted string literal we can prefix the interpolated string with an at-symbol to avoid interpreting escape sequences. Similarly, the backtick can be escaped in this mode by using two consecutive backticks.
+
 ## Objects
 
 Objects are at the heart of MAGES. Today objects should not be missed from any programming language.
@@ -93,7 +125,7 @@ factorial(3) // same as 3!
 The idea is that operators are also useful in piping scenarios, i.e., when used such that
 
 ```C
-3 | add(5) | subtract(10) // same as subtract(10, add(5, 3))
+3 | add(5) | sub(10) // same as sub(10, add(5, 3)) which is 3 + 5 - 10
 ```
 
 This idea is supported by arithmetic functions and auto currying, which will be discussed later.

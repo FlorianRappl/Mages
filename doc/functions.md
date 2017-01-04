@@ -351,3 +351,42 @@ Works with two arguments, where the first is a function to map an entry and the 
 map(x => x.item, list(new { item: 5 }, new { item: true }, new { item: "foo" })) // new { "0": 5, "1": true, "2": "foo" }
 map(x => 7x, new { a: 5, b: 3, c: 9 }) // new { "a": 35, "b": 21, "c": "63" }
 ```
+
+### Clamp
+
+Constraints the value in the (min, max) range given by the first two arguments.
+
+```
+x = clamp(-5, 5, 7) // 5
+M = clamp(-1, 1, [-2, -1, 0, 0.5, 2.5]) // [-1, -1, 0, 0.5, 1]
+```
+
+### Lerp
+
+Calculates the linear interpolation of the given arguments (min, max, value). The value is clamped between 0 and 1.
+
+```
+x = lerp(0, 5, 0.2) // 1
+M = lerp(0, 8, [0, 0.5, 1]) // [0, 4, 8]
+```
+
+### Regex
+
+The regular expression function 
+
+```
+test = regex(`[A-Za-z]+`);
+result = test(`Hello there how are you`);
+result.matches.count // 5
+result.matches(0).value // "Hello"
+```
+
+### Shuffle
+
+Shuffles the arguments of a given function (last argument) by the order of the given parameter names. Only works with local (MAGES) functions.
+
+```
+fab = (a, b) => a * b - b;
+fba = shuffle("b", "a", fab);
+fab(1, 2) - fba(1, 2) // -1
+```
