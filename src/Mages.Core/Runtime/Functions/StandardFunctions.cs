@@ -709,6 +709,7 @@
                 Curry.Min(args.Length + 1, Shuffle, args);
         });
 
+        /// <summary>
         /// Contains the regex function.
         /// </summary>
         public static readonly Function Regex = new Function(args =>

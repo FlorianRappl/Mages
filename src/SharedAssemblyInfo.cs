@@ -7,7 +7,7 @@ using System.Reflection;
 
 [assembly: AssemblyCompany("Polytrope")]
 [assembly: AssemblyProduct("Mages")]
-[assembly: AssemblyVersion("1.4.0")]
-[assembly: AssemblyFileVersion("1.4.0")]
-[assembly: AssemblyCopyright("Copyright (c) 2016, Florian Rappl")]
+[assembly: AssemblyVersion("1.5.0")]
+[assembly: AssemblyFileVersion("1.5.0")]
+[assembly: AssemblyCopyright("Copyright (c) 2017, Florian Rappl")]
 
