@@ -19,7 +19,7 @@
         {
             var parameters = (Object[])context.Pop();
             context.Push(parameters);
-            context.Push(parameters.Length <= _index);
+            context.Push(parameters.Length <= _index || parameters[_index].IsUndefined());
         }
 
         public override String ToString()

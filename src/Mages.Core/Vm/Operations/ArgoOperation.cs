@@ -19,10 +19,20 @@
         {
             var value = context.Pop();
             var parameters = (Object[])context.Pop();
-            var result = new Object[parameters.Length + 1];
-            parameters.CopyTo(result, 0);
-            result[parameters.Length] = value;
-            context.Push(result);
+
+            if (parameters.Length <= _index)
+            {
+                var result = new Object[parameters.Length + 1];
+                parameters.CopyTo(result, 0);
+                result[parameters.Length] = value;
+                parameters = result;
+            }
+            else
+            {
+                parameters[_index] = value;
+            }
+
+            context.Push(parameters);
         }
 
         public override String ToString()

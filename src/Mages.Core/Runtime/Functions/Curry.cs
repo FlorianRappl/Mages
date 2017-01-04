@@ -91,43 +91,7 @@
                 {
                     var indices = new Int32[parameters.Length];
                     var result = default(Function);
-                    var required = 0;
-                    var start = 0;
-
-                    for (var i = 0; i < indices.Length; i++)
-                    {
-                        indices[i] = i;
-
-                        if (parameters[i].IsRequired)
-                        {
-                            required++;
-                        }
-                    }
-
-                    foreach (var arg in args)
-                    {
-                        var s = arg as String;
-
-                        if (s != null)
-                        {
-                            for (var j = 0; j < parameters.Length; j++)
-                            {
-                                if (parameters[j].Name.Equals(s, StringComparison.Ordinal))
-                                {
-                                    for (var i = 0; i < j; i++)
-                                    {
-                                        if (indices[i] >= start)
-                                        {
-                                            indices[i]++;
-                                        }
-                                    }
-
-                                    indices[j] = start++;
-                                    break;
-                                }
-                            }
-                        }
-                    }
+                    var required = ShuffleParameters(args, parameters, indices);
 
                     result = new Function(shuffledArgs =>
                     {
@@ -148,6 +112,10 @@
                                     matchedRequired++;
                                 }
                             }
+                            else
+                            {
+                                normalArgs[i] = Undefined.Instance;
+                            }
                         }
 
                         if (matchedRequired < required)
@@ -163,6 +131,49 @@
             }
 
             return target;
+        }
+
+        private static Int32 ShuffleParameters(Object[] args, ParameterDefinition[] parameters, Int32[] indices)
+        {
+            var start = 0;
+            var required = 0;
+
+            for (var i = 0; i < indices.Length; i++)
+            {
+                indices[i] = i;
+
+                if (parameters[i].IsRequired)
+                {
+                    required++;
+                }
+            }
+
+            foreach (var arg in args)
+            {
+                var s = arg as String;
+
+                if (s != null)
+                {
+                    for (var j = 0; j < parameters.Length; j++)
+                    {
+                        if (parameters[j].Name.Equals(s, StringComparison.Ordinal))
+                        {
+                            for (var i = 0; i < j; i++)
+                            {
+                                if (indices[i] >= start)
+                                {
+                                    indices[i]++;
+                                }
+                            }
+
+                            indices[j] = start++;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return required;
         }
 
         private static Object[] Recombine2(Object[] oldArgs, Object[] newArgs)

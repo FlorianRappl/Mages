@@ -44,7 +44,7 @@
         public void ShufflingNamedArgumentsInDifferentOrderDoesNotChangeDefaultValue()
         {
             var result = "fab = (a = 2, b = 4) => a / b; fba = fab | shuffle(\"b\", \"a\"); fba(1)".Eval();
-            Assert.AreEqual(0.5, result);
+            Assert.AreEqual(2.0, result);
         }
     }
 }
