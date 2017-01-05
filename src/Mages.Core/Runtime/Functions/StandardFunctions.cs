@@ -11,6 +11,213 @@
     public static class StandardFunctions
     {
         /// <summary>
+        /// Exposes the + operator as a function.
+        /// </summary>
+        public static readonly Function Add = new Function(args => 
+        {
+            return Curry.MinTwo(Add, args) ??
+                BinaryOperators.Add(args);
+        });
+
+        /// <summary>
+        /// Exposes the - operator as a function.
+        /// </summary>
+        public static readonly Function Sub = new Function(args => 
+        {
+            return Curry.MinTwo(Sub, args) ??
+                BinaryOperators.Sub(args);
+        });
+
+        /// <summary>
+        /// Exposes the * operator as a function.
+        /// </summary>
+        public static readonly Function Mul = new Function(args => 
+        {
+            return Curry.MinTwo(Mul, args) ??
+                BinaryOperators.Mul(args);
+        });
+
+        /// <summary>
+        /// Exposes the / operator as a function.
+        /// </summary>
+        public static readonly Function RDiv = new Function(args => 
+        {
+            return Curry.MinTwo(RDiv, args) ??
+                BinaryOperators.RDiv(args);
+        });
+
+        /// <summary>
+        /// Exposes the \ operator as a function.
+        /// </summary>
+        public static readonly Function LDiv = new Function(args => 
+        {
+            return Curry.MinTwo(LDiv, args) ??
+                BinaryOperators.LDiv(args);
+        });
+
+        /// <summary>
+        /// Exposes the ^ operator as a function.
+        /// </summary>
+        public static readonly Function Pow = new Function(args => 
+        {
+            return Curry.MinTwo(Pow, args) ??
+                BinaryOperators.Pow(args);
+        });
+
+        /// <summary>
+        /// Exposes the % operator as a function.
+        /// </summary>
+        public static readonly Function Mod = new Function(args => 
+        {
+            return Curry.MinTwo(Mod, args) ??
+                BinaryOperators.Mod(args);
+        });
+
+        /// <summary>
+        /// Exposes the && operator as a function.
+        /// </summary>
+        public static readonly Function And = new Function(args => 
+        {
+            return Curry.MinTwo(And, args) ??
+                BinaryOperators.And(args);
+        });
+
+        /// <summary>
+        /// Exposes the || operator as a function.
+        /// </summary>
+        public static readonly Function Or = new Function(args => 
+        {
+            return Curry.MinTwo(Or, args) ??
+                BinaryOperators.Or(args);
+        });
+
+        /// <summary>
+        /// Exposes the == operator as a function.
+        /// </summary>
+        public static readonly Function Eq = new Function(args => 
+        {
+            return Curry.MinTwo(Eq, args) ??
+                BinaryOperators.Eq(args);
+        });
+
+        /// <summary>
+        /// Exposes the != operator as a function.
+        /// </summary>
+        public static readonly Function Neq = new Function(args => 
+        {
+            return Curry.MinTwo(Neq, args) ??
+                BinaryOperators.Neq(args);
+        });
+
+        /// <summary>
+        /// Exposes the &gt; operator as a function.
+        /// </summary>
+        public static readonly Function Gt = new Function(args => 
+        {
+            return Curry.MinTwo(Gt, args) ??
+                BinaryOperators.Gt(args);
+        });
+
+        /// <summary>
+        /// Exposes the &gt;= operator as a function.
+        /// </summary>
+        public static readonly Function Geq = new Function(args => 
+        {
+            return Curry.MinTwo(Geq, args) ??
+                BinaryOperators.Geq(args);
+        });
+
+        /// <summary>
+        /// Exposes the &lt; operator as a function.
+        /// </summary>
+        public static readonly Function Lt = new Function(args => 
+        {
+            return Curry.MinTwo(Lt, args) ??
+                BinaryOperators.Lt(args);
+        });
+
+        /// <summary>
+        /// Exposes the &lt;= operator as a function.
+        /// </summary>
+        public static readonly Function Leq = new Function(args => 
+        {
+            return Curry.MinTwo(Leq, args) ??
+                BinaryOperators.Leq(args);
+        });
+
+        /// <summary>
+        /// Exposes the | operator as a function.
+        /// </summary>
+        public static readonly Function Pipe = new Function(args =>
+        {
+            return Curry.MinTwo(Pipe, args) ??
+                BinaryOperators.Pipe(args);
+        });
+
+        /// <summary>
+        /// Exposes the ~ operator as a function.
+        /// </summary>
+        public static readonly Function Not = new Function(args => 
+        {
+            return Curry.MinOne(Not, args) ??
+                UnaryOperators.Not(args);
+        });
+
+        /// <summary>
+        /// Exposes the + operator as a function.
+        /// </summary>
+        public static readonly Function Positive = new Function(args => 
+        {
+            return Curry.MinOne(Positive, args) ??
+                UnaryOperators.Positive(args);
+        });
+
+        /// <summary>
+        /// Exposes the - operator as a function.
+        /// </summary>
+        public static readonly Function Negative = new Function(args => 
+        {
+            return Curry.MinOne(Negative, args) ??
+                UnaryOperators.Negative(args);
+        });
+
+        /// <summary>
+        /// Exposes the ! operator as a function.
+        /// </summary>
+        public static readonly Function Factorial = new Function(args => 
+        {
+            return Curry.MinOne(Factorial, args) ??
+                UnaryOperators.Factorial(args);
+        });
+
+        /// <summary>
+        /// Exposes the ' operator as a function.
+        /// </summary>
+        public static readonly Function Transpose = new Function(args => 
+        {
+            return Curry.MinOne(Transpose, args) ??
+                UnaryOperators.Transpose(args);
+        });
+
+        /// <summary>
+        /// Wraps the Math.Abs function.
+        /// </summary>
+        public static readonly Function Abs = new Function(args => 
+        {
+            return Curry.MinOne(Abs, args) ??
+                UnaryOperators.Abs(args);
+        });
+
+        /// <summary>
+        /// Exposes the & operator as a function.
+        /// </summary>
+        public static readonly Function Type = new Function(args => 
+        {
+            return Curry.MinOne(Type, args) ?? 
+                UnaryOperators.Type(args);
+        });
+
+        /// <summary>
         /// Wraps the Math.Sqrt function.
         /// </summary>
         public static readonly Function Sqrt = new Function(args => 
