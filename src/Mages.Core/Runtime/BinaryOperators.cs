@@ -6,59 +6,123 @@
 
     static class BinaryOperators
     {
+        #region Converter Fields
+
+        private static readonly Func<Object, Double> AsNumber = m => m.ToNumber();
+
+        #endregion
+
+        #region Add Fields
+
+        private static readonly Func<Double, Double, Object> AddNumbers = (y, x) => x + y;
+        private static readonly Func<Double[,], Double[,], Object> AddMatrices = (y, x) => x.Add(y);
+        private static readonly Func<String, String, Object> AddStrings = (y, x) => String.Concat(x, y);
+        private static readonly Func<Object, String, Object> AddAnyStr = (y, x) => String.Concat(x, Stringify.This(y));
+        private static readonly Func<String, Object, Object> AddStrAny = (y, x) => String.Concat(Stringify.This(x), y);
+
+        #endregion
+
+        #region Sub Fields
+
+        private static readonly Func<Double, Double, Object> SubNumbers = (y, x) => x - y;
+        private static readonly Func<Double[,], Double[,], Object> SubMatrices = (y, x) => x.Subtract(y);
+
+        #endregion
+
+        #region Mul Fields
+
+        private static readonly Func<Double, Double, Object> MulNumbers = (y, x) => x * y;
+        private static readonly Func<Double[,], Double[,], Object> MulMatrices = (y, x) => x.Multiply(y);
+        private static readonly Func<Double, Double[,], Object> MulNumMat = (y, x) => x.Multiply(y);
+        private static readonly Func<Double[,], Double, Object> MulMatNum = (y, x) => y.Multiply(x);
+
+        #endregion
+
+        #region RDiv Fields
+
+        private static readonly Func<Double, Double, Object> RDivNumbers = (y, x) => x / y;
+        private static readonly Func<Double, Double[,], Object> RDivNumMat = (y, x) => x.Divide(y);
+
+        #endregion
+
+        #region LDiv Fields
+
+        private static readonly Func<Double, Double, Object> LDivNumbers = (y, x) => y / x;
+        private static readonly Func<Double[,], Double, Object> LDivMatNum = (y, x) => y.Divide(x);
+
+        #endregion
+
+        #region Pow Fields
+
+        private static readonly Func<Double, Double, Object> PowNumbers = (y, x) => Math.Pow(x, y);
+        private static readonly Func<Double[,], Double[,], Object> PowMatrices = (y, x) => x.Pow(y);
+        private static readonly Func<Double[,], Double, Object> PowMatNum = (y, x) => x.Pow(y);
+        private static readonly Func<Double, Double[,], Object> PowNumMat = (y, x) => x.Pow(y);
+
+        #endregion
+
+        #region Other Fields
+
+        private static readonly Func<Double, Double, Object> ModNumbers = (y, x) => x % y;
+        private static readonly Func<Function, Object, Object> InvokeFunction = (f, arg) => f.Invoke(new[] { arg });
+
+        #endregion
+
+        #region Functions
+
         public static Object Add(Object[] args)
         {
-            return If.Is<Double, Double>(args, (y, x) => x + y) ??
-                If.Is<Double[,], Double[,]>(args, (y, x) => x.Add(y)) ??
-                If.Is<String, String>(args, (y, x) => String.Concat(x, y)) ??
-                If.Is<Object, String>(args, (y, x) => String.Concat(x, Stringify.This(y))) ??
-                If.Is<String, Object>(args, (y, x) => String.Concat(Stringify.This(x), y)) ??
-                If.IsNotNull(args, m => m.ToNumber(), (y, x) => x + y);
+            return If.Is<Double, Double>(args, AddNumbers) ??
+                If.Is<Double[,], Double[,]>(args, AddMatrices) ??
+                If.Is<String, String>(args, AddStrings) ??
+                If.Is<Object, String>(args, AddAnyStr) ??
+                If.Is<String, Object>(args, AddStrAny) ??
+                If.IsNotNull(args, AsNumber, AddNumbers);
         }
 
         public static Object Sub(Object[] args)
         {
-            return If.Is<Double, Double>(args, (y, x) => x - y) ??
-                If.Is<Double[,], Double[,]>(args, (y, x) => x.Subtract(y)) ??
-                If.IsNotNull(args, m => m.ToNumber(), (y, x) => x - y);
+            return If.Is<Double, Double>(args, SubNumbers) ??
+                If.Is<Double[,], Double[,]>(args, SubMatrices) ??
+                If.IsNotNull(args, AsNumber, SubNumbers);
         }
         
         public static Object Mul(Object[] args)
         {
-            return If.Is<Double, Double>(args, (y, x) => x * y) ??
-                If.Is<Double[,], Double[,]>(args, (y, x) => x.Multiply(y)) ??
-                If.Is<Double, Double[,]>(args, (y, x) => x.Multiply(y)) ??
-                If.Is<Double[,], Double>(args, Matrix.Multiply) ??
-                If.IsNotNull(args, m => m.ToNumber(), (y, x) => x * y);
+            return If.Is<Double, Double>(args, MulNumbers) ??
+                If.Is<Double[,], Double[,]>(args, MulMatrices) ??
+                If.Is<Double, Double[,]>(args, MulNumMat) ??
+                If.Is<Double[,], Double>(args, MulMatNum) ??
+                If.IsNotNull(args, AsNumber, MulNumbers);
         }
 
         public static Object RDiv(Object[] args)
         {
-            return If.Is<Double, Double>(args, (y, x) => x / y) ??
-                If.Is<Double, Double[,]>(args, (y, x) => x.Divide(y)) ??
-                If.IsNotNull(args, m => m.ToNumber(), (y, x) => x / y);
+            return If.Is<Double, Double>(args, RDivNumbers) ??
+                If.Is<Double, Double[,]>(args, RDivNumMat) ??
+                If.IsNotNull(args, AsNumber, RDivNumbers);
         }
 
         public static Object LDiv(Object[] args)
         {
-            return If.Is<Double, Double>(args, (y, x) => y / x) ??
-                If.Is<Double[,], Double>(args, (y, x) => y.Divide(x)) ??
-                If.IsNotNull(args, m => m.ToNumber(), (y, x) => y / x);
+            return If.Is<Double, Double>(args, LDivNumbers) ??
+                If.Is<Double[,], Double>(args, LDivMatNum) ??
+                If.IsNotNull(args, AsNumber, LDivNumbers);
         }
 
         public static Object Pow(Object[] args)
         {
-            return If.Is<Double, Double>(args, (y, x) => Math.Pow(x, y)) ??
-                If.Is<Double[,], Double[,]>(args, (y, x) => x.Pow(y)) ??
-                If.Is<Double[,], Double>(args, (y, x) => x.Pow(y)) ??
-                If.Is<Double, Double[,]>(args, (y, x) => x.Pow(y)) ??
-                If.IsNotNull(args, m => m.ToNumber(), (y, x) => Math.Pow(x, y));
+            return If.Is<Double, Double>(args, PowNumbers) ??
+                If.Is<Double[,], Double[,]>(args, PowMatrices) ??
+                If.Is<Double[,], Double>(args, PowMatNum) ??
+                If.Is<Double, Double[,]>(args, PowNumMat) ??
+                If.IsNotNull(args, AsNumber, PowNumbers);
         }
 
         public static Object Mod(Object[] args)
         {
-            return If.Is<Double, Double>(args, (y, x) => x % y) ??
-                If.IsNotNull(args, m => m.ToNumber(), (y, x) => x % y);
+            return If.Is<Double, Double>(args, ModNumbers) ??
+                If.IsNotNull(args, AsNumber, ModNumbers);
         }
 
         public static Object And(Object[] args)
@@ -149,7 +213,9 @@
 
         public static Object Pipe(Object[] args)
         {
-            return If.Is<Function>(args, f => f.Invoke(new[] { args[1] }));
+            return If.Is<Function, Object>(args, InvokeFunction);
         }
+
+        #endregion
     }
 }
