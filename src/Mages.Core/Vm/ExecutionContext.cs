@@ -21,7 +21,7 @@
         /// <param name="scope">The global scope to use.</param>
         public ExecutionContext(IOperation[] operations, IDictionary<String, Object> scope)
         {
-            _stack = new Stack<Object>();
+            _stack = new Stack<Object>(64);
             _operations = operations;
             _scope = scope;
             _position = 0;
