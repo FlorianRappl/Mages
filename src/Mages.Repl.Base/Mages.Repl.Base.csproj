@@ -113,6 +113,10 @@
       <Project>{75fc4f51-4bb7-4f30-a0ca-80d91a5bdd62}</Project>
       <Name>Mages.Plugins.Random</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Mages.Plugins.Transpilers\Mages.Plugins.Transpilers.csproj">
+      <Project>{aab88537-6f7d-40a6-81a0-7ce6731fe0cb}</Project>
+      <Name>Mages.Plugins.Transpilers</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
