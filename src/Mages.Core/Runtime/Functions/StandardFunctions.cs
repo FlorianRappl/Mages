@@ -74,7 +74,7 @@
         });
 
         /// <summary>
-        /// Exposes the && operator as a function.
+        /// Exposes the &amp;&amp; operator as a function.
         /// </summary>
         public static readonly Function And = new Function(args => 
         {
@@ -209,7 +209,7 @@
         });
 
         /// <summary>
-        /// Exposes the & operator as a function.
+        /// Exposes the &amp; operator as a function.
         /// </summary>
         public static readonly Function Type = new Function(args => 
         {
