@@ -193,48 +193,24 @@
         /// <returns>The plugin if any.</returns>
         public static Plugin AddPlugin(this Engine engine, Type type)
         {
-            if (type.IsSealed && type.IsAbstract && type.Name.Length > 6 && type.Name.EndsWith("Plugin"))
+            if (type.Name.Length > 6 && type.Name.EndsWith("Plugin"))
             {
-                var flags = BindingFlags.Public | BindingFlags.Static;
-                var fields = type.GetFields(flags);
-                var properties = type.GetProperties(flags);
-                var methods = type.GetMethods(flags);
-                var meta = new Dictionary<String, String>();
-                var content = new Dictionary<String, Object>();
-                var plugin = new Plugin(meta, content);
-
-                foreach (var field in fields)
+                if (type.IsSealed && type.IsAbstract)
                 {
-                    if (field.FieldType == typeof(String))
-                    {
-                        var name = meta.Keys.FindName(field);
-                        var value = field.GetValue(null);
-                        meta.Add(name, value as String);
-                    }
+                    var plugin = ConstructStaticPlugin(type);
+                    engine.AddPlugin(plugin);
+                    return plugin;
                 }
 
-                foreach (var property in properties)
-                {
-                    if (property.GetIndexParameters().Length == 0 && property.CanRead && !property.IsSpecialName)
-                    {
-                        var name = content.Keys.FindName(property);
-                        var value = property.GetValue(null, null).WrapObject();
-                        content.Add(name, value);
-                    }
-                }
+                var constructor = type.GetConstructor(new[] { typeof(Engine) });
 
-                foreach (var method in methods)
+                if (constructor != null)
                 {
-                    if (!method.IsSpecialName)
-                    {
-                        var name = content.Keys.FindName(method);
-                        var value = method.WrapFunction(null);
-                        content.Add(name, value);
-                    }
+                    var obj = constructor.Invoke(new[] { engine });
+                    var plugin = ConstructInstancePlugin(obj);
+                    engine.AddPlugin(plugin);
+                    return plugin;
                 }
-
-                engine.AddPlugin(plugin);
-                return plugin;
             }
 
             return null;
@@ -338,6 +314,73 @@
             {
                 engine.SetConstant("this", engine.Scope);
             }
+        }
+
+        private static Dictionary<String, String> GetMetadata(Type type)
+        {
+            var flags = BindingFlags.Public | BindingFlags.Static;
+            var fields = type.GetFields(flags);
+            var meta = new Dictionary<String, String>();
+
+            foreach (var field in fields)
+            {
+                if (field.FieldType == typeof(String))
+                {
+                    var name = meta.Keys.FindName(field);
+                    var value = field.GetValue(null);
+                    meta.Add(name, value as String);
+                }
+            }
+
+            return meta;
+        }
+
+        private static Dictionary<String, Object> GetContent(IEnumerable<PropertyInfo> properties, IEnumerable<MethodInfo> methods, Object instance)
+        {
+            var content = new Dictionary<String, Object>();
+
+            foreach (var property in properties)
+            {
+                if (property.GetIndexParameters().Length == 0 && property.CanRead && !property.IsSpecialName)
+                {
+                    var name = content.Keys.FindName(property);
+                    var value = property.GetValue(instance, null).WrapObject();
+                    content.Add(name, value);
+                }
+            }
+
+            foreach (var method in methods)
+            {
+                if (!method.IsSpecialName)
+                {
+                    var name = content.Keys.FindName(method);
+                    var value = method.WrapFunction(instance);
+                    content.Add(name, value);
+                }
+            }
+
+            return content;
+        }
+
+        private static Plugin ConstructStaticPlugin(Type type)
+        {
+            var flags = BindingFlags.Public | BindingFlags.Static;
+            var properties = type.GetProperties(flags);
+            var methods = type.GetMethods(flags);
+            var meta = GetMetadata(type);
+            var content = GetContent(properties, methods, null);
+            return new Plugin(meta, content);
+        }
+
+        private static Plugin ConstructInstancePlugin(Object obj)
+        {
+            var type = obj.GetType();
+            var flags = BindingFlags.Public | BindingFlags.Instance;
+            var properties = type.GetProperties(flags);
+            var methods = type.GetMethods(flags);
+            var meta = GetMetadata(type);
+            var content = GetContent(properties, methods, obj);
+            return new Plugin(meta, content);
         }
 
         sealed class Placement : IPlacement
