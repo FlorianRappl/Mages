@@ -36,7 +36,16 @@
 
         protected override void InsertArguments(Int32 length, Action<Int32> argument)
         {
-            throw new NotImplementedException();
+            if (length > 0)
+            {
+                argument.Invoke(0);
+
+                for (var i = 1; i < length; i++)
+                {
+                    _buffer.Append(", ");
+                    argument.Invoke(i);
+                }
+            }
         }
 
         protected override void InsertAssignment(Action slot, Action value)
@@ -224,7 +233,9 @@
 
             for (var i = 0; i < length; i++)
             {
+                _buffer.Append("${ ");
                 replacement.Invoke(i);
+                _buffer.Append(" }");
                 args[i] = _buffer.ToString();
                 _buffer.Clear();
             }

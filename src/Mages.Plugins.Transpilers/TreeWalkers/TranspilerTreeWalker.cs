@@ -339,9 +339,26 @@
 
             InsertFunction(member, () => expression.Parameters.Accept(this), () =>
             {
-                _loops.Push(false);
-                expression.Body.Accept(this);
-                _loops.Pop();
+                var body = expression.Body;
+                var block = body as BlockStatement;
+
+                if (block != null)
+                {
+                    _loops.Push(false);
+
+                    foreach (var statement in block.Statements)
+                    {
+                        statement.Accept(this);
+                    }
+
+                    _loops.Pop();
+                }
+                else
+                {
+                    var simple = body as SimpleStatement;
+                    simple.Validate(this);
+                    InsertReturn(() => simple.Expression.Accept(this));
+                }
             });
         }
 
