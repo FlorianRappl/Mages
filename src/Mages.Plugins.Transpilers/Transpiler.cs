@@ -1,7 +1,6 @@
 ﻿namespace Mages.Plugins.Transpilers
 {
     using Mages.Core;
-    using Mages.Core.Ast;
     using Mages.Plugins.Transpilers.TreeWalkers;
     using System;
 
