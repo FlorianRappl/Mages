@@ -375,7 +375,7 @@
         private static Plugin ConstructInstancePlugin(Object obj)
         {
             var type = obj.GetType();
-            var flags = BindingFlags.Public | BindingFlags.Instance;
+            var flags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly;
             var properties = type.GetProperties(flags);
             var methods = type.GetMethods(flags);
             var meta = GetMetadata(type);
