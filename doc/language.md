@@ -232,7 +232,7 @@ Calling `f(1, 2, 3)` will return three. Similarly, `f(true, [1, 2, 3])` will ret
 f = () => args(0) + args(1);
 ```
 
-For calling `f(2, 3`)` we will therefore receive the result `5`, however, if we do provide less than two arguments we only get `null`. This is different to the behavior we usually see with named arguments, e.g.,
+For calling `f(2, 3)` we will therefore receive the result `5`, however, if we do provide less than two arguments we only get `null`. This is different to the behavior we usually see with named arguments, e.g.,
 
 ```C
 f = (x, y) => x + y;
