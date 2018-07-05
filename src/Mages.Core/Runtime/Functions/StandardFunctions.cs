@@ -927,6 +927,15 @@
         });
 
         /// <summary>
+        /// Contains the clip function.
+        /// </summary>
+        public static readonly Function Clip = new Function(args =>
+        {
+            return Curry.MinThree(Clamp, args) ??
+                If.Is<Double, Double, String>(args, (from, to, value) => value.Clip((int)from, (int)to));
+        });
+
+        /// <summary>
         /// Contains the clamp function.
         /// </summary>
         public static readonly Function Clamp = new Function(args =>

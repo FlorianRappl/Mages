@@ -92,6 +92,7 @@
             { "hasKey", StandardFunctions.HasKey },
             { "getValue", StandardFunctions.GetValue },
             { "shuffle", StandardFunctions.Shuffle },
+            { "clip", StandardFunctions.Clip },
             { "regex", StandardFunctions.Regex },
             { "lerp", StandardFunctions.Lerp },
             { "clamp", StandardFunctions.Clamp }

@@ -82,6 +82,28 @@
             return value;
         }
 
+        public static String Clip(this String value, Int32 from, Int32 to)
+        {
+            if (to < from)
+            {
+                return String.Empty;
+            }
+            else if (value.Length < from)
+            {
+                return String.Empty.PadLeft(1 + to - from);
+            }
+            else if (value.Length > to)
+            {
+                return value.Substring(from, 1 + to - from);
+            }
+            else if (value.Length <= to)
+            {
+                return value.Substring(from, value.Length - from);
+            }
+
+            return value;
+        }
+
         public static Double Clamp(this Double value, Double min, Double max)
         {
             return Math.Max(Math.Min(value, max), min);

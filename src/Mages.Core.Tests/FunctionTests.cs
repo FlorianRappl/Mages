@@ -704,6 +704,27 @@
         }
 
         [Test]
+        public void ClipWithStringMinCaseHit()
+        {
+            var result = "clip(1, 4, \"\") ".Eval();
+            Assert.AreEqual("    ", result);
+        }
+
+        [Test]
+        public void ClipWithStringMaxCaseHit()
+        {
+            var result = "clip(1, 4, \"foo\") ".Eval();
+            Assert.AreEqual("oo", result);
+        }
+
+        [Test]
+        public void ClipWithStringNormalCaseHit()
+        {
+            var result = "clip(1, 4, \"foooooo\") ".Eval();
+            Assert.AreEqual("oooo", result);
+        }
+
+        [Test]
         public void LerpWithInterpolationInBounds()
         {
             var result = "lerp(0, 5, 0.2)".Eval();
