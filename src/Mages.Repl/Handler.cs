@@ -15,6 +15,16 @@
             ResetCompletion = resetCompletion;
         }
 
+        public Handler(ConsoleKey key, ConsoleModifiers mod, Action h, Boolean resetCompletion = true)
+        {
+            var shift = mod.HasFlag(ConsoleModifiers.Shift);
+            var alt = mod.HasFlag(ConsoleModifiers.Alt);
+            var ctrl = mod.HasFlag(ConsoleModifiers.Control);
+            KeyInfo = new ConsoleKeyInfo((Char)0, key, shift, alt, ctrl);
+            KeyHandler = h;
+            ResetCompletion = resetCompletion;
+        }
+
         public Handler(Char c, Action h, Boolean resetCompletion = true)
         {
             // Use the "Zoom" as a flag that we only have a character.

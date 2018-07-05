@@ -57,7 +57,8 @@
 			    new Handler (ConsoleKey.RightArrow, CmdRight),
 			    new Handler (ConsoleKey.UpArrow, CmdUp, resetCompletion: false),
 			    new Handler (ConsoleKey.DownArrow, CmdDown, resetCompletion: false),
-			    new Handler (ConsoleKey.Enter, CmdDone, resetCompletion: false),
+                new Handler (ConsoleKey.Enter, ConsoleModifiers.Shift, CmdNewLine, resetCompletion: false),
+                new Handler (ConsoleKey.Enter, CmdDone, resetCompletion: false),
 			    new Handler (ConsoleKey.Backspace, CmdBackspace, resetCompletion: false),
 			    new Handler (ConsoleKey.Delete, CmdDeleteChar),
 			    new Handler (ConsoleKey.Tab, CmdTabOrComplete, resetCompletion: false),
@@ -572,6 +573,10 @@
                     {
                         _renderedText.Append("    ");
                     }
+                    else if (c == '\n')
+                    {
+                        _renderedText.AppendLine();
+                    }
                     else
                     {
                         _renderedText.Append('^');
@@ -632,6 +637,11 @@
             {
                 ForceCursor(newpos);
             }
+        }
+
+        private void InsertNewLine()
+        {
+            InsertChar('\n');
         }
 
         private void InsertChar(Char c)
@@ -932,6 +942,12 @@
                 ComputeRendered();
                 RenderAfter(pos);
             }
+        }
+
+        private void CmdNewLine()
+        {
+            HideCompletions();
+            InsertNewLine();
         }
 
         private void CmdDone()
