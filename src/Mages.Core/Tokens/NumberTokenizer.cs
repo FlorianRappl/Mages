@@ -46,8 +46,8 @@
             private readonly TextPosition _start;
 
             private List<ParseError> _errors;
-            private Int64 _value;
-            private Int16 _digits;
+            private UInt64 _value;
+            private UInt16 _digits;
             private Int32 _powers;
 
             public NumberState(IScanner scanner)
@@ -109,7 +109,7 @@
             {
                 while (_scanner.Current.IsDigit())
                 {
-                    _value = _value * 10L + _scanner.Current - CharacterTable.Zero;
+                    _value = _value * 10UL + (UInt64)(_scanner.Current - CharacterTable.Zero);
 
                     if (!_scanner.MoveNext())
                     {
@@ -141,7 +141,7 @@
 
                 for (var i = numbers.Count - 1; i >= 0; --i)
                 {
-                    _value += numbers[i] * weight;
+                    _value += (UInt64)(numbers[i] * weight);
                     weight *= 2;
                 }
 
@@ -160,7 +160,7 @@
 
                 for (var i = numbers.Count - 1; i >= 0; --i)
                 {
-                    _value += numbers[i] * weight;
+                    _value += (UInt64)(numbers[i] * weight);
                     weight *= 16;
                 }
 
@@ -171,7 +171,7 @@
             {
                 while (_scanner.Current.IsDigit())
                 {
-                    _value = _value * 10L + _scanner.Current - CharacterTable.Zero;
+                    _value = _value * 10UL + (UInt64)(_scanner.Current - CharacterTable.Zero);
                     _digits++;
 
                     if (!_scanner.MoveNext())
