@@ -56,6 +56,18 @@
         }
 
         [Test]
+        public void NumberScannerLargeValue()
+        {
+            var source = "9223372036854775807";
+            var scanner = new StringScanner(source);
+            Assert.IsTrue(scanner.MoveNext());
+            var tokenizer = new NumberTokenizer();
+            var result = tokenizer.Next(scanner);
+            Assert.IsInstanceOf<NumberToken>(result);
+            Assert.AreEqual(9223372036854776000.0, ((NumberToken)result).Value);
+        }
+
+        [Test]
         public void NumberScannerScientificPlus()
         {
             var source = "1e+1";

@@ -36,7 +36,7 @@ var releaseDir = squirrelRoot + Directory("release");
 // Initialization
 // ----------------------------------------
 
-Setup(() =>
+Setup(context =>
 {
     Information("Building version {0} of MAGES.", version);
     Information("For the publish target the following environment variables need to be set:");

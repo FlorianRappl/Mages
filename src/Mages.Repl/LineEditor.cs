@@ -1,6 +1,8 @@
 ﻿namespace Mages.Repl
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Text;
     using System.Threading;
 
@@ -8,31 +10,150 @@
     {
         #region Constants
 
-        private const Int32 MinWidth = 12;
-        private const Int32 MaxWidth = 50;
+        private const Int32 CompletionMinWidth = 12;
+        private const Int32 CompletionMaxWidth = 50;
 
         #endregion
 
         #region Fields
 
-        private readonly StringBuilder _availableText;
-        private readonly StringBuilder _renderedText;
+        private readonly List<Line> _lines;
         private readonly Handler[] _handlers;
         private readonly History _history;
+        private Int32 _lineIndex;
         private Boolean _done;
         private String _prompt;
-        private String _shownPrompt;
-        private Int32 _cursorPosition;
+        private Int32 _position;
         private Int32 _homeRow;
-        private Int32 _maxRendered;
         private Thread _editThread;
-        private String _killBuffer;
-        private String _search;
-        private String _lastSearch;
-        private Int32 _searching;
-        private Int32 _matchAt;
-        private Action _lastHandler;
         private CompletionState _completion;
+
+        #endregion
+
+        #region Line
+
+        class Line
+        {
+            public readonly StringBuilder _availableText;
+            public readonly StringBuilder _renderedText;
+            private Int32 _maxRendered;
+
+            public Line(String text)
+            {
+                _availableText = new StringBuilder(text);
+                _renderedText = new StringBuilder();
+                _maxRendered = 0;
+                ComputeRendered();
+            }
+
+            public Int32 Length
+            {
+                get { return _availableText.Length; }
+            }
+
+            public Int32 GetLineCount(Int32 offset)
+            {
+                return 1 + (offset + _renderedText.Length) / Console.WindowWidth;
+            }
+
+            public void ComputeRendered()
+            {
+                _renderedText.Length = 0;
+
+                for (var i = 0; i < _availableText.Length; i++)
+                {
+                    var c = (Int32)_availableText[i];
+
+                    if (c < 26)
+                    {
+                        if (c == '\t')
+                        {
+                            _renderedText.Append("    ");
+                        }
+                        else
+                        {
+                            _renderedText.Append('^');
+                            _renderedText.Append((Char)(c + (Int32)'A' - 1));
+                        }
+                    }
+                    else
+                    {
+                        _renderedText.Append((Char)c);
+                    }
+                }
+            }
+
+            public void RenderFrom(Int32 pos)
+            {
+                var i = TextToRenderPos(pos);
+
+                while (i < _renderedText.Length)
+                {
+                    Console.Write(_renderedText[i++]);
+                }
+
+                if (_renderedText.Length > _maxRendered)
+                {
+                    _maxRendered = _renderedText.Length;
+                }
+                else
+                {
+                    for (; i < _maxRendered; i++)
+                    {
+                        Console.Write(' ');
+                    }
+                }
+            }
+
+            public Int32 TextToRenderPos(Int32 pos)
+            {
+                var p = 0;
+
+                for (var i = 0; i < pos; i++)
+                {
+                    var c = (Int32)_availableText[i];
+
+                    if (c < 26)
+                    {
+                        p += (c == 9 ? 4 : 2);
+                    }
+                    else
+                    {
+                        p++;
+                    }
+                }
+
+                return p;
+            }
+
+            public void Render()
+            {
+                Console.Write(_renderedText);
+
+                for (var i = _renderedText.Length; i <= _maxRendered; i++)
+                {
+                    Console.Write(' ');
+                }
+
+                _maxRendered = _renderedText.Length;
+            }
+
+            public void Append(Line line)
+            {
+                _availableText.Append(line._availableText.ToString());
+                _renderedText.Append(line._renderedText.ToString());
+                _maxRendered = Math.Max(_maxRendered, _renderedText.Length);
+            }
+
+            public String Cut(Int32 pos)
+            {
+                var len = _availableText.Length - pos;
+                var rest = _availableText.ToString(pos, len);
+                _availableText.Remove(pos, len);
+                ComputeRendered();
+                return rest;
+            }
+        }
 
         #endregion
 
@@ -46,55 +167,37 @@
 
         public LineEditor(History history)
         {
-            _killBuffer = String.Empty;
-            _search = String.Empty;
             _done = false;
             _handlers = new[]
             {
-			    new Handler (ConsoleKey.Home, CmdHome),
-			    new Handler (ConsoleKey.End, CmdEnd),
-			    new Handler (ConsoleKey.LeftArrow, CmdLeft),
-			    new Handler (ConsoleKey.RightArrow, CmdRight),
-			    new Handler (ConsoleKey.UpArrow, CmdUp, resetCompletion: false),
-			    new Handler (ConsoleKey.DownArrow, CmdDown, resetCompletion: false),
-			    new Handler (ConsoleKey.Enter, CmdDone, resetCompletion: false),
-			    new Handler (ConsoleKey.Backspace, CmdBackspace, resetCompletion: false),
-			    new Handler (ConsoleKey.Delete, CmdDeleteChar),
-			    new Handler (ConsoleKey.Tab, CmdTabOrComplete, resetCompletion: false),
-				
-			    // Emacs keys
-			    Handler.Control ('A', CmdHome),
-			    Handler.Control ('E', CmdEnd),
-			    Handler.Control ('B', CmdLeft),
-			    Handler.Control ('F', CmdRight),
-			    Handler.Control ('P', CmdUp, resetCompletion: false),
-			    Handler.Control ('N', CmdDown, resetCompletion: false),
-			    Handler.Control ('K', CmdKillToEOF),
-			    Handler.Control ('Y', CmdYank),
-			    Handler.Control ('D', CmdDeleteChar),
-			    Handler.Control ('L', CmdRefresh),
-			    Handler.Control ('R', CmdReverseSearch),
-			    Handler.Control ('G', delegate {} ),
-			    Handler.Alt ('B', ConsoleKey.B, CmdBackwardWord),
-			    Handler.Alt ('F', ConsoleKey.F, CmdForwardWord),
-				
-			    Handler.Alt ('D', ConsoleKey.D, CmdDeleteWord),
-			    Handler.Alt ((char) 8, ConsoleKey.Backspace, CmdDeleteBackword),
-			    Handler.Control ('Q', delegate { HandleChar (Console.ReadKey (true).KeyChar); })
+                new Handler(ConsoleKey.Home, CmdHome),
+                new Handler(ConsoleKey.End, CmdEnd),
+                new Handler(ConsoleKey.LeftArrow, CmdLeft),
+                new Handler(ConsoleKey.RightArrow, CmdRight),
+                new Handler(ConsoleKey.LeftArrow, ConsoleModifiers.Control, CmdBackwardWord),
+                new Handler(ConsoleKey.RightArrow, ConsoleModifiers.Control, CmdForwardWord),
+                new Handler(ConsoleKey.UpArrow, CmdUp, resetCompletion: false),
+                new Handler(ConsoleKey.DownArrow, CmdDown, resetCompletion: false),
+                new Handler(ConsoleKey.Enter, CmdDone, resetCompletion: false),
+                new Handler(ConsoleKey.Backspace, CmdBackspace, resetCompletion: false),
+                new Handler(ConsoleKey.Delete, CmdDeleteChar),
+                new Handler(ConsoleKey.Tab, CmdTabOrComplete, resetCompletion: false),
+                new Handler(ConsoleKey.Backspace, ConsoleModifiers.Control, CmdDeleteBackword),
+                new Handler(ConsoleKey.Delete, ConsoleModifiers.Control, CmdDeleteWord),
+                new Handler(ConsoleKey.Enter, ConsoleModifiers.Shift, CmdNewLine),
             };
-            _renderedText = new StringBuilder();
-            _availableText = new StringBuilder();
-            _history = history; 
+            _lines = new List<Line>();
+            _history = history;
         }
 
         #endregion
 
         #region Properties
 
-        public Boolean IsFirstTabCompleting 
-        { 
-            get; 
-            set; 
+        public Boolean IsFirstTabCompleting
+        {
+            get;
+            set;
         }
 
         public Boolean IsDotCompleting
@@ -105,17 +208,22 @@
 
         public String AvailableText
         {
-            get { return _availableText.ToString(); }
+            get { return String.Join(Environment.NewLine, _lines.Select(line => line._availableText.ToString())); }
         }
 
         public Int32 LineCount
         {
-            get { return (_shownPrompt.Length + _renderedText.Length) / Console.WindowWidth; }
+            get { return _lines.Sum(line => line.GetLineCount(_prompt.Length)); }
         }
 
         public String Prompt
         {
             get { return _prompt; }
+        }
+
+        private Line CurrentLine
+        {
+            get { return _lines[_lineIndex]; }
         }
 
         #endregion
@@ -131,16 +239,14 @@
         public String Edit(String prompt, String initial)
         {
             _editThread = Thread.CurrentThread;
-            _searching = 0;
 
             _done = false;
             _history.CursorToEnd();
-            _maxRendered = 0;
-
             _prompt = prompt;
-            _shownPrompt = prompt;
-            InitText(initial);
+            _homeRow = Console.CursorTop;
             _history.Append(initial);
+
+            InitText(initial);
 
             do
             {
@@ -158,7 +264,7 @@
             while (!_done);
 
             Console.WriteLine();
-            var result = _availableText.ToString();
+            var result = AvailableText;
 
             if (String.IsNullOrEmpty(result))
             {
@@ -200,11 +306,11 @@
 
             if (IsDotCompleting && insertedChar == '.')
             {
-                if (_cursorPosition > 1 && Char.IsDigit(_availableText[_cursorPosition - 2]))
+                if (_position > 1 && Char.IsDigit(CurrentLine._availableText[_position - 2]))
                 {
-                    for (var p = _cursorPosition - 3; p >= 0; p--)
+                    for (var p = _position - 3; p >= 0; p--)
                     {
-                        var c = _availableText[p];
+                        var c = CurrentLine._availableText[p];
 
                         if (Char.IsDigit(c))
                         {
@@ -228,20 +334,13 @@
 
         private void HandleChar(Char c)
         {
-            if (_searching == 0)
-            {
-                var completing = _completion != null;
-                HideCompletions();
-                InsertChar(c);
+            var completing = _completion != null;
+            HideCompletions();
+            InsertChar(c);
 
-                if (HeuristicAutoComplete(completing, c))
-                {
-                    UpdateCompletionWindow();
-                }
-            }
-            else
+            if (HeuristicAutoComplete(completing, c))
             {
-                SearchAppend(c);
+                UpdateCompletionWindow();
             }
         }
 
@@ -286,26 +385,11 @@
                         }
 
                         handler.KeyHandler();
-                        _lastHandler = handler.KeyHandler;
                         break;
                     }
                 }
-
-                if (handled)
-                {
-                    if (_searching != 0)
-                    {
-                        if (_lastHandler != CmdReverseSearch)
-                        {
-                            _searching = 0;
-                            SetPrompt(_prompt);
-                        }
-                    }
-
-                    continue;
-                }
-
-                if (cki.KeyChar != (Char)0)
+                
+                if (!handled && cki.KeyChar != (Char)0)
                 {
                     HandleChar(cki.KeyChar);
                 }
@@ -314,145 +398,81 @@
 
         private void InitText(String initial)
         {
-            _availableText.Clear().Append(initial);
-            ComputeRendered();
-            _cursorPosition = _availableText.Length;
+            var lines = initial.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+            _lines.Clear();
+
+            foreach (var line in lines)
+            {
+                _lineIndex = _lines.Count;
+                _lines.Add(new Line(line));
+            }
+
+            CurrentLine.ComputeRendered();
+            _position = CurrentLine.Length;
             Render();
-            ForceCursor(_cursorPosition);
+            ForceCursor(_position);
         }
 
         private void SetText(String newtext)
         {
+            Clear(LineCount);
             Console.SetCursorPosition(0, _homeRow);
-            InitText(newtext);
-        }
-
-        private void SetPrompt(String newprompt)
-        {
-            _shownPrompt = newprompt;
-            Console.SetCursorPosition(0, _homeRow);
-            Render();
-            ForceCursor(_cursorPosition);
-        }
-
-        private void SearchAppend(Char c)
-        {
-            _search = _search + c;
-            SetSearchPrompt(_search);
-
-            if (_cursorPosition < _availableText.Length)
-            {
-                var r = _availableText.ToString(_cursorPosition, _availableText.Length - _cursorPosition);
-
-                if (r.StartsWith(_search))
-                {
-                    return;
-                }
-            }
-
-            ReverseSearch();
+            InitText(newtext ?? String.Empty);
         }
 
         private void HistoryUpdateLine()
         {
-            _history.Update(_availableText.ToString());
+            _history.Update(AvailableText);
         }
 
         private void InsertTextAtCursor(String str)
         {
             var prev_lines = LineCount;
-            _availableText.Insert(_cursorPosition, str);
-            ComputeRendered();
+            CurrentLine._availableText.Insert(_position, str);
+            CurrentLine.ComputeRendered();
 
             if (prev_lines != LineCount)
             {
                 Console.SetCursorPosition(0, _homeRow);
                 Render();
-                _cursorPosition += str.Length;
-                ForceCursor(_cursorPosition);
+                _position += str.Length;
+                ForceCursor(_position);
             }
             else
             {
-                RenderFrom(_cursorPosition);
-                _cursorPosition += str.Length;
-                ForceCursor(_cursorPosition);
-                UpdateHomeRow(TextToScreenPos(_cursorPosition));
-            }
-        }
-
-        private void SetSearchPrompt(String s)
-        {
-            SetPrompt("(reverse-i-search)`" + s + "': ");
-        }
-
-        private void ReverseSearch()
-        {
-            if (_cursorPosition == _availableText.Length)
-            {
-                var p = _availableText.ToString().LastIndexOf(_search);
-
-                if (p != -1)
-                {
-                    _matchAt = p;
-                    _cursorPosition = p;
-                    ForceCursor(_cursorPosition);
-                    return;
-                }
-            }
-            else
-            {
-                var start = (_cursorPosition == _matchAt) ? _cursorPosition - 1 : _cursorPosition;
-
-                if (start != -1)
-                {
-                    var p = _availableText.ToString().LastIndexOf(_search, start);
-
-                    if (p != -1)
-                    {
-                        _matchAt = p;
-                        _cursorPosition = p;
-                        ForceCursor(_cursorPosition);
-                        return;
-                    }
-                }
-            }
-
-            HistoryUpdateLine();
-            var s = _history.SearchBackward(_search);
-
-            if (s != null)
-            {
-                _matchAt = -1;
-                SetText(s);
-                ReverseSearch();
+                CurrentLine.RenderFrom(_position);
+                _position += str.Length;
+                ForceCursor(_position);
             }
         }
 
         private Int32 WordForward(Int32 p)
         {
-            if (p < _availableText.Length)
+            var currentText = CurrentLine._availableText;
+
+            if (p < currentText.Length)
             {
                 var i = p;
 
-                if (Char.IsPunctuation(_availableText[p]) || Char.IsSymbol(_availableText[p]) || Char.IsWhiteSpace(_availableText[p]))
+                if (Char.IsPunctuation(currentText[p]) || Char.IsSymbol(currentText[p]) || Char.IsWhiteSpace(currentText[p]))
                 {
-                    for (; i < _availableText.Length; i++)
+                    for (; i < currentText.Length; i++)
                     {
-                        if (Char.IsLetterOrDigit(_availableText[i]))
+                        if (Char.IsLetterOrDigit(currentText[i]))
                             break;
                     }
 
-                    for (; i < _availableText.Length; i++)
+                    for (; i < currentText.Length; i++)
                     {
-                        if (!Char.IsLetterOrDigit(_availableText[i]))
+                        if (!Char.IsLetterOrDigit(currentText[i]))
                             break;
                     }
                 }
                 else
                 {
-                    for (; i < _availableText.Length; i++)
+                    for (; i < currentText.Length; i++)
                     {
-                        if (!Char.IsLetterOrDigit(_availableText[i]))
+                        if (!Char.IsLetterOrDigit(currentText[i]))
                             break;
                     }
                 }
@@ -470,6 +490,8 @@
         {
             if (p != 0)
             {
+                var currentText = CurrentLine._availableText;
+
                 var i = p - 1;
 
                 if (i == 0)
@@ -477,17 +499,17 @@
                     return 0;
                 }
 
-                if (Char.IsPunctuation(_availableText[i]) || Char.IsSymbol(_availableText[i]) || Char.IsWhiteSpace(_availableText[i]))
+                if (Char.IsPunctuation(currentText[i]) || Char.IsSymbol(currentText[i]) || Char.IsWhiteSpace(currentText[i]))
                 {
                     for (; i >= 0; i--)
                     {
-                        if (Char.IsLetterOrDigit(_availableText[i]))
+                        if (Char.IsLetterOrDigit(currentText[i]))
                             break;
                     }
 
                     for (; i >= 0; i--)
                     {
-                        if (!Char.IsLetterOrDigit(_availableText[i]))
+                        if (!Char.IsLetterOrDigit(currentText[i]))
                             break;
                     }
                 }
@@ -495,7 +517,7 @@
                 {
                     for (; i >= 0; i--)
                     {
-                        if (!Char.IsLetterOrDigit(_availableText[i]))
+                        if (!Char.IsLetterOrDigit(currentText[i]))
                             break;
                     }
                 }
@@ -511,111 +533,33 @@
 
         private void Render()
         {
-            var max = Math.Max(_renderedText.Length + _shownPrompt.Length, _maxRendered);
+            var offset = _prompt.Length;
+            var rows = 0;
+            Console.SetCursorPosition(0, _homeRow);
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.Write(_shownPrompt);
+            Console.Write(_prompt);
             Console.ResetColor();
-            Console.Write(_renderedText);
 
-            for (var i = _renderedText.Length + _shownPrompt.Length; i < _maxRendered; i++)
+            for (var i = 0; i < _lines.Count; i++)
             {
-                Console.Write(' ');
+                var row = _homeRow + rows;
+                Console.SetCursorPosition(offset, row);
+                _lines[i].Render();
+                rows += _lines[i].GetLineCount(offset);
             }
-
-            _maxRendered = _shownPrompt.Length + _renderedText.Length;
-            Console.Write(' ');
-            UpdateHomeRow(max);
-        }
-
-        private void UpdateHomeRow(Int32 screenpos)
-        {
-            var lines = 1 + (screenpos / Console.WindowWidth);
-            _homeRow = Math.Max(0, Console.CursorTop - (lines - 1));
-        }
-
-        private void RenderFrom(Int32 pos)
-        {
-            var rpos = TextToRenderPos(pos);
-            var i = rpos;
-
-            while (i < _renderedText.Length)
-            {
-                Console.Write(_renderedText[i++]);
-            }
-
-            if ((_shownPrompt.Length + _renderedText.Length) > _maxRendered)
-            {
-                _maxRendered = _shownPrompt.Length + _renderedText.Length;
-            }
-            else
-            {
-                var max_extra = _maxRendered - _shownPrompt.Length;
-
-                for (; i < max_extra; i++)
-                {
-                    Console.Write(' ');
-                }
-            }
-        }
-
-        private void ComputeRendered()
-        {
-            _renderedText.Length = 0;
-
-            for (var i = 0; i < _availableText.Length; i++)
-            {
-                var c = (Int32)_availableText[i];
-
-                if (c < 26)
-                {
-                    if (c == '\t')
-                    {
-                        _renderedText.Append("    ");
-                    }
-                    else
-                    {
-                        _renderedText.Append('^');
-                        _renderedText.Append((Char)(c + (Int32)'A' - 1));
-                    }
-                }
-                else
-                {
-                    _renderedText.Append((Char)c);
-                }
-            }
-        }
-
-        private Int32 TextToRenderPos(Int32 pos)
-        {
-            var p = 0;
-
-            for (var i = 0; i < pos; i++)
-            {
-                var c = (Int32)_availableText[i];
-
-                if (c < 26)
-                {
-                    p += (c == 9 ? 4 : 2);
-                }
-                else
-                {
-                    p++;
-                }
-            }
-
-            return p;
         }
 
         private Int32 TextToScreenPos(Int32 pos)
         {
-            return _shownPrompt.Length + TextToRenderPos(pos);
+            return _prompt.Length + CurrentLine.TextToRenderPos(pos);
         }
 
         private void ForceCursor(Int32 newpos)
         {
-            _cursorPosition = newpos;
-            var actual_pos = _shownPrompt.Length + TextToRenderPos(_cursorPosition);
-            var row = _homeRow + (actual_pos / Console.WindowWidth);
+            _position = Math.Min(newpos, CurrentLine.Length);
+            var homeRow = GetCurrentHomeRow();
+            var actual_pos = _prompt.Length + CurrentLine.TextToRenderPos(_position);
+            var row = homeRow + (actual_pos / Console.WindowWidth);
             var col = actual_pos % Console.WindowWidth;
 
             if (row >= Console.BufferHeight)
@@ -626,9 +570,21 @@
             Console.SetCursorPosition(col, row);
         }
 
+        private Int32 GetCurrentHomeRow()
+        {
+            var row = _homeRow;
+
+            for (var i = 0; i < _lineIndex; i++)
+            {
+                row += _lines[i].GetLineCount(_prompt.Length);
+            }
+
+            return row;
+        }
+
         private void UpdateCursor(Int32 newpos)
         {
-            if (_cursorPosition != newpos)
+            if (_position != newpos)
             {
                 ForceCursor(newpos);
             }
@@ -637,27 +593,26 @@
         private void InsertChar(Char c)
         {
             var prev_lines = LineCount;
-            _availableText.Insert(_cursorPosition, c);
-            ComputeRendered();
+            CurrentLine._availableText.Insert(_position, c);
+            CurrentLine.ComputeRendered();
 
             if (prev_lines != LineCount)
             {
                 Console.SetCursorPosition(0, _homeRow);
                 Render();
-                ForceCursor(++_cursorPosition);
+                ForceCursor(++_position);
             }
             else
             {
-                RenderFrom(_cursorPosition);
-                ForceCursor(++_cursorPosition);
-                UpdateHomeRow(TextToScreenPos(_cursorPosition));
+                CurrentLine.RenderFrom(_position);
+                ForceCursor(++_position);
             }
         }
 
         private void ShowCompletions(String prefix, String[] completions)
         {
             var height = Math.Min(completions.Length, Console.WindowHeight / 5);
-            var width = MinWidth;
+            var width = CompletionMinWidth;
             var current = Console.CursorTop;
 
             if (current >= Console.WindowHeight - height)
@@ -681,7 +636,7 @@
                 width = Math.Max(prefix.Length + s.Length, width);
             }
 
-            width = Math.Min(width, MaxWidth);
+            width = Math.Min(width, CompletionMaxWidth);
 
             if (_completion == null)
             {
@@ -719,7 +674,7 @@
 
         private void Complete()
         {
-            var completion = AutoCompleteEvent(_availableText.ToString(), _cursorPosition);
+            var completion = AutoCompleteEvent(AvailableText, _position);
             var completions = completion.Result;
 
             if (completions == null)
@@ -765,7 +720,7 @@
                     last = p;
                 }
 
-            mismatch:
+                mismatch:
                 var prefix = completion.Prefix;
 
                 if (last != -1)
@@ -783,7 +738,7 @@
 
                 ShowCompletions(prefix, completions);
                 Render();
-                ForceCursor(_cursorPosition);
+                ForceCursor(_position);
             }
         }
 
@@ -792,7 +747,7 @@
             if (_completion != null)
                 throw new Exception("This method should only be called if the window has been hidden");
 
-            var completion = AutoCompleteEvent(_availableText.ToString(), _cursorPosition);
+            var completion = AutoCompleteEvent(AvailableText, _position);
             var completions = completion.Result;
 
             if (completions != null)
@@ -803,7 +758,41 @@
                 {
                     ShowCompletions(completion.Prefix, completion.Result);
                     Render();
-                    ForceCursor(_cursorPosition);
+                    ForceCursor(_position);
+                }
+            }
+        }
+
+        private void RenderAfter(Int32 p)
+        {
+            ForceCursor(p);
+            CurrentLine.RenderFrom(p);
+            ForceCursor(_position);
+        }
+
+        private void MergeLines(Int32 startIndex)
+        {
+            var primary = _lines[startIndex];
+            var secondary = _lines[startIndex + 1];
+            var position = primary.Length;
+            var height = LineCount;
+            _lines.Remove(secondary);
+            _lineIndex = startIndex;
+            primary.Append(secondary);
+            Clear(height);
+            Render();
+            ForceCursor(position);
+        }
+
+        private void Clear(Int32 height)
+        {
+            for (var j = 0; j < height; j++)
+            {
+                Console.SetCursorPosition(0, _homeRow + j);
+
+                for (var i = 0; i < Console.WindowWidth; i++)
+                {
+                    Console.Write(' ');
                 }
             }
         }
@@ -811,43 +800,6 @@
         #endregion
 
         #region Commands
-
-        private void CmdReverseSearch()
-        {
-            if (_searching == 0)
-            {
-                _matchAt = -1;
-                _lastSearch = _search;
-                _searching = -1;
-                _search = String.Empty;
-                SetSearchPrompt(String.Empty);
-            }
-            else
-            {
-                if (String.IsNullOrEmpty(_search))
-                {
-                    if (!String.IsNullOrEmpty(_lastSearch))
-                    {
-                        _search = _lastSearch;
-                        SetSearchPrompt(_search);
-
-                        ReverseSearch();
-                    }
-
-                    return;
-                }
-
-                ReverseSearch();
-            }
-        }
-
-        private void CmdRefresh()
-        {
-            Console.Clear();
-            _maxRendered = 0;
-            Render();
-            ForceCursor(_cursorPosition);
-        }
 
         private void CmdHistoryPrev()
         {
@@ -862,76 +814,75 @@
         {
             if (_history.NextAvailable())
             {
-                _history.Update(_availableText.ToString());
+                _history.Update(AvailableText);
                 SetText(_history.Next());
             }
         }
 
         private void CmdUp()
         {
-            if (_completion == null)
+            if (_completion != null)
             {
-                CmdHistoryPrev();
+                _completion.SelectPrevious();
+            }
+            else if (_lineIndex > 0)
+            {
+                _lineIndex--;
+                ForceCursor(_position);
             }
             else
             {
-                _completion.SelectPrevious();
+                CmdHistoryPrev();
             }
         }
 
         private void CmdDown()
         {
-            if (_completion == null)
-            {
-                CmdHistoryNext();
-            }
-            else
+            if (_completion != null)
             {
                 _completion.SelectNext();
             }
-        }
-
-        private void CmdKillToEOF()
-        {
-            _killBuffer = _availableText.ToString(_cursorPosition, _availableText.Length - _cursorPosition);
-            _availableText.Length = _cursorPosition;
-            ComputeRendered();
-            RenderAfter(_cursorPosition);
-        }
-
-        private void CmdYank()
-        {
-            InsertTextAtCursor(_killBuffer);
+            else if (_lineIndex + 1 < _lines.Count)
+            {
+                _lineIndex++;
+                ForceCursor(_position);
+            }
+            else
+            {
+                CmdHistoryNext();
+            }
         }
 
         private void CmdDeleteWord()
         {
-            var pos = WordForward(_cursorPosition);
+            var pos = WordForward(_position);
 
             if (pos != -1)
             {
-                var k = _availableText.ToString(_cursorPosition, pos - _cursorPosition);
-                var o = _lastHandler == CmdDeleteWord ? _killBuffer : String.Empty;
-                _killBuffer = k + o;
-                _availableText.Remove(_cursorPosition, pos - _cursorPosition);
-                ComputeRendered();
-                RenderAfter(_cursorPosition);
+                CurrentLine._availableText.Remove(_position, pos - _position);
+                CurrentLine.ComputeRendered();
+                RenderAfter(_position);
             }
         }
 
         private void CmdDeleteBackword()
         {
-            var pos = WordBackward(_cursorPosition);
+            var pos = WordBackward(_position);
 
             if (pos != -1)
             {
-                var k = _availableText.ToString(pos, _cursorPosition - pos);
-                var o = _lastHandler == CmdDeleteBackword ? _killBuffer : String.Empty;
-                _killBuffer = k + o;
-                _availableText.Remove(pos, _cursorPosition - pos);
-                ComputeRendered();
+                CurrentLine._availableText.Remove(pos, _position - pos);
+                CurrentLine.ComputeRendered();
                 RenderAfter(pos);
             }
+        }
+
+        private void CmdNewLine()
+        {
+            var rest = CurrentLine.Cut(_position);
+            _lines.Insert(++_lineIndex, new Line(rest));
+            Render();
+            ForceCursor(0);
         }
 
         private void CmdDone()
@@ -958,9 +909,9 @@
                 }
                 else
                 {
-                    for (var i = 0; i < _cursorPosition; i++)
+                    for (var i = 0; i < _position; i++)
                     {
-                        if (!Char.IsWhiteSpace(_availableText[i]))
+                        if (!Char.IsWhiteSpace(CurrentLine._availableText[i]))
                         {
                             complete = true;
                             break;
@@ -990,20 +941,12 @@
 
         private void CmdEnd()
         {
-            UpdateCursor(_availableText.Length);
-        }
-
-        private void CmdLeft()
-        {
-            if (_cursorPosition != 0)
-            {
-                UpdateCursor(_cursorPosition - 1);
-            }
+            UpdateCursor(CurrentLine.Length);
         }
 
         private void CmdBackwardWord()
         {
-            var p = WordBackward(_cursorPosition);
+            var p = WordBackward(_position);
 
             if (p != -1)
             {
@@ -1013,7 +956,7 @@
 
         private void CmdForwardWord()
         {
-            var p = WordForward(_cursorPosition);
+            var p = WordForward(_position);
 
             if (p != -1)
             {
@@ -1021,52 +964,64 @@
             }
         }
 
-        private void CmdRight()
+        private void CmdLeft()
         {
-            if (_cursorPosition != _availableText.Length)
+            if (_position != 0)
             {
-                UpdateCursor(_cursorPosition + 1);
+                UpdateCursor(_position - 1);
+            }
+            else if (_lineIndex > 0)
+            {
+                _lineIndex--;
+                UpdateCursor(CurrentLine.Length);
             }
         }
 
-        private void RenderAfter(Int32 p)
+        private void CmdRight()
         {
-            ForceCursor(p);
-            RenderFrom(p);
-            ForceCursor(_cursorPosition);
+            if (_position != CurrentLine.Length)
+            {
+                UpdateCursor(_position + 1);
+            }
+            else if (_lineIndex + 1 < _lines.Count)
+            {
+                _lineIndex++;
+                UpdateCursor(0);
+            }
         }
 
         private void CmdBackspace()
         {
-            if (_cursorPosition != 0)
+            if (_position != 0)
             {
                 var completing = _completion != null;
                 HideCompletions();
-                _availableText.Remove(--_cursorPosition, 1);
-                ComputeRendered();
-                RenderAfter(_cursorPosition);
+                CurrentLine._availableText.Remove(--_position, 1);
+                CurrentLine.ComputeRendered();
+                RenderAfter(_position);
 
                 if (completing)
                 {
                     UpdateCompletionWindow();
                 }
             }
+            else if (_lineIndex > 0)
+            {
+                MergeLines(_lineIndex - 1);
+            }
         }
 
         private void CmdDeleteChar()
         {
-            // If there is no input, this behaves like EOF
-            if (_availableText.Length == 0)
+            if (_position != CurrentLine.Length)
             {
-                _done = true;
-                _availableText.Clear();
-                Console.WriteLine();
+                CurrentLine._availableText.Remove(_position, 1);
+                CurrentLine.ComputeRendered();
+                RenderAfter(_position);
             }
-            else if (_cursorPosition != _availableText.Length)
+            else if (_lineIndex + 1 < _lines.Count)
             {
-                _availableText.Remove(_cursorPosition, 1);
-                ComputeRendered();
-                RenderAfter(_cursorPosition);
+                MergeLines(_lineIndex);
             }
         }
 

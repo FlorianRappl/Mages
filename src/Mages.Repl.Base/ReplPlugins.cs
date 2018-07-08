@@ -6,6 +6,7 @@
     using Mages.Plugins.LinearAlgebra;
     using Mages.Plugins.Plots;
     using Mages.Plugins.Random;
+    using Mages.Plugins.Transpilers;
 
     static class ReplPlugins
     {
@@ -16,6 +17,7 @@
             engine.AddPlugin(typeof(DrawPlugin));
             engine.AddPlugin(typeof(PlotsPlugin));
             engine.AddPlugin(typeof(RandomPlugin));
+            engine.AddPlugin(typeof(TranspilersPlugin));
         }
     }
 }

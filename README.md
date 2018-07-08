@@ -12,7 +12,7 @@ MAGES is the official successor to YAMP. It is a very simple, yet powerful, expr
 
 ### Current Status
 
-The first stable version has been released. The current version 1.1.0 contains an improved REPL. The library contains everything to perform lightweight scripting operations in C#. A [CodeProject article](http://www.codeproject.com/Articles/1108939/MAGES-Ultimate-Scripting-for-NET) about the library (also containing some background and performance comparisons) is also available.
+The first stable version has been released. The current version 1.6.0 contains an improved REPL. The library contains everything to perform lightweight scripting operations in C#. A [CodeProject article](http://www.codeproject.com/Articles/1108939/MAGES-Ultimate-Scripting-for-NET) about the library (also containing some background and performance comparisons) is also available.
 
 ### Installation
 
@@ -84,7 +84,7 @@ Hence: Do not expect any breaking changes within the same major version.
 
 The MIT License (MIT)
 
-Copyright (c) 2016-2017 Florian Rappl
+Copyright (c) 2016-2018 Florian Rappl
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

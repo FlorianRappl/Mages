@@ -1,3 +1,9 @@
+# 1.6.0
+
+- Included `Clip` function (#89)
+- Fixed long integer parsing (#88)
+- Allow Forced New Lines in REPL (#87)
+
 # 1.5.0
 
 - Added support for named arguments (#65)
