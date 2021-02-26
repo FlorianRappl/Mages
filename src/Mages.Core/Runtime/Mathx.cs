@@ -54,6 +54,11 @@
             var result = (Double)Math.Sign(value);
             var n = (Int32)Math.Floor(result * value);
 
+            if (n == 0)
+            {
+                return 1.0;
+            }
+
             while (n > 0)
             {
                 result *= n--;
