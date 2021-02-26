@@ -13,6 +13,13 @@
             Test("-3!", -6.0);
         }
 
+        [TestCase("-0!")]
+        [TestCase("-factorial(0)")]
+        public void FactorialOfZeroShouldBeOne(string sourceCode)
+        {
+            Test(sourceCode, -1.0);
+        }
+
         [Test]
         public void AddAndMultiplyNumbersShouldYieldRightResult()
         {
