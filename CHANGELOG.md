@@ -1,3 +1,7 @@
+# 1.6.1
+
+- Fixed `factorial` bug (#94)
+
 # 1.6.0
 
 - Included `Clip` function (#89)
