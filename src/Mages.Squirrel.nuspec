@@ -10,7 +10,7 @@
     <iconUrl>https://raw.github.com/FlorianRappl/Mages/master/logo.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <releaseNotes>https://github.com/FlorianRappl/Mages/blob/master/CHANGELOG.md</releaseNotes>
-    <copyright>Copyright 2016, Florian Rappl.</copyright>
+    <copyright>Copyright 2021, Florian Rappl.</copyright>
     <description>MAGES is a very simple, yet powerful, expression parser and interpreter.</description>
   </metadata>
 </package>

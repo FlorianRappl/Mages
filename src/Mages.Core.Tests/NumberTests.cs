@@ -205,7 +205,7 @@
             Assert.AreEqual(TokenType.Number, result.Type);
             Assert.AreEqual(TokenType.Space, space2.Type);
             Assert.AreEqual(TokenType.End, end.Type);
-            Assert.AreEqual("120000", result.Payload);
+            Assert.AreEqual("120000.00000000001", result.Payload);
         }
 
         [Test]
@@ -218,7 +218,7 @@
             var end = comment.Next(scanner);
             Assert.AreEqual(TokenType.Number, result.Type);
             Assert.AreEqual(TokenType.End, end.Type);
-            Assert.AreEqual("0.212410080106903", result.Payload);
+            Assert.AreEqual("0.21241008010690302", result.Payload);
         }
 
         [Test]

@@ -19,18 +19,6 @@
             return Transform(walker, content);
         }
 
-        public String Cs(String content)
-        {
-            var walker = new CSharpTreeWalker();
-            return Transform(walker, content);
-        }
-
-        public String Cpp(String content)
-        {
-            var walker = new CPlusPlusTreeWalker();
-            return Transform(walker, content);
-        }
-
         private String Transform(TranspilerTreeWalker walker, String content)
         {
             var parser = _engine.Parser;
