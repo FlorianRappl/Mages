@@ -1,3 +1,11 @@
+# 2.0.0
+
+- Added missing helpers and constants (#98)
+- Added complex helpers (#97)
+- Added complex numbers support (#96)
+- Changed library target to .NET Standard 2 (#68)
+- Changed application to run on .NET Core 3.1 (#68)
+
 # 1.6.1
 
 - Fixed `factorial` bug (#94)

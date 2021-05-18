@@ -5,9 +5,9 @@
 //------------------------------------------------------------------------------
 using System.Reflection;
 
-[assembly: AssemblyCompany("Polytrope")]
+[assembly: AssemblyCompany("smapiot")]
 [assembly: AssemblyProduct("Mages")]
-[assembly: AssemblyVersion("1.6.0")]
-[assembly: AssemblyFileVersion("1.6.0")]
-[assembly: AssemblyCopyright("Copyright (c) 2018, Florian Rappl")]
+[assembly: AssemblyVersion("2.0.0")]
+[assembly: AssemblyFileVersion("2.0.0")]
+[assembly: AssemblyCopyright("Copyright (c) 2021, Florian Rappl")]
 
