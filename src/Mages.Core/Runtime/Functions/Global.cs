@@ -95,7 +95,9 @@
             { "clip", StandardFunctions.Clip },
             { "regex", StandardFunctions.Regex },
             { "lerp", StandardFunctions.Lerp },
-            { "clamp", StandardFunctions.Clamp }
+            { "clamp", StandardFunctions.Clamp },
+            { "cmplx", ComplexFunctions.Cmplx },
+            { "conj", ComplexFunctions.Conj },
         };
     }
 }

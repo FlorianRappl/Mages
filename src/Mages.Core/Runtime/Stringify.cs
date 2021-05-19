@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Globalization;
+    using System.Numerics;
 
     /// <summary>
     /// Helpers to stringify objects used by MAGES.
@@ -18,6 +19,14 @@
         /// Contains the JSON function.
         /// </summary>
         public static readonly Function Json = new Function(args => AsJson(args.Length > 0 ? args[0] : null));
+
+        /// <summary>
+        /// Converts the number to a string.
+        /// </summary>
+        public static String This(Complex value)
+        {
+            return $"cmplx{value.ToString(CultureInfo.InvariantCulture)}";
+        }
 
         /// <summary>
         /// Converts the number to a string.
@@ -132,6 +141,10 @@
             else if (value is Boolean)
             {
                 return This((Boolean)value);
+            }
+            else if (value is Complex)
+            {
+                return This((Complex)value);
             }
 
             return "(unknown)";
