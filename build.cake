@@ -88,6 +88,16 @@ Task("Build")
         {
            Configuration = configuration,
         });
+        
+        DotNetCoreBuild($"./src/Mages.Repl/Mages.Repl.csproj", new DotNetCoreBuildSettings
+        {
+           Configuration = configuration,
+        });
+        
+        DotNetCoreBuild($"./src/Mages.Repl.Installer/Mages.Repl.Installer.csproj", new DotNetCoreBuildSettings
+        {
+           Configuration = configuration,
+        });
     });
 
 Task("Run-Unit-Tests")
