@@ -314,6 +314,30 @@
         });
 
         /// <summary>
+        /// Wraps the Math.Log2 function.
+        /// </summary>
+        public static readonly Function Log2 = new Function(args =>
+        {
+            return Curry.MinOne(Log2, args) ??
+                If.Is<Double>(args, x => Mathx.Log2(x)) ??
+                If.Is<Double[,]>(args, x => x.ForEach(Mathx.Log2)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(Log2)) ??
+                Math.Log(args[0].ToNumber());
+        });
+
+        /// <summary>
+        /// Wraps the Math.Log10 function.
+        /// </summary>
+        public static readonly Function Log10 = new Function(args =>
+        {
+            return Curry.MinOne(Log10, args) ??
+                If.Is<Double>(args, x => Math.Log10(x)) ??
+                If.Is<Double[,]>(args, x => x.ForEach(Math.Log10)) ??
+                If.Is<IDictionary<String, Object>>(args, o => o.Map(Log10)) ??
+                Math.Log(args[0].ToNumber());
+        });
+
+        /// <summary>
         /// Wraps the Math.Sin function.
         /// </summary>
         public static readonly Function Sin = new Function(args => 

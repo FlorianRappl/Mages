@@ -1,5 +1,6 @@
-﻿namespace Mages.Core.Runtime.Functions
+﻿namespace Mages.Core.Runtime
 {
+    using Mages.Core.Runtime.Functions;
     using System;
     using System.Collections.Generic;
 
@@ -7,6 +8,7 @@
     {
         public static readonly IDictionary<String, Object> Mapping = new Dictionary<String, Object>
         {
+            // Functions
             { "abs", StandardFunctions.Abs },
             { "not", StandardFunctions.Not },
             { "type", StandardFunctions.Type },
@@ -32,6 +34,8 @@
             { "exp", StandardFunctions.Exp },
             { "floor", StandardFunctions.Floor },
             { "round", StandardFunctions.Round },
+            { "log2", StandardFunctions.Log2 },
+            { "log10", StandardFunctions.Log10 },
             { "log", StandardFunctions.Log },
             { "sign", StandardFunctions.Sign },
             { "gamma", StandardFunctions.Gamma },
@@ -98,6 +102,25 @@
             { "clamp", StandardFunctions.Clamp },
             { "cmplx", ComplexFunctions.Cmplx },
             { "conj", ComplexFunctions.Conj },
+            { "real", ComplexFunctions.Real },
+            { "imag", ComplexFunctions.Imag },
+
+            // Constants
+            { "e", Constants.E },
+            { "i", Constants.I },
+            { "j", Constants.J },
+            { "I", Constants.I },
+            { "J", Constants.J },
+            { "exp0", 1.0 },
+            { "exp1", Constants.E },
+            { "alpha", Constants.Alpha },
+            { "delta", Constants.Delta },
+            { "gamma1", Constants.Gamma1},
+            { "gauss", Constants.Gauss },
+            { "omega", Constants.Omega },
+            { "catalan", Constants.Catalan },
+            { "phi", Constants.Phi },
+            { "deg", Constants.Deg },
         };
     }
 }

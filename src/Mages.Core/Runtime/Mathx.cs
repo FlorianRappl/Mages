@@ -44,10 +44,7 @@
             -261082718496449122051.0 / 13530.0
         };
 
-        public static Double Sign(Double value)
-        {
-            return (Double)Math.Sign(value);
-        }
+        public static Double Sign(Double value) => (Double)Math.Sign(value);
 
         public static Double Factorial(Double value)
         {
@@ -82,30 +79,15 @@
             return Math.Exp(LogGamma(x));
         }
 
-        public static Double Asinh(Double value)
-        {
-            return Math.Log(value + Math.Sqrt(value * value + 1.0));
-        }
+        public static Double Asinh(Double value) => Math.Log(value + Math.Sqrt(value * value + 1.0));
 
-        public static Double Acosh(Double value)
-        {
-            return Math.Log(value + Math.Sqrt(value * value - 1.0));
-        }
+        public static Double Acosh(Double value) => Math.Log(value + Math.Sqrt(value * value - 1.0));
 
-        public static Double Atanh(Double value)
-        {
-            return 0.5 * Math.Log((1.0 + value) / (1.0 - value));
-        }
+        public static Double Atanh(Double value) => 0.5 * Math.Log((1.0 + value) / (1.0 - value));
 
-        public static Double Cot(Double value)
-        {
-            return Math.Cos(value) / Math.Sin(value);
-        }
+        public static Double Cot(Double value) => Math.Cos(value) / Math.Sin(value);
 
-        public static Double Acot(Double value)
-        {
-            return Math.Atan(1.0 / value);
-        }
+        public static Double Acot(Double value) => Math.Atan(1.0 / value);
 
         public static Double Coth(Double value)
         {
@@ -114,25 +96,13 @@
             return (a + b) / (a - b);
         }
 
-        public static Double Acoth(Double value)
-        {
-            return 0.5 * Math.Log((1.0 + value) / (value - 1.0));
-        }
+        public static Double Acoth(Double value) => 0.5 * Math.Log((1.0 + value) / (value - 1.0));
 
-        public static Double Sec(Double value)
-        {
-            return 1.0 / Math.Cos(value);
-        }
+        public static Double Sec(Double value) => 1.0 / Math.Cos(value);
 
-        public static Double Asec(Double value)
-        {
-            return Math.Acos(1.0 / value);
-        }
+        public static Double Asec(Double value) => Math.Acos(1.0 / value);
 
-        public static Double Sech(Double value)
-        {
-            return 2.0 / (Math.Exp(value) + Math.Exp(-value));
-        }
+        public static Double Sech(Double value) => 2.0 / (Math.Exp(value) + Math.Exp(-value));
 
         public static Double Asech(Double value)
         {
@@ -140,25 +110,15 @@
             return Math.Log(vi + Math.Sqrt(vi + 1.0) * Math.Sqrt(vi - 1.0));
         }
 
-        public static Double Csc(Double value)
-        {
-            return 1.0 / Math.Sin(value);
-        }
+        public static Double Csc(Double value) => 1.0 / Math.Sin(value);
 
-        public static Double Acsc(Double value)
-        {
-            return Math.Asin(1.0 / value);
-        }
+        public static Double Acsc(Double value) => Math.Asin(1.0 / value);
 
-        public static Double Csch(Double value)
-        {
-            return 2.0 / (Math.Exp(value) - Math.Exp(-value));
-        }
+        public static Double Csch(Double value) => 2.0 / (Math.Exp(value) - Math.Exp(-value));
 
-        public static Double Acsch(Double value)
-        {
-            return Math.Log(1.0 / value + Math.Sqrt(1.0 / (value * value) + 1.0));
-        }
+        public static Double Acsch(Double value) => Math.Log(1.0 / value + Math.Sqrt(1.0 / (value * value) + 1.0));
+
+        public static Double Log2(Double value) => Math.Log(value, 2.0);
 
         private static Double LogGamma(Double x)
         {
@@ -201,7 +161,9 @@
                 f += BernoulliNumbers[i] / (2 * i) / (2 * i - 1) / xp;
 
                 if (f == f_old)
+                {
                     break;
+                }
 
                 xp *= xsqu;
             }

@@ -28,5 +28,27 @@
                 If.Is<Complex>(args, x => new Complex(x.Real, -x.Imaginary)) ??
                 Double.NaN;
         });
+
+        /// <summary>
+        /// Exposes the complex real function.
+        /// </summary>
+        public static readonly Function Real = new Function(args =>
+        {
+            return Curry.MinOne(Real, args) ??
+                If.Is<Double>(args, x => x) ??
+                If.Is<Complex>(args, x => x.Real) ??
+                Double.NaN;
+        });
+
+        /// <summary>
+        /// Exposes the complex imag function.
+        /// </summary>
+        public static readonly Function Imag = new Function(args =>
+        {
+            return Curry.MinOne(Imag, args) ??
+                If.Is<Double>(args, _ => 0.0) ??
+                If.Is<Complex>(args, x => x.Imaginary) ??
+                Double.NaN;
+        });
     }
 }
