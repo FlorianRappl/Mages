@@ -21,6 +21,7 @@ var isRunningOnUnix = IsRunningOnUnix();
 var isRunningOnWindows = IsRunningOnWindows();
 var releaseNotes = ParseReleaseNotes("./CHANGELOG.md");
 var version = releaseNotes.Version.ToString();
+var isRunningOnGitHubActions = BuildSystem.GitHubActions.IsRunningOnGitHubActions;
 var buildDir = Directory("./src/Mages.Core/bin") + Directory(configuration) + Directory("netstandard2.0");
 var replDir = Directory("./src/Mages.Repl/bin") + Directory(configuration) + Directory("netcoreapp3.1");
 var installerDir = Directory("./src/Mages.Repl.Installer/bin") + Directory(configuration) + Directory("net45");
@@ -30,7 +31,7 @@ var chocolateyRoot = buildResultDir + Directory("chocolatey");
 var squirrelRoot = buildResultDir + Directory("squirrel");
 var releaseDir = squirrelRoot + Directory("release");
 
-if (BuildSystem.GitHubActions.IsRunningOnGitHubActions)
+if (isRunningOnGitHubActions)
 {
     var buildNumber = BuildSystem.GitHubActions.Environment.Workflow.RunNumber;
 
@@ -133,8 +134,7 @@ Task("Create-Nuget-Package")
     .IsDependentOn("Copy-Files")
     .Does(() =>
     {
-        var nugetExe = GetFiles("./tools/**/nuget.exe").FirstOrDefault()
-            ?? (isRunningOnAppVeyor ? GetFiles("C:\\Tools\\NuGet3\\nuget.exe").FirstOrDefault() : null);
+        var nugetExe = GetFiles("./tools/**/nuget.exe").FirstOrDefault();
 
         if (nugetExe == null)
         {            
@@ -177,8 +177,7 @@ Task("Create-Squirrel-Package")
     .IsDependentOn("Copy-Files")
     .WithCriteria(() => isRunningOnWindows)
     .Does(() => {
-        var nugetExe = GetFiles("./tools/**/nuget.exe").FirstOrDefault()
-            ?? (isRunningOnAppVeyor ? GetFiles("C:\\Tools\\NuGet3\\nuget.exe").FirstOrDefault() : null);
+        var nugetExe = GetFiles("./tools/**/nuget.exe").FirstOrDefault();
 
         if (nugetExe == null)
         {            
