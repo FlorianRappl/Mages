@@ -31,18 +31,12 @@
         /// <summary>
         /// Gets the stored reference.
         /// </summary>
-        public IExpression Reference
-        {
-            get { return _reference; }
-        }
+        public IExpression Reference => _reference;
 
         /// <summary>
         /// Gets the associated cases.
         /// </summary>
-        public IStatement Cases
-        {
-            get { return _cases; }
-        }
+        public IStatement Cases => _cases;
 
         #endregion
 

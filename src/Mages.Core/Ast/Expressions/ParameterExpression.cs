@@ -30,10 +30,7 @@
         /// <summary>
         /// Gets the contained expressions.
         /// </summary>
-        public IExpression[] Parameters
-        {
-            get { return _parameters; }
-        }
+        public IExpression[] Parameters => _parameters;
 
         /// <summary>
         /// Gets the available parameter names.

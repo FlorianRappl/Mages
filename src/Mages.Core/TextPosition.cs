@@ -37,26 +37,17 @@
         /// <summary>
         /// Gets the row in the source code.
         /// </summary>
-        public Int32 Row
-        {
-            get { return _row; }
-        }
+        public Int32 Row => _row;
 
         /// <summary>
         /// Gets the column in the source code.
         /// </summary>
-        public Int32 Column
-        {
-            get { return _column; }
-        }
+        public Int32 Column => _column;
 
         /// <summary>
         /// Gets the index (absolute position) in the source code.
         /// </summary>
-        public Int32 Index
-        {
-            get { return _index; }
-        }
+        public Int32 Index => _index;
 
         #endregion
 

@@ -3,25 +3,26 @@
     using Mages.Core.Runtime.Converters;
     using System;
     using System.Collections.Generic;
+    using System.Numerics;
 
     static class Matrix
     {
-        public static Int32 GetRows(this Double[,] matrix)
+        public static Int32 GetRows<T>(this T[,] matrix)
         {
             return matrix.GetLength(0);
         }
 
-        public static Int32 GetColumns(this Double[,] matrix)
+        public static Int32 GetColumns<T>(this T[,] matrix)
         {
             return matrix.GetLength(1);
         }
 
-        public static Int32 GetCount(this Double[,] matrix)
+        public static Int32 GetCount<T>(this T[,] matrix)
         {
             return matrix.GetLength(0) * matrix.GetLength(1);
         }
 
-        public static Object GetKeys(this Double[,] matrix)
+        public static Object GetKeys<T>(this T[,] matrix)
         {
             var result = new Dictionary<String, Object>();
             var length = matrix.Length;
@@ -34,7 +35,7 @@
             return result;
         }
 
-        public static Boolean TryGetIndices(this Double[,] matrix, Object[] arguments, out Int32 row, out Int32 col)
+        public static Boolean TryGetIndices<T>(this T[,] matrix, Object[] arguments, out Int32 row, out Int32 col)
         {
             var rows = matrix.GetRows();
             var cols = matrix.GetColumns();
@@ -54,12 +55,9 @@
             return row >= 0 && col >= 0 && row < rows && col < cols;
         }
         
-        public static Object Getter(this Double[,] matrix, Object[] arguments)
+        public static Object Getter<T>(this T[,] matrix, Object[] arguments)
         {
-            var i = 0;
-            var j = 0;
-
-            if (matrix.TryGetIndices(arguments, out i, out j))
+            if (matrix.TryGetIndices(arguments, out var i, out var j))
             {
                 return matrix[i, j];
             }
@@ -69,10 +67,7 @@
 
         public static void Setter(this Double[,] matrix, Object[] arguments, Object value)
         {
-            var i = 0;
-            var j = 0;
-
-            if (matrix.TryGetIndices(arguments, out i, out j))
+            if (matrix.TryGetIndices(arguments, out var i, out var j))
             {
                 matrix[i, j] = value.ToNumber();
             }
@@ -88,14 +83,33 @@
             {
                 for (var j = 0; j < cols; j++)
                 {
-                    sum += matrix[i ,j] * matrix[i, j];
+                    var n = matrix[i, j];
+                    sum += n * n;
                 }
             }
 
             return Math.Sqrt(sum);
         }
 
-        public static Boolean Fits(this Double[,] a, Double[,] b)
+        public static Double Abs(Complex[,] matrix)
+        {
+            var sum = 0.0;
+            var rows = matrix.GetRows();
+            var cols = matrix.GetColumns();
+
+            for (var i = 0; i < rows; i++)
+            {
+                for (var j = 0; j < cols; j++)
+                {
+                    var c = matrix[i, j];
+                    sum += c.Real * c.Real + c.Imaginary * c.Imaginary;
+                }
+            }
+
+            return Math.Sqrt(sum);
+        }
+
+        public static Boolean Fits<T>(this T[,] a, T[,] b)
         {
             var rowsA = a.GetRows();
             var rowsB = b.GetRows();
@@ -112,6 +126,28 @@
                 var rows = a.GetRows();
                 var cols = a.GetColumns();
                 var result = new Double[rows, cols];
+
+                for (var i = 0; i < rows; i++)
+                {
+                    for (var j = 0; j < cols; j++)
+                    {
+                        result[i, j] = a[i, j] + b[i, j];
+                    }
+                }
+
+                return result;
+            }
+
+            return null;
+        }
+
+        public static Complex[,] Add(this Complex[,] a, Complex[,] b)
+        {
+            if (a.Fits(b))
+            {
+                var rows = a.GetRows();
+                var cols = a.GetColumns();
+                var result = new Complex[rows, cols];
 
                 for (var i = 0; i < rows; i++)
                 {
@@ -202,11 +238,11 @@
             return a.Multiply(1.0 / b);
         }
 
-        public static Double[,] Transpose(this Double[,] matrix)
+        public static T[,] Transpose<T>(this T[,] matrix)
         {
             var rows = matrix.GetRows();
             var cols = matrix.GetColumns();
-            var result = new Double[cols, rows];
+            var result = new T[cols, rows];
 
             for (var i = 0; i < rows; i++)
             {
@@ -219,17 +255,16 @@
             return result;
         }
 
-        public static Boolean IsSquare(this Double[,] matrix)
+        public static Boolean IsSquare<T>(this T[,] matrix)
         {
             return matrix.GetColumns() == matrix.GetRows();
         }
 
-        public static Double[,] Fill(this Double[,] matrix, Double value)
+        public static T[,] Fill<T>(this T[,] matrix, T value)
         {
             var rows = matrix.GetRows();
             var cols = matrix.GetColumns();
-            var result = new Double[rows, cols];
-            var length = Math.Min(rows, cols);
+            var result = new T[rows, cols];
 
             for (var i = 0; i < rows; i++)
             {
@@ -314,7 +349,7 @@
             return result;
         }
 
-        public static Double GetValue(this Double[,] matrix, Int32 row, Int32 col)
+        public static T GetValue<T>(this T[,] matrix, Int32 row, Int32 col)
         {
             var rows = matrix.GetRows();
             var cols = matrix.GetColumns();
@@ -324,10 +359,10 @@
                 return matrix[row, col];
             }
 
-            return 0.0;
+            return default;
         }
 
-        public static void SetValue(this Double[,] matrix, Int32 row, Int32 col, Double value)
+        public static void SetValue<T>(this T[,] matrix, Int32 row, Int32 col, T value)
         {
             var rows = matrix.GetRows();
             var cols = matrix.GetColumns();
@@ -338,11 +373,11 @@
             }
         }
 
-        public static Double[,] ForEach(this Double[,] matrix, Func<Double, Double> apply)
+        public static T[,] ForEach<T>(this T[,] matrix, Func<T, T> apply)
         {
             var rows = matrix.GetRows();
             var cols = matrix.GetColumns();
-            var result = new Double[rows, cols];
+            var result = new T[rows, cols];
 
             for (var i = 0; i < rows; i++)
             {
@@ -355,7 +390,7 @@
             return result;
         }
 
-        public static Object Reduce(this Double[,] matrix, Func<Double, Double, Double> reducer)
+        public static Object Reduce<T>(this T[,] matrix, Func<T, T, T> reducer)
         {
             var rows = matrix.GetRows();
             var cols = matrix.GetColumns();
@@ -388,7 +423,7 @@
             }
             else
             {
-                var result = new Double[rows, 1];
+                var result = new T[rows, 1];
 
                 for (var i = 0; i < rows; i++)
                 {
@@ -406,10 +441,7 @@
             }
         }
 
-        public static Double[,] And(this Double[,] a, Double b)
-        {
-            return a.And(a.Fill(b));
-        }
+        public static Double[,] And(this Double[,] a, Double b) => a.And(a.Fill(b));
 
         public static Double[,] And(this Double[,] a, Double[,] b)
         {
@@ -433,10 +465,7 @@
             return null;
         }
 
-        public static Double[,] IsGreaterThan(this Double[,] a, Double b)
-        {
-            return a.IsGreaterThan(a.Fill(b));
-        }
+        public static Double[,] IsGreaterThan(this Double[,] a, Double b) => a.IsGreaterThan(a.Fill(b));
 
         public static Double[,] IsGreaterThan(this Double[,] a, Double[,] b)
         {
@@ -460,10 +489,7 @@
             return null;
         }
 
-        public static Double[,] IsGreaterOrEqual(this Double[,] a, Double b)
-        {
-            return a.IsGreaterOrEqual(a.Fill(b));
-        }
+        public static Double[,] IsGreaterOrEqual(this Double[,] a, Double b) => a.IsGreaterOrEqual(a.Fill(b));
 
         public static Double[,] IsGreaterOrEqual(this Double[,] a, Double[,] b)
         {
@@ -487,10 +513,7 @@
             return null;
         }
 
-        public static Double[,] AreNotEqual(this Double[,] a, Double b)
-        {
-            return a.AreNotEqual(a.Fill(b));
-        }
+        public static Double[,] AreNotEqual(this Double[,] a, Double b) => a.AreNotEqual(a.Fill(b));
 
         public static Object Map(this Double[,] matrix, Function f)
         {
@@ -586,10 +609,7 @@
             return null;
         }
 
-        public static Double[,] IsLessThan(this Double[,] a, Double b)
-        {
-            return a.IsLessThan(a.Fill(b));
-        }
+        public static Double[,] IsLessThan(this Double[,] a, Double b) => a.IsLessThan(a.Fill(b));
 
         public static Double[,] IsLessThan(this Double[,] a, Double[,] b)
         {
@@ -613,10 +633,7 @@
             return null;
         }
 
-        public static Double[,] IsLessOrEqual(this Double[,] a, Double b)
-        {
-            return a.IsLessOrEqual(a.Fill(b));
-        }
+        public static Double[,] IsLessOrEqual(this Double[,] a, Double b) => a.IsLessOrEqual(a.Fill(b));
 
         public static Double[,] IsLessOrEqual(this Double[,] a, Double[,] b)
         {
@@ -640,10 +657,7 @@
             return null;
         }
 
-        public static Double[,] AreEqual(this Double[,] a, Double b)
-        {
-            return a.AreEqual(a.Fill(b));
-        }
+        public static Double[,] AreEqual(this Double[,] a, Double b) => a.AreEqual(a.Fill(b));
 
         public static Double[,] AreEqual(this Double[,] a, Double[,] b)
         {
@@ -667,10 +681,31 @@
             return null;
         }
 
-        public static Double[,] Or(this Double[,] a, Double b)
+        public static Double[,] AreEqual(this Complex[,] a, Complex b) => a.AreEqual(a.Fill(b));
+
+        public static Double[,] AreEqual(this Complex[,] a, Complex[,] b)
         {
-            return a.Or(a.Fill(b));
+            if (a.Fits(b))
+            {
+                var rows = a.GetRows();
+                var cols = a.GetColumns();
+                var result = new Double[rows, cols];
+
+                for (var i = 0; i < rows; i++)
+                {
+                    for (var j = 0; j < cols; j++)
+                    {
+                        result[i, j] = (a[i, j] == b[i, j]).ToNumber();
+                    }
+                }
+
+                return result;
+            }
+
+            return null;
         }
+
+        public static Double[,] Or(this Double[,] a, Double b) => a.Or(a.Fill(b));
 
         public static Double[,] Or(this Double[,] a, Double[,] b)
         {

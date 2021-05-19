@@ -32,10 +32,7 @@
         /// <summary>
         /// Gets the stored body.
         /// </summary>
-        public IStatement Body
-        {
-            get { return _body; }
-        }
+        public IStatement Body => _body;
 
         #endregion
 

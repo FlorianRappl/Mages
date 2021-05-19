@@ -23,34 +23,22 @@
         /// <summary>
         /// Converts the number to a string.
         /// </summary>
-        public static String This(Complex value)
-        {
-            return $"cmplx{value.ToString(CultureInfo.InvariantCulture)}";
-        }
+        public static String This(Complex value) => $"cmplx{value.ToString(CultureInfo.InvariantCulture)}";
 
         /// <summary>
         /// Converts the number to a string.
         /// </summary>
-        public static String This(Double value)
-        {
-            return value.ToString(CultureInfo.InvariantCulture);
-        }
+        public static String This(Double value) => value.ToString(CultureInfo.InvariantCulture);
 
         /// <summary>
         /// Converts the boolean to a string.
         /// </summary>
-        public static String This(Boolean value)
-        {
-            return value ? Keywords.True : Keywords.False;
-        }
+        public static String This(Boolean value) => value ? Keywords.True : Keywords.False;
 
         /// <summary>
         /// Converts the string for output.
         /// </summary>
-        public static String This(String value)
-        {
-            return value.ToString(CultureInfo.InvariantCulture);
-        }
+        public static String This(String value) => value.ToString(CultureInfo.InvariantCulture);
 
         /// <summary>
         /// Converts the matrix to a string.
@@ -87,68 +75,34 @@
         /// <summary>
         /// Converts the object to a string.
         /// </summary>
-        public static String This(IDictionary<String, Object> value)
-        {
-            return "[Object]";
-        }
+        public static String This(IDictionary<String, Object> value) => "[Object]";
 
         /// <summary>
         /// Converts the function to a string.
         /// </summary>
-        public static String This(Function value)
-        {
-            return "[Function]";
-        }
+        public static String This(Function value) => "[Function]";
 
         /// <summary>
         /// Outputs the string for an undefined (null?) value.
         /// </summary>
         /// <returns></returns>
-        public static String Undefined()
-        {
-            return System.String.Empty;
-        }
+        public static String Undefined() => System.String.Empty;
 
         /// <summary>
         /// Converts the undetermined value to a string.
         /// </summary>
-        public static String This(Object value)
+        public static String This(Object value)=> value switch
         {
-            if (value == null)
-            {
-                return Undefined();
-            }
-            else if (value is Function)
-            {
-                return This((Function)value);
-            }
-            else if (value is IDictionary<String, Object>)
-            {
-                return This((IDictionary<String, Object>)value);
-            }
-            else if (value is Double[,])
-            {
-                return This((Double[,])value);
-            }
-            else if (value is String)
-            {
-                return This((String)value);
-            }
-            else if (value is Double)
-            {
-                return This((Double)value);
-            }
-            else if (value is Boolean)
-            {
-                return This((Boolean)value);
-            }
-            else if (value is Complex)
-            {
-                return This((Complex)value);
-            }
-
-            return "(unknown)";
-        }
+            null => Undefined(),
+            Function f => This(f),
+            IDictionary<String, Object> o => This(o),
+            Double[,] m => This(m),
+            String s => This(s),
+            Double d => This(d),
+            Boolean b => This(b),
+            Complex c => This(c),
+            _ => "(unknown)"
+        };
 
         /// <summary>
         /// Converts the given MAGES object to a JSON string.

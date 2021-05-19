@@ -23,39 +23,21 @@
             _parts = parts;
         }
 
-        public Int32 ReplacementCount
-        {
-            get { return _parts.Count; }
-        }
+        public Int32 ReplacementCount => _parts.Count;
 
         public IEnumerable<IToken> this[Int32 index]
         {
             get { return _parts[index]; }
         }
 
-        public IEnumerable<ParseError> Errors
-        {
-            get { return _errors; }
-        }
+        public IEnumerable<ParseError> Errors => _errors;
 
-        public TokenType Type
-        {
-            get { return TokenType.InterpolatedString; }
-        }
+        public TokenType Type => TokenType.InterpolatedString;
 
-        public String Payload
-        {
-            get { return _content; }
-        }
+        public String Payload => _content;
 
-        public TextPosition Start
-        {
-            get { return _start; }
-        }
+        public TextPosition Start => _start;
 
-        public TextPosition End
-        {
-            get { return _end; }
-        }
+        public TextPosition End => _end;
     }
 }

@@ -31,18 +31,12 @@
         /// <summary>
         /// Gets the associated function.
         /// </summary>
-        public IExpression Function 
-        {
-            get { return _function; }
-        }
+        public IExpression Function => _function;
 
         /// <summary>
         /// Gets the arguments to pass to the function.
         /// </summary>
-        public ArgumentsExpression Arguments
-        {
-            get { return _arguments; }
-        }
+        public ArgumentsExpression Arguments => _arguments;
 
         #endregion
 

@@ -60,10 +60,7 @@
                 _powers = 0;
             }
 
-            public Double Number
-            {
-                get { return _value * Math.Pow(10.0, -_digits) * Math.Pow(10.0, _powers); }
-            }
+            public Double Number => _value * Math.Pow(10.0, -_digits) * Math.Pow(10.0, _powers);
 
             public IToken Zero()
             {

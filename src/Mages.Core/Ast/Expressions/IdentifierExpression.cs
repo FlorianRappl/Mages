@@ -31,10 +31,7 @@
         /// <summary>
         /// Gets the name of the identifier.
         /// </summary>
-        public String Name
-        {
-            get { return _name; }
-        }
+        public String Name => _name;
 
         #endregion
 

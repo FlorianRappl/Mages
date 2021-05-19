@@ -75,18 +75,12 @@
         /// <summary>
         /// Gets the wrapped object if instance bound.
         /// </summary>
-        public Object Content
-        {
-            get { return _content; }
-        }
+        public Object Content => _content;
 
         /// <summary>
         /// Gets the type that is wrapped (instance or static).
         /// </summary>
-        public Type Type
-        {
-            get { return _type; }
-        }
+        public Type Type => _type;
 
         #endregion
 
@@ -113,31 +107,19 @@
         /// Gets the number of properties of the underlying
         /// object and the extension object.
         /// </summary>
-        public Int32 Count
-        {
-            get { return _extends.Count + _proxies.Count; }
-        }
+        public Int32 Count => _extends.Count + _proxies.Count;
 
-        Boolean ICollection<KeyValuePair<String, Object>>.IsReadOnly
-        {
-            get { return false; }
-        }
+        Boolean ICollection<KeyValuePair<String, Object>>.IsReadOnly => false;
 
         /// <summary>
         /// Gets all the keys from the extension object.
         /// </summary>
-        public ICollection<String> Keys
-        {
-            get { return _extends.Keys; }
-        }
+        public ICollection<String> Keys => _extends.Keys;
 
         /// <summary>
         /// Gets all the values from the extension object.
         /// </summary>
-        public ICollection<Object> Values
-        {
-            get { return _extends.Values; }
-        }
+        public ICollection<Object> Values => _extends.Values;
 
         void ICollection<KeyValuePair<String, Object>>.Add(KeyValuePair<String, Object> item)
         {

@@ -43,26 +43,17 @@
         /// <summary>
         /// Gets the used parser instance.
         /// </summary>
-        public IParser Parser
-        {
-            get { return _parser; }
-        }
+        public IParser Parser => _parser;
 
         /// <summary>
         /// Gets the used global scope.
         /// </summary>
-        public IDictionary<String, Object> Scope
-        {
-            get { return _scope; }
-        }
+        public IDictionary<String, Object> Scope => _scope;
 
         /// <summary>
         /// Gets the used global function layer.
         /// </summary>
-        public IDictionary<String, Object> Globals
-        {
-            get { return _scope.Parent; }
-        }
+        public IDictionary<String, Object> Globals => _scope.Parent;
 
         /// <summary>
         /// Gets the version of the engine.
@@ -79,10 +70,7 @@
         /// <summary>
         /// Gets the currently loaded plugins.
         /// </summary>
-        public IEnumerable<Plugin> Plugins
-        {
-            get { return _plugins; }
-        }
+        public IEnumerable<Plugin> Plugins => _plugins;
 
         #endregion
 

@@ -31,18 +31,12 @@
         /// <summary>
         /// Gets the stored arguments.
         /// </summary>
-        public IExpression[] Arguments
-        {
-            get { return _arguments; }
-        }
+        public IExpression[] Arguments => _arguments;
 
         /// <summary>
         /// Gets the number of arguments.
         /// </summary>
-        public Int32 Count 
-        {
-            get { return _arguments.Length; }
-        }
+        public Int32 Count => _arguments.Length;
 
         #endregion
 

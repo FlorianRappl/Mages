@@ -35,26 +35,17 @@
         /// <summary>
         /// Gets the value on the left side.
         /// </summary>
-        public IExpression LValue 
-        {
-            get { return _left; }
-        }
+        public IExpression LValue => _left;
 
         /// <summary>
         /// Gets the value on the right side.
         /// </summary>
-        public IExpression RValue
-        {
-            get { return _right; }
-        }
+        public IExpression RValue => _right;
 
         /// <summary>
         /// Gets the associated operator string.
         /// </summary>
-        public String Operator
-        {
-            get { return _operator; }
-        }
+        public String Operator => _operator;
 
         #endregion
 

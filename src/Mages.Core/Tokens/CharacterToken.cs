@@ -15,24 +15,12 @@
             _position = position;
         }
 
-        public TokenType Type
-        {
-            get { return _type; }
-        }
+        public TokenType Type => _type;
 
-        public String Payload
-        {
-            get { return Char.ConvertFromUtf32(_character); }
-        }
+        public String Payload => Char.ConvertFromUtf32(_character);
 
-        public TextPosition Start
-        {
-            get { return _position; }
-        }
+        public TextPosition Start => _position;
 
-        public TextPosition End
-        {
-            get { return _position; }
-        }
+        public TextPosition End => _position;
     }
 }

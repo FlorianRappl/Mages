@@ -37,34 +37,22 @@
         /// <summary>
         /// Gets if the initialization variable is declared.
         /// </summary>
-        public Boolean IsDeclared
-        {
-            get { return _declared; }
-        }
+        public Boolean IsDeclared => _declared;
 
         /// <summary>
         /// Gets the stored initialization.
         /// </summary>
-        public IExpression Initialization
-        {
-            get { return _initialization; }
-        }
+        public IExpression Initialization => _initialization;
 
         /// <summary>
         /// Gets the stored condition.
         /// </summary>
-        public IExpression Condition
-        {
-            get { return _condition; }
-        }
+        public IExpression Condition => _condition;
 
         /// <summary>
         /// Gets the stored after thought.
         /// </summary>
-        public IExpression AfterThought
-        {
-            get { return _afterthought; }
-        }
+        public IExpression AfterThought => _afterthought;
 
         #endregion
 

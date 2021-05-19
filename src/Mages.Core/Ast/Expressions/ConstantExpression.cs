@@ -33,10 +33,7 @@
         /// <summary>
         /// Gets the carried value.
         /// </summary>
-        public Object Value  
-        {
-            get { return _value; }
-        }
+        public Object Value => _value;
 
         #endregion
 

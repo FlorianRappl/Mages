@@ -34,18 +34,12 @@
         /// <summary>
         /// Gets the result, if any.
         /// </summary>
-        public Object Result
-        {
-            get { return this.GetProperty("result"); }
-        }
+        public Object Result => this.GetProperty("result");
 
         /// <summary>
         /// Gets the error message, if any.
         /// </summary>
-        public String Error
-        {
-            get { return this.GetProperty("error") as String; }
-        }
+        public String Error => this.GetProperty("error") as String;
 
         /// <summary>
         /// Sets the result in case of success.

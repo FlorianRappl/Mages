@@ -29,10 +29,7 @@
         /// <summary>
         /// Gets the stored condition.
         /// </summary>
-        public IExpression Condition
-        {
-            get { return _condition; }
-        }
+        public IExpression Condition => _condition;
 
         #endregion
 

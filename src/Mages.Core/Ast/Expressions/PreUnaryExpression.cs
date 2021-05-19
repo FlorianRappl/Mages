@@ -33,18 +33,12 @@
         /// <summary>
         /// Gets the used value.
         /// </summary>
-        public IExpression Value
-        {
-            get { return _value; }
-        }
+        public IExpression Value => _value;
 
         /// <summary>
         /// Gets the operator string.
         /// </summary>
-        public String Operator
-        {
-            get { return _operator; }
-        }
+        public String Operator => _operator;
 
         #endregion
 

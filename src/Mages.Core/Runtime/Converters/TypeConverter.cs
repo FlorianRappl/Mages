@@ -20,19 +20,10 @@
             return new TypeConverter(typeof(TFrom), typeof(TTo), x => converter((TFrom)x));
         }
 
-        public Type From
-        {
-            get { return _from; }
-        }
+        public Type From => _from;
 
-        public Type To
-        {
-            get { return _to; }
-        }
+        public Type To => _to;
 
-        public Func<Object, Object> Converter
-        {
-            get { return _converter; }
-        }
+        public Func<Object, Object> Converter => _converter;
     }
 }

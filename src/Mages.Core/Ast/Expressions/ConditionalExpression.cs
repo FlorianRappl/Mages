@@ -33,26 +33,17 @@
         /// <summary>
         /// Gets the condition.
         /// </summary>
-        public IExpression Condition 
-        {
-            get { return _condition; }
-        }
+        public IExpression Condition => _condition;
 
         /// <summary>
         /// Gets the primary selected value.
         /// </summary>
-        public IExpression Primary 
-        {
-            get { return _primary; }
-        }
+        public IExpression Primary => _primary;
 
         /// <summary>
         /// Gets the alternative selected value.
         /// </summary>
-        public IExpression Secondary
-        {
-            get { return _secondary; }
-        }
+        public IExpression Secondary => _secondary;
 
         #endregion
 

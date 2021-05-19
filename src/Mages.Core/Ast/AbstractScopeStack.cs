@@ -12,10 +12,7 @@
             _scopes.Push(root);
         }
 
-        public AbstractScope Current
-        {
-            get { return _scopes.Peek(); }
-        }
+        public AbstractScope Current => _scopes.Peek();
 
         public void PushNew()
         {

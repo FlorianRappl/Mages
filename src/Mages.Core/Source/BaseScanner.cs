@@ -30,10 +30,7 @@
 
         #region Properties
 
-        public TextPosition Position
-        {
-            get { return new TextPosition(_row, _column, _position); }
-        }
+        public TextPosition Position => new TextPosition(_row, _column, _position);
 
         #endregion
 

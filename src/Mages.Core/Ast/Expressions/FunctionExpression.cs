@@ -33,26 +33,17 @@
         /// <summary>
         /// Gets the associated abstract scope.
         /// </summary>
-        public AbstractScope Scope
-        {
-            get { return _scope; }
-        }
+        public AbstractScope Scope => _scope;
 
         /// <summary>
         /// Gets the defined parameters.
         /// </summary>
-        public ParameterExpression Parameters
-        {
-            get { return _parameters; }
-        }
+        public ParameterExpression Parameters => _parameters;
 
         /// <summary>
         /// Gets the body to use.
         /// </summary>
-        public IStatement Body
-        {
-            get { return _body; }
-        }
+        public IStatement Body => _body;
 
         #endregion
 

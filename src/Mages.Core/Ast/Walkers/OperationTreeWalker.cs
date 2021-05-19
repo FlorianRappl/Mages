@@ -83,10 +83,7 @@
 
         #region Properties
 
-        Boolean IValidationContext.IsInLoop
-        {
-            get { return _loops.Count > 0 && _loops.Peek().Break != 0; }
-        }
+        Boolean IValidationContext.IsInLoop => _loops.Count > 0 && _loops.Peek().Break != 0;
 
         #endregion
 

@@ -33,26 +33,17 @@
         /// <summary>
         /// Gets the from expression.
         /// </summary>
-        public IExpression From
-        {
-            get { return _from; }
-        }
+        public IExpression From => _from;
 
         /// <summary>
         /// Gets the to expression.
         /// </summary>
-        public IExpression To
-        {
-            get { return _to; }
-        }
+        public IExpression To => _to;
 
         /// <summary>
         /// Gets the step expression.
         /// </summary>
-        public IExpression Step
-        {
-            get { return _step; }
-        }
+        public IExpression Step => _step;
 
         #endregion
 

@@ -29,10 +29,7 @@
         /// <summary>
         /// Gets the parent scope.
         /// </summary>
-        public AbstractScope Parent
-        {
-            get { return _parent; }
-        }
+        public AbstractScope Parent => _parent;
 
         #endregion
     }

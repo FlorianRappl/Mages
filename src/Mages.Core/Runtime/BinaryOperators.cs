@@ -3,12 +3,14 @@
     using Mages.Core.Runtime.Converters;
     using Mages.Core.Runtime.Functions;
     using System;
+    using System.Numerics;
 
     static class BinaryOperators
     {
         #region Converter Fields
 
         private static readonly Func<Object, Double> AsNumber = m => m.ToNumber();
+        private static readonly Func<Object, Complex> AsComplex = m => m.ToComplex();
 
         #endregion
 
@@ -16,6 +18,8 @@
 
         private static readonly Func<Double, Double, Object> AddNumbers = (y, x) => x + y;
         private static readonly Func<Double[,], Double[,], Object> AddMatrices = (y, x) => x.Add(y);
+        private static readonly Func<Complex, Complex, Object> AddCNumbers = (y, x) => x + y;
+        private static readonly Func<Complex[,], Complex[,], Object> AddCMatrices = (y, x) => x.Add(y);
         private static readonly Func<String, String, Object> AddStrings = (y, x) => String.Concat(x, y);
         private static readonly Func<Object, String, Object> AddAnyStr = (y, x) => String.Concat(x, Stringify.This(y));
         private static readonly Func<String, Object, Object> AddStrAny = (y, x) => String.Concat(Stringify.This(x), y);
@@ -160,6 +164,8 @@
         {
             return If.Is<Double, Double>(args, AddNumbers) ??
                 If.Is<Double[,], Double[,]>(args, AddMatrices) ??
+                If.Is<Complex, Complex>(args, AddCNumbers) ??
+                If.Is<Complex[,], Complex[,]>(args, AddCMatrices) ??
                 If.Is<String, String>(args, AddStrings) ??
                 If.Is<Object, String>(args, AddAnyStr) ??
                 If.Is<String, Object>(args, AddStrAny) ??
@@ -297,10 +303,7 @@
                 (args[1].ToNumber() <= args[0].ToNumber());
         }
 
-        public static Object Pipe(Object[] args)
-        {
-            return If.Is<Function, Object>(args, InvokeFunction);
-        }
+        public static Object Pipe(Object[] args) => If.Is<Function, Object>(args, InvokeFunction);
 
         #endregion
     }

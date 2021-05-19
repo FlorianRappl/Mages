@@ -24,10 +24,7 @@
         /// <summary>
         /// Gets if the expression is assignable.
         /// </summary>
-        public Boolean IsAssignable
-        {
-            get { return false; }
-        }
+        public Boolean IsAssignable => false;
 
         #endregion
     }

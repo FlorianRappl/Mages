@@ -29,10 +29,7 @@
 
         #region Properties
 
-        public Int32 Current
-        {
-            get { return _current; }
-        }
+        public Int32 Current => _current;
 
         #endregion
 

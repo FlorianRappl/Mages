@@ -14,10 +14,8 @@
         /// <param name="args">The arguments to check.</param>
         /// <param name="f">The callback to invoke if fulfilled.</param>
         /// <returns>The result of the callback or null.</returns>
-        public static Object Is<T>(Object[] args, Func<T, Object> f)
-        {
-            return args[0] is T ? f((T)args[0]) : null;
-        }
+        public static Object Is<T>(Object[] args, Func<T, Object> f) =>
+            args[0] is T ? f((T)args[0]) : null;
 
         /// <summary>
         /// Checks if the first two values of the given arguments are of type
@@ -28,10 +26,8 @@
         /// <param name="args">The arguments to check.</param>
         /// <param name="f">The callback to invoke if fulfilled.</param>
         /// <returns>The result of the callback or null.</returns>
-        public static Object Is<T1, T2>(Object[] args, Func<T1, T2, Object> f)
-        {
-            return args[0] is T1 && args[1] is T2 ? f((T1)args[0], (T2)args[1]) : null;
-        }
+        public static Object Is<T1, T2>(Object[] args, Func<T1, T2, Object> f) =>
+            args[0] is T1 && args[1] is T2 ? f((T1)args[0], (T2)args[1]) : null;
 
         /// <summary>
         /// Checks if the first three values of the given arguments are of type
@@ -43,10 +39,8 @@
         /// <param name="args">The arguments to check.</param>
         /// <param name="f">The callback to invoke if fulfilled.</param>
         /// <returns>The result of the callback or null.</returns>
-        public static Object Is<T1, T2, T3>(Object[] args, Func<T1, T2, T3, Object> f)
-        {
-            return args[0] is T1 && args[1] is T2 && args[2] is T3 ? f((T1)args[0], (T2)args[1], (T3)args[2]) : null;
-        }
+        public static Object Is<T1, T2, T3>(Object[] args, Func<T1, T2, T3, Object> f) =>
+            args[0] is T1 && args[1] is T2 && args[2] is T3 ? f((T1)args[0], (T2)args[1], (T3)args[2]) : null;
 
         /// <summary>
         /// Checks if the first four values of the given arguments are of type
@@ -59,11 +53,8 @@
         /// <param name="args">The arguments to check.</param>
         /// <param name="f">The callback to invoke if fulfilled.</param>
         /// <returns>The result of the callback or null.</returns>
-        public static Object Is<T1, T2, T3, T4>(Object[] args, Func<T1, T2, T3, T4, Object> f)
-        {
-            return args[0] is T1 && args[1] is T2 && args[2] is T3 && args[3] is T4 ? 
-                f((T1)args[0], (T2)args[1], (T3)args[2], (T4)args[3]) : null;
-        }
+        public static Object Is<T1, T2, T3, T4>(Object[] args, Func<T1, T2, T3, T4, Object> f) =>
+            args[0] is T1 && args[1] is T2 && args[2] is T3 && args[3] is T4 ? f((T1)args[0], (T2)args[1], (T3)args[2], (T4)args[3]) : null;
 
         /// <summary>
         /// Checks if the first three values of the given arguments are of type
@@ -74,10 +65,8 @@
         /// <param name="args">The arguments to check.</param>
         /// <param name="f">The callback to invoke if fulfilled.</param>
         /// <returns>The result of the callback or null.</returns>
-        public static Object IsAnyT2<T1, T3>(Object[] args, Func<T1, Object, T3, Object> f)
-        {
-            return args[0] is T1 && args[2] is T3 ? f((T1)args[0], args[1], (T3)args[2]) : null;
-        }
+        public static Object IsAnyT2<T1, T3>(Object[] args, Func<T1, Object, T3, Object> f) =>
+            args[0] is T1 && args[2] is T3 ? f((T1)args[0], args[1], (T3)args[2]) : null;
 
         /// <summary>
         /// Checks if the provided args are all non-null. Performs the conversion and invokes
@@ -90,7 +79,7 @@
         /// <returns>The result or null if the check was not successful.</returns>
         public static Object IsNotNull<T>(Object[] args, Func<Object, T> converter, Func<T, T, Object> result)
         {
-            if (args[0] != null && args[1] != null)
+            if (args[0] is not null && args[1] is not null)
             {
                 var left = converter.Invoke(args[0]);
                 var right = converter.Invoke(args[1]);
