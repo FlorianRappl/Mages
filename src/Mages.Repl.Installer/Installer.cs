@@ -37,11 +37,20 @@
             }
 
             var shortcutLocation = Path.Combine(startMenuFolderPath, "Mages.lnk");
-            var shell = new IWshRuntimeLibrary.WshShell();
-            var shortcut = (IWshRuntimeLibrary.IWshShortcut)shell.CreateShortcut(shortcutLocation);
-            shortcut.TargetPath = "cmd.exe";
-            shortcut.Arguments = "/k " + Path.Combine(GetInstallDirectory(), "mages.cmd");
-            shortcut.Save();
+
+            try
+            {
+                var progId = "IWshRuntimeLibrary.WshShell";
+                var type = Type.GetTypeFromProgID(progId);
+                dynamic shell = Activator.CreateInstance(type);
+                var shortcut = shell.CreateShortcut(shortcutLocation);
+                shortcut.TargetPath = "cmd.exe";
+                shortcut.Arguments = "/k " + Path.Combine(GetInstallDirectory(), "mages.cmd");
+                shortcut.Save();
+            }
+            catch
+            {
+            }
         }
 
         public static void RemoveShortcut()
