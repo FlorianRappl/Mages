@@ -219,6 +219,7 @@ Task("Create-Squirrel-Package")
 
 Task("Create-Chocolatey-Package")
     .IsDependentOn("Copy-Files")
+    .WithCriteria(() => isRunningOnWindows)
     .Does(() => {
         var content = String.Format("$packageName = 'Mages'{1}$installerType = 'exe'{1}$url32 = 'https://github.com/FlorianRappl/Mages/releases/download/v{0}/Mages.exe'{1}$silentArgs = ''{1}{1}Install-ChocolateyPackage \"$packageName\" \"$installerType\" \"$silentArgs\" \"$url32\"", version, Environment.NewLine);
         var nuspec = chocolateyRoot + File("Mages.nuspec");
@@ -237,6 +238,7 @@ Task("Create-Chocolatey-Package")
 
 Task("Publish-Chocolatey-Package")
     .IsDependentOn("Create-Chocolatey-Package")
+    .WithCriteria(() => isRunningOnWindows)
     .Does(() => {
         var apiKey = EnvironmentVariable("CHOCOLATEY_API_KEY");
         var fileName = "Mages." + version + ".nupkg";
@@ -255,7 +257,7 @@ Task("Publish-Chocolatey-Package")
     });
     
 Task("Publish-GitHub-Release")
-    .IsDependentOn("Create-Squirrel-Package")
+    .IsDependentOn("Publish-Packages")
     .Does(() =>
     {
         var githubToken = EnvironmentVariable("GITHUB_API_TOKEN");
@@ -318,11 +320,10 @@ Task("Default")
 
 Task("Publish-Packages")
     .IsDependentOn("Publish-Nuget-Package")
-    .IsDependentOn("Publish-GitHub-Release")
     .IsDependentOn("Publish-Chocolatey-Package");
 
 Task("Publish")
-    .IsDependentOn("Publish-Packages");
+    .IsDependentOn("Publish-GitHub-Release");
 
 Task("PrePublish")
     .IsDependentOn("Publish-Packages");
