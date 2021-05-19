@@ -1,6 +1,7 @@
 ﻿namespace Mages.Repl.Installer
 {
     using System;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Security;
@@ -52,6 +53,12 @@
             {
                 Directory.Delete(startMenuFolderPath, true);
             }
+        }
+
+        public static void Run()
+        {
+            var directory = GetInstallDirectory();
+            Process.Start(Path.Combine(directory, "mages.exe"));
         }
 
         public static String GetInstallDirectory()
