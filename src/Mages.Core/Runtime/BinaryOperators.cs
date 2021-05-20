@@ -11,6 +11,8 @@
 
         private static readonly Func<Object, Double> AsNumber = m => m.ToNumber();
         private static readonly Func<Object, Complex> AsComplex = m => m.ToComplex();
+        private static readonly Func<Double, Complex> CastNumber = m => new Complex(m, 0.0);
+        private static readonly Func<Double[,], Complex[,]> CastMatrix = m => m.ForEach(CastNumber);
 
         #endregion
 
@@ -30,6 +32,8 @@
 
         private static readonly Func<Double, Double, Object> SubNumbers = (y, x) => x - y;
         private static readonly Func<Double[,], Double[,], Object> SubMatrices = (y, x) => x.Subtract(y);
+        private static readonly Func<Complex, Complex, Object> SubCNumbers = (y, x) => x - y;
+        private static readonly Func<Complex[,], Complex[,], Object> SubCMatrices = (y, x) => x.Subtract(y);
 
         #endregion
 
@@ -39,6 +43,10 @@
         private static readonly Func<Double[,], Double[,], Object> MulMatrices = (y, x) => x.Multiply(y);
         private static readonly Func<Double, Double[,], Object> MulNumMat = (y, x) => x.Multiply(y);
         private static readonly Func<Double[,], Double, Object> MulMatNum = (y, x) => y.Multiply(x);
+        private static readonly Func<Complex, Complex, Object> MulCNumbers = (y, x) => x * y;
+        private static readonly Func<Complex[,], Complex[,], Object> MulCMatrices = (y, x) => x.Multiply(y);
+        private static readonly Func<Complex, Complex[,], Object> MulCNumMat = (y, x) => x.Multiply(y);
+        private static readonly Func<Complex[,], Complex, Object> MulCMatNum = (y, x) => y.Multiply(x);
 
         #endregion
 
@@ -46,6 +54,8 @@
 
         private static readonly Func<Double, Double, Object> RDivNumbers = (y, x) => x / y;
         private static readonly Func<Double, Double[,], Object> RDivNumMat = (y, x) => x.Divide(y);
+        private static readonly Func<Complex, Complex, Object> RDivCNumbers = (y, x) => x / y;
+        private static readonly Func<Complex, Complex[,], Object> RDivCNumMat = (y, x) => x.Divide(y);
 
         #endregion
 
@@ -53,6 +63,8 @@
 
         private static readonly Func<Double, Double, Object> LDivNumbers = (y, x) => y / x;
         private static readonly Func<Double[,], Double, Object> LDivMatNum = (y, x) => y.Divide(x);
+        private static readonly Func<Complex, Complex, Object> LDivCNumbers = (y, x) => y / x;
+        private static readonly Func<Complex[,], Complex, Object> LDivCMatNum = (y, x) => y.Divide(x);
 
         #endregion
 
@@ -62,12 +74,17 @@
         private static readonly Func<Double[,], Double[,], Object> PowMatrices = (y, x) => x.Pow(y);
         private static readonly Func<Double[,], Double, Object> PowMatNum = (y, x) => x.Pow(y);
         private static readonly Func<Double, Double[,], Object> PowNumMat = (y, x) => x.Pow(y);
+        private static readonly Func<Complex, Complex, Object> PowCNumbers = (y, x) => Complex.Pow(x, y);
+        private static readonly Func<Complex[,], Complex[,], Object> PowCMatrices = (y, x) => x.Pow(y);
+        private static readonly Func<Complex[,], Complex, Object> PowCMatNum = (y, x) => x.Pow(y);
+        private static readonly Func<Complex, Complex[,], Object> PowCNumMat = (y, x) => x.Pow(y);
 
         #endregion
 
         #region Other Fields
 
         private static readonly Func<Double, Double, Object> ModNumbers = (y, x) => x % y;
+        private static readonly Func<Complex, Complex, Object> ModCNumbers = (y, x) => Mathx.Mod(y, x);
         private static readonly Func<Function, Object, Object> InvokeFunction = (f, arg) => f.Invoke(new[] { arg });
 
         #endregion
@@ -99,8 +116,10 @@
         #region Eq Fields
 
         private static readonly Func<Double, Double, Object> EqNumbers = (y, x) => x == y;
+        private static readonly Func<Complex, Complex, Object> EqCNumbers = (y, x) => x == y;
         private static readonly Func<Boolean, Boolean, Object> EqBooleans = (y, x) => x == y;
         private static readonly Func<Double[,], Double[,], Object> EqMatrices = (y, x) => x.AreEqual(y);
+        private static readonly Func<Complex[,], Complex[,], Object> EqCMatrices = (y, x) => x.AreEqual(y);
         private static readonly Func<Double[,], Double, Object> EqMatNum = (y, x) => y.AreEqual(x);
         private static readonly Func<Double, Double[,], Object> EqNumMat = (y, x) => x.AreEqual(y);
         private static readonly Func<Double[,], Boolean, Object> EqMatBool = (y, x) => y.AreEqual(x.ToNumber());
@@ -112,8 +131,10 @@
         #region Neq Fields
 
         private static readonly Func<Double, Double, Object> NeqNumbers = (y, x) => x != y;
+        private static readonly Func<Complex, Complex, Object> NeqCNumbers = (y, x) => x != y;
         private static readonly Func<Boolean, Boolean, Object> NeqBooleans = (y, x) => x != y;
         private static readonly Func<Double[,], Double[,], Object> NeqMatrices = (y, x) => x.AreNotEqual(y);
+        private static readonly Func<Complex[,], Complex[,], Object> NeqCMatrices = (y, x) => x.AreNotEqual(y);
         private static readonly Func<Double[,], Double, Object> NeqMatNum = (y, x) => y.AreNotEqual(x);
         private static readonly Func<Double, Double[,], Object> NeqNumMat = (y, x) => x.AreNotEqual(y);
         private static readonly Func<Double[,], Boolean, Object> NeqMatBool = (y, x) => y.AreNotEqual(x.ToNumber());
@@ -128,6 +149,10 @@
         private static readonly Func<Double[,], Double[,], Object> GtMatrices = Matrix.IsLessThan;
         private static readonly Func<Double[,], Double, Object> GtMatNum = Matrix.IsLessThan;
         private static readonly Func<Double, Double[,], Object> GtNumMat = (y, x) => x.IsGreaterThan(y);
+        private static readonly Func<Complex, Complex, Object> GtCNumbers = (y, x) => Mathx.IsGreaterThan(x, y);
+        private static readonly Func<Complex[,], Complex[,], Object> GtCMatrices = Matrix.IsLessThan;
+        private static readonly Func<Complex[,], Complex, Object> GtCMatNum = Matrix.IsLessThan;
+        private static readonly Func<Complex, Complex[,], Object> GtCNumMat = (y, x) => x.IsGreaterThan(y);
 
         #endregion
 
@@ -137,6 +162,10 @@
         private static readonly Func<Double[,], Double[,], Object> GeqMatrices = Matrix.IsLessOrEqual;
         private static readonly Func<Double[,], Double, Object> GeqMatNum = Matrix.IsLessOrEqual;
         private static readonly Func<Double, Double[,], Object> GeqNumMat = (y, x) => x.IsGreaterOrEqual(y);
+        private static readonly Func<Complex, Complex, Object> GeqCNumbers = (y, x) => !Mathx.IsGreaterThan(y, x);
+        private static readonly Func<Complex[,], Complex[,], Object> GeqCMatrices = Matrix.IsLessOrEqual;
+        private static readonly Func<Complex[,], Complex, Object> GeqCMatNum = Matrix.IsLessOrEqual;
+        private static readonly Func<Complex, Complex[,], Object> GeqCNumMat = (y, x) => x.IsGreaterOrEqual(y);
 
         #endregion
 
@@ -146,6 +175,10 @@
         private static readonly Func<Double[,], Double[,], Object> LtMatrices = Matrix.IsGreaterThan;
         private static readonly Func<Double[,], Double, Object> LtMatNum = Matrix.IsGreaterThan;
         private static readonly Func<Double, Double[,], Object> LtNumMat = (y, x) => x.IsLessThan(y);
+        private static readonly Func<Complex, Complex, Object> LtCNumbers = (y, x) => Mathx.IsLessThan(x, y);
+        private static readonly Func<Complex[,], Complex[,], Object> LtCMatrices = Matrix.IsGreaterThan;
+        private static readonly Func<Complex[,], Complex, Object> LtCMatNum = Matrix.IsGreaterThan;
+        private static readonly Func<Complex, Complex[,], Object> LtCNumMat = (y, x) => x.IsLessThan(y);
 
         #endregion
 
@@ -155,6 +188,10 @@
         private static readonly Func<Double[,], Double[,], Object> LeqMatrices = Matrix.IsGreaterOrEqual;
         private static readonly Func<Double[,], Double, Object> LeqMatNum = Matrix.IsGreaterOrEqual;
         private static readonly Func<Double, Double[,], Object> LeqNumMat = (y, x) => x.IsLessOrEqual(y);
+        private static readonly Func<Complex, Complex, Object> LeqCNumbers = (y, x) => !Mathx.IsLessThan(y, x);
+        private static readonly Func<Complex[,], Complex[,], Object> LeqCMatrices = Matrix.IsGreaterOrEqual;
+        private static readonly Func<Complex[,], Complex, Object> LeqCMatNum = Matrix.IsGreaterOrEqual;
+        private static readonly Func<Complex, Complex[,], Object> LeqCNumMat = (y, x) => x.IsLessOrEqual(y);
 
         #endregion
 
@@ -164,8 +201,8 @@
         {
             return If.Is<Double, Double>(args, AddNumbers) ??
                 If.Is<Double[,], Double[,]>(args, AddMatrices) ??
-                If.Is<Complex, Complex>(args, AddCNumbers) ??
-                If.Is<Complex[,], Complex[,]>(args, AddCMatrices) ??
+                If.IsEither<Double, Complex, Double, Complex>(args, CastNumber, CastNumber, AddCNumbers) ??
+                If.IsEither<Double[,], Complex[,], Double[,], Complex[,]>(args, CastMatrix, CastMatrix, AddCMatrices) ??
                 If.Is<String, String>(args, AddStrings) ??
                 If.Is<Object, String>(args, AddAnyStr) ??
                 If.Is<String, Object>(args, AddStrAny) ??
@@ -176,6 +213,8 @@
         {
             return If.Is<Double, Double>(args, SubNumbers) ??
                 If.Is<Double[,], Double[,]>(args, SubMatrices) ??
+                If.IsEither<Double, Complex, Double, Complex>(args, CastNumber, CastNumber, SubCNumbers) ??
+                If.IsEither<Double[,], Complex[,], Double[,], Complex[,]>(args, CastMatrix, CastMatrix, SubCMatrices) ??
                 If.IsNotNull(args, AsNumber, SubNumbers);
         }
         
@@ -185,6 +224,10 @@
                 If.Is<Double[,], Double[,]>(args, MulMatrices) ??
                 If.Is<Double, Double[,]>(args, MulNumMat) ??
                 If.Is<Double[,], Double>(args, MulMatNum) ??
+                If.IsEither<Double, Complex, Double, Complex>(args, CastNumber, CastNumber, MulCNumbers) ??
+                If.IsEither<Double[,], Complex[,], Double[,], Complex[,]>(args, CastMatrix, CastMatrix, MulCMatrices) ??
+                If.IsEither<Double, Complex, Double[,], Complex[,]>(args, CastNumber, CastMatrix, MulCNumMat) ??
+                If.IsEither<Double[,], Complex[,], Double, Complex>(args, CastMatrix, CastNumber, MulCMatNum) ??
                 If.IsNotNull(args, AsNumber, MulNumbers);
         }
 
@@ -192,6 +235,8 @@
         {
             return If.Is<Double, Double>(args, RDivNumbers) ??
                 If.Is<Double, Double[,]>(args, RDivNumMat) ??
+                If.IsEither<Double, Complex, Double, Complex>(args, CastNumber, CastNumber, RDivCNumbers) ??
+                If.IsEither<Double, Complex, Double[,], Complex[,]>(args, CastNumber, CastMatrix, RDivCNumMat) ??
                 If.IsNotNull(args, AsNumber, RDivNumbers);
         }
 
@@ -199,6 +244,8 @@
         {
             return If.Is<Double, Double>(args, LDivNumbers) ??
                 If.Is<Double[,], Double>(args, LDivMatNum) ??
+                If.IsEither<Double, Complex, Double, Complex>(args, CastNumber, CastNumber, LDivCNumbers) ??
+                If.IsEither<Double[,], Complex[,], Double, Complex>(args, CastMatrix, CastNumber, LDivCMatNum) ??
                 If.IsNotNull(args, AsNumber, LDivNumbers);
         }
 
@@ -208,12 +255,17 @@
                 If.Is<Double[,], Double[,]>(args, PowMatrices) ??
                 If.Is<Double[,], Double>(args, PowMatNum) ??
                 If.Is<Double, Double[,]>(args, PowNumMat) ??
+                If.IsEither<Double, Complex, Double, Complex>(args, CastNumber, CastNumber, PowCNumbers) ??
+                If.IsEither<Double[,], Complex[,], Double[,], Complex[,]>(args, CastMatrix, CastMatrix, PowCMatrices) ??
+                If.IsEither<Double[,], Complex[,], Double, Complex>(args, CastMatrix, CastNumber, PowCMatNum) ??
+                If.IsEither<Double, Complex, Double[,], Complex[,]>(args, CastNumber, CastMatrix, PowCNumMat) ??
                 If.IsNotNull(args, AsNumber, PowNumbers);
         }
 
         public static Object Mod(Object[] args)
         {
             return If.Is<Double, Double>(args, ModNumbers) ??
+                If.IsEither<Double, Complex, Double, Complex>(args, CastNumber, CastNumber, ModCNumbers) ??
                 If.IsNotNull(args, AsNumber, ModNumbers);
         }
 
@@ -251,6 +303,8 @@
                 If.Is<Double[,], Boolean>(args, EqMatBool) ??
                 If.Is<Boolean, Double[,]>(args, EqBoolMat) ??
                 If.Is<String, String>(args, EqStrings) ??
+                If.IsEither<Double, Complex, Double, Complex>(args, CastNumber, CastNumber, EqCNumbers) ??
+                If.IsEither<Double[,], Complex[,], Double[,], Complex[,]>(args, CastMatrix, CastMatrix, EqCMatrices) ??
                 Object.ReferenceEquals(args[1], args[0]);
         }
 
@@ -264,6 +318,8 @@
                 If.Is<Double[,], Boolean>(args, NeqMatBool) ??
                 If.Is<Boolean, Double[,]>(args, NeqBoolMat) ??
                 If.Is<String, String>(args, NeqStrings) ??
+                If.IsEither<Double, Complex, Double, Complex>(args, CastNumber, CastNumber, NeqCNumbers) ??
+                If.IsEither<Double[,], Complex[,], Double[,], Complex[,]>(args, CastMatrix, CastMatrix, NeqCMatrices) ??
                 !Object.ReferenceEquals(args[1], args[0]);
         }
 
@@ -273,6 +329,10 @@
                 If.Is<Double[,], Double[,]>(args, GtMatrices) ??
                 If.Is<Double[,], Double>(args, GtMatNum) ??
                 If.Is<Double, Double[,]>(args, GtNumMat) ??
+                If.IsEither<Double, Complex, Double, Complex>(args, CastNumber, CastNumber, GtCNumbers) ??
+                If.IsEither<Double[,], Complex[,], Double[,], Complex[,]>(args, CastMatrix, CastMatrix, GtCMatrices) ??
+                If.IsEither<Double[,], Complex[,], Double, Complex>(args, CastMatrix, CastNumber, GtCMatNum) ??
+                If.IsEither<Double, Complex, Double[,], Complex[,]>(args, CastNumber, CastMatrix, GtCNumMat) ??
                 (args[1].ToNumber() > args[0].ToNumber());
         }
 
@@ -282,6 +342,10 @@
                 If.Is<Double[,], Double[,]>(args, GeqMatrices) ??
                 If.Is<Double[,], Double>(args, GeqMatNum) ??
                 If.Is<Double, Double[,]>(args, GeqNumMat) ??
+                If.IsEither<Double, Complex, Double, Complex>(args, CastNumber, CastNumber, GeqCNumbers) ??
+                If.IsEither<Double[,], Complex[,], Double[,], Complex[,]>(args, CastMatrix, CastMatrix, GeqCMatrices) ??
+                If.IsEither<Double[,], Complex[,], Double, Complex>(args, CastMatrix, CastNumber, GeqCMatNum) ??
+                If.IsEither<Double, Complex, Double[,], Complex[,]>(args, CastNumber, CastMatrix, GeqCNumMat) ??
                 (args[1].ToNumber() >= args[0].ToNumber());
         }
 
@@ -291,6 +355,10 @@
                 If.Is<Double[,], Double[,]>(args, LtMatrices) ??
                 If.Is<Double[,], Double>(args, LtMatNum) ??
                 If.Is<Double, Double[,]>(args, LtNumMat) ??
+                If.IsEither<Double, Complex, Double, Complex>(args, CastNumber, CastNumber, LtCNumbers) ??
+                If.IsEither<Double[,], Complex[,], Double[,], Complex[,]>(args, CastMatrix, CastMatrix, LtCMatrices) ??
+                If.IsEither<Double[,], Complex[,], Double, Complex>(args, CastMatrix, CastNumber, LtCMatNum) ??
+                If.IsEither<Double, Complex, Double[,], Complex[,]>(args, CastNumber, CastMatrix, LtCNumMat) ??
                 (args[1].ToNumber() < args[0].ToNumber());
         }
 
@@ -300,6 +368,10 @@
                 If.Is<Double[,], Double[,]>(args, LeqMatrices) ??
                 If.Is<Double[,], Double>(args, LeqMatNum) ??
                 If.Is<Double, Double[,]>(args, LeqNumMat) ??
+                If.IsEither<Double, Complex, Double, Complex>(args, CastNumber, CastNumber, LeqCNumbers) ??
+                If.IsEither<Double[,], Complex[,], Double[,], Complex[,]>(args, CastMatrix, CastMatrix, LeqCMatrices) ??
+                If.IsEither<Double[,], Complex[,], Double, Complex>(args, CastMatrix, CastNumber, LeqCMatNum) ??
+                If.IsEither<Double, Complex, Double[,], Complex[,]>(args, CastNumber, CastMatrix, LeqCNumMat) ??
                 (args[1].ToNumber() <= args[0].ToNumber());
         }
 

@@ -403,6 +403,8 @@
                     _operations.Add(new InitMatOperation(row, col));
                 }
             }
+
+            _operations.Add(new SetMatOperation());
         }
 
         void ITreeWalker.Visit(FunctionExpression expression)

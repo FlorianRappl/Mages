@@ -69,6 +69,21 @@
             args[0] is T1 && args[2] is T3 ? f((T1)args[0], args[1], (T3)args[2]) : null;
 
         /// <summary>
+        /// Checks if the first argument is either T1 or T2 and the second argument is either T1 or T2.
+        /// </summary>
+        /// <typeparam name="T1">The type of the first value.</typeparam>
+        /// <typeparam name="T2">The type of the second value.</typeparam>
+        /// <typeparam name="T3">The type of the third value.</typeparam>
+        /// <typeparam name="T4">The type of the fourth value.</typeparam>
+        /// <param name="args">The arguments to check.</param>
+        /// <param name="conv1">The converter for the first part.</param>
+        /// <param name="conv2">The converter for the second part.</param>
+        /// <param name="f">The callback to invoke if fulfilled.</param>
+        /// <returns>The result of the callback or null.</returns>
+        public static Object IsEither<T1, T2, T3, T4>(Object[] args, Func<T1, T2> conv1, Func<T3, T4> conv2, Func<T2, T4, Object> f) =>
+            args[0] is T1 or T2 && args[1] is T3 or T4 ? f(args[0] is T1 t0 ? conv1(t0) : (T2)args[0], args[1] is T3 t1 ? conv2(t1) : (T4)args[1]) : null;
+
+        /// <summary>
         /// Checks if the provided args are all non-null. Performs the conversion and invokes
         /// the result if successful.
         /// </summary>

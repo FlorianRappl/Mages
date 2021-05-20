@@ -49,8 +49,17 @@
 
         #region Other Fields
 
+        private static readonly Func<Double, Object> NumberToMatrix = x => x.ToMatrix();
+        private static readonly Func<Complex, Object> CNumberToMatrix = x => x.ToMatrix();
         private static readonly Func<Double[,], Object> TransposeMatrix = x => x.Transpose();
         private static readonly Func<Complex[,], Object> TransposeCMatrix = x => x.Transpose();
+
+        #endregion
+
+        #region Abs
+
+        private static readonly Func<Double, Object> AbsNumber = x => Math.Abs(x);
+        private static readonly Func<Complex, Object> AbsCNumber = x => Complex.Abs(x);
         private static readonly Func<Double[,], Object> AbsMatrix = x => Matrix.Abs(x);
         private static readonly Func<Complex[,], Object> AbsCMatrix = x => Matrix.Abs(x);
 
@@ -93,9 +102,13 @@
         public static Object Transpose(Object[] args) =>
             If.Is<Double[,]>(args, TransposeMatrix) ??
             If.Is<Complex[,]>(args, TransposeCMatrix) ??
+            If.Is<Double>(args, NumberToMatrix) ??
+            If.Is<Complex>(args, CNumberToMatrix) ??
             args[0].ToNumber().ToMatrix();
 
         public static Object Abs(Object[] args) =>
+            If.Is<Double>(args, AbsNumber) ??
+            If.Is<Complex>(args, AbsCNumber) ??
             If.Is<Double[,]>(args, AbsMatrix) ??
             If.Is<Complex[,]>(args, AbsCMatrix) ??
             Math.Abs(args[0].ToNumber());

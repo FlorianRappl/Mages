@@ -43,7 +43,7 @@
         /// <summary>
         /// Converts the matrix to a string.
         /// </summary>
-        public static String This(Double[,] value)
+        public static String This<T>(T[,] value)
         {
             var sb = StringBuilderPool.Pull();
             var rows = value.GetLength(0);
@@ -64,7 +64,7 @@
                         sb.Append(',');
                     }
 
-                    sb.Append(value[i, j].ToString(CultureInfo.InvariantCulture));
+                    sb.Append(This(value[i, j]));
                 }
             }
 
@@ -101,6 +101,7 @@
             Double d => This(d),
             Boolean b => This(b),
             Complex c => This(c),
+            Complex[,] m => This(m),
             _ => "(unknown)"
         };
 

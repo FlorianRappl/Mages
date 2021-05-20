@@ -47,9 +47,13 @@
 
         public const Double LanczosR = 10.900511;
 
-        public static Complex Min(Complex a, Complex b) => Complex.Abs(a) > Complex.Abs(b) ? b : a;
+        public static Boolean IsGreaterThan(Complex a, Complex b) => Complex.Abs(a) > Complex.Abs(b);
 
-        public static Complex Max(Complex a, Complex b) => Complex.Abs(a) > Complex.Abs(b) ? a : b;
+        public static Boolean IsLessThan(Complex a, Complex b) => Complex.Abs(a) < Complex.Abs(b);
+
+        public static Complex Min(Complex a, Complex b) => IsGreaterThan(a, b) ? b : a;
+
+        public static Complex Max(Complex a, Complex b) => IsGreaterThan(a, b) ? a : b;
 
         public static Complex Ceiling(Complex value) => new Complex(Math.Ceiling(value.Real), Math.Ceiling(value.Imaginary));
 
@@ -63,6 +67,13 @@
         {
             var arg = Math.Atan2(value.Imaginary, value.Real);
             return new Complex(Math.Cos(arg), Math.Sin(arg));
+        }
+
+        public static Complex Mod(Complex a, Complex b)
+        {
+            var x = a / b;
+            var z = new Complex(Math.Floor(x.Real), Math.Floor(x.Imaginary)) * b;
+            return a - z;
         }
 
         public static Complex Factorial(Complex value) => new Complex(Factorial(value.Real), Factorial(value.Imaginary));

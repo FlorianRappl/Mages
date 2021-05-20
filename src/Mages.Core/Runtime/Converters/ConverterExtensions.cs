@@ -51,38 +51,18 @@
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The boolean representation of the value.</returns>
-        public static Boolean ToBoolean(this Object value)
+        public static Boolean ToBoolean(this Object value) =>  value switch
         {
-            if (value is Boolean bval)
-            {
-                return bval;
-            }
-            else if (value != null)
-            {
-                var nval = value as Double?;
-
-                if (nval.HasValue)
-                {
-                    return nval.Value.ToBoolean();
-                }
-                else if (value is String sval)
-                {
-                    return sval.ToBoolean();
-                }
-                else if (value is Double[,] mval)
-                {
-                    return mval.ToBoolean();
-                }
-                else if (value is IDictionary<String, Object> oval)
-                {
-                    return oval.ToBoolean();
-                }
-
-                return true;
-            }
-
-            return false;
-        }
+            null => false,
+            Boolean bval => bval,
+            Double nval => nval.ToBoolean(),
+            Complex cval => cval.ToBoolean(),
+            String sval => sval.ToBoolean(),
+            Double[,] mval => mval.ToBoolean(),
+            Complex[,] cmval => cmval.ToBoolean(),
+            IDictionary<String, Object> oval => oval.ToBoolean(),
+            _ => true
+        };
 
         /// <summary>
         /// Returns the boolean representation of the given numeric value.
@@ -90,6 +70,13 @@
         /// <param name="value">The value to convert.</param>
         /// <returns>The boolean representation of the value.</returns>
         public static Boolean ToBoolean(this Double value) => value != 0.0;
+
+        /// <summary>
+        /// Returns the boolean representation of the given complex value.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The boolean representation of the value.</returns>
+        public static Boolean ToBoolean(this Complex value) => value != Complex.Zero;
 
         /// <summary>
         /// Returns the boolean representation of the given string value.
@@ -104,6 +91,13 @@
         /// <param name="matrix">The matrix to convert.</param>
         /// <returns>The boolean representation of the value.</returns>
         public static Boolean ToBoolean(this Double[,] matrix) => matrix.AnyTrue();
+
+        /// <summary>
+        /// Returns the boolean representation of the given complex matrix value.
+        /// </summary>
+        /// <param name="matrix">The matrix to convert.</param>
+        /// <returns>The boolean representation of the value.</returns>
+        public static Boolean ToBoolean(this Complex[,] matrix) => matrix.AnyTrue();
 
         /// <summary>
         /// Returns the boolean representation of the given object value.
@@ -139,6 +133,22 @@
 
                 return result;
             }
+            else if (value is Complex[,] cmatrix)
+            {
+                var result = new Dictionary<String, Object>();
+                var rows = cmatrix.GetRows();
+                var columns = cmatrix.GetColumns();
+
+                for (int i = 0, k = 0; i < rows; i++)
+                {
+                    for (var j = 0; j < columns; j++, k++)
+                    {
+                        result[k.ToString()] = cmatrix[i, j];
+                    }
+                }
+
+                return result;
+            }
             else
             {
                 var result = new Dictionary<String, Object>();
@@ -157,32 +167,16 @@
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The number representation of the value.</returns>
-        public static Double ToNumber(this Object value)
+        public static Double ToNumber(this Object value) => value switch
         {
-            if (value is Double dval)
-            {
-                return dval;
-            }
-            else if (value != null)
-            {
-                var bval = value as Boolean?;
-
-                if (bval.HasValue)
-                {
-                    return bval.Value.ToNumber();
-                }
-                else if (value is String sval)
-                {
-                    return sval.ToNumber();
-                }
-                else if (value is Double[,] mval)
-                {
-                    return mval.ToNumber();
-                }
-            }
-
-            return Double.NaN;
-        }
+            null => double.NaN,
+            Double dval => dval,
+            Boolean bval => bval.ToNumber(),
+            String sval => sval.ToNumber(),
+            Double[,] mval => mval.ToNumber(),
+            Complex[,] cmval => cmval.ToNumber(),
+            _ => Double.NaN
+        };
 
         /// <summary>
         /// Returns the complex representation of the given value.
@@ -244,15 +238,15 @@
         }
 
         /// <summary>
-        /// Returns the number representation of the given matrix value.
+        /// Returns the number representation of the given complex matrix value.
         /// </summary>
-        /// <param name="matrix">The matrix to convert.</param>
+        /// <param name="matrix">The complex matrix to convert.</param>
         /// <returns>The number representation of the value.</returns>
-        public static Complex ToNumber(this Complex[,] matrix)
+        public static Double ToNumber(this Complex[,] matrix)
         {
             if (matrix.GetRows() == 1 && matrix.GetColumns() == 1)
             {
-                return matrix[0, 0];
+                return Complex.Abs(matrix[0, 0]);
             }
 
             return Double.NaN;
