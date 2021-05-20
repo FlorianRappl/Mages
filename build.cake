@@ -30,6 +30,7 @@ var nugetRoot = buildResultDir + Directory("nuget");
 var chocolateyRoot = buildResultDir + Directory("chocolatey");
 var squirrelRoot = buildResultDir + Directory("squirrel");
 var releaseDir = squirrelRoot + Directory("release");
+var isPublish = target == "Publish";
 
 if (isRunningOnGitHubActions)
 {
@@ -277,8 +278,8 @@ Task("Publish-GitHub-Release")
         {
             Name = version,
             Body = String.Join(Environment.NewLine, releaseNotes.Notes),
-            Prerelease = target != "Publish",
-            TargetCommitish = target == "Publish" ? "main" : "devel"
+            Prerelease = !isPublish,
+            TargetCommitish = isPublish ? "main" : "devel"
         }).Result;
 
         var target = nugetRoot + Directory("lib") + Directory("netstandard2.0");
