@@ -321,13 +321,16 @@ Task("Default")
     .IsDependentOn("Package");
 
 Task("Publish-Packages")
+    .IsDependentOn("Default")
     .IsDependentOn("Publish-Nuget-Package")
     .IsDependentOn("Publish-Chocolatey-Package");
 
 Task("Publish")
+    .IsDependentOn("Publish-Packages")
     .IsDependentOn("Publish-GitHub-Release");
 
 Task("PrePublish")
+    .IsDependentOn("Publish-Packages")
     .IsDependentOn("Publish-GitHub-Release");
 
 // Execution
