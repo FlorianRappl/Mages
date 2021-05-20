@@ -90,6 +90,8 @@ x = exp(1) // 2.72...
 M = exp([-1, 0]) // [0.36..., 1]
 ```
 
+The values `exp(0)` and `exp(1)` have been also conserved in constants (`exp0` and `exp1`). For `exp(1)` also `e` was taken as a global constant.
+
 ### Logarithmic Function
 
 Works with numbers and matrices (applied to each value).
@@ -98,6 +100,8 @@ Works with numbers and matrices (applied to each value).
 x = log(1) // 0
 M = log([0.5, 2]) // [-0.69..., 0.69...]
 ```
+
+Also cases for other basis such as `log2` or `log10` exist.
 
 ## Comparison Functions
 

@@ -277,8 +277,8 @@ Task("Publish-GitHub-Release")
         {
             Name = version,
             Body = String.Join(Environment.NewLine, releaseNotes.Notes),
-            Prerelease = false,
-            TargetCommitish = "main"
+            Prerelease = target != "Publish",
+            TargetCommitish = target == "Publish" ? "main" : "devel"
         }).Result;
 
         var target = nugetRoot + Directory("lib") + Directory("netstandard2.0");
@@ -326,7 +326,7 @@ Task("Publish")
     .IsDependentOn("Publish-GitHub-Release");
 
 Task("PrePublish")
-    .IsDependentOn("Publish-Packages");
+    .IsDependentOn("Publish-GitHub-Release");
 
 // Execution
 // ----------------------------------------

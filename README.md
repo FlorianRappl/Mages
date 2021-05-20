@@ -14,7 +14,7 @@ Among other applications, MAGES is used in [Microsoft's PowerToys](https://githu
 
 ### Current Status
 
-MAGES was just updated with support for complex numbers. Also, the build target and runtime has been updated to make use of modern possibilities.
+MAGES was just updated (v2.0.0) with support for complex numbers. Also, the build target and runtime has been updated to make use of modern possibilities.
 
 ### Previous Status
 

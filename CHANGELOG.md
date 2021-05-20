@@ -1,5 +1,6 @@
 # 2.0.0
 
+- Migrated to use GitHub actions
 - Added missing helpers and constants (#98)
 - Added complex helpers (#97)
 - Added complex numbers support (#96)

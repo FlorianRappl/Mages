@@ -22,7 +22,8 @@
             Complex _ => "Complex",
             String _ => "String",
             Boolean _ => "Boolean",
-            Double[,] or Complex[,] _ =>"Matrix",
+            Double[,] _ => "Matrix",
+            Complex[,] _ => "CMatrix",
             Function _ => "Function",
             IDictionary<String, Object> _ => "Object",
             _ => "Undefined",
@@ -37,9 +38,11 @@
         public static Object To(this Object value, String type) => type switch
         {
             "Number" => value.ToNumber(),
+            "Complex" => value.ToComplex(),
             "String" => Stringify.This(value),
             "Boolean" => value.ToBoolean(),
             "Matrix" => value.ToNumber().ToMatrix(),
+            "CMatrix" => value.ToComplex().ToMatrix(),
             "Function" => value as Function,
             "Object" => value as IDictionary<String, Object>,
             "Undefined" => null,
@@ -169,7 +172,7 @@
         /// <returns>The number representation of the value.</returns>
         public static Double ToNumber(this Object value) => value switch
         {
-            null => double.NaN,
+            null => Double.NaN,
             Double dval => dval,
             Boolean bval => bval.ToNumber(),
             String sval => sval.ToNumber(),
@@ -183,15 +186,12 @@
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The complex representation of the value.</returns>
-        public static Complex ToComplex(this Object value)
+        public static Complex ToComplex(this Object value) => value switch
         {
-            if (value is Complex c)
-            {
-                return c;
-            }
-
-            return value.ToNumber();
-        }
+            Complex c => c,
+            Complex[,] m => m.ToComplex(),
+            _ => value.ToNumber()
+        };
 
         /// <summary>
         /// Returns the number representation of the given boolean value.
@@ -206,6 +206,21 @@
         /// <param name="value">The value to convert.</param>
         /// <returns>The complex representation of the value.</returns>
         public static Complex ToComplex(this Boolean value) => value ? Complex.One : Complex.Zero;
+
+        /// <summary>
+        /// Returns the complex representation of the given complex matrix value.
+        /// </summary>
+        /// <param name="matrix">The complex matrix to convert.</param>
+        /// <returns>The complex representation of the value.</returns>
+        public static Complex ToComplex(this Complex[,] matrix)
+        {
+            if (matrix.GetRows() == 1 && matrix.GetColumns() == 1)
+            {
+                return matrix[0, 0];
+            }
+
+            return Double.NaN;
+        }
 
         /// <summary>
         /// Returns the number representation of the given string value.
