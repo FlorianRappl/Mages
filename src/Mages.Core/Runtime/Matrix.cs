@@ -7,20 +7,11 @@
 
     static class Matrix
     {
-        public static Int32 GetRows<T>(this T[,] matrix)
-        {
-            return matrix.GetLength(0);
-        }
+        public static Int32 GetRows<T>(this T[,] matrix) => matrix.GetLength(0);
 
-        public static Int32 GetColumns<T>(this T[,] matrix)
-        {
-            return matrix.GetLength(1);
-        }
+        public static Int32 GetColumns<T>(this T[,] matrix) => matrix.GetLength(1);
 
-        public static Int32 GetCount<T>(this T[,] matrix)
-        {
-            return matrix.GetLength(0) * matrix.GetLength(1);
-        }
+        public static Int32 GetCount<T>(this T[,] matrix) => matrix.GetLength(0) * matrix.GetLength(1);
 
         public static Object GetKeys<T>(this T[,] matrix)
         {

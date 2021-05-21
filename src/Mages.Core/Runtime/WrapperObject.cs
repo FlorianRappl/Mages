@@ -96,8 +96,7 @@
         {
             get
             {
-                var result = default(Object);
-                TryGetValue(key, out result);
+                TryGetValue(key, out var result);
                 return result;
             }
             set { TrySetValue(key, value); }
@@ -121,28 +120,19 @@
         /// </summary>
         public ICollection<Object> Values => _extends.Values;
 
-        void ICollection<KeyValuePair<String, Object>>.Add(KeyValuePair<String, Object> item)
-        {
-            Add(item.Key, item.Value);
-        }
+        void ICollection<KeyValuePair<String, Object>>.Add(KeyValuePair<String, Object> item) => Add(item.Key, item.Value);
 
         /// <summary>
         /// Sets the provided value at the provided property.
         /// </summary>
         /// <param name="key">The name of the property.</param>
         /// <param name="value">The value to use.</param>
-        public void Add(String key, Object value)
-        {
-            TrySetValue(key, value);
-        }
+        public void Add(String key, Object value) => TrySetValue(key, value);
 
         /// <summary>
         /// Resets the extension object.
         /// </summary>
-        public void Clear()
-        {
-            _extends.Clear();
-        }
+        public void Clear() => _extends.Clear();
 
         /// <summary>
         /// Checks if the underlying object or the extension
@@ -150,10 +140,7 @@
         /// </summary>
         /// <param name="item">The item to check for.</param>
         /// <returns>True if the key is used, otherwise false.</returns>
-        public Boolean Contains(KeyValuePair<String, Object> item)
-        {
-            return ContainsKey(item.Key);
-        }
+        public Boolean Contains(KeyValuePair<String, Object> item) => ContainsKey(item.Key);
 
         /// <summary>
         /// Checks if the underlying object or the extension
@@ -161,10 +148,7 @@
         /// </summary>
         /// <param name="key">The key to check for.</param>
         /// <returns>True if the key is used, otherwise false.</returns>
-        public Boolean ContainsKey(String key)
-        {
-            return _proxies.ContainsKey(key) || _extends.ContainsKey(key);
-        }
+        public Boolean ContainsKey(String key) => _proxies.ContainsKey(key) || _extends.ContainsKey(key);
 
         void ICollection<KeyValuePair<String, Object>>.CopyTo(KeyValuePair<String, Object>[] array, Int32 arrayIndex)
         {
@@ -174,25 +158,17 @@
         /// Gets the enumerator over the elements of the extension.
         /// </summary>
         /// <returns>The extension's enumerator.</returns>
-        public IEnumerator<KeyValuePair<String, Object>> GetEnumerator()
-        {
-            return _extends.Concat(_proxies.Select(m => new KeyValuePair<String, Object>(m.Key, m.Value.Value))).GetEnumerator();
-        }
+        public IEnumerator<KeyValuePair<String, Object>> GetEnumerator() =>
+            _extends.Concat(_proxies.Select(m => new KeyValuePair<String, Object>(m.Key, m.Value.Value))).GetEnumerator();
 
-        Boolean ICollection<KeyValuePair<String, Object>>.Remove(KeyValuePair<String, Object> item)
-        {
-            return Remove(item.Key);
-        }
+        Boolean ICollection<KeyValuePair<String, Object>>.Remove(KeyValuePair<String, Object> item) => Remove(item.Key);
 
         /// <summary>
         /// Removes the item from the extension.
         /// </summary>
         /// <param name="key">The key of the item to be removed.</param>
         /// <returns>True if it could be removed, otherwise false.</returns>
-        public Boolean Remove(String key)
-        {
-            return _extends.Remove(key);
-        }
+        public Boolean Remove(String key) => _extends.Remove(key);
 
         /// <summary>
         /// Tries to get the value from the given key.
@@ -202,9 +178,7 @@
         /// <returns>True if the value could be retrieved, otherwise false.</returns>
         public Boolean TryGetValue(String key, out Object value)
         {
-            var proxy = default(BaseProxy);
-
-            if (_proxies.TryGetValue(key, out proxy))
+            if (_proxies.TryGetValue(key, out var proxy))
             {
                 value = proxy.Value;
                 return true;
@@ -219,9 +193,7 @@
 
         private void TrySetValue(String key, Object value)
         {
-            var proxy = default(BaseProxy);
-            
-            if (_proxies.TryGetValue(key, out proxy))
+            if (_proxies.TryGetValue(key, out var proxy))
             {
                 proxy.Value = value;
             }
@@ -231,10 +203,7 @@
             }
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         #endregion
     }

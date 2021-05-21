@@ -7,6 +7,7 @@
 - Changed the range operator from `:` to `..` (#76)
 - Changed library target to .NET Standard 2 (#68)
 - Changed application to run on .NET Core 3.1 (#68)
+- Changed types to be reflected as objects (#60)
 
 # 1.6.1
 

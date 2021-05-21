@@ -124,14 +124,12 @@
             {
                 foreach (var constraint in constraints)
                 {
-                    var val = default(Object);
-
-                    if (obj.TryGetValue(constraint.Key, out val))
+                    if (obj.TryGetValue(constraint.Key, out var val))
                     {
                         var simple = constraint.Value as String;
                         var extended = constraint.Value as IDictionary<String, Object>;
 
-                        if ((simple == null || val.ToType() == simple) &&
+                        if ((simple == null || val.ToType()["name"].ToString() == simple) &&
                             (extended == null || extended.Satisfies(val)))
                         {
                             continue;

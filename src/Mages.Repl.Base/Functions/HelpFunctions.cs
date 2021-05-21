@@ -5,6 +5,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Numerics;
     using System.Text;
 
     sealed class HelpFunctions
@@ -60,8 +61,9 @@
         {
             var sb = new StringBuilder();
             var type = value.ToType();
+            var typeName = $"{type["name"]}";
             sb.AppendFormat("Type of '{0}': ", topic);
-            sb.AppendLine(type);
+            sb.AppendLine(typeName);
             sb.Append("Number value: ");
             sb.Append(Stringify.This(value.ToNumber()));
             sb.AppendLine();
@@ -71,24 +73,35 @@
             sb.Append("String value: ");
             sb.Append(Stringify.This(value));
 
-            switch (type)
+            switch (typeName)
             {
                 case "Number":
-                    break;
+                case "Complex":
                 case "String":
-                    break;
                 case "Boolean":
+                case "Function":
+                case "Undefined":
+                    break;
+                case "CMatrix":
+                    sb.AppendLine();
+                    sb.Append("Columns: ");
+                    sb.Append(((Complex[,])value).GetLength(1));
+                    sb.AppendLine();
+                    sb.Append("Rows: ");
+                    sb.Append(((Complex[,])value).GetLength(0));
                     break;
                 case "Matrix":
-                    break;
-                case "Function":
+                    sb.AppendLine();
+                    sb.Append("Columns: ");
+                    sb.Append(((Double[,])value).GetLength(1));
+                    sb.AppendLine();
+                    sb.Append("Rows: ");
+                    sb.Append(((Double[,])value).GetLength(0));
                     break;
                 case "Object":
                     sb.AppendLine();
                     sb.Append("Keys: ");
                     sb.Append(String.Join(", ", ((IDictionary<String, Object>)value).Select(m => m.Key)));
-                    break;
-                case "Undefined":
                     break;
             }
 

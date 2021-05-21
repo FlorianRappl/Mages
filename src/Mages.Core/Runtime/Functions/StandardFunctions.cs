@@ -866,7 +866,7 @@
         public static readonly Function Is = new Function(args =>
         {
             return Curry.MinTwo(Is, args) ?? 
-                If.Is<String>(args, type => type == args[1].ToType()) ??
+                If.Is<String>(args, type => type == args[1].ToType()["name"].ToString()) ??
                 If.Is<IDictionary<String, Object>>(args, type => type.Satisfies(args[1]));
         });
 

@@ -1,5 +1,6 @@
 ﻿namespace Mages.Core.Runtime.Converters
 {
+    using Mages.Core.Runtime.Types;
     using System;
     using System.Collections.Generic;
     using System.Globalization;
@@ -16,17 +17,17 @@
         /// </summary>
         /// <param name="value">The value to get the type of.</param>
         /// <returns>The MAGES type string.</returns>
-        public static String ToType(this Object value) => value switch
+        public static IDictionary<String, Object> ToType(this Object value) => value switch
         {
-            Double _ => "Number",
-            Complex _ => "Complex",
-            String _ => "String",
-            Boolean _ => "Boolean",
-            Double[,] _ => "Matrix",
-            Complex[,] _ => "CMatrix",
-            Function _ => "Function",
-            IDictionary<String, Object> _ => "Object",
-            _ => "Undefined",
+            Double _ => MagesNumber.Type,
+            Complex _ => MagesComplex.Type,
+            String _ => MagesString.Type,
+            Boolean _ => MagesBoolean.Type,
+            Double[,] _ => MagesMatrix.Type,
+            Complex[,] _ => MagesCMatrix.Type,
+            Function _ => MagesFunction.Type,
+            IDictionary<String, Object> _ => MagesObject.Type,
+            _ => MagesUndefined.Type,
         };
 
         /// <summary>
