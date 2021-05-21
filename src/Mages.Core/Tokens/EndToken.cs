@@ -18,5 +18,10 @@
         public TextPosition Start => _position;
 
         public TextPosition End => _position;
+
+        public override String ToString()
+        {
+            return $"EOF / {_position}";
+        }
     }
 }

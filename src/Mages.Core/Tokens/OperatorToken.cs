@@ -29,5 +29,10 @@
         public TextPosition Start => _start;
 
         public TextPosition End => _end;
+
+        public override String ToString()
+        {
+            return $"Operator / {_start} -- {_end} / '{_payload}'";
+        }
     }
 }

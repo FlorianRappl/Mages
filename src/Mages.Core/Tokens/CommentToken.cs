@@ -22,5 +22,10 @@
         public TextPosition Start => _start;
 
         public TextPosition End => _end;
+
+        public override String ToString()
+        {
+            return $"Comment / {_start} -- {_end} / '{_comment}'";
+        }
     }
 }

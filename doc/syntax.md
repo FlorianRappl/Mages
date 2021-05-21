@@ -131,9 +131,11 @@ call ::= expr space* arguments
 Besides a couple of unary and binary operators, two tertiary operators are also included. We have:
 
 ```
-range ::= expr space* ':' (space* expr space* ':')? space* expr
+range ::= expr space* '..' (space* expr space* '..')? space* expr
 condition ::= expr space* '?' space* expr space* ':' space* expr
 ```
+
+Conditions take precedence over ranges.
 
 ## Operators
 

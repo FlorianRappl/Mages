@@ -61,9 +61,11 @@ Console.WriteLine(engine.Scope["IsSevenPrime"]); // true
 MAGES tries to narrow every .NET data type to one of its data types:
 
 * Number (`System.Double`)
+* Complex (`System.Numerics.Complex`)
 * Boolean (`System.Boolean`)
 * String (`System.String`)
 * Matrix (`System.Double[,]`)
+* CMatrix (`System.Numerics.Complex[,]`)
 * Object (`System.Collections.Generic.IDictionary<System.String, System.Object>`)
 * Function (`Mages.Core.Function`, essentially a `Delegate` mapping `Object[]` to `Object`)
 * Undefined (`null`)

@@ -95,6 +95,10 @@
                     {
                         return Decimal();
                     }
+                    else if (_scanner.Current == CharacterTable.FullStop)
+                    {
+                        return new OperatorToken(TokenType.DotDot, "..", _start);
+                    }
 
                     _scanner.MoveBack();
                 }
@@ -116,6 +120,12 @@
 
                 if (_scanner.Current == CharacterTable.FullStop && _scanner.MoveNext())
                 {
+                    if (_scanner.Current == CharacterTable.FullStop)
+                    {
+                        _scanner.MoveBack();
+                        return Final();
+                    }
+
                     return Decimal();
                 }
                 else if (_scanner.Current == CharacterTable.SmallE || _scanner.Current == CharacterTable.BigE)
@@ -181,7 +191,8 @@
                 {
                     if (IsDotOperator(_scanner.Current))
                     {
-                        _scanner.MoveBack();
+                        //TODO: Right now disabled as we don't consume / handle dot operators in the general tokenizer
+                        //_scanner.MoveBack();
                         return Final();
                     }
 

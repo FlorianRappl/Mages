@@ -175,11 +175,11 @@ Ranges come in two versions. There is an implicit and an explicit range. The for
 The operator to invoke the range literal is the colon `:`. It can be used with two such colons (explicit: denoting start, step, end) or just one (implicit: separating start and end). Start and end are both given inclusive.
 
 ```C
-1:1:5 // Creates a 1x5 matrix [1,2,3,4,5]
-1:2:5 // Creates a 1x3 matrix [1,3,5]
-1:-1:-1 // Creates a 1x3 matrix [1,0,-1]
-1:4 // Creates a 1x4 matrix [1,2,3,4]
-1:-1 // Creates a 1x3 matrix [1,0,-1]
+1..1..5 // Creates a 1x5 matrix [1,2,3,4,5]
+1..2..5 // Creates a 1x3 matrix [1,3,5]
+1..-1..-1 // Creates a 1x3 matrix [1,0,-1]
+1..4 // Creates a 1x4 matrix [1,2,3,4]
+1..-1 // Creates a 1x3 matrix [1,0,-1]
 ```
 
 By default this creates a row vector, however, one can always transpose the result, e.g., `(1:3)'`.

@@ -22,5 +22,10 @@
         public TextPosition Start => _position;
 
         public TextPosition End => _position;
+
+        public override String ToString()
+        {
+            return $"Character / {_position} / '{Char.ConvertFromUtf32(_character)}'#{_character}";
+        }
     }
 }

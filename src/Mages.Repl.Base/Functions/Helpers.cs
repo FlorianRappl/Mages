@@ -49,5 +49,18 @@
             statements.ToBlock().Accept(walker);
             return sb.ToString(0, sb.Length - Environment.NewLine.Length);
         }
+
+        public static String ShowTokens(Engine engine, String source)
+        {
+            var tokens = source.ToTokenStream();
+            var list = new List<String>();
+
+            while (tokens.MoveNext())
+            {
+                list.Add($"{tokens.Current}");
+            }
+
+            return String.Join(Environment.NewLine, list);
+        }
     }
 }

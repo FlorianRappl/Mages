@@ -131,5 +131,15 @@
         }
 
         #endregion
+
+        #region ToString
+
+        /// <inheritdoc />
+        public override String ToString()
+        {
+            return $"{_index}:{_row},{_column}";
+        }
+
+        #endregion
     }
 }

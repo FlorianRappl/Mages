@@ -153,6 +153,13 @@
         }
 
         [Test]
+        public void CallWithConditionAndRangeYieldsValue()
+        {
+            var result = "false ? 2..3 : 3..4".Eval();
+            Assert.IsNotNull(result);
+        }
+
+        [Test]
         public void CallObjectWithUnknownNameYieldsNothing()
         {
             var result = "new { a: 29 }(\"b\")".Eval();

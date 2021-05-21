@@ -39,5 +39,10 @@
         public TextPosition Start => _start;
 
         public TextPosition End => _end;
+
+        public override String ToString()
+        {
+            return $"InterpolatedString / {_start} -- {_end} / '{_content}'";
+        }
     }
 }

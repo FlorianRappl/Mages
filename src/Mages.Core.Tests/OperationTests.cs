@@ -485,7 +485,7 @@
         [Test]
         public void RangeWithValidToAndFromAutoStep()
         {
-            var result = "1:3".Eval() as Double[,];
+            var result = "1..3".Eval() as Double[,];
             Assert.IsNotNull(result);
             Assert.AreEqual(3, result.Length);
             Assert.AreEqual(1.0, result[0, 0]);
@@ -496,7 +496,7 @@
         [Test]
         public void RangeWithInvalidToAndValidFromAutoStep()
         {
-            var result = "1:\"3k\"".Eval() as Double[,];
+            var result = "1..\"3k\"".Eval() as Double[,];
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Length);
         }
@@ -504,7 +504,7 @@
         [Test]
         public void RangeWithValidToAndInvalidFromAutoStep()
         {
-            var result = "\"3k\":1".Eval() as Double[,];
+            var result = "\"3k\"..1".Eval() as Double[,];
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Length);
         }
@@ -512,7 +512,7 @@
         [Test]
         public void RangeWithValidToAndFromAndStep()
         {
-            var result = "1:2:3".Eval() as Double[,];
+            var result = "1..2..3".Eval() as Double[,];
             Assert.IsNotNull(result);
             Assert.AreEqual(2, result.Length);
             Assert.AreEqual(1.0, result[0, 0]);
@@ -522,7 +522,7 @@
         [Test]
         public void RangeWithValidToAndInvalidFromAndValidStep()
         {
-            var result = "\"foo\":2:3".Eval() as Double[,];
+            var result = "\"foo\"..2..3".Eval() as Double[,];
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Length);
         }
@@ -530,7 +530,7 @@
         [Test]
         public void RangeWithValidToAndFromAndInvalidStep()
         {
-            var result = "1:\"foo\":3".Eval() as Double[,];
+            var result = "1..\"foo\"..3".Eval() as Double[,];
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Length);
         }
@@ -538,7 +538,7 @@
         [Test]
         public void RangeWithInvalidToAndValidFromAndValidStep()
         {
-            var result = "1:2:\"foo\"".Eval() as Double[,];
+            var result = "1..2..\"foo\"".Eval() as Double[,];
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Length);
         }

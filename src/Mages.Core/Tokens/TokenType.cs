@@ -166,6 +166,10 @@
         /// </summary>
         Pipe = 39,
         /// <summary>
+        /// The dot dot operator (range).
+        /// </summary>
+        DotDot = 40,
+        /// <summary>
         /// Semicolon symbol.
         /// </summary>
         SemiColon = 0x40,

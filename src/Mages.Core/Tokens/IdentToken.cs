@@ -24,5 +24,10 @@
         public TextPosition Start => _start;
 
         public TextPosition End => _end;
+
+        public override String ToString()
+        {
+            return $"Identifier / {_start} -- {_end} / '{_identifier}'";
+        }
     }
 }

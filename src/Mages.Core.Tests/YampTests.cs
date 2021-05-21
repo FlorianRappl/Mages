@@ -317,7 +317,7 @@
         [Test]
         public void RangeWithExplicitDelta()
         {
-            Test("abs(1:1:3)", Math.Sqrt(1 + 4 + 9));
+            Test("abs(1..1..3)", Math.Sqrt(1 + 4 + 9));
         }
 
         [Test]
@@ -359,7 +359,7 @@
         [Test]
         public void LengthOfRange()
         {
-            Test("length(-pi/4:0.1:pi/4)", 16.0);
+            Test("length(-pi/4..0.1..pi/4)", 16.0);
         }
 
         [Test]

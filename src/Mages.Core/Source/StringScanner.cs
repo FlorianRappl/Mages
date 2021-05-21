@@ -10,9 +10,12 @@
         private readonly StringReader _source;
 
         private Int32 _current;
-        private Int32 _previous;
+        private Int32 _p0;
+        private Int32 _p1;
+        private Int32 _p2;
+        private Int32 _p3;
         private Boolean _skip;
-        private Boolean _swap;
+        private Int32 _pIndex;
 
         #endregion
 
@@ -21,7 +24,11 @@
         public StringScanner(String source)
         {
             _source = new StringReader(source);
-            _previous = CharacterTable.NullPtr;
+            _pIndex = 0;
+            _p0 = CharacterTable.NullPtr;
+            _p1 = CharacterTable.NullPtr;
+            _p2 = CharacterTable.NullPtr;
+            _p3 = CharacterTable.NullPtr;
             _current = CharacterTable.NullPtr;
         }
 
@@ -29,7 +36,15 @@
 
         #region Properties
 
-        public Int32 Current => _current;
+        public Int32 Current => _pIndex switch
+        {
+            0 => _current,
+            1 => _p0,
+            2 => _p1,
+            3 => _p2,
+            4 => _p3,
+            _ => CharacterTable.NullPtr,
+        };
 
         #endregion
 
@@ -63,17 +78,17 @@
 
         private void Retreat()
         {
-            if (!_swap)
+            if (_pIndex < 4)
             {
-                Swap();
+                _pIndex++;
             }
         }
 
         private void Advance()
         {
-            if (_swap)
+            if (_pIndex > 0)
             {
-                Swap();
+                _pIndex--;
             }
             else if (_current != CharacterTable.End)
             {
@@ -86,7 +101,10 @@
                     NextColumn();
                 }
 
-                _previous = _current;
+                _p3 = _p2;
+                _p2 = _p1;
+                _p1 = _p0;
+                _p0 = _current;
                 _current = Read();
             }
         }
@@ -111,14 +129,6 @@
             }
 
             return current;
-        }
-
-        private void Swap()
-        {
-            var tmp = _current;
-            _current = _previous;
-            _previous = tmp;
-            _swap = !_swap;
         }
 
         #endregion
