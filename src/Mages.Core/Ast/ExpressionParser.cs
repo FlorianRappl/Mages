@@ -682,9 +682,8 @@
             {
                 var current = tokens.Current;
                 var mode = current.Type;
-                var creator = default(Func<IExpression, TextPosition, PostUnaryExpression>);
 
-                if (ExpressionCreators.PostUnary.TryGetValue(mode, out creator))
+                if (ExpressionCreators.PostUnary.TryGetValue(mode, out var creator))
                 {
                     tokens.NextNonIgnorable();
                     left = creator.Invoke(left, current.End);

@@ -24,6 +24,8 @@
             Curry.MinOne(Conj, args) ??
             If.Is<Double>(args, x => new Complex(x, 0)) ??
             If.Is<Complex>(args, x => new Complex(x.Real, -x.Imaginary)) ??
+            If.Is<Double[,]>(args, x => x.ForEach(m => new Complex(m, 0))) ??
+            If.Is<Complex[,]>(args, x => x.ForEach(m => new Complex(m.Real, -m.Imaginary))) ??
             Double.NaN
         );
 
@@ -34,6 +36,8 @@
             Curry.MinOne(Real, args) ??
             If.Is<Double>(args, x => x) ??
             If.Is<Complex>(args, x => x.Real) ??
+            If.Is<Double[,]>(args, x => x) ??
+            If.Is<Complex[,]>(args, x => x.ForEach(m => m.Real)) ??
             Double.NaN
         );
 
@@ -44,6 +48,8 @@
             Curry.MinOne(Imag, args) ??
             If.Is<Double>(args, _ => 0.0) ??
             If.Is<Complex>(args, x => x.Imaginary) ??
+            If.Is<Double[,]>(args, x => x.ForEach(_ => 0.0)) ??
+            If.Is<Complex[,]>(args, x => x.ForEach(m => m.Imaginary)) ??
             Double.NaN
         );
     }
