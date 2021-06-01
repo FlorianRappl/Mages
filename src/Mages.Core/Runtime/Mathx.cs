@@ -131,11 +131,55 @@
 
         public static Complex Asinh(Complex value) => Complex.Log(value + Complex.Sqrt(value * value + 1.0));
 
-        public static Double Acosh(Double value) => Math.Log(value + Math.Sqrt(value * value - 1.0));
+        private static Double AcoshReal(Double value) => Math.Log(value + Math.Sqrt(value * value - 1.0));
+
+        private static Complex AcoshCmplx(Double value) => Acosh(new Complex(value, 0));
+
+        public static Object Acosh(Double value)
+        {
+            if (value >= 1.0)
+            {
+                return AcoshReal(value);
+            }
+
+            return AcoshCmplx(value);
+        }
+
+        public static Object Acosh(Double[,] value)
+        {
+            if (value.HasAny(x => x < 1.0))
+            {
+                return value.ForEach(AcoshCmplx);
+            }
+
+            return value.ForEach(AcoshReal);
+        }
 
         public static Complex Acosh(Complex value) => Complex.Log(value + Complex.Sqrt(value * value - 1.0));
 
-        public static Double Atanh(Double value) => 0.5 * Math.Log((1.0 + value) / (1.0 - value));
+        private static Double AtanhReal(Double value) => 0.5 * Math.Log((1.0 + value) / (1.0 - value));
+
+        private static Complex AtanhCmplx(Double value) => Atanh(new Complex(value, 0));
+
+        public static Object Atanh(Double value)
+        {
+            if (value >= -1.0 && value <= 1.0)
+            {
+                return AtanhReal(value);
+            }
+
+            return AtanhCmplx(value);
+        }
+
+        public static Object Atanh(Double[,] value)
+        {
+            if (value.HasAny(x => x < -1.0 || x > 1.0))
+            {
+                return value.ForEach(AtanhCmplx);
+            }
+
+            return value.ForEach(AtanhReal);
+        }
 
         public static Complex Atanh(Complex value) => 0.5 * Complex.Log((1.0 + value) / (1.0 - value));
 
@@ -161,7 +205,29 @@
             return (a + b) / (a - b);
         }
 
-        public static Double Acoth(Double value) => 0.5 * Math.Log((1.0 + value) / (value - 1.0));
+        private static Double AcothReal(Double value) => 0.5 * Math.Log((1.0 + value) / (value - 1.0));
+
+        private static Complex AcothCmplx(Double value) => Acoth(new Complex(value, 0.0));
+
+        public static Object Acoth(Double value)
+        {
+            if (value <= -1.0 || value >= 1.0)
+            {
+                return AcothReal(value);
+            }
+
+            return AcothCmplx(value);
+        }
+
+        public static Object Acoth(Double[,] value)
+        {
+            if (value.HasAny(x => x > -1.0 && x < 1.0))
+            {
+                return value.ForEach(AcothCmplx);
+            }
+
+            return value.ForEach(AcothReal);
+        }
 
         public static Complex Acoth(Complex value) => 0.5 * Complex.Log((1.0 + value) / (value - 1.0));
 
@@ -169,7 +235,77 @@
 
         public static Complex Sec(Complex value) => 1.0 / Complex.Cos(value);
 
-        public static Double Asec(Double value) => Math.Acos(1.0 / value);
+        private static Double AsecReal(Double value) => Math.Acos(1.0 / value);
+
+        private static Complex AsecCmplx(Double value) => Asec(new Complex(value, 0.0));
+
+        public static Object Asec(Double value)
+        {
+            if (value >= 1.0)
+            {
+                return AsecReal(value);
+            }
+
+            return AsecCmplx(value);
+        }
+
+        public static Object Asec(Double[,] value)
+        {
+            if (value.HasAny(x => x < 1.0))
+            {
+                return value.ForEach(AsecCmplx);
+            }
+
+            return value.ForEach(AsecReal);
+        }
+
+        private static Double AsinReal(Double value) => Math.Asin(value);
+
+        private static Complex AsinCmplx(Double value) => Complex.Asin(new Complex(value, 0.0));
+
+        public static Object Asin(Double value)
+        {
+            if (value >= -1.0 && value <= 1.0)
+            {
+                return AsinReal(value);
+            }
+
+            return AsinCmplx(value);
+        }
+
+        public static Object Asin(Double[,] value)
+        {
+            if (value.HasAny(x => x < -1.0 || x > 1.0))
+            {
+                return value.ForEach(AsinCmplx);
+            }
+
+            return value.ForEach(AsinReal);
+        }
+
+        private static Double AcosReal(Double value) => Math.Acos(value);
+
+        private static Complex AcosCmplx(Double value) => Complex.Acos(new Complex(value, 0.0));
+
+        public static Object Acos(Double value)
+        {
+            if (value >= -1.0 && value <= 1.0)
+            {
+                return AcosReal(value);
+            }
+
+            return AcosCmplx(value);
+        }
+
+        public static Object Acos(Double[,] value)
+        {
+            if (value.HasAny(x => x < -1.0 || x > 1.0))
+            {
+                return value.ForEach(AcosCmplx);
+            }
+
+            return value.ForEach(AcosReal);
+        }
 
         public static Complex Asec(Complex value) => Complex.Acos(1.0 / value);
 
@@ -193,7 +329,29 @@
 
         public static Complex Csc(Complex value) => 1.0 / Complex.Sin(value);
 
-        public static Double Acsc(Double value) => Math.Asin(1.0 / value);
+        private static Double AcscReal(Double value) => Math.Asin(1.0 / value);
+
+        private static Complex AcscCmplx(Double value) => Acsc(new Complex(value, 0.0));
+
+        public static Object Acsc(Double value)
+        {
+            if (value <= -1.0 || value >= 1.0)
+            {
+                return AcscReal(value);
+            }
+
+            return AcscCmplx(value);
+        }
+
+        public static Object Acsc(Double[,] value)
+        {
+            if (value.HasAny(x => x > -1.0 && x < 1.0))
+            {
+                return value.ForEach(AcscCmplx);
+            }
+
+            return value.ForEach(AcscReal);
+        }
 
         public static Complex Acsc(Complex value) => Complex.Asin(1.0 / value);
 

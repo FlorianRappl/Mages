@@ -532,12 +532,12 @@
         public static readonly Function ArcSin = new Function(args =>
         {
             return Curry.MinOne(ArcSin, args) ??
-                If.Is<Double>(args, x => Math.Asin(x)) ??
-                If.Is<Double[,]>(args, x => x.ForEach(Math.Asin)) ??
+                If.Is<Double>(args, x => Mathx.Asin(x)) ??
+                If.Is<Double[,]>(args, x => Mathx.Asin(x)) ??
                 If.Is<Complex>(args, x => Complex.Asin(x)) ??
                 If.Is<Complex[,]>(args, x => x.ForEach(Complex.Asin)) ??
                 If.Is<IDictionary<String, Object>>(args, o => o.Map(ArcSin)) ??
-                Math.Asin(args[0].ToNumber());
+                Mathx.Asin(args[0].ToNumber());
         });
 
         /// <summary>
@@ -546,12 +546,12 @@
         public static readonly Function ArcCos = new Function(args =>
         {
             return Curry.MinOne(ArcCos, args) ??
-                If.Is<Double>(args, x => Math.Acos(x)) ??
-                If.Is<Double[,]>(args, x => x.ForEach(Math.Acos)) ??
+                If.Is<Double>(args, x => Mathx.Acos(x)) ??
+                If.Is<Double[,]>(args, x => Mathx.Acos(x)) ??
                 If.Is<Complex>(args, x => Complex.Acos(x)) ??
                 If.Is<Complex[,]>(args, x => x.ForEach(Complex.Acos)) ??
                 If.Is<IDictionary<String, Object>>(args, o => o.Map(ArcCos)) ??
-                Math.Acos(args[0].ToNumber());
+                Mathx.Acos(args[0].ToNumber());
         });
 
         /// <summary>
@@ -589,7 +589,7 @@
         {
             return Curry.MinOne(ArcSec, args) ??
                 If.Is<Double>(args, x => Mathx.Asec(x)) ??
-                If.Is<Double[,]>(args, x => x.ForEach(Mathx.Asec)) ??
+                If.Is<Double[,]>(args, x => Mathx.Asec(x)) ??
                 If.Is<Complex>(args, x => Mathx.Asec(x)) ??
                 If.Is<Complex[,]>(args, x => x.ForEach(Mathx.Asec)) ??
                 If.Is<IDictionary<String, Object>>(args, o => o.Map(ArcSec)) ??
@@ -603,7 +603,7 @@
         {
             return Curry.MinOne(ArcCsc, args) ??
                 If.Is<Double>(args, x => Mathx.Acsc(x)) ??
-                If.Is<Double[,]>(args, x => x.ForEach(Mathx.Acsc)) ??
+                If.Is<Double[,]>(args, x => Mathx.Acsc(x)) ??
                 If.Is<Complex>(args, x => Mathx.Acsc(x)) ??
                 If.Is<Complex[,]>(args, x => x.ForEach(Mathx.Acsc)) ??
                 If.Is<IDictionary<String, Object>>(args, o => o.Map(ArcCsc)) ??
@@ -631,7 +631,7 @@
         {
             return Curry.MinOne(ArCosh, args) ??
                 If.Is<Double>(args, x => Mathx.Acosh(x)) ??
-                If.Is<Double[,]>(args, x => x.ForEach(Mathx.Acosh)) ??
+                If.Is<Double[,]>(args, x => Mathx.Acosh(x)) ??
                 If.Is<Complex>(args, x => Mathx.Acosh(x)) ??
                 If.Is<Complex[,]>(args, x => x.ForEach(Mathx.Acosh)) ??
                 If.Is<IDictionary<String, Object>>(args, o => o.Map(ArCosh)) ??
@@ -645,7 +645,7 @@
         {
             return Curry.MinOne(ArTanh, args) ??
                 If.Is<Double>(args, x => Mathx.Atanh(x)) ??
-                If.Is<Double[,]>(args, x => x.ForEach(Mathx.Atanh)) ??
+                If.Is<Double[,]>(args, x => Mathx.Atanh(x)) ??
                 If.Is<Complex>(args, x => Mathx.Atanh(x)) ??
                 If.Is<Complex[,]>(args, x => x.ForEach(Mathx.Atanh)) ??
                 If.Is<IDictionary<String, Object>>(args, o => o.Map(ArTanh)) ??
@@ -659,7 +659,7 @@
         {
             return Curry.MinOne(ArCoth, args) ??
                 If.Is<Double>(args, x => Mathx.Acoth(x)) ??
-                If.Is<Double[,]>(args, x => x.ForEach(Mathx.Acoth)) ??
+                If.Is<Double[,]>(args, x => Mathx.Acoth(x)) ??
                 If.Is<Complex>(args, x => Mathx.Acoth(x)) ??
                 If.Is<Complex[,]>(args, x => x.ForEach(Mathx.Acoth)) ??
                 If.Is<IDictionary<String, Object>>(args, o => o.Map(ArCoth)) ??
