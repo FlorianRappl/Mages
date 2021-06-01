@@ -205,8 +205,66 @@
 
         public static Complex Acsch(Complex value) => Complex.Log(1.0 / value + Complex.Sqrt(1.0 / (value * value) + 1.0));
 
-        public static Double Log2(Double value) => Math.Log(value, 2.0);
+        public static Object Log(Double value)
+        {
+            if (value >= 0.0)
+            {
+                return Math.Log(value);
+            }
+
+            return Complex.Log(value);
+        }
+
+        public static Object Log(Double[,] value)
+        {
+            if (value.HasAny(m => m < 0.0))
+            {
+                return value.ForEach(m => Complex.Log(m));
+            }
+
+            return value.ForEach(Math.Log);
+        }
+
+        public static Object Log2(Double value)
+        {
+            if (value >= 0.0)
+            {
+                return Math.Log(value, 2.0);
+            }
+
+            return Complex.Log(value, 2.0);
+        }
+
+        public static Object Log2(Double[,] value)
+        {
+            if (value.HasAny(m => m < 0.0))
+            {
+                return value.ForEach(m => Complex.Log(m, 2.0));
+            }
+
+            return value.ForEach(m => Math.Log(m, 2.0));
+        }
 
         public static Complex Log2(Complex value) => Complex.Log(value, 2.0);
+
+        public static Object Log10(Double value)
+        {
+            if (value >= 0.0)
+            {
+                return Math.Log10(value);
+            }
+
+            return Complex.Log10(value);
+        }
+
+        public static Object Log10(Double[,] value)
+        {
+            if (value.HasAny(m => m < 0.0))
+            {
+                return value.ForEach(m => Complex.Log10(m));
+            }
+
+            return value.ForEach(Math.Log10);
+        }
     }
 }

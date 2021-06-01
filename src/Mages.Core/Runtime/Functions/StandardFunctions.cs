@@ -322,8 +322,8 @@
         public static readonly Function Log = new Function(args => 
         {
             return Curry.MinOne(Log, args) ??
-                If.Is<Double>(args, x => Math.Log(x)) ??
-                If.Is<Double[,]>(args, x => x.ForEach(Math.Log)) ??
+                If.Is<Double>(args, x => Mathx.Log(x)) ??
+                If.Is<Double[,]>(args, x => Mathx.Log(x)) ??
                 If.Is<Complex>(args, x => Complex.Log(x)) ??
                 If.Is<Complex[,]>(args, x => x.ForEach(Complex.Log)) ??
                 If.Is<IDictionary<String, Object>>(args, o => o.Map(Log)) ??
@@ -337,7 +337,7 @@
         {
             return Curry.MinOne(Log2, args) ??
                 If.Is<Double>(args, x => Mathx.Log2(x)) ??
-                If.Is<Double[,]>(args, x => x.ForEach(Mathx.Log2)) ??
+                If.Is<Double[,]>(args, x => Mathx.Log2(x)) ??
                 If.Is<Complex>(args, x => Mathx.Log2(x)) ??
                 If.Is<Complex[,]>(args, x => x.ForEach(Mathx.Log2)) ??
                 If.Is<IDictionary<String, Object>>(args, o => o.Map(Log2)) ??
@@ -350,8 +350,8 @@
         public static readonly Function Log10 = new Function(args =>
         {
             return Curry.MinOne(Log10, args) ??
-                If.Is<Double>(args, x => Math.Log10(x)) ??
-                If.Is<Double[,]>(args, x => x.ForEach(Math.Log10)) ??
+                If.Is<Double>(args, x => Mathx.Log10(x)) ??
+                If.Is<Double[,]>(args, x => Mathx.Log10(x)) ??
                 If.Is<Complex>(args, x => Complex.Log10(x)) ??
                 If.Is<Complex[,]>(args, x => x.ForEach(Complex.Log10)) ??
                 If.Is<IDictionary<String, Object>>(args, o => o.Map(Log10)) ??
