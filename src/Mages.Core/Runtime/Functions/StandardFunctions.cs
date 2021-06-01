@@ -229,7 +229,7 @@
                 If.Is<Complex>(args, x => Complex.Sqrt(x)) ??
                 If.Is<Complex[,]>(args, x => x.ForEach(Complex.Sqrt)) ??
                 If.Is<IDictionary<String, Object>>(args, o => o.Map(Sqrt)) ??
-                Math.Sqrt(args[0].ToNumber());
+                Mathx.Sqrt(args[0].ToNumber());
         });
 
         /// <summary>
@@ -327,7 +327,7 @@
                 If.Is<Complex>(args, x => Complex.Log(x)) ??
                 If.Is<Complex[,]>(args, x => x.ForEach(Complex.Log)) ??
                 If.Is<IDictionary<String, Object>>(args, o => o.Map(Log)) ??
-                Math.Log(args[0].ToNumber());
+                Mathx.Log(args[0].ToNumber());
         });
 
         /// <summary>
@@ -341,7 +341,7 @@
                 If.Is<Complex>(args, x => Mathx.Log2(x)) ??
                 If.Is<Complex[,]>(args, x => x.ForEach(Mathx.Log2)) ??
                 If.Is<IDictionary<String, Object>>(args, o => o.Map(Log2)) ??
-                Math.Log(args[0].ToNumber());
+                Mathx.Log2(args[0].ToNumber());
         });
 
         /// <summary>
@@ -355,7 +355,7 @@
                 If.Is<Complex>(args, x => Complex.Log10(x)) ??
                 If.Is<Complex[,]>(args, x => x.ForEach(Complex.Log10)) ??
                 If.Is<IDictionary<String, Object>>(args, o => o.Map(Log10)) ??
-                Math.Log(args[0].ToNumber());
+                Mathx.Log10(args[0].ToNumber());
         });
 
         /// <summary>
