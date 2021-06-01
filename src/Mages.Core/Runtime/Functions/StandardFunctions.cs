@@ -224,8 +224,8 @@
         public static readonly Function Sqrt = new Function(args => 
         {
             return Curry.MinOne(Sqrt, args) ??
-                If.Is<Double>(args, x => Math.Sqrt(x)) ??
-                If.Is<Double[,]>(args, x => x.ForEach(Math.Sqrt)) ??
+                If.Is<Double>(args, x => Mathx.Sqrt(x)) ??
+                If.Is<Double[,]>(args, x => Mathx.Sqrt(x)) ??
                 If.Is<Complex>(args, x => Complex.Sqrt(x)) ??
                 If.Is<Complex[,]>(args, x => x.ForEach(Complex.Sqrt)) ??
                 If.Is<IDictionary<String, Object>>(args, o => o.Map(Sqrt)) ??

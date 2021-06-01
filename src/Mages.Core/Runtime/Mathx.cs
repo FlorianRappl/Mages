@@ -63,6 +63,26 @@
 
         public static Double Sign(Double value) => (Double)Math.Sign(value);
 
+        public static Object Sqrt(Double x)
+        {
+            if (x >= 0)
+            {
+                return Math.Sqrt(x);
+            }
+
+            return Complex.Sqrt(x);
+        }
+
+        public static Object Sqrt(Double[,] x)
+        {
+            if (x.HasAny(x => x < 0.0))
+            {
+                return x.ForEach(m => Complex.Sqrt(m));
+            }
+
+            return x.ForEach(Math.Sqrt);
+        }
+
         public static Complex Sign(Complex value)
         {
             var arg = Math.Atan2(value.Imaginary, value.Real);

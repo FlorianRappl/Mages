@@ -93,5 +93,24 @@
 
             return res;
         }
+
+        public static Boolean HasAny(this Double[,] matrix, Predicate<Double> check)
+        {
+            var rows = matrix.GetRows();
+            var cols = matrix.GetColumns();
+
+            for (var i = 0; i < rows; i++)
+            {
+                for (var j = 0; j < cols; j++)
+                {
+                    if (check(matrix[i, j]))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
     }
 }
