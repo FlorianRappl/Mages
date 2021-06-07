@@ -128,10 +128,12 @@ M = max([0.5, 2, -1, 10, -0.5]) // 10
 Works with numbers and matrices (applied to each value). Equivalent to the less-than operator (`<`). If two matrices are supplied the dimensions must match.
 
 ```
-x = lt(2, 3) // 1
-M = lt(2, [1, 2, 3]) // [0, 0, 1]
-M = lt([1, 2, 3], [2, 0, 3]) // [1, 0, 0]
+x = lt(3, 2) // 1
+M = lt(2, [1, 2, 3]) // [1, 0, 0]
+M = lt([1, 2, 3], [2, 0, 3]) // [0, 1, 0]
 ```
+
+**Remark**: Keep in mind that the first argument for the function represents the RHS of the operator. This allows currying such as `let lessThan2 = lt(2)` to be working as expected.
 
 ### Equals
 
@@ -148,10 +150,12 @@ M = eq([1, 2, 3], [2, 0, 3]) // [0, 0, 1]
 Works with numbers and matrices (applied to each value). Equivalent to the greater-than operator (`>`). If two matrices are supplied the dimensions must match.
 
 ```
-x = gt(2, 3) // 0
-M = gt(2, [1, 2, 3]) // [1, 0, 0]
-M = gt([1, 2, 3], [2, 0, 3]) // [0, 1, 0]
+x = gt(3, 2) // 0
+M = gt(2, [1, 2, 3]) // [0, 0, 1]
+M = gt([1, 2, 3], [2, 0, 3]) // [1, 0, 0]
 ```
+
+**Remark**: Keep in mind that the first argument for the function represents the RHS of the operator. This allows currying such as `let greaterThan2 = gt(2)` to be working as expected.
 
 ## Trigonometric Functions
 
