@@ -1,3 +1,14 @@
+# 2.0.0
+
+- Migrated to use GitHub actions
+- Added missing helpers and constants (#98)
+- Added complex helpers (#97)
+- Added complex numbers support (#96)
+- Changed the range operator from `:` to `..` (#76)
+- Changed library target to .NET Standard 2 (#68)
+- Changed application to run on .NET Core 3.1 (#68)
+- Changed types to be reflected as objects (#60)
+
 # 1.6.1
 
 - Fixed `factorial` bug (#94)

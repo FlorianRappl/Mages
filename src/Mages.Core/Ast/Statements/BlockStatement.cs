@@ -31,10 +31,7 @@
         /// <summary>
         /// Gets the contained statements.
         /// </summary>
-        public IEnumerable<IStatement> Statements
-        {
-            get { return _statements; }
-        }
+        public IEnumerable<IStatement> Statements => _statements;
 
         #endregion
 

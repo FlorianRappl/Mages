@@ -19,8 +19,6 @@
             _transpiler = new Dictionary<String, Object>
             {
                 { "toJavaScript", Wrap(transpiler.Js) },
-                { "toCsharp", Wrap(transpiler.Cs) },
-                { "toCplusplus", Wrap(transpiler.Cpp) }
             };
         }
 

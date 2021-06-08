@@ -34,10 +34,7 @@
         /// <summary>
         /// Gets the stored payload.
         /// </summary>
-        public IExpression Expression
-        {
-            get { return _expression; }
-        }
+        public IExpression Expression => _expression;
 
         #endregion
 

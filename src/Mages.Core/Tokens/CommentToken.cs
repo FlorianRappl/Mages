@@ -15,24 +15,17 @@
             _end = end;
         }
 
-        public TokenType Type
-        {
-            get { return TokenType.Comment; }
-        }
+        public TokenType Type => TokenType.Comment;
 
-        public String Payload
-        {
-            get { return _comment; }
-        }
+        public String Payload => _comment;
 
-        public TextPosition Start
-        {
-            get { return _start; }
-        }
+        public TextPosition Start => _start;
 
-        public TextPosition End
+        public TextPosition End => _end;
+
+        public override String ToString()
         {
-            get { return _end; }
+            return $"Comment / {_start} -- {_end} / '{_comment}'";
         }
     }
 }

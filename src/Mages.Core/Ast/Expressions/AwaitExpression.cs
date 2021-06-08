@@ -29,10 +29,7 @@
         /// <summary>
         /// Gets the carried payload to be awaited.
         /// </summary>
-        public IExpression Payload
-        {
-            get { return _payload; }
-        }
+        public IExpression Payload => _payload;
 
         #endregion
 

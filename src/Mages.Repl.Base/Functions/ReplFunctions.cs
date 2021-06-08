@@ -36,6 +36,12 @@
                 return Curry.MinOne(id, args) ??
                     If.Is<String>(args, source => Helpers.ShowAst(engine, source));
             }));
+            engine.SetFunction("tokens", new Function(args =>
+            {
+                var id = engine.Globals["tokens"] as Function;
+                return Curry.MinOne(id, args) ??
+                    If.Is<String>(args, source => Helpers.ShowTokens(engine, source));
+            }));
             engine.SetConstant("process", new ProcessObject());
             engine.SetConstant("measure", new Function(args =>
             {

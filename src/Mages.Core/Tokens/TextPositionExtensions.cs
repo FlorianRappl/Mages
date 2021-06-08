@@ -30,15 +30,9 @@
                 _end = end;
             }
 
-            public TextPosition Start
-            {
-                get { return _start; }
-            }
+            public TextPosition Start => _start;
 
-            public TextPosition End
-            {
-                get { return _end; }
-            }
+            public TextPosition End => _end;
         }
     }
 }

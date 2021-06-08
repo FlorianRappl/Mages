@@ -33,18 +33,12 @@
         /// <summary>
         /// Gets the formatting string.
         /// </summary>
-        public ConstantExpression Format
-        {
-            get { return _format; }
-        }
+        public ConstantExpression Format => _format;
 
         /// <summary>
         /// Gets the associated replacements.
         /// </summary>
-        public IExpression[] Replacements
-        {
-            get { return _replacements; }
-        }
+        public IExpression[] Replacements => _replacements;
 
         #endregion
 

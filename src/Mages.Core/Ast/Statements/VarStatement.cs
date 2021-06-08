@@ -31,10 +31,7 @@
         /// <summary>
         /// Gets the associated assignment.
         /// </summary>
-        public IExpression Assignment
-        {
-            get { return _assignment; }
-        }
+        public IExpression Assignment => _assignment;
 
         #endregion
 

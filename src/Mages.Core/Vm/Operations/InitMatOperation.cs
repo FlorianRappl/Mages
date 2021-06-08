@@ -1,7 +1,6 @@
 ﻿namespace Mages.Core.Vm.Operations
 {
     using Mages.Core.Runtime;
-    using Mages.Core.Runtime.Converters;
     using System;
 
     /// <summary>
@@ -20,8 +19,8 @@
 
         public void Invoke(IExecutionContext context)
         {
-            var value = context.Pop().ToNumber();
-            var matrix = (Double[,])context.Pop();
+            var value = context.Pop();
+            var matrix = (Object[,])context.Pop();
             matrix.SetValue(_row, _col, value);
             context.Push(matrix);
         }

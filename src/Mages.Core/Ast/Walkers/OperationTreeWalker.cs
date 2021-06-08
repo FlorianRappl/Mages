@@ -83,10 +83,7 @@
 
         #region Properties
 
-        Boolean IValidationContext.IsInLoop
-        {
-            get { return _loops.Count > 0 && _loops.Peek().Break != 0; }
-        }
+        Boolean IValidationContext.IsInLoop => _loops.Count > 0 && _loops.Peek().Break != 0;
 
         #endregion
 
@@ -406,6 +403,8 @@
                     _operations.Add(new InitMatOperation(row, col));
                 }
             }
+
+            _operations.Add(new SetMatOperation());
         }
 
         void ITreeWalker.Visit(FunctionExpression expression)

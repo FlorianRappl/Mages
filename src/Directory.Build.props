@@ -1,0 +1,12 @@
+<Project>
+  <PropertyGroup>
+    <Product>Mages</Product>
+    <Authors>Florian Rappl</Authors>
+    <Company>smapiot</Company>
+    <Version>2.0.0</Version>
+    <Copyright>Copyright (c) 2021, Florian Rappl</Copyright>
+    <PackageLicenseUrl>https://github.com/FlorianRappl/MAGES/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/FlorianRappl/MAGES/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/FlorianRappl/MAGES/</RepositoryUrl>
+  </PropertyGroup>
+</Project>

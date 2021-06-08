@@ -32,26 +32,17 @@
         /// <summary>
         /// Gets the start position of the error.
         /// </summary>
-        public TextPosition Start
-        {
-            get { return _range.Start; }
-        }
+        public TextPosition Start => _range.Start;
 
         /// <summary>
         /// Gets the end position of the error.
         /// </summary>
-        public TextPosition End
-        {
-            get { return _range.End; }
-        }
+        public TextPosition End => _range.End;
 
         /// <summary>
         /// Gets the code of the error.
         /// </summary>
-        public ErrorCode Code
-        {
-            get { return _code; }
-        }
+        public ErrorCode Code => _code;
 
         #endregion
     }

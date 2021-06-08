@@ -46,18 +46,12 @@
         /// <summary>
         /// Gets the plugin's meta data.
         /// </summary>
-        public IEnumerable<KeyValuePair<String, String>> MetaData
-        {
-            get { return _metaData; }
-        }
+        public IEnumerable<KeyValuePair<String, String>> MetaData => _metaData;
 
         /// <summary>
         /// Gets the plugin's content.
         /// </summary>
-        public IEnumerable<KeyValuePair<String, Object>> Content
-        {
-            get { return _content; }
-        }
+        public IEnumerable<KeyValuePair<String, Object>> Content => _content;
 
         #endregion
     }

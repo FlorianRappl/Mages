@@ -17,24 +17,17 @@
             _end = end;
         }
 
-        public TokenType Type
-        {
-            get { return _type; }
-        }
+        public TokenType Type => _type;
 
-        public String Payload
-        {
-            get { return _identifier; }
-        }
+        public String Payload => _identifier;
 
-        public TextPosition Start
-        {
-            get { return _start; }
-        }
+        public TextPosition Start => _start;
 
-        public TextPosition End
+        public TextPosition End => _end;
+
+        public override String ToString()
         {
-            get { return _end; }
+            return $"Identifier / {_start} -- {_end} / '{_identifier}'";
         }
     }
 }

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Numerics;
     using System.Text;
 
     sealed class JsonSerializer
@@ -54,32 +55,41 @@
             {
                 buffer.Append(Stringify.AsJson("[Function]"));
             }
-            else if (value is IDictionary<String, Object>)
+            else if (value is IDictionary<String, Object> o)
             {
                 if (!_seen.Contains(value.Unwrap()))
                 {
-                    SerializeTo((IDictionary<String, Object>)value, buffer, level);
+                    SerializeTo(o, buffer, level);
                 }
                 else
                 {
                     buffer.Append(Stringify.AsJson("[Recursion]"));
                 }
             }
-            else if (value is Double[,])
+            else if (value is Double[,] m)
             {
-                buffer.Append(Stringify.AsJson((Double[,])value));
+                buffer.Append(Stringify.AsJson(m));
             }
-            else if (value is String)
+            else if (value is String s)
             {
-                buffer.Append(Stringify.AsJson((String)value));
+                buffer.Append(Stringify.AsJson(s));
             }
-            else if (value is Double)
+            else if (value is Double d)
             {
-                buffer.Append(Stringify.This((Double)value));
+                buffer.Append(Stringify.This(d));
             }
-            else if (value is Boolean)
+            else if (value is Boolean b)
             {
-                buffer.Append(Stringify.This((Boolean)value));
+                buffer.Append(Stringify.This(b));
+            }
+            else if (value is Complex c)
+            {
+                SerializeTo(new Dictionary<String, Object>
+                {
+                    { "type", "cmplx" },
+                    { "real", c.Real },
+                    { "imag", c.Imaginary },
+                }, buffer, level);
             }
             else
             {

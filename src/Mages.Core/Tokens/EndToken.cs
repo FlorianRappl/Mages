@@ -11,24 +11,17 @@
             _position = position;
         }
 
-        public TokenType Type
-        {
-            get { return TokenType.End; }
-        }
+        public TokenType Type => TokenType.End;
 
-        public String Payload
-        {
-            get { return String.Empty; }
-        }
+        public String Payload => String.Empty;
 
-        public TextPosition Start
-        {
-            get { return _position; }
-        }
+        public TextPosition Start => _position;
 
-        public TextPosition End
+        public TextPosition End => _position;
+
+        public override String ToString()
         {
-            get { return _position; }
+            return $"EOF / {_position}";
         }
     }
 }

@@ -26,15 +26,9 @@
             _pointer = new Function(Invoke);
         }
 
-        public ParameterDefinition[] Parameters
-        {
-            get { return _parameters; }
-        }
+        public ParameterDefinition[] Parameters => _parameters;
 
-        public Function Pointer
-        {
-            get { return _pointer; }
-        }
+        public Function Pointer => _pointer;
 
         private Object Invoke(Object[] arguments)
         {

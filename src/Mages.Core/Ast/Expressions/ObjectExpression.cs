@@ -29,10 +29,7 @@
         /// <summary>
         /// Gets the contained expressions.
         /// </summary>
-        public IExpression[] Values
-        {
-            get { return _values; }
-        }
+        public IExpression[] Values => _values;
 
         #endregion
 

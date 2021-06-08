@@ -22,34 +22,21 @@
             _errors = errors ?? NoErrors;
         }
 
-        public IEnumerable<ParseError> Errors
-        {
-            get { return _errors; }
-        }
+        public IEnumerable<ParseError> Errors => _errors;
 
-        public Double Value 
-        {
-            get { return _value; }
-        }
+        public Double Value => _value;
 
-        public TokenType Type
-        {
-            get { return TokenType.Number; }
-        }
+        public TokenType Type => TokenType.Number;
 
-        public String Payload
-        {
-            get { return _value.ToString(NumberFormatInfo.InvariantInfo); }
-        }
+        public String Payload => _value.ToString(NumberFormatInfo.InvariantInfo);
 
-        public TextPosition Start
-        {
-            get { return _start; }
-        }
+        public TextPosition Start => _start;
 
-        public TextPosition End
+        public TextPosition End => _end;
+
+        public override String ToString()
         {
-            get { return _end; }
+            return $"Number / {_start} -- {_end} / '{_value}'";
         }
     }
 }

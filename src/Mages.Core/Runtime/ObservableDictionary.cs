@@ -50,10 +50,7 @@
         /// <summary>
         /// Gets the used container.
         /// </summary>
-        public IDictionary<String, Object> Container
-        {
-            get { return _container; }
-        }
+        public IDictionary<String, Object> Container => _container;
 
         #endregion
 
@@ -77,25 +74,13 @@
         /// <summary>
         /// Gets the number of items stored in the container.
         /// </summary>
-        public Int32 Count
-        {
-            get { return _container.Count; }
-        }
+        public Int32 Count => _container.Count;
 
-        Boolean ICollection<KeyValuePair<String, Object>>.IsReadOnly
-        {
-            get { return _container.IsReadOnly; }
-        }
+        Boolean ICollection<KeyValuePair<String, Object>>.IsReadOnly => _container.IsReadOnly;
 
-        ICollection<String> IDictionary<String, Object>.Keys
-        {
-            get { return _container.Keys; }
-        }
+        ICollection<String> IDictionary<String, Object>.Keys => _container.Keys;
 
-        ICollection<Object> IDictionary<String, Object>.Values
-        {
-            get { return _container.Values; }
-        }
+        ICollection<Object> IDictionary<String, Object>.Values => _container.Values;
 
         void ICollection<KeyValuePair<String, Object>>.Add(KeyValuePair<String, Object> item)
         {

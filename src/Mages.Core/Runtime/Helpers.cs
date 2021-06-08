@@ -14,9 +14,7 @@
 
         public static Object Getter(this String str, Object[] arguments)
         {
-            var index = 0;
-
-            if (arguments.Length > 0 && arguments[0].TryGetIndex(out index) && index >= 0 && index < str.Length)
+            if (arguments.Length > 0 && arguments[0].TryGetIndex(out var index) && index >= 0 && index < str.Length)
             {
                 return new String(str[index], 1);
             }
@@ -51,8 +49,7 @@
 
         public static Object GetProperty(this IDictionary<String, Object> obj, String name)
         {
-            var value = default(Object);
-            obj.TryGetValue(name, out value);
+            obj.TryGetValue(name, out var value);
             return value;
         }
 
@@ -78,8 +75,10 @@
             {
                 return value.Substring(0, max);
             }
-
-            return value;
+            else
+            {
+                return value;
+            }
         }
 
         public static String Clip(this String value, Int32 from, Int32 to)
@@ -100,14 +99,13 @@
             {
                 return value.Substring(from, value.Length - from);
             }
-
-            return value;
+            else
+            {
+                return value;
+            }
         }
 
-        public static Double Clamp(this Double value, Double min, Double max)
-        {
-            return Math.Max(Math.Min(value, max), min);
-        }
+        public static Double Clamp(this Double value, Double min, Double max) => Math.Max(Math.Min(value, max), min);
 
         public static Double Lerp(this Double value, Double min, Double max)
         {
@@ -124,14 +122,12 @@
             {
                 foreach (var constraint in constraints)
                 {
-                    var val = default(Object);
-
-                    if (obj.TryGetValue(constraint.Key, out val))
+                    if (obj.TryGetValue(constraint.Key, out var val))
                     {
                         var simple = constraint.Value as String;
                         var extended = constraint.Value as IDictionary<String, Object>;
 
-                        if ((simple == null || val.ToType() == simple) &&
+                        if ((simple == null || val.ToType()["name"].ToString() == simple) &&
                             (extended == null || extended.Satisfies(val)))
                         {
                             continue;
@@ -261,13 +257,11 @@
         {
             promise.SetCallback((result, error) =>
             {
-                var nestedPromise = result as Future;
-
-                if (nestedPromise != null)
+                if (result is Future nestedPromise)
                 {
                     nestedPromise.ContinueWith(future);
                 }
-                else if (error != null)
+                else if (error is not null)
                 {
                     future.SetError(error);
                 }
@@ -290,10 +284,7 @@
             return obj;
         }
 
-        public static WrapperObject Expose(this Type type)
-        {
-            return WrapperObject.CreateFor(type);
-        }
+        public static WrapperObject Expose(this Type type) => WrapperObject.CreateFor(type);
 
         public static String FindName(this IEnumerable<String> names, MemberInfo member)
         {
@@ -322,10 +313,7 @@
             return new String(result, 0, length);
         }
 
-        public static Function WrapFunction(this Delegate func)
-        {
-            return WrapFunction(func.Method, func.Target);
-        }
+        public static Function WrapFunction(this Delegate func) => WrapFunction(func.Method, func.Target);
 
         public static IDictionary<String, Object> WrapArray(this Array array)
         {
@@ -382,9 +370,7 @@
 
         public static Object Unwrap(this Object value)
         {
-            var wrapped = value as WrapperObject;
-
-            if (wrapped != null)
+            if (value is WrapperObject wrapped)
             {
                 return wrapped.Content ?? wrapped.Type;
             }

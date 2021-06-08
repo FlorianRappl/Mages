@@ -6,6 +6,8 @@ MAGES maps every .NET data type to one of its data types:
 * Boolean (`System.Boolean`)
 * String (`System.String`)
 * Matrix (`System.Double[,]`)
+* Complex (`System.Numerics.Complex`)
+* Complex Matrix (`System.Numerics.Complex[,]`)
 * Object (`System.Collections.Generic.IDictionary<System.String, System.Object>`)
 * Function (`Mages.Core.Function`, essentially a `Delegate` mapping `Object[]` to `Object`)
 * Nothing (`null`)
@@ -18,6 +20,7 @@ The following table yields the essential type mapping.
 
 | MAGES    | .NET                        |
 |--------- | --------------------------- |
+| Complex  | Complex                     |
 | Number   | Double                      |
 |          | Single                      |
 |          | Decimal                     |
@@ -31,6 +34,7 @@ The following table yields the essential type mapping.
 | Boolean  | Boolean                     |
 | String   | String                      |
 |          | Char                        |
+| CMatrix  | Complex[,]                  |
 | Matrix   | Double[,]                   |
 |          | Double[]                    |
 |          | List<Double>                |
@@ -85,12 +89,18 @@ The following tables yield information on casting possibilities.
 | Number   | Boolean  | `y = any(x)`          |
 |          | String   | `y = stringify(x)`    |
 |          | Matrix   | `y = x'`              |
+| Complex  | Boolean  | `y = any(x)`          |
+|          | String   | `y = stringify(x)`    |
+|          | Matrix   | `y = x'`              |
 | Boolean  | Number   | `y = +x`              |
 |          | String   | `y = stringify(x)`    |
 |          | Matrix   | `y = x'`              |
 | String   | Number   | `y = +x`              |
 |          | Boolean  | `y = any(x)`          |
 |          | Matrix   | `y = x'`              |
+| CMatrix  | Number   | (nothing)             |
+|          | Boolean  | `y = any(x)`          |
+|          | String   | `y = stringify(x)`    |
 | Matrix   | Number   | (nothing)             |
 |          | Boolean  | `y = any(x)`          |
 |          | String   | `y = stringify(x)`    |

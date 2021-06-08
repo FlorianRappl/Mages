@@ -424,7 +424,7 @@
 
             if (token.Type != TokenType.Comma)
             {
-                var x = ParseRange(tokens);
+                var x = ParseConditional(tokens);
                 var mode = tokens.Current.Type;
 
                 if (mode == TokenType.Assignment)
@@ -444,33 +444,9 @@
             return new InvalidExpression(ErrorCode.ExpressionExpected, token);
         }
 
-        private IExpression ParseRange(IEnumerator<IToken> tokens)
-        {
-            var x = ParseConditional(tokens);
-
-            if (tokens.Current.Type == TokenType.Colon)
-            {
-                var z = ParseConditional(tokens.NextNonIgnorable());
-                var y = z;
-
-                if (tokens.Current.Type == TokenType.Colon)
-                {
-                    z = ParseConditional(tokens.NextNonIgnorable());
-                }
-                else
-                {
-                    y = new EmptyExpression(z.Start);
-                }
-
-                return new RangeExpression(x, y, z);
-            }
-
-            return x;
-        }
-
         private IExpression ParseConditional(IEnumerator<IToken> tokens)
         {
-            var x = ParsePipe(tokens);
+            var x = ParseRange(tokens);
 
             if (tokens.Current.Type == TokenType.Condition)
             {
@@ -487,6 +463,30 @@
                 }
 
                 return new ConditionalExpression(x, y, z);
+            }
+
+            return x;
+        }
+
+        private IExpression ParseRange(IEnumerator<IToken> tokens)
+        {
+            var x = ParsePipe(tokens);
+
+            if (tokens.Current.Type == TokenType.DotDot)
+            {
+                var z = ParsePipe(tokens.NextNonIgnorable());
+                var y = z;
+
+                if (tokens.Current.Type == TokenType.DotDot)
+                {
+                    z = ParsePipe(tokens.NextNonIgnorable());
+                }
+                else
+                {
+                    y = new EmptyExpression(z.Start);
+                }
+
+                return new RangeExpression(x, y, z);
             }
 
             return x;
@@ -682,9 +682,8 @@
             {
                 var current = tokens.Current;
                 var mode = current.Type;
-                var creator = default(Func<IExpression, TextPosition, PostUnaryExpression>);
 
-                if (ExpressionCreators.PostUnary.TryGetValue(mode, out creator))
+                if (ExpressionCreators.PostUnary.TryGetValue(mode, out var creator))
                 {
                     tokens.NextNonIgnorable();
                     left = creator.Invoke(left, current.End);

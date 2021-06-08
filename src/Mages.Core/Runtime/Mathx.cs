@@ -1,10 +1,11 @@
 ﻿namespace Mages.Core.Runtime
 {
     using System;
+    using System.Numerics;
 
     static class Mathx
     {
-        private static readonly Double[] LanczosD = new[]
+        public static readonly Double[] LanczosD = new[]
         {
              2.48574089138753565546e-5,
              1.05142378581721974210,
@@ -19,7 +20,7 @@
             -2.71994908488607703910e-9
         };
 
-        private static readonly Double[] BernoulliNumbers = new[]
+        public static readonly Double[] BernoulliNumbers = new[]
         {
             1.0,
             1.0 / 6.0,
@@ -44,68 +45,151 @@
             -261082718496449122051.0 / 13530.0
         };
 
-        public static Double Sign(Double value)
+        public const Double LanczosR = 10.900511;
+
+        public static Boolean IsGreaterThan(Complex a, Complex b) => Complex.Abs(a) > Complex.Abs(b);
+
+        public static Boolean IsLessThan(Complex a, Complex b) => Complex.Abs(a) < Complex.Abs(b);
+
+        public static Complex Min(Complex a, Complex b) => IsGreaterThan(a, b) ? b : a;
+
+        public static Complex Max(Complex a, Complex b) => IsGreaterThan(a, b) ? a : b;
+
+        public static Complex Ceiling(Complex value) => new Complex(Math.Ceiling(value.Real), Math.Ceiling(value.Imaginary));
+
+        public static Complex Floor(Complex value) => new Complex(Math.Floor(value.Real), Math.Floor(value.Imaginary));
+
+        public static Complex Round(Complex value) => new Complex(Math.Round(value.Real), Math.Round(value.Imaginary));
+
+        public static Double Sign(Double value) => (Double)Math.Sign(value);
+
+        public static Object Sqrt(Double x)
         {
-            return (Double)Math.Sign(value);
+            if (x >= 0)
+            {
+                return Math.Sqrt(x);
+            }
+
+            return Complex.Sqrt(x);
         }
+
+        public static Object Sqrt(Double[,] x)
+        {
+            if (x.HasAny(x => x < 0.0))
+            {
+                return x.ForEach(m => Complex.Sqrt(m));
+            }
+
+            return x.ForEach(Math.Sqrt);
+        }
+
+        public static Complex Sign(Complex value)
+        {
+            var arg = Math.Atan2(value.Imaginary, value.Real);
+            return new Complex(Math.Cos(arg), Math.Sin(arg));
+        }
+
+        public static Complex Mod(Complex a, Complex b)
+        {
+            var x = a / b;
+            var z = new Complex(Math.Floor(x.Real), Math.Floor(x.Imaginary)) * b;
+            return a - z;
+        }
+
+        public static Complex Factorial(Complex value) => new Complex(Factorial(value.Real), Factorial(value.Imaginary));
 
         public static Double Factorial(Double value)
         {
-            var result = (Double)Math.Sign(value);
-            var n = (Int32)Math.Floor(result * value);
-
-            if (n == 0)
+            if (value.IsInteger() && Math.Abs(value) < 1e5)
             {
-                return 1.0;
-            }
+                var result = (Double)Math.Sign(value);
+                var n = (Int32)Math.Floor(result * value);
 
-            while (n > 0)
-            {
-                result *= n--;
-            }
-
-            return result;
-        }
-
-        public static Double Gamma(Double x)
-        {
-            if (x <= 0.0)
-            {
-                if (x == Math.Ceiling(x))
+                if (n == 0)
                 {
-                    return Double.PositiveInfinity;
+                    return 1.0;
                 }
 
-                return Math.PI / (Gamma(-x) * (-x) * Math.Sin(x * Math.PI));
+                while (n > 0)
+                {
+                    result *= n--;
+                }
+
+                return result;
+            }
+            else
+            {
+                return Gamma(value + 1.0);
+            }
+        }
+
+        public static Double Gamma(Double x) => GammaHelpers.LinearGamma(x);
+
+        public static Complex Gamma(Complex x) => GammaHelpers.LinearGamma(x);
+
+        public static Double Asinh(Double value) => Math.Log(value + Math.Sqrt(value * value + 1.0));
+
+        public static Complex Asinh(Complex value) => Complex.Log(value + Complex.Sqrt(value * value + 1.0));
+
+        private static Double AcoshReal(Double value) => Math.Log(value + Math.Sqrt(value * value - 1.0));
+
+        private static Complex AcoshCmplx(Double value) => Acosh(new Complex(value, 0));
+
+        public static Object Acosh(Double value)
+        {
+            if (value >= 1.0)
+            {
+                return AcoshReal(value);
             }
 
-            return Math.Exp(LogGamma(x));
+            return AcoshCmplx(value);
         }
 
-        public static Double Asinh(Double value)
+        public static Object Acosh(Double[,] value)
         {
-            return Math.Log(value + Math.Sqrt(value * value + 1.0));
+            if (value.HasAny(x => x < 1.0))
+            {
+                return value.ForEach(AcoshCmplx);
+            }
+
+            return value.ForEach(AcoshReal);
         }
 
-        public static Double Acosh(Double value)
+        public static Complex Acosh(Complex value) => Complex.Log(value + Complex.Sqrt(value * value - 1.0));
+
+        private static Double AtanhReal(Double value) => 0.5 * Math.Log((1.0 + value) / (1.0 - value));
+
+        private static Complex AtanhCmplx(Double value) => Atanh(new Complex(value, 0));
+
+        public static Object Atanh(Double value)
         {
-            return Math.Log(value + Math.Sqrt(value * value - 1.0));
+            if (value >= -1.0 && value <= 1.0)
+            {
+                return AtanhReal(value);
+            }
+
+            return AtanhCmplx(value);
         }
 
-        public static Double Atanh(Double value)
+        public static Object Atanh(Double[,] value)
         {
-            return 0.5 * Math.Log((1.0 + value) / (1.0 - value));
+            if (value.HasAny(x => x < -1.0 || x > 1.0))
+            {
+                return value.ForEach(AtanhCmplx);
+            }
+
+            return value.ForEach(AtanhReal);
         }
 
-        public static Double Cot(Double value)
-        {
-            return Math.Cos(value) / Math.Sin(value);
-        }
+        public static Complex Atanh(Complex value) => 0.5 * Complex.Log((1.0 + value) / (1.0 - value));
 
-        public static Double Acot(Double value)
-        {
-            return Math.Atan(1.0 / value);
-        }
+        public static Double Cot(Double value) => Math.Cos(value) / Math.Sin(value);
+
+        public static Complex Cot(Complex value) => Complex.Cos(value) / Complex.Sin(value);
+
+        public static Double Acot(Double value) => Math.Atan(1.0 / value);
+
+        public static Complex Acot(Complex value) => Complex.Atan(1.0 / value);
 
         public static Double Coth(Double value)
         {
@@ -114,25 +198,120 @@
             return (a + b) / (a - b);
         }
 
-        public static Double Acoth(Double value)
+        public static Complex Coth(Complex value)
         {
-            return 0.5 * Math.Log((1.0 + value) / (value - 1.0));
+            var a = Complex.Exp(value);
+            var b = Complex.Exp(-value);
+            return (a + b) / (a - b);
         }
 
-        public static Double Sec(Double value)
+        private static Double AcothReal(Double value) => 0.5 * Math.Log((1.0 + value) / (value - 1.0));
+
+        private static Complex AcothCmplx(Double value) => Acoth(new Complex(value, 0.0));
+
+        public static Object Acoth(Double value)
         {
-            return 1.0 / Math.Cos(value);
+            if (value <= -1.0 || value >= 1.0)
+            {
+                return AcothReal(value);
+            }
+
+            return AcothCmplx(value);
         }
 
-        public static Double Asec(Double value)
+        public static Object Acoth(Double[,] value)
         {
-            return Math.Acos(1.0 / value);
+            if (value.HasAny(x => x > -1.0 && x < 1.0))
+            {
+                return value.ForEach(AcothCmplx);
+            }
+
+            return value.ForEach(AcothReal);
         }
 
-        public static Double Sech(Double value)
+        public static Complex Acoth(Complex value) => 0.5 * Complex.Log((1.0 + value) / (value - 1.0));
+
+        public static Double Sec(Double value) => 1.0 / Math.Cos(value);
+
+        public static Complex Sec(Complex value) => 1.0 / Complex.Cos(value);
+
+        private static Double AsecReal(Double value) => Math.Acos(1.0 / value);
+
+        private static Complex AsecCmplx(Double value) => Asec(new Complex(value, 0.0));
+
+        public static Object Asec(Double value)
         {
-            return 2.0 / (Math.Exp(value) + Math.Exp(-value));
+            if (value >= 1.0)
+            {
+                return AsecReal(value);
+            }
+
+            return AsecCmplx(value);
         }
+
+        public static Object Asec(Double[,] value)
+        {
+            if (value.HasAny(x => x < 1.0))
+            {
+                return value.ForEach(AsecCmplx);
+            }
+
+            return value.ForEach(AsecReal);
+        }
+
+        private static Double AsinReal(Double value) => Math.Asin(value);
+
+        private static Complex AsinCmplx(Double value) => Complex.Asin(new Complex(value, 0.0));
+
+        public static Object Asin(Double value)
+        {
+            if (value >= -1.0 && value <= 1.0)
+            {
+                return AsinReal(value);
+            }
+
+            return AsinCmplx(value);
+        }
+
+        public static Object Asin(Double[,] value)
+        {
+            if (value.HasAny(x => x < -1.0 || x > 1.0))
+            {
+                return value.ForEach(AsinCmplx);
+            }
+
+            return value.ForEach(AsinReal);
+        }
+
+        private static Double AcosReal(Double value) => Math.Acos(value);
+
+        private static Complex AcosCmplx(Double value) => Complex.Acos(new Complex(value, 0.0));
+
+        public static Object Acos(Double value)
+        {
+            if (value >= -1.0 && value <= 1.0)
+            {
+                return AcosReal(value);
+            }
+
+            return AcosCmplx(value);
+        }
+
+        public static Object Acos(Double[,] value)
+        {
+            if (value.HasAny(x => x < -1.0 || x > 1.0))
+            {
+                return value.ForEach(AcosCmplx);
+            }
+
+            return value.ForEach(AcosReal);
+        }
+
+        public static Complex Asec(Complex value) => Complex.Acos(1.0 / value);
+
+        public static Double Sech(Double value) => 2.0 / (Math.Exp(value) + Math.Exp(-value));
+
+        public static Complex Sech(Complex value) => 2.0 / (Complex.Exp(value) + Complex.Exp(-value));
 
         public static Double Asech(Double value)
         {
@@ -140,73 +319,110 @@
             return Math.Log(vi + Math.Sqrt(vi + 1.0) * Math.Sqrt(vi - 1.0));
         }
 
-        public static Double Csc(Double value)
+        public static Complex Asech(Complex value)
         {
-            return 1.0 / Math.Sin(value);
+            var vi = 1.0 / value;
+            return Complex.Log(vi + Complex.Sqrt(vi + 1.0) * Complex.Sqrt(vi - 1.0));
         }
 
-        public static Double Acsc(Double value)
-        {
-            return Math.Asin(1.0 / value);
-        }
+        public static Double Csc(Double value) => 1.0 / Math.Sin(value);
 
-        public static Double Csch(Double value)
-        {
-            return 2.0 / (Math.Exp(value) - Math.Exp(-value));
-        }
+        public static Complex Csc(Complex value) => 1.0 / Complex.Sin(value);
 
-        public static Double Acsch(Double value)
-        {
-            return Math.Log(1.0 / value + Math.Sqrt(1.0 / (value * value) + 1.0));
-        }
+        private static Double AcscReal(Double value) => Math.Asin(1.0 / value);
 
-        private static Double LogGamma(Double x)
+        private static Complex AcscCmplx(Double value) => Acsc(new Complex(value, 0.0));
+
+        public static Object Acsc(Double value)
         {
-            if (x <= 0.0)
+            if (value <= -1.0 || value >= 1.0)
             {
-                return double.PositiveInfinity;
-            }
-            else if (x > 16.0)
-            {
-                return StirlingLogGamma(x);
+                return AcscReal(value);
             }
 
-            return LanczosLogGamma(x);
+            return AcscCmplx(value);
         }
 
-        private static Double LanczosLogGamma(Double x)
+        public static Object Acsc(Double[,] value)
         {
-            var sum = LanczosD[0];
-
-            for (var i = 1; i < LanczosD.Length; i++)
+            if (value.HasAny(x => x > -1.0 && x < 1.0))
             {
-                sum += LanczosD[i] / (x + i);
+                return value.ForEach(AcscCmplx);
             }
 
-            sum = 2.0 / Math.Sqrt(Math.PI) * sum / x;
-            var xshift = x + 0.5;
-            var t = xshift * Math.Log(xshift + 10.900511) - x;
-            return t + Math.Log(sum);
+            return value.ForEach(AcscReal);
         }
 
-        private static Double StirlingLogGamma(Double x)
+        public static Complex Acsc(Complex value) => Complex.Asin(1.0 / value);
+
+        public static Double Csch(Double value) => 2.0 / (Math.Exp(value) - Math.Exp(-value));
+
+        public static Complex Csch(Complex value) => 2.0 / (Complex.Exp(value) - Complex.Exp(-value));
+
+        public static Double Acsch(Double value) => Math.Log(1.0 / value + Math.Sqrt(1.0 / (value * value) + 1.0));
+
+        public static Complex Acsch(Complex value) => Complex.Log(1.0 / value + Complex.Sqrt(1.0 / (value * value) + 1.0));
+
+        public static Object Log(Double value)
         {
-            var f = (x - 0.5) * Math.Log(x) - x + Math.Log(2.0 * Math.PI) / 2.0;
-            var xsqu = x * x;
-            var xp = x;
-
-            for (var i = 1; i < 10; i++)
+            if (value >= 0.0)
             {
-                var f_old = f;
-                f += BernoulliNumbers[i] / (2 * i) / (2 * i - 1) / xp;
-
-                if (f == f_old)
-                    break;
-
-                xp *= xsqu;
+                return Math.Log(value);
             }
 
-            return f;
+            return Complex.Log(value);
+        }
+
+        public static Object Log(Double[,] value)
+        {
+            if (value.HasAny(m => m < 0.0))
+            {
+                return value.ForEach(m => Complex.Log(m));
+            }
+
+            return value.ForEach(Math.Log);
+        }
+
+        public static Object Log2(Double value)
+        {
+            if (value >= 0.0)
+            {
+                return Math.Log(value, 2.0);
+            }
+
+            return Complex.Log(value, 2.0);
+        }
+
+        public static Object Log2(Double[,] value)
+        {
+            if (value.HasAny(m => m < 0.0))
+            {
+                return value.ForEach(m => Complex.Log(m, 2.0));
+            }
+
+            return value.ForEach(m => Math.Log(m, 2.0));
+        }
+
+        public static Complex Log2(Complex value) => Complex.Log(value, 2.0);
+
+        public static Object Log10(Double value)
+        {
+            if (value >= 0.0)
+            {
+                return Math.Log10(value);
+            }
+
+            return Complex.Log10(value);
+        }
+
+        public static Object Log10(Double[,] value)
+        {
+            if (value.HasAny(m => m < 0.0))
+            {
+                return value.ForEach(m => Complex.Log10(m));
+            }
+
+            return value.ForEach(Math.Log10);
         }
     }
 }

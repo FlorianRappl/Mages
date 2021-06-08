@@ -1,0 +1,34 @@
+name: CI
+
+on: [push, pull_request]
+
+env:
+  NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+  GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  CHOCOLATEY_API_KEY: ${{ secrets.CHOCOLATEY_API_KEY }}
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Build
+      run: ./build.sh
+
+  windows:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Build
+      run: |
+        if ($env:GITHUB_REF -eq "refs/heads/main") {
+          .\build.ps1 -Target Publish
+        } elseif ($env:GITHUB_REF -eq "refs/heads/devel") {
+          .\build.ps1 -Target PrePublish
+        } else {
+          .\build.ps1
+        }

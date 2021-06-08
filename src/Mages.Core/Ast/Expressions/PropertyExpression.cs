@@ -31,18 +31,12 @@
         /// <summary>
         /// Gets the name of the property.
         /// </summary>
-        public IExpression Name
-        {
-            get { return _name; }
-        }
+        public IExpression Name => _name;
 
         /// <summary>
         /// Gets the value of the property.
         /// </summary>
-        public IExpression Value
-        {
-            get { return _value; }
-        }
+        public IExpression Value => _value;
 
         #endregion
 

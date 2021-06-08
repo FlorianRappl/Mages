@@ -16,20 +16,11 @@
             _end = end;
         }
 
-        public TokenType Type
-        {
-            get { return TokenType.Preprocessor; }
-        }
+        public TokenType Type => TokenType.Preprocessor;
 
-        public TextPosition End
-        {
-            get { return _end; }
-        }
+        public TextPosition End => _end;
 
-        public TextPosition Start
-        {
-            get { return _start; }
-        }
+        public TextPosition Start => _start;
 
         public String Command
         {
@@ -51,9 +42,6 @@
             }
         }
 
-        public String Payload
-        {
-            get { return _payload; }
-        }
+        public String Payload => _payload;
     }
 }

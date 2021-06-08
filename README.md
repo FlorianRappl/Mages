@@ -2,15 +2,21 @@
 
 # MAGES
 
-[![AppVeyor CI](https://img.shields.io/appveyor/ci/FlorianRappl/Mages/master.svg?style=flat-square)](https://ci.appveyor.com/project/FlorianRappl/Mages)
-[![Nuget count](https://img.shields.io/nuget/v/MAGES.svg?style=flat-square)](https://www.nuget.org/packages/Mages/)
-[![Issues open](https://img.shields.io/github/issues/FlorianRappl/MAGES.svg?style=flat-square)](https://github.com/FlorianRappl/Mages/issues)
+[![GitHub CI](https://github.com/FlorianRappl/Mages/actions/workflows/ci.yml/badge.svg)](https://github.com/FlorianRappl/Mages/actions/workflows/ci.yml)
+[![NuGet](https://img.shields.io/nuget/v/MAGES.svg?style=flat-square)](https://www.nuget.org/packages/Mages/)
+[![Issues](https://img.shields.io/github/issues/FlorianRappl/MAGES.svg?style=flat-square)](https://github.com/FlorianRappl/Mages/issues)
 
 ## Mages: Another Generalized Expression Simplifier
 
-MAGES is the official successor to YAMP. It is a very simple, yet powerful, expression parser and interpreter. You can use MAGES to include a sophisticated, easy to customize, and lightweight scripting engine to your application.
+MAGES is the official successor to [YAMP](https://github.com/FlorianRappl/YAMP). It is a very simple, yet powerful, expression parser and interpreter. You can use MAGES to include a sophisticated, easy to customize, and lightweight scripting engine to your application.
+
+Among other applications, MAGES is used in [Microsoft's PowerToys](https://github.com/microsoft/PowerToys).
 
 ### Current Status
+
+MAGES was just updated (v2.0.0) with support for complex numbers. Also, the build target and runtime has been updated to make use of modern possibilities.
+
+### Previous Status
 
 The first stable version has been released. The current version 1.6.0 contains an improved REPL. The library contains everything to perform lightweight scripting operations in C#. A [CodeProject article](http://www.codeproject.com/Articles/1108939/MAGES-Ultimate-Scripting-for-NET) about the library (also containing some background and performance comparisons) is also available.
 
@@ -80,11 +86,23 @@ The rules of [semver](http://semver.org/) are our bread and butter. In short thi
 
 Hence: Do not expect any breaking changes within the same major version.
 
+## Sponsors
+
+The following companies sponsored part of the development of MAGES.
+
+<div style="display:flex;justify-content:space-evenly;align-items:center">
+    <img width="150" height="150" src="https://raw.githubusercontent.com/polytroper/polytroper.github.io/master/favicon.png">
+    <img width="200" height="200" src="https://smapiot.com/smapiot_green.03d1162a.svg">
+    <img width="200" height="200" src="https://www.omicron-lab.com/fileadmin/website/images/OMICRON-LAB.svg">
+</div>
+
+Thanks for all the support and trust in the project!
+
 ## License
 
 The MIT License (MIT)
 
-Copyright (c) 2016-2018 Florian Rappl
+Copyright (c) 2016-2021 Florian Rappl
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

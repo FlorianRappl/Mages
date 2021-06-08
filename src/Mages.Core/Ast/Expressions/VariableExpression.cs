@@ -33,18 +33,12 @@
         /// <summary>
         /// Gets the name of the variable.
         /// </summary>
-        public String Name
-        {
-            get { return _name; }
-        }
+        public String Name => _name;
 
         /// <summary>
         /// Gets the assigned abstract scope.
         /// </summary>
-        public AbstractScope Scope
-        {
-            get { return _scope; }
-        }
+        public AbstractScope Scope => _scope;
 
         #endregion
 

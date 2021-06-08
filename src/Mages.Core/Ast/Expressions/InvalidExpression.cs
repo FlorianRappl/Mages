@@ -31,18 +31,12 @@
         /// <summary>
         /// Gets the payload covered by the container.
         /// </summary>
-        public ITextRange Payload
-        {
-            get { return _payload; }
-        }
+        public ITextRange Payload => _payload;
 
         /// <summary>
         /// Gets the associated error code.
         /// </summary>
-        public ErrorCode Error
-        {
-            get { return _error; }
-        }
+        public ErrorCode Error => _error;
 
         #endregion
 

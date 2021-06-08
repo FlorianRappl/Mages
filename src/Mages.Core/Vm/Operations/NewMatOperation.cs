@@ -18,7 +18,7 @@
 
         public void Invoke(IExecutionContext context)
         {
-            context.Push(new Double[_rows, _cols]);
+            context.Push(new Object[_rows, _cols]);
         }
 
         public override String ToString()

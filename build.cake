@@ -4,8 +4,8 @@
 
  - Update CHANGELOG.md
  - Run a normal build with Cake
- - Push to devel and FF merge to master
- - Switch to master
+ - Push to devel and FF merge to main
+ - Switch to main
  - Run a Publish build with Cake
  - Switch back to devel branch
    **************************************** */
@@ -15,18 +15,32 @@
 #addin "Cake.Squirrel"
 using Octokit;
 
+var isRunningOnGitHubActions = BuildSystem.GitHubActions.IsRunningOnGitHubActions;
 var target = Argument("target", "Default");
+var isPublish = target == "Publish";
 var configuration = Argument("configuration", "Release");
-var isLocal = BuildSystem.IsLocalBuild;
 var isRunningOnUnix = IsRunningOnUnix();
 var isRunningOnWindows = IsRunningOnWindows();
-var isRunningOnAppVeyor = AppVeyor.IsRunningOnAppVeyor;
-var isPullRequest = AppVeyor.Environment.PullRequest.IsPullRequest;
-var buildNumber = AppVeyor.Environment.Build.Number;
 var releaseNotes = ParseReleaseNotes("./CHANGELOG.md");
 var version = releaseNotes.Version.ToString();
-var buildDir = Directory("./src/Mages.Core/bin") + Directory(configuration);
-var installerDir = Directory("./src/Mages.Repl.Installer/bin") + Directory(configuration);
+
+if (isRunningOnGitHubActions)
+{
+    var buildNumber = BuildSystem.GitHubActions.Environment.Workflow.RunNumber;
+
+    if (target == "Default")
+    {
+        version = $"{version}-ci-{buildNumber}";
+    }
+    else if (target == "PrePublish")
+    {
+        version = $"{version}-alpha-{buildNumber}";
+    }
+}
+
+var buildDir = Directory("./src/Mages.Core/bin") + Directory(configuration) + Directory("netstandard2.0");
+var replDir = Directory("./src/Mages.Repl/bin") + Directory(configuration) + Directory("netcoreapp3.1");
+var installerDir = Directory("./src/Mages.Repl.Installer/bin") + Directory(configuration) + Directory("net45");
 var buildResultDir = Directory("./bin") + Directory(version);
 var nugetRoot = buildResultDir + Directory("nuget");
 var chocolateyRoot = buildResultDir + Directory("chocolatey");
@@ -64,16 +78,7 @@ Task("Restore-Packages")
 Task("Update-Assembly-Version")
     .Does(() =>
     {
-        var file = Directory("./src") + File("SharedAssemblyInfo.cs");
-
-        CreateAssemblyInfo(file, new AssemblyInfoSettings
-        {
-            Product = "Mages",
-            Version = version,
-            FileVersion = version,
-            Company = "Polytrope",
-            Copyright = String.Format("Copyright (c) {0}, Florian Rappl", DateTime.Now.Year)
-        });
+        ReplaceRegexInFiles("./src/Directory.Build.props", "(?<=<Version>)(.+?)(?=</Version>)", version);
     });
 
 Task("Build")
@@ -81,44 +86,45 @@ Task("Build")
     .IsDependentOn("Update-Assembly-Version")
     .Does(() =>
     {
-        if (isRunningOnWindows)
+        DotNetCoreBuild($"./src/Mages.sln", new DotNetCoreBuildSettings
         {
-            MSBuild("./src/Mages.sln", new MSBuildSettings()
-                .SetConfiguration(configuration)
-                .SetVerbosity(Verbosity.Minimal)
-            );
-        }
-        else
+           Configuration = configuration,
+        });
+        
+        DotNetCoreBuild($"./src/Mages.Repl/Mages.Repl.csproj", new DotNetCoreBuildSettings
         {
-            XBuild("./src/Mages.sln", new XBuildSettings()
-                .SetConfiguration(configuration)
-                .SetVerbosity(Verbosity.Minimal)
-            );
-        }
+           Configuration = configuration,
+        });
+        
+        DotNetCoreBuild($"./src/Mages.Repl.Installer/Mages.Repl.Installer.csproj", new DotNetCoreBuildSettings
+        {
+           Configuration = configuration,
+        });
     });
 
 Task("Run-Unit-Tests")
     .IsDependentOn("Build")
     .Does(() =>
     {
-        var settings = new NUnit3Settings
+        var settings = new DotNetCoreTestSettings
         {
-            Work = buildResultDir.Path.FullPath
+            Configuration = configuration,
         };
 
-        if (isRunningOnAppVeyor)
+        if (isRunningOnGitHubActions)
         {
-            settings.Where = "cat != ExcludeFromAppVeyor";
+            settings.Loggers.Add("GitHubActions");
         }
 
-        NUnit3("./src/**/bin/" + configuration + "/*.Tests.dll", settings);
+        DotNetCoreTest($"./src/Mages.Core.Tests/", settings);
+        DotNetCoreTest($"./src/Mages.Repl.Tests/", settings);
     });
 
 Task("Copy-Files")
     .IsDependentOn("Build")
     .Does(() =>
     {
-        var nugetBin = nugetRoot + Directory("lib") + Directory("net35");
+        var nugetBin = nugetRoot + Directory("lib") + Directory("netstandard2.0");
         var squirrelBin = squirrelRoot + Directory("lib") + Directory("net45");
         CreateDirectory(nugetBin);
         CreateDirectory(squirrelBin);
@@ -127,6 +133,7 @@ Task("Copy-Files")
             buildDir + File("Mages.Core.dll"),
             buildDir + File("Mages.Core.xml")
         }, nugetBin);
+        CopyDirectory(replDir, squirrelBin);
         CopyDirectory(installerDir, squirrelBin);
         CopyFile("src/Mages.Nuget.nuspec", nugetRoot + File("Mages.nuspec"));
         CopyFile("src/Mages.Chocolatey.nuspec", chocolateyRoot + File("Mages.nuspec"));
@@ -139,8 +146,7 @@ Task("Create-Nuget-Package")
     .IsDependentOn("Copy-Files")
     .Does(() =>
     {
-        var nugetExe = GetFiles("./tools/**/nuget.exe").FirstOrDefault()
-            ?? (isRunningOnAppVeyor ? GetFiles("C:\\Tools\\NuGet3\\nuget.exe").FirstOrDefault() : null);
+        var nugetExe = GetFiles("./tools/**/nuget.exe").FirstOrDefault();
 
         if (nugetExe == null)
         {            
@@ -160,7 +166,6 @@ Task("Create-Nuget-Package")
     
 Task("Publish-Nuget-Package")
     .IsDependentOn("Create-Nuget-Package")
-    .WithCriteria(() => isLocal)
     .Does(() =>
     {
         var apiKey = EnvironmentVariable("NUGET_API_KEY");
@@ -184,8 +189,7 @@ Task("Create-Squirrel-Package")
     .IsDependentOn("Copy-Files")
     .WithCriteria(() => isRunningOnWindows)
     .Does(() => {
-        var nugetExe = GetFiles("./tools/**/nuget.exe").FirstOrDefault()
-            ?? (isRunningOnAppVeyor ? GetFiles("C:\\Tools\\NuGet3\\nuget.exe").FirstOrDefault() : null);
+        var nugetExe = GetFiles("./tools/**/nuget.exe").FirstOrDefault();
 
         if (nugetExe == null)
         {            
@@ -217,7 +221,7 @@ Task("Create-Squirrel-Package")
 
 Task("Create-Chocolatey-Package")
     .IsDependentOn("Copy-Files")
-    .WithCriteria(() => isLocal)
+    .WithCriteria(() => isRunningOnWindows)
     .Does(() => {
         var content = String.Format("$packageName = 'Mages'{1}$installerType = 'exe'{1}$url32 = 'https://github.com/FlorianRappl/Mages/releases/download/v{0}/Mages.exe'{1}$silentArgs = ''{1}{1}Install-ChocolateyPackage \"$packageName\" \"$installerType\" \"$silentArgs\" \"$url32\"", version, Environment.NewLine);
         var nuspec = chocolateyRoot + File("Mages.nuspec");
@@ -236,7 +240,7 @@ Task("Create-Chocolatey-Package")
 
 Task("Publish-Chocolatey-Package")
     .IsDependentOn("Create-Chocolatey-Package")
-    .WithCriteria(() => isLocal)
+    .WithCriteria(() => isRunningOnWindows)
     .Does(() => {
         var apiKey = EnvironmentVariable("CHOCOLATEY_API_KEY");
         var fileName = "Mages." + version + ".nupkg";
@@ -255,8 +259,7 @@ Task("Publish-Chocolatey-Package")
     });
     
 Task("Publish-GitHub-Release")
-    .IsDependentOn("Create-Squirrel-Package")
-    .WithCriteria(() => isLocal)
+    .IsDependentOn("Publish-Packages")
     .Does(() =>
     {
         var githubToken = EnvironmentVariable("GITHUB_API_TOKEN");
@@ -276,11 +279,11 @@ Task("Publish-GitHub-Release")
         {
             Name = version,
             Body = String.Join(Environment.NewLine, releaseNotes.Notes),
-            Prerelease = false,
-            TargetCommitish = "master"
+            Prerelease = !isPublish,
+            TargetCommitish = isPublish ? "main" : "devel"
         }).Result;
 
-        var target = nugetRoot + Directory("lib") + Directory("net35");
+        var target = nugetRoot + Directory("lib") + Directory("netstandard2.0");
         var libPath = target + File("Mages.Core.dll");
         var releaseFiles = GetFiles(releaseDir.Path.FullPath + "/*");
 
@@ -305,13 +308,6 @@ Task("Publish-GitHub-Release")
         }
     });
     
-Task("Update-AppVeyor-Build-Number")
-    .WithCriteria(() => isRunningOnAppVeyor)
-    .Does(() =>
-    {
-        AppVeyor.UpdateBuildVersion(version);
-    });
-    
 // Targets
 // ----------------------------------------
     
@@ -322,16 +318,20 @@ Task("Package")
     .IsDependentOn("Create-Nuget-Package");
 
 Task("Default")
-    .IsDependentOn("Package");    
+    .IsDependentOn("Package");
+
+Task("Publish-Packages")
+    .IsDependentOn("Default")
+    .IsDependentOn("Publish-Nuget-Package")
+    .IsDependentOn("Publish-Chocolatey-Package");
 
 Task("Publish")
-    .IsDependentOn("Publish-Nuget-Package")
-    .IsDependentOn("Publish-GitHub-Release")
-    .IsDependentOn("Publish-Chocolatey-Package");
-    
-Task("AppVeyor")
-    .IsDependentOn("Run-Unit-Tests")
-    .IsDependentOn("Update-AppVeyor-Build-Number");
+    .IsDependentOn("Publish-Packages")
+    .IsDependentOn("Publish-GitHub-Release");
+
+Task("PrePublish")
+    .IsDependentOn("Publish-Packages")
+    .IsDependentOn("Publish-GitHub-Release");
 
 // Execution
 // ----------------------------------------

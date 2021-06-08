@@ -3,6 +3,7 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Numerics;
 
     static class ArrayConverters
     {
@@ -21,6 +22,14 @@
                 return mat =>
                 {
                     var values = (Double[,])mat;
+                    return ConvertArray(to, converter, values, values.Length);
+                };
+            }
+            else if (typeof(Complex[,]).IsAssignableFrom(from))
+            {
+                return mat =>
+                {
+                    var values = (Complex[,])mat;
                     return ConvertArray(to, converter, values, values.Length);
                 };
             }

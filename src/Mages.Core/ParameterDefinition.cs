@@ -22,18 +22,12 @@
         /// <summary>
         /// Gets the name of the parameter.
         /// </summary>
-        public String Name
-        {
-            get { return _name; }
-        }
+        public String Name => _name;
 
         /// <summary>
         /// Gets if the parameter is required.
         /// </summary>
-        public Boolean IsRequired
-        {
-            get { return _required; }
-        }
+        public Boolean IsRequired => _required;
 
         /// <summary>
         /// Gets the hash code.

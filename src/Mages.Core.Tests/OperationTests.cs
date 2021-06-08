@@ -485,7 +485,7 @@
         [Test]
         public void RangeWithValidToAndFromAutoStep()
         {
-            var result = "1:3".Eval() as Double[,];
+            var result = "1..3".Eval() as Double[,];
             Assert.IsNotNull(result);
             Assert.AreEqual(3, result.Length);
             Assert.AreEqual(1.0, result[0, 0]);
@@ -496,7 +496,7 @@
         [Test]
         public void RangeWithInvalidToAndValidFromAutoStep()
         {
-            var result = "1:\"3k\"".Eval() as Double[,];
+            var result = "1..\"3k\"".Eval() as Double[,];
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Length);
         }
@@ -504,7 +504,7 @@
         [Test]
         public void RangeWithValidToAndInvalidFromAutoStep()
         {
-            var result = "\"3k\":1".Eval() as Double[,];
+            var result = "\"3k\"..1".Eval() as Double[,];
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Length);
         }
@@ -512,7 +512,7 @@
         [Test]
         public void RangeWithValidToAndFromAndStep()
         {
-            var result = "1:2:3".Eval() as Double[,];
+            var result = "1..2..3".Eval() as Double[,];
             Assert.IsNotNull(result);
             Assert.AreEqual(2, result.Length);
             Assert.AreEqual(1.0, result[0, 0]);
@@ -522,7 +522,7 @@
         [Test]
         public void RangeWithValidToAndInvalidFromAndValidStep()
         {
-            var result = "\"foo\":2:3".Eval() as Double[,];
+            var result = "\"foo\"..2..3".Eval() as Double[,];
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Length);
         }
@@ -530,7 +530,7 @@
         [Test]
         public void RangeWithValidToAndFromAndInvalidStep()
         {
-            var result = "1:\"foo\":3".Eval() as Double[,];
+            var result = "1..\"foo\"..3".Eval() as Double[,];
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Length);
         }
@@ -538,7 +538,7 @@
         [Test]
         public void RangeWithInvalidToAndValidFromAndValidStep()
         {
-            var result = "1:2:\"foo\"".Eval() as Double[,];
+            var result = "1..2..\"foo\"".Eval() as Double[,];
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Length);
         }
@@ -795,21 +795,28 @@
         [Test]
         public void TypeOperatorOnNullYieldsUndefined()
         {
-            var result = "&null".Eval();
+            var result = "(&null).name".Eval();
             Assert.AreEqual("Undefined", result);
         }
 
         [Test]
-        public void TypeOperatorOnResultOfTypeOperatorYieldsString()
+        public void TypeOperatorOnResultOfTypeOperatorYieldsObject()
         {
-            var result = "& &null".Eval();
+            var result = "(& &null).name".Eval();
+            Assert.AreEqual("Object", result);
+        }
+
+        [Test]
+        public void TypeOperatorOnResultOfTypeOperatorNameYieldsString()
+        {
+            var result = "(& (&null).name).name".Eval();
             Assert.AreEqual("String", result);
         }
 
         [Test]
         public void TypeOperatorOnMatrixYieldsMatrix()
         {
-            var result = "&[1, 2, 3]".Eval();
+            var result = "(&[1, 2, 3]).name".Eval();
             Assert.AreEqual("Matrix", result);
         }
 
@@ -839,7 +846,7 @@
         [Test]
         public void PipeOperatorIsLowerPrecendenceThanEquals()
         {
-            var result = "3 == 4 | type".Eval();
+            var result = "(3 == 4 | type).name".Eval();
             Assert.IsInstanceOf<String>(result);
             Assert.AreEqual("Boolean", result);
         }
@@ -847,7 +854,7 @@
         [Test]
         public void PipeOperatorIsLowerPrecendenceThanOr()
         {
-            var result = "1 || 0 | type".Eval();
+            var result = "(1 || 0 | type).name".Eval();
             Assert.IsInstanceOf<String>(result);
             Assert.AreEqual("Boolean", result);
         }
@@ -855,17 +862,25 @@
         [Test]
         public void PipeOperatorOnTypeYieldsResult()
         {
-            var result = "2 | type".Eval();
+            var result = "(2 | type).name".Eval();
             Assert.IsInstanceOf<String>(result);
             Assert.AreEqual("Number", result);
         }
 
         [Test]
-        public void PipeOperatorOnTypeOfTypeYieldsString()
+        public void PipeOperatorOnTypeOfTypeNameYieldsString()
         {
-            var result = "2 | type | type".Eval();
+            var result = "((2 | type).name | type).name".Eval();
             Assert.IsInstanceOf<String>(result);
             Assert.AreEqual("String", result);
+        }
+
+        [Test]
+        public void PipeOperatorOnTypeOfTypeYieldsObject()
+        {
+            var result = "(2 | type | type).name".Eval();
+            Assert.IsInstanceOf<String>(result);
+            Assert.AreEqual("Object", result);
         }
 
         [Test]

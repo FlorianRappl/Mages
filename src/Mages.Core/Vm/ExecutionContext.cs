@@ -39,18 +39,12 @@
         /// <summary>
         /// Gets the position of the last operation.
         /// </summary>
-        public Int32 End
-        {
-            get { return _operations.Length - 1; }
-        }
+        public Int32 End => _operations.Length - 1;
 
         /// <summary>
         /// Gets the currently used scope of the execution context.
         /// </summary>
-        public IDictionary<String, Object> Scope
-        {
-            get { return _scope; }
-        }
+        public IDictionary<String, Object> Scope => _scope;
 
         /// <summary>
         /// Executes the operations.

@@ -44,10 +44,7 @@
         /// <summary>
         /// Gets the list of autocomplete suggestions.
         /// </summary>
-        public IEnumerable<String> Suggestions
-        {
-            get { return _completion.Where(m => !String.IsNullOrEmpty(m)).OrderBy(m => m, StringComparer.Ordinal); }
-        }
+        public IEnumerable<String> Suggestions => _completion.Where(m => !String.IsNullOrEmpty(m)).OrderBy(m => m, StringComparer.Ordinal);
 
         #endregion
 

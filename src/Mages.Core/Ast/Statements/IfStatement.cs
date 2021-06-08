@@ -33,26 +33,17 @@
         /// <summary>
         /// Gets the stored condition.
         /// </summary>
-        public IExpression Condition
-        {
-            get { return _condition; }
-        }
+        public IExpression Condition => _condition;
 
         /// <summary>
         /// Gets the primary statement.
         /// </summary>
-        public IStatement Primary
-        {
-            get { return _primary; }
-        }
+        public IStatement Primary => _primary;
 
         /// <summary>
         /// Gets the secondary statement.
         /// </summary>
-        public IStatement Secondary
-        {
-            get { return _secondary; }
-        }
+        public IStatement Secondary => _secondary;
 
         #endregion
 

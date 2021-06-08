@@ -56,18 +56,12 @@
         /// <summary>
         /// Gets the found potentially missing symbols.
         /// </summary>
-        public IEnumerable<VariableExpression> Missing
-        {
-            get { return _missing; }
-        }
+        public IEnumerable<VariableExpression> Missing => _missing;
 
         /// <summary>
         /// Gets the found resolved symbols.
         /// </summary>
-        public IEnumerable<VariableExpression> Symbols
-        {
-            get { return _collector.Keys; }
-        }
+        public IEnumerable<VariableExpression> Symbols => _collector.Keys;
 
         #endregion
 

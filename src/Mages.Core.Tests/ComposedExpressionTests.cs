@@ -161,20 +161,16 @@
         }
 
         [Test]
-        public void ConditionWithRangeShouldYieldRange()
+        public void ConditionWithRangeShouldYieldCondition()
         {
-            var result = "c ? a : 2:3:1".ToExpression();
+            var result = "c ? a : 2..3..1".ToExpression();
 
-            Assert.IsInstanceOf<RangeExpression>(result);
+            Assert.IsInstanceOf<ConditionalExpression>(result);
 
-            var range = (RangeExpression)result;
-            var condition = (ConditionalExpression)range.From;
-
+            var condition = (ConditionalExpression)result;
             Assert.IsInstanceOf<VariableExpression>(condition.Condition);
             Assert.IsInstanceOf<VariableExpression>(condition.Primary);
-            Assert.IsInstanceOf<ConstantExpression>(condition.Secondary);
-            Assert.IsInstanceOf<ConstantExpression>(range.Step);
-            Assert.IsInstanceOf<ConstantExpression>(range.To);
+            Assert.IsInstanceOf<RangeExpression>(condition.Secondary);
         }
 
         [Test]

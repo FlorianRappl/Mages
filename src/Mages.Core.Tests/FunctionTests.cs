@@ -153,6 +153,13 @@
         }
 
         [Test]
+        public void CallWithConditionAndRangeYieldsValue()
+        {
+            var result = "false ? 2..3 : 3..4".Eval();
+            Assert.IsNotNull(result);
+        }
+
+        [Test]
         public void CallObjectWithUnknownNameYieldsNothing()
         {
             var result = "new { a: 29 }(\"b\")".Eval();
@@ -319,49 +326,49 @@
         [Test]
         public void TypeOfNothingIsUndefined()
         {
-            var result = "type(null)".Eval();
+            var result = "type(null).name".Eval();
             Assert.AreEqual("Undefined", result);
         }
 
         [Test]
         public void TypeOfMatrixIsMatrix()
         {
-            var result = "type([])".Eval();
+            var result = "type([]).name".Eval();
             Assert.AreEqual("Matrix", result);
         }
 
         [Test]
         public void TypeOfDictionaryIsObject()
         {
-            var result = "type(new {})".Eval();
+            var result = "type(new {}).name".Eval();
             Assert.AreEqual("Object", result);
         }
 
         [Test]
         public void TypeOfStringIsString()
         {
-            var result = "type(\"\")".Eval();
+            var result = "type(\"\").name".Eval();
             Assert.AreEqual("String", result);
         }
 
         [Test]
         public void TypeOfBooleanIsBoolean()
         {
-            var result = "type(true)".Eval();
+            var result = "type(true).name".Eval();
             Assert.AreEqual("Boolean", result);
         }
 
         [Test]
         public void TypeOfDoubleIsNumber()
         {
-            var result = "type(2.3)".Eval();
+            var result = "type(2.3).name".Eval();
             Assert.AreEqual("Number", result);
         }
 
         [Test]
         public void TypeOfDelegateIsFunction()
         {
-            var result = "type(() => {})".Eval();
+            var result = "type(() => {}).name".Eval();
             Assert.AreEqual("Function", result);
         }
 

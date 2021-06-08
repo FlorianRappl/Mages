@@ -15,10 +15,7 @@
             _parent = parent;
         }
 
-        public IDictionary<String, Object> Parent
-        {
-            get { return _parent; }
-        }
+        public IDictionary<String, Object> Parent => _parent;
 
         public Object this[String key]
         {
@@ -26,25 +23,13 @@
             set { SetValue(key, value); }
         }
 
-        public Int32 Count
-        {
-            get { return _scope.Count; }
-        }
+        public Int32 Count => _scope.Count;
 
-        public Boolean IsReadOnly
-        {
-            get { return false; }
-        }
+        public Boolean IsReadOnly => false;
 
-        public ICollection<String> Keys
-        {
-            get { return _scope.Keys; }
-        }
+        public ICollection<String> Keys => _scope.Keys;
 
-        public ICollection<Object> Values
-        {
-            get { return _scope.Values; }
-        }
+        public ICollection<Object> Values => _scope.Values;
 
         public void Add(KeyValuePair<String, Object> item)
         {

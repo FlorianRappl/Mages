@@ -31,18 +31,12 @@
         /// <summary>
         /// Gets the associated object expression.
         /// </summary>
-        public IExpression Object 
-        {
-            get { return _obj; }
-        }
+        public IExpression Object => _obj;
 
         /// <summary>
         /// Gets the associated member access.
         /// </summary>
-        public IExpression Member
-        {
-            get { return _member; }
-        }
+        public IExpression Member => _member;
 
         #endregion
 

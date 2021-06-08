@@ -323,7 +323,7 @@
         [Test]
         public void KeysOfMatrixYieldNumbers()
         {
-            var result = "keys(1:5)".Eval();
+            var result = "keys(1..5)".Eval();
             var array = result as IDictionary<String, Object>;
             Assert.IsNotNull(array);
             Assert.AreEqual(5, array.Count);
@@ -370,7 +370,7 @@
         [Test]
         public void AllOfMatrixWithNoZerosIsTrue()
         {
-            var result = "all(1:10)".Eval();
+            var result = "all(1..10)".Eval();
             Assert.AreEqual(true, result);
         }
     }

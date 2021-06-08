@@ -33,10 +33,7 @@
         /// <summary>
         /// Gets the variable (value on the left side).
         /// </summary>
-        public IExpression Variable 
-        {
-            get { return _variable; }
-        }
+        public IExpression Variable => _variable;
 
         /// <summary>
         /// Gets the variable name, if any.
@@ -59,10 +56,7 @@
         /// <summary>
         /// Gets the value on the right side.
         /// </summary>
-        public IExpression Value 
-        {
-            get { return _value; }
-        }
+        public IExpression Value => _value;
 
         #endregion
 

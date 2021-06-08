@@ -21,29 +21,19 @@
             _errors = errors ?? NoErrors;
         }
 
-        public IEnumerable<ParseError> Errors
-        {
-            get { return _errors; }
-        }
+        public IEnumerable<ParseError> Errors => _errors;
 
-        public TokenType Type
-        {
-            get { return TokenType.String; }
-        }
+        public TokenType Type => TokenType.String;
 
-        public String Payload
-        {
-            get { return _content; }
-        }
+        public String Payload => _content;
 
-        public TextPosition Start
-        {
-            get { return _start; }
-        }
+        public TextPosition Start => _start;
 
-        public TextPosition End
+        public TextPosition End => _end;
+
+        public override String ToString()
         {
-            get { return _end; }
+            return $"String / {_start} -- {_end} / '{_content}'";
         }
     }
 }
