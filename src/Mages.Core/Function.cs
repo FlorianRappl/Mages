@@ -43,7 +43,8 @@
         }
 
         /// <summary>
-        /// Calls the function with the given arguments.
+        /// Calls the function with the given arguments. In case the result is
+        /// not of the anticipated type the default value is returned.
         /// </summary>
         /// <typeparam name="TResult">The anticipated result type.</typeparam>
         /// <param name="function">The function.</param>
@@ -60,7 +61,27 @@
 
             return default(TResult);
         }
-        
+
+        /// <summary>
+        /// Calls the function with the given arguments. In case the result is
+        /// not of the anticipated type an InvalidCastException is thrown.
+        /// </summary>
+        /// <typeparam name="TResult">The anticipated result type.</typeparam>
+        /// <param name="function">The function.</param>
+        /// <param name="arguments">The arguments to supply.</param>
+        /// <returns>The result.</returns>
+        public static TResult CallForced<TResult>(this Function function, params Object[] arguments)
+        {
+            var result = function.Call(arguments);
+
+            if (result is not TResult)
+            {
+                throw new InvalidCastException("The result's expected type does not match the result's actual type.");
+            }
+
+            return (TResult)result;
+        }
+
         /// <summary>
         /// Gets the names of the parameters of the function.
         /// </summary>
