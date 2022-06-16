@@ -1,3 +1,11 @@
+# 2.0.1
+
+- Fixed potential overflow in number scanning (#110)
+- Enhanced documentation about results when expecting complex result type (#108)
+- Added phase function for complex numbers (#107)
+- Added tooltip comments when manipulating scopes directly (#106)
+- Improved handling of `min` / `max` in combination with complex numbers (#101)
+
 # 2.0.0
 
 - Migrated to use GitHub actions

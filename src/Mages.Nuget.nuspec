@@ -5,13 +5,13 @@
     <version>$version$</version>
     <authors>Florian Rappl</authors>
     <owners>Florian Rappl</owners>
-    <licenseUrl>https://github.com/FlorianRappl/Mages/blob/master/LICENSE</licenseUrl>
+    <licenseUrl>https://github.com/FlorianRappl/Mages/blob/main/LICENSE</licenseUrl>
     <projectUrl>https://github.com/FlorianRappl/Mages</projectUrl>
-    <iconUrl>https://raw.github.com/FlorianRappl/Mages/master/logo.png</iconUrl>
+    <iconUrl>https://raw.github.com/FlorianRappl/Mages/main/logo.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>MAGES is a very simple, yet powerful, expression parser and interpreter.</description>
-    <releaseNotes>For all changes see: https://github.com/FlorianRappl/Mages/blob/master/CHANGELOG.md.</releaseNotes>
-    <copyright>Copyright 2021, Florian Rappl.</copyright>
+    <releaseNotes>For all changes see: https://github.com/FlorianRappl/Mages/blob/main/CHANGELOG.md.</releaseNotes>
+    <copyright>Copyright 2022, Florian Rappl.</copyright>
     <tags>interpreter mages expression scripting language mathematics performance</tags>
     <dependencies>
       <group targetFramework="netstandard2.0"></group>

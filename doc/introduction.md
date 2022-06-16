@@ -99,8 +99,8 @@ On starting the REPL we see the following:
   \____|__  /\____|__  /\______  /_______  /_______  /
           \/         \/        \/        \/        \/
 
-  (c) Florian Rappl, 2021
-  Version 2.0.0
+  (c) Florian Rappl, 2022
+  Version 2.0.1
   Running on Microsoft Windows NT 6.2.9200.0
 
   For help type 'help()'.
