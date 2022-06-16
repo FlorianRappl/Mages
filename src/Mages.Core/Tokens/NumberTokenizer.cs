@@ -110,7 +110,7 @@
             {
                 while (_scanner.Current.IsDigit())
                 {
-                    _value = _value * 10UL + (UInt64)(_scanner.Current - CharacterTable.Zero);
+                    AddValue(10UL, (UInt64)(_scanner.Current - CharacterTable.Zero));
 
                     if (!_scanner.MoveNext())
                     {
@@ -148,7 +148,7 @@
 
                 for (var i = numbers.Count - 1; i >= 0; --i)
                 {
-                    _value += (UInt64)(numbers[i] * weight);
+                    AddValue(1UL, (UInt64)(numbers[i] * weight));
                     weight *= 2;
                 }
 
@@ -167,7 +167,7 @@
 
                 for (var i = numbers.Count - 1; i >= 0; --i)
                 {
-                    _value += (UInt64)(numbers[i] * weight);
+                    AddValue(1UL, (UInt64)(numbers[i] * weight));
                     weight *= 16;
                 }
 
@@ -178,7 +178,7 @@
             {
                 while (_scanner.Current.IsDigit())
                 {
-                    _value = _value * 10UL + (UInt64)(_scanner.Current - CharacterTable.Zero);
+                    AddValue(10UL, (UInt64)(_scanner.Current - CharacterTable.Zero));
                     _digits++;
 
                     if (!_scanner.MoveNext())
@@ -259,6 +259,11 @@
                 }
 
                 _errors.Add(new ParseError(code, range));
+            }
+
+            private void AddValue(UInt64 scale, UInt64 diff)
+            {
+                _value = _value * scale + diff;
             }
         }
 
