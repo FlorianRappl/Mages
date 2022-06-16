@@ -103,5 +103,25 @@
 
             return null;
         }
+
+        /// <summary>
+        /// Checks if any argument is of type T.
+        /// </summary>
+        /// <typeparam name="T">The type of any value.</typeparam>
+        /// <param name="args">The arguments to check.</param>
+        /// <param name="f">The callback to invoke if fulfilled.</param>
+        /// <returns>The result of the callback or null.</returns>
+        public static Object HasAny<T>(Object[] args, Func<Object[], Object> f)
+        {
+            foreach (var arg in args)
+            {
+                if (arg is T)
+                {
+                    return f(args);
+                }
+            }
+
+            return null;
+        }
     }
 }

@@ -3,6 +3,7 @@
     using NUnit.Framework;
     using System;
     using System.Collections.Generic;
+    using System.Numerics;
 
     [TestFixture]
     public class FunctionTests
@@ -750,6 +751,48 @@
         {
             var result = "lerp(-5, 5, [0, 0.5, 0.75; 0.1, 0.2, 0.4])".Eval();
             CollectionAssert.AreEquivalent(new[,] { { -5.0, 0.0, 2.5 }, { -4.0, -3.0, -1.0 } }, (Double[,])result);
+        }
+
+        [Test]
+        public void MinWithComplex_Issue101()
+        {
+            var result = "min(5, -3i)".Eval();
+            Assert.AreEqual(new Complex(0.0, -3.0), (Complex)result);
+        }
+
+        [Test]
+        public void MinWithComplexOther_Issue101()
+        {
+            var result = "min(-5, 3i)".Eval();
+            Assert.AreEqual(new Complex(0.0, 3.0), (Complex)result);
+        }
+
+        [Test]
+        public void MinWithComplexReal_Issue101()
+        {
+            var result = "min(-1, 3i)".Eval();
+            Assert.AreEqual(new Complex(-1.0, 0.0), (Complex)result);
+        }
+
+        [Test]
+        public void MaxWithComplex_Issue101()
+        {
+            var result = "max(5, -3i)".Eval();
+            Assert.AreEqual(new Complex(5.0, 0.0), (Complex)result);
+        }
+
+        [Test]
+        public void MáxWithComplexOther_Issue101()
+        {
+            var result = "max(-5, 3i)".Eval();
+            Assert.AreEqual(new Complex(-5.0, 0.0), (Complex)result);
+        }
+
+        [Test]
+        public void MaxWithComplexReal_Issue101()
+        {
+            var result = "max(-1, 3i)".Eval();
+            Assert.AreEqual(new Complex(0.0, 3.0), (Complex)result);
         }
     }
 }

@@ -743,6 +743,7 @@
                 If.Is<Double[,]>(args, x => x.Reduce((a, b) => a + b)) ??
                 If.Is<Complex[,]>(args, x => x.Reduce((a, b) => a + b)) ??
                 If.Is<Dictionary<String, Object>>(args, obj => obj.Sum(m => m.Value.ToNumber())) ??
+                If.HasAny<Complex>(args, x => x.Select(m => m.ToComplex()).Aggregate(Complex.Zero, (sum, value) => sum + value)) ??
                 args.Select(m => m.ToNumber()).Sum();
         });
 
@@ -755,6 +756,7 @@
                 If.Is<Double[,]>(args, x => x.Reduce(Math.Min)) ??
                 If.Is<Complex[,]>(args, x => x.Reduce(Mathx.Min)) ??
                 If.Is<Dictionary<String, Object>>(args, obj => obj.Min(m => m.Value.ToNumber())) ??
+                If.HasAny<Complex>(args, x => x.Select(m => m.ToComplex()).OrderBy(m => m.Magnitude).FirstOrDefault()) ??
                 args.Select(m => m.ToNumber()).Min();
         });
 
@@ -767,6 +769,7 @@
                 If.Is<Double[,]>(args, x => x.Reduce(Math.Max)) ??
                 If.Is<Complex[,]>(args, x => x.Reduce(Mathx.Max)) ??
                 If.Is<Dictionary<String, Object>>(args, obj => obj.Max(m => m.Value.ToNumber())) ??
+                If.HasAny<Complex>(args, x => x.Select(m => m.ToComplex()).OrderByDescending(m => m.Magnitude).FirstOrDefault()) ??
                 args.Select(m => m.ToNumber()).Max();
         });
 
