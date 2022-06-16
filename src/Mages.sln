@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31313.79
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32228.430
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mages.Core", "Mages.Core\Mages.Core.csproj", "{B0698A2A-BFE9-4568-9055-82302F325452}"
 EndProject
@@ -14,7 +14,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mages.Repl", "Mages.Repl\Ma
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mages.Core.Performance", "Mages.Core.Performance\Mages.Core.Performance.csproj", "{15B324FD-3EE3-467A-BDDA-A6F571FEA4C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mages.Repl.Installer", "Mages.Repl.Installer\Mages.Repl.Installer.csproj", "{2239BDD1-07B4-44B0-A6DB-ED4C69B8797C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mages.Repl.Installer", "Mages.Repl.Installer\Mages.Repl.Installer.csproj", "{2239BDD1-07B4-44B0-A6DB-ED4C69B8797C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mages.Plugins.LinearAlgebra", "Mages.Plugins.LinearAlgebra\Mages.Plugins.LinearAlgebra.csproj", "{84965E3E-B7E6-49E7-ADF1-46A3CB7EBEA6}"
 EndProject
@@ -92,8 +92,8 @@ Global
 		{62F70CC4-CAC2-4477-8E72-39366D185B68}.Release|Any CPU.Build.0 = Release|Any CPU
 		{92BAD61F-F5B6-4E6D-A34A-939B994B2910}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{92BAD61F-F5B6-4E6D-A34A-939B994B2910}.Debug|Any CPU.Build.0 = Debug|x64
-		{92BAD61F-F5B6-4E6D-A34A-939B994B2910}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{92BAD61F-F5B6-4E6D-A34A-939B994B2910}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92BAD61F-F5B6-4E6D-A34A-939B994B2910}.Release|Any CPU.ActiveCfg = Release|x64
+		{92BAD61F-F5B6-4E6D-A34A-939B994B2910}.Release|Any CPU.Build.0 = Release|x64
 		{18E9CD99-8F61-4E77-A59A-8EFDC588042E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{18E9CD99-8F61-4E77-A59A-8EFDC588042E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18E9CD99-8F61-4E77-A59A-8EFDC588042E}.Release|Any CPU.ActiveCfg = Release|Any CPU

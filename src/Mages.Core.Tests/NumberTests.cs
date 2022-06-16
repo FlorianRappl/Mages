@@ -205,7 +205,7 @@
             Assert.AreEqual(TokenType.Number, result.Type);
             Assert.AreEqual(TokenType.Space, space2.Type);
             Assert.AreEqual(TokenType.End, end.Type);
-            Assert.AreEqual("120000.00000000001", result.Payload);
+            Assert.AreEqual("120000", result.Payload);
         }
 
         [Test]
@@ -232,6 +232,58 @@
             Assert.AreEqual(TokenType.Number, result.Type);
             Assert.AreEqual(TokenType.End, end.Type);
             Assert.AreEqual("131.208072980527", result.Payload);
+        }
+
+        [Test]
+        public void InputNumberTooLarge_Issue110()
+        {
+            var source = "55555555555555555555";
+            var scanner = new StringScanner(source);
+            var comment = new GeneralTokenizer(new NumberTokenizer(), null, null);
+            var result = comment.Next(scanner);
+            var end = comment.Next(scanner);
+            Assert.AreEqual(TokenType.Number, result.Type);
+            Assert.AreEqual(TokenType.End, end.Type);
+            Assert.AreEqual(55555555555555555555.0, ((NumberToken)result).Value);
+        }
+
+        [Test]
+        public void InputNumberTooLargeMore_Issue110()
+        {
+            var source = "555555555555555555555";
+            var scanner = new StringScanner(source);
+            var comment = new GeneralTokenizer(new NumberTokenizer(), null, null);
+            var result = comment.Next(scanner);
+            var end = comment.Next(scanner);
+            Assert.AreEqual(TokenType.Number, result.Type);
+            Assert.AreEqual(TokenType.End, end.Type);
+            Assert.AreEqual(555555555555555555555.0, ((NumberToken)result).Value);
+        }
+
+        [Test]
+        public void InputNumberTooLargeLess_Issue110()
+        {
+            var source = "0.555555555555555555555";
+            var scanner = new StringScanner(source);
+            var comment = new GeneralTokenizer(new NumberTokenizer(), null, null);
+            var result = comment.Next(scanner);
+            var end = comment.Next(scanner);
+            Assert.AreEqual(TokenType.Number, result.Type);
+            Assert.AreEqual(TokenType.End, end.Type);
+            Assert.AreEqual(0.55555555555555547, ((NumberToken)result).Value);
+        }
+
+        [Test]
+        public void InputNumberTooLargeLesser_Issue110()
+        {
+            var source = "0.55555555555555555555555";
+            var scanner = new StringScanner(source);
+            var comment = new GeneralTokenizer(new NumberTokenizer(), null, null);
+            var result = comment.Next(scanner);
+            var end = comment.Next(scanner);
+            Assert.AreEqual(TokenType.Number, result.Type);
+            Assert.AreEqual(TokenType.End, end.Type);
+            Assert.AreEqual(0.55555555555555547, ((NumberToken)result).Value);
         }
     }
 }

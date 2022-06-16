@@ -49,6 +49,7 @@
             private UInt64 _value;
             private UInt16 _digits;
             private Int32 _powers;
+            private Int32 _shifts;
 
             public NumberState(IScanner scanner)
             {
@@ -58,9 +59,10 @@
                 _value = 0;
                 _digits = 0;
                 _powers = 0;
+                _shifts = 0;
             }
 
-            public Double Number => _value * Math.Pow(10.0, -_digits) * Math.Pow(10.0, _powers);
+            public Double Number => _value * Math.Pow(10.0, _shifts + _powers - _digits);
 
             public IToken Zero()
             {
@@ -263,7 +265,23 @@
 
             private void AddValue(UInt64 scale, UInt64 diff)
             {
-                _value = _value * scale + diff;
+                if (_shifts > 0)
+                {
+                    _shifts++;
+                }
+                else
+                {
+                    var newValue = _value * scale + diff;
+
+                    if (newValue < _value)
+                    {
+                        _shifts++;
+                    }
+                    else
+                    {
+                        _value = newValue;
+                    }
+                }
             }
         }
 
