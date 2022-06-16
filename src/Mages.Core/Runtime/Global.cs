@@ -104,6 +104,7 @@
             { "conj", ComplexFunctions.Conj },
             { "real", ComplexFunctions.Real },
             { "imag", ComplexFunctions.Imag },
+            { "arg", ComplexFunctions.Arg },
 
             // Constants
             { "e", Constants.E },

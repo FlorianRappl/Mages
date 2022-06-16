@@ -52,5 +52,18 @@
             If.Is<Complex[,]>(args, x => x.ForEach(m => m.Imaginary)) ??
             Double.NaN
         );
+
+        /// <summary>
+        /// Exposes the complex arg function.
+        /// </summary>
+        public static readonly Function Arg = new Function(args =>
+        {
+            return Curry.MinOne(Arg, args) ??
+                If.Is<Double>(args, x => new Complex(x, 0.0).Phase) ??
+                If.Is<Complex>(args, x => x.Phase) ??
+                If.Is<Double[,]>(args, x => x.ForEach(m => new Complex(m, 0.0).Phase)) ??
+                If.Is<Complex[,]>(args, x => x.ForEach(m => m.Phase)) ??
+                Double.NaN;
+        });
     }
 }
