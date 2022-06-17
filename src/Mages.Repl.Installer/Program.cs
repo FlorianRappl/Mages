@@ -8,7 +8,9 @@
     {
         internal static void Main(String[] arguments)
         {
+#pragma warning disable CA1416 // Validate platform compatibility
             SquirrelAwareApp.HandleEvents();
+#pragma warning restore CA1416 // Validate platform compatibility
 
             Parser.Default.ParseArguments<Options>(arguments).WithParsed(Run);
         }
