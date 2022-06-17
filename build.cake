@@ -9,10 +9,9 @@
  - Run a Publish build with Cake
  - Switch back to devel branch
    **************************************** */
-
-#addin "Cake.FileHelpers"
-#addin "Octokit"
-#addin "Cake.Squirrel"
+#addin nuget:?package=Cake.FileHelpers&version=3.2.0
+#addin nuget:?package=Cake.Squirrel&version=0.15.1
+#addin nuget:?package=Octokit&version=0.32.0
 using Octokit;
 
 var isRunningOnGitHubActions = BuildSystem.GitHubActions.IsRunningOnGitHubActions;

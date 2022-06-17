@@ -73,6 +73,8 @@ l = list("a", true, 3.0); // list with 3 elements
 
 The standard index accessors can also be applied to any list.
 
+**Important**: Lists store arbitrary values, while matrices can only store complex or non-complex numbers. Therefore, never use `["A", "B", "C"]` but use `list("A", "B", "C")`.
+
 ### Index Accessors
 
 MAGES does not come with dedicated indexers. Instead, MAGES uses special functions called "type functions" to resolve type specific functionality that is exposed via calling a function. For instance, we can do
