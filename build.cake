@@ -206,7 +206,7 @@ Task("Create-Squirrel-Package")
             Symbols = false
         });
 
-        var fileName = "Mages." + version + ".nupkg";
+        var fileName = $"Mages.{version}.nupkg";
         var package = squirrelRoot + File(fileName);
         
         Squirrel(package, new SquirrelSettings
@@ -242,7 +242,7 @@ Task("Publish-Chocolatey-Package")
     .WithCriteria(() => isRunningOnWindows)
     .Does(() => {
         var apiKey = EnvironmentVariable("CHOCOLATEY_API_KEY");
-        var fileName = "Mages." + version + ".nupkg";
+        var fileName = $"Mages.{version}.nupkg";
         var package = chocolateyRoot + File(fileName);
 
         if (String.IsNullOrEmpty(apiKey))
