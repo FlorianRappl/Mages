@@ -10,7 +10,6 @@
  - Switch back to devel branch
    **************************************** */
 #addin nuget:?package=Cake.FileHelpers&version=3.2.0
-#addin nuget:?package=Cake.Squirrel&version=0.15.1
 #addin nuget:?package=Octokit&version=0.32.0
 using Octokit;
 
@@ -44,6 +43,7 @@ var buildResultDir = Directory("./bin") + Directory(version);
 var nugetRoot = buildResultDir + Directory("nuget");
 var chocolateyRoot = buildResultDir + Directory("chocolatey");
 var squirrelRoot = buildResultDir + Directory("squirrel");
+var squirrelBin = squirrelRoot + Directory("source");
 var releaseDir = squirrelRoot + Directory("release");
 
 // Initialization
@@ -124,9 +124,9 @@ Task("Copy-Files")
     .Does(() =>
     {
         var nugetBin = nugetRoot + Directory("lib") + Directory("netstandard2.0");
-        var squirrelBin = squirrelRoot + Directory("lib") + Directory("net45");
         CreateDirectory(nugetBin);
         CreateDirectory(squirrelBin);
+        CreateDirectory(releaseDir);
         CopyFiles(new FilePath[]
         { 
             buildDir + File("Mages.Core.dll"),
@@ -136,7 +136,6 @@ Task("Copy-Files")
         CopyDirectory(installerDir, squirrelBin);
         CopyFile("src/Mages.Nuget.nuspec", nugetRoot + File("Mages.nuspec"));
         CopyFile("src/Mages.Chocolatey.nuspec", chocolateyRoot + File("Mages.nuspec"));
-        CopyFile("src/Mages.Squirrel.nuspec", squirrelRoot + File("Mages.nuspec"));
         DeleteFiles(GetFiles(squirrelBin.Path.FullPath + "/*.pdb"));
         DeleteFiles(GetFiles(squirrelBin.Path.FullPath + "/*.vshost.*"));
     });
@@ -188,33 +187,19 @@ Task("Create-Squirrel-Package")
     .IsDependentOn("Copy-Files")
     .WithCriteria(() => isRunningOnWindows)
     .Does(() => {
-        var nugetExe = GetFiles("./tools/**/nuget.exe").FirstOrDefault();
+        var squirrelExe = GetFiles("./tools/**/squirrel.exe").FirstOrDefault();
 
-        if (nugetExe == null)
+        if (squirrelExe == null)
         {            
-            throw new InvalidOperationException("Could not find nuget.exe.");
+            throw new InvalidOperationException("Could not find squirrel.exe.");
         }
 
         var spec = squirrelRoot + File("Mages.nuspec");
-        CreateDirectory(releaseDir);
-
-        NuGetPack(spec, new NuGetPackSettings
-        {
-            Version = version,
-            BasePath = squirrelRoot,
-            OutputDirectory = squirrelRoot,
-            Symbols = false
-        });
-
-        var fileName = $"Mages.{version}.nupkg";
-        var package = squirrelRoot + File(fileName);
         
-        Squirrel(package, new SquirrelSettings
-        {
-            Silent = true,
-            NoMsi = true,
-            ReleaseDirectory = releaseDir,
-            SetupIcon = GetFiles("./src/Mages.Repl.Installer/mages.ico").First().FullPath
+        var setupIcon = GetFiles("./src/Mages.Repl.Installer/mages.ico").First().FullPath;
+        
+        StartProcess(squirrelExe, new ProcessSettings {
+            Arguments = $"pack --packId \"Mages\" --packVersion \"{version}\" --allowUnaware --no-msi --silent --setupIcon \"{setupIcon}\" --packDirectory \"{squirrelBin}\" --releaseDir \"{releaseDir}\""
         });
     });
 

@@ -6,6 +6,7 @@
 - Added phase function for complex numbers (#107)
 - Added tooltip comments when manipulating scopes directly (#106)
 - Improved handling of `min` / `max` in combination with complex numbers (#101)
+- Changed `Squirrel.windows` to `Clowd.Squirrel` for the standalone REPL
 
 # 2.0.0
 

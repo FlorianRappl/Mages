@@ -1,12 +1,15 @@
 ﻿namespace Mages.Repl.Installer
 {
     using CommandLine;
+    using Squirrel;
     using System;
 
     public static class Program
     {
         internal static void Main(String[] arguments)
         {
+            SquirrelAwareApp.HandleEvents();
+
             Parser.Default.ParseArguments<Options>(arguments).WithParsed(Run);
         }
 

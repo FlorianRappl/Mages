@@ -3,6 +3,7 @@
     using Squirrel;
     using System;
 
+#pragma warning disable CA1416 // Validate platform compatibility
     static class Updater
     {
         public static void PerformUpdate()
@@ -30,9 +31,7 @@
             }
         }
 
-        private static UpdateManager GetUpdateManager()
-        {
-            return UpdateManager.GitHubUpdateManager("https://github.com/FlorianRappl/Mages", "Mages").Result;
-        }
+        private static UpdateManager GetUpdateManager() => new GithubUpdateManager("https://github.com/FlorianRappl/Mages", false, null, "Mages");
     }
+#pragma warning restore CA1416 // Validate platform compatibility
 }
