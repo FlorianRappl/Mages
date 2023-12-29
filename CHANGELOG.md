@@ -1,3 +1,7 @@
+# 2.0.2
+
+- Fixed vulnerability using outdated version of `System.Drawing.Common` for plugins
+
 # 2.0.1
 
 - Fixed potential overflow in number scanning (#110)

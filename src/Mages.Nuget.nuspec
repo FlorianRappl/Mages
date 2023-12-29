@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>MAGES is a very simple, yet powerful, expression parser and interpreter.</description>
     <releaseNotes>For all changes see: https://github.com/FlorianRappl/Mages/blob/main/CHANGELOG.md.</releaseNotes>
-    <copyright>Copyright 2022, Florian Rappl.</copyright>
+    <copyright>Copyright 2024, Florian Rappl.</copyright>
     <tags>interpreter mages expression scripting language mathematics performance</tags>
     <dependencies>
       <group targetFramework="netstandard2.0"></group>
