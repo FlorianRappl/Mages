@@ -67,15 +67,51 @@
 
         public static MethodBase Find(this IEnumerable<MethodBase> methods, Type[] currentParameters, ref Object[] arguments)
         {
-            foreach (var method in methods.Select(m => new { Info = m, ActualParameters = m.GetParameters() }).OrderByDescending(m => m.ActualParameters.Length))
+            var methodGroups = methods
+                .Select(m => new { Info = m, ActualParameters = m.GetParameters() })
+                .GroupBy(m => m.ActualParameters.Length)
+                .OrderByDescending(m => m.Key);
+
+            foreach (var methodGroup in methodGroups)
             {
-                if (method.Info.TryMatch(method.ActualParameters, currentParameters, ref arguments))
+                foreach (var method in methodGroup.OrderByDescending(m => GetRating(m.ActualParameters, currentParameters)))
                 {
-                    return method.Info;
+                    if (method.Info.TryMatch(method.ActualParameters, currentParameters, ref arguments))
+                    {
+                        return method.Info;
+                    }
                 }
             }
 
             return null;
+        }
+
+        private static Int32 GetRating(ParameterInfo[] actualParameters, Type[] currentParameters)
+        {
+            var rating = 0;
+            var len = Math.Min(actualParameters.Length, currentParameters.Length);
+
+            for (var i = 0; i < len; i++)
+            {
+                var at = actualParameters[i].ParameterType;
+                var ct = currentParameters[i];
+
+                if (at == ct)
+                {
+                    rating += 100;
+                }
+                else
+                {
+                    var converter = StandardConverters.List.Find(m => m.From == at && m.To == ct);
+
+                    if (converter != null)
+                    {
+                        rating += converter.Rating;
+                    }
+                }
+            }
+
+            return rating;
         }
 
         public static Object Convert(this Type source, Object value, Type target)

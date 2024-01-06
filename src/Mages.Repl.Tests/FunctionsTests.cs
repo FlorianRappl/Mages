@@ -1,5 +1,6 @@
 ﻿namespace Mages.Repl.Tests
 {
+    using Mages.Core;
     using Mages.Plugins.Modules;
     using Mocks;
     using NUnit.Framework;
@@ -19,6 +20,15 @@
 
             var process = engine.Interpret("process") as IDictionary<String, Object>;
             Assert.IsNotNull(process);
+        }
+
+        [Test]
+        public void WorksWithBitmapConstructor_Issue118()
+        {
+            var eng = new Engine();
+            eng.SetStatic(typeof(System.Drawing.Bitmap)).WithName("Bitmap");
+            var result = eng.Interpret("Bitmap.create(100, 100)");
+            Assert.IsNotNull(result);
         }
     }
 }
