@@ -1,6 +1,7 @@
 # 2.0.2
 
 - Fixed vulnerability using outdated version of `System.Drawing.Common` for plugins
+- Fixed ordering of parameters with likelihood (#118)
 
 # 2.0.1
 
