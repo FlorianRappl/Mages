@@ -14,5 +14,6 @@ The documentation of MAGES is organized via simple Markdown files. All relevant 
 8. [Plugins](plugins.md)
 9. [Syntax Definition](syntax.md)
 10. [Contribution Guide](contributing.md)
+11. [Advanced Use Cases](advanced.md)
 
 Don't hesitate to contribute via issues, pull requests, or comments. If you find the project useful a star would be much appreciated.

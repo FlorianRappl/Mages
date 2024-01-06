@@ -2,6 +2,7 @@
 
 - Fixed vulnerability using outdated version of `System.Drawing.Common` for plugins
 - Fixed ordering of parameters with likelihood (#118)
+- Added `SwitchableScope` class to achieve scope switching easily (#119)
 
 # 2.0.1
 
