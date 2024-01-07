@@ -1,3 +1,7 @@
+# 2.0.3
+
+- Include checksum in chocolatey package
+
 # 2.0.2
 
 - Fixed vulnerability using outdated version of `System.Drawing.Common` for plugins

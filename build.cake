@@ -204,10 +204,11 @@ Task("Create-Squirrel-Package")
     });
 
 Task("Create-Chocolatey-Package")
-    .IsDependentOn("Copy-Files")
+    .IsDependentOn("Create-Squirrel-Package")
     .WithCriteria(() => isRunningOnWindows)
     .Does(() => {
-        var content = String.Format("$packageName = 'Mages'{1}$installerType = 'exe'{1}$url32 = 'https://github.com/FlorianRappl/Mages/releases/download/v{0}/Mages.exe'{1}$silentArgs = ''{1}{1}Install-ChocolateyPackage \"$packageName\" \"$installerType\" \"$silentArgs\" \"$url32\"", version, Environment.NewLine);
+        var checksum = CalculateFileHash(releaseDir.Path.FullPath + "/Setup.exe", HashAlgorithm.SHA256).ToHex();
+        var content = String.Format("$packageName = 'Mages'{1}$installerType = 'exe'{1}$url32 = 'https://github.com/FlorianRappl/Mages/releases/download/v{0}/Mages.exe'{1}$silentArgs = ''{1}$checksum32 = '{2}'{1}{1}Install-ChocolateyPackage -PackageName \"$packageName\" -FileType \"$installerType\" -SilentArgs \"$silentArgs\" -Url \"$url32\" -Checksum \"$checksum32\" -ChecksumType \"sha256\"", version, Environment.NewLine, checksum);
         var nuspec = chocolateyRoot + File("Mages.nuspec");
         var toolsDirectory = chocolateyRoot + Directory("tools");
         var scriptFile = toolsDirectory + File("chocolateyInstall.ps1");
