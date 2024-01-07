@@ -207,8 +207,8 @@ Task("Create-Chocolatey-Package")
     .IsDependentOn("Create-Squirrel-Package")
     .WithCriteria(() => isRunningOnWindows)
     .Does(() => {
-        var checksum = CalculateFileHash(releaseDir.Path.FullPath + "/Setup.exe", HashAlgorithm.SHA256).ToHex();
-        var content = String.Format("$packageName = 'Mages'{1}$installerType = 'exe'{1}$url32 = 'https://github.com/FlorianRappl/Mages/releases/download/v{0}/Mages.exe'{1}$silentArgs = ''{1}$checksum32 = '{2}'{1}{1}Install-ChocolateyPackage -PackageName \"$packageName\" -FileType \"$installerType\" -SilentArgs \"$silentArgs\" -Url \"$url32\" -Checksum \"$checksum32\" -ChecksumType \"sha256\"", version, Environment.NewLine, checksum);
+        var checksum = CalculateFileHash(releaseDir.Path.FullPath + "/MagesSetup.exe", HashAlgorithm.SHA256).ToHex();
+        var content = String.Format("$packageName = 'Mages'{1}$installerType = 'exe'{1}$url32 = 'https://github.com/FlorianRappl/Mages/releases/download/v{0}/MagesSetup.exe'{1}$silentArgs = ''{1}$checksum32 = '{2}'{1}{1}Install-ChocolateyPackage -PackageName \"$packageName\" -FileType \"$installerType\" -SilentArgs \"$silentArgs\" -Url \"$url32\" -Checksum \"$checksum32\" -ChecksumType \"sha256\"", version, Environment.NewLine, checksum);
         var nuspec = chocolateyRoot + File("Mages.nuspec");
         var toolsDirectory = chocolateyRoot + Directory("tools");
         var scriptFile = toolsDirectory + File("chocolateyInstall.ps1");
@@ -280,11 +280,6 @@ Task("Publish-GitHub-Release")
         foreach (var file in releaseFiles)
         {
             var name = System.IO.Path.GetFileName(file.FullPath);
-
-            if (name.Equals("Setup.exe"))
-            {
-                name = "Mages.exe";
-            }
 
             using (var fileStream = System.IO.File.OpenRead(file.FullPath))
             {
