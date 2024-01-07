@@ -86,34 +86,6 @@
             return null;
         }
 
-        private static Int32 GetRating(ParameterInfo[] actualParameters, Type[] currentParameters)
-        {
-            var rating = 0;
-            var len = Math.Min(actualParameters.Length, currentParameters.Length);
-
-            for (var i = 0; i < len; i++)
-            {
-                var at = actualParameters[i].ParameterType;
-                var ct = currentParameters[i];
-
-                if (at == ct)
-                {
-                    rating += 100;
-                }
-                else
-                {
-                    var converter = StandardConverters.List.Find(m => m.From == at && m.To == ct);
-
-                    if (converter != null)
-                    {
-                        rating += converter.Rating;
-                    }
-                }
-            }
-
-            return rating;
-        }
-
         public static Object Convert(this Type source, Object value, Type target)
         {
             var wrapper = value as WrapperObject;
@@ -159,23 +131,23 @@
             if (currentParameters.Length >= length)
             {
                 var values = new Object[length];
+                var last = length - 1;
                 var i = 0;
 
                 while (i < length)
                 {
                     var source = currentParameters[i];
-                    var target = actualParameters[i].ParameterType;
-                    var isParams = i == length - 1 && actualParameters[i].GetCustomAttributes(typeof(ParamArrayAttribute), false).Length > 0;
+                    var parameter = actualParameters[i];
+                    var isLast = i == last;
                     var value = default(Object);
 
-                    if (isParams)
+                    if (isLast && TryGetMultiType(parameter, out var element))
                     {
-                        var element = target.GetElementType();
                         value = currentParameters.ConvertParams(arguments, element, i);
                     }
                     else
                     {
-                        value = source.Convert(arguments[i], target);
+                        value = source.Convert(arguments[i], parameter.ParameterType);
                     }
 
                     if (value == null)
@@ -291,6 +263,89 @@
                 var name = selector.Select(proxies.Keys, overloads[0]);
                 proxies.Add(name, new MethodProxy(target, overloads));
             }
+        }
+
+        private static Int32 GetRating(ParameterInfo[] actualParameters, Type[] currentParameters)
+        {
+            var rating = 0;
+            var apl = actualParameters.Length;
+            var cpl = currentParameters.Length;
+            var len = Math.Min(apl, cpl);
+            var last = len - 1;
+
+            for (var i = 0; i < len; i++)
+            {
+                var parameter = actualParameters[i];
+                var at = parameter.ParameterType;
+                var ct = currentParameters[i];
+                var isLast = i == last && cpl >= apl;
+
+                if (at == ct)
+                {
+                    rating += 100;
+                }
+                else if (isLast && TryGetMultiType(parameter, out var ait))
+                {
+                    for (var j = i; j < cpl; j++)
+                    {
+                        var cit = currentParameters[j];
+
+                        if (ait == cit)
+                        {
+                            continue;
+                        }
+
+                        var converter = StandardConverters.List.Find(m => m.From == cit && m.To == ait);
+
+                        if (converter == null)
+                        {
+                            return 0;
+                        }
+                    }
+
+                    rating += 100 * (cpl - apl + 1);
+                }
+                else
+                {
+                    var converter = StandardConverters.List.Find(m => m.From == ct && m.To == at);
+
+                    if (converter != null)
+                    {
+                        rating += converter.Rating;
+                    }
+                }
+            }
+
+            return rating;
+        }
+
+        private static Boolean TryGetMultiType(ParameterInfo parameterInfo, out Type result)
+        {
+            var type = parameterInfo.ParameterType;
+            result = null;
+
+            if (IsEnumerable(type))
+            {
+                result = type.GetGenericArguments()[0];
+                return true;
+            }
+            else if (IsParams(parameterInfo))
+            {
+                result = type.GetElementType();
+                return true;
+            }
+
+            return false;
+        }
+
+        private static Boolean IsEnumerable(Type type)
+        {
+            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>);
+        }
+
+        private static Boolean IsParams(ParameterInfo parameterInfo)
+        {
+            return parameterInfo.GetCustomAttributes(typeof(ParamArrayAttribute), false).Length > 0;
         }
     }
 }

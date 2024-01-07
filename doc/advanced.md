@@ -36,3 +36,18 @@ scope.ChangeScope("default");
 ```
 
 If a provided scope name is not found the `default` scope will be selected.
+
+## List Creation
+
+You can expose common .NET types via `SetStatic` and `WithName` such as:
+
+```cs
+var eng = new Engine();
+eng.SetStatic<List<Double>>().WithName("Doubles");
+```
+
+Now if you want to create a list with entries you can just use the `IEnumerable<Double>` overload of the constructor by supplying many arguments (similar to `params`):
+
+```cs
+eng.Interpret("Doubles.create(1, 2, 3)")
+```

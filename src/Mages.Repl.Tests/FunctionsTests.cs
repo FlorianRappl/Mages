@@ -8,7 +8,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Transactions;
 
     [TestFixture]
     public class FunctionsTests
@@ -59,6 +58,27 @@
             Assert.AreEqual(16.0, result1);
             Assert.AreEqual(25.0, result2);
             Assert.AreEqual(5.0, result3);
+        }
+
+        [Test]
+        public void ListCreation_Issue116()
+        {
+            var eng = new Engine();
+            eng.SetStatic<List<String>>().WithName("ArrayStr");
+            var result = eng.Interpret("ArrayStr.create(\"a\", \"b\", \"c\")");
+
+            Assert.IsInstanceOf<WrapperObject>(result);
+
+            var list = (result as WrapperObject)?.Content;
+
+            Assert.IsInstanceOf<List<String>>(list);
+
+            var strs = list as List<String>;
+
+            Assert.AreEqual(3, strs.Count);
+            Assert.AreEqual("a", strs[0]);
+            Assert.AreEqual("b", strs[1]);
+            Assert.AreEqual("c", strs[2]);
         }
     }
 }
