@@ -11,7 +11,7 @@
 
         public JsonSerializer()
         {
-            _seen = new HashSet<Object>();
+            _seen = [];
         }
 
         public String Serialize(Object value)

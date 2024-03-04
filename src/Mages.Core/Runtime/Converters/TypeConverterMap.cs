@@ -5,7 +5,7 @@
 
     sealed class TypeConverterMap
     {
-        private readonly Dictionary<Type, Dictionary<Type, Func<Object, Object>>> _cache = new Dictionary<Type, Dictionary<Type, Func<Object, Object>>>();
+        private readonly Dictionary<Type, Dictionary<Type, Func<Object, Object>>> _cache = [];
 
         public Func<Object, Object> FindConverter(Type to)
         {
@@ -87,7 +87,7 @@
             {
                 var converters = StandardConverters.List;
                 var length = converters.Count;
-                mapping = new Dictionary<Type, Func<Object, Object>>();
+                mapping = [];
 
                 for (var i = 0; i < length; ++i)
                 {

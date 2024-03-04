@@ -8,7 +8,7 @@
     {
         private static readonly String CallStandardFunctions = "sin(pi / 4) * cos(pi * 0.25) + exp(2) * log(3)";
         private static readonly Engine MagesEngine = new Engine();
-        private static readonly Dictionary<String, Func<Object>> FunctionCache = new Dictionary<String, Func<Object>>();
+        private static readonly Dictionary<String, Func<Object>> FunctionCache = [];
 
         [Benchmark]
         public Double Mages_Uncached_CallStandardFunctions()

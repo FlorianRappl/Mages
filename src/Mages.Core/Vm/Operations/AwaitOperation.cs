@@ -37,7 +37,7 @@
                         }
                         catch (Exception ex)
                         {
-                            continuation.SetError(ex.Message);
+                            continuation.SetError(ex);
                         }
                     });
                 }
@@ -57,7 +57,9 @@
             var error = promise.Error;
 
             if (error != null)
-                throw new Exception(error);
+            {
+                throw error;
+            }
 
             context.Push(promise.Result);
         }

@@ -6,8 +6,8 @@
 
     static class StandardConverters
     {
-        public static readonly List<TypeConverter> List = new List<TypeConverter>
-        {
+        public static readonly List<TypeConverter> List =
+        [
             TypeConverter.Create<Double, Single>(x => (Single)x, 80),
             TypeConverter.Create<Double, Complex>(x => new Complex(x, 0.0), 95),
             TypeConverter.Create<Double, Decimal>(x => (Decimal)x, 95),
@@ -66,7 +66,7 @@
             TypeConverter.Create<List<Double>, Double[,]>(x => x.ToMatrix(), 95),
             TypeConverter.Create<Delegate, Function>(Helpers.WrapFunction, 60),
             TypeConverter.Create<Array, Dictionary<String, Object>>(Helpers.WrapArray, 40)
-        };
+        ];
 
         public static readonly Func<Object, Object> Identity = _ => _;
 

@@ -6,6 +6,7 @@
     using System.Collections.Generic;
     using System.Reflection;
     using System.Text.RegularExpressions;
+    using System.Threading.Tasks;
 
     static class Helpers
     {
@@ -357,6 +358,11 @@
 
         public static Object WrapObject(this Object value)
         {
+            if (value is Task task)
+            {
+                return new Future(task);
+            }
+
             if (value != null)
             {
                 var type = value.GetType();

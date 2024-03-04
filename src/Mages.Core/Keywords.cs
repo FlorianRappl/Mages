@@ -130,8 +130,8 @@
             { Pi, Math.PI }
         };
 
-        private static readonly HashSet<String> KeywordNames = new HashSet<String>
-        {
+        private static readonly HashSet<String> KeywordNames =
+        [
             True,
             False,
             Var,
@@ -155,7 +155,7 @@
             Delete,
             Pi,
             Match
-        };
+        ];
 
         /// <summary>
         /// Gets the globally available statement keywords.

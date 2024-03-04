@@ -25,7 +25,7 @@
 
             if (!_properties.TryGetValue(typeof(T), out properties))
             {
-                properties = new Dictionary<String, Func<Object, Object>>();
+                properties = [];
                 _properties.Add(typeof(T), properties);
             }
 

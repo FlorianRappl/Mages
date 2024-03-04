@@ -9,10 +9,10 @@
     /// </summary>
     public static class Container
     {
-        private static readonly List<Object> _container = new List<Object>
-        {
+        private static readonly List<Object> _container =
+        [
             CamelNameSelector.Instance,
-        };
+        ];
 
         /// <summary>
         /// Registers the specified service in the container.

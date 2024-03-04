@@ -110,8 +110,10 @@
             foreach (var variable in variables)
             {
                 var expr = new VariableExpression(variable.Name, scope, variable.Start, variable.End);
-                var list = new List<VariableExpression>();
-                list.Add(expr);
+                var list = new List<VariableExpression>
+                {
+                    expr
+                };
                 _collector.Add(expr, list);
             }
 
@@ -127,8 +129,7 @@
 
             if (list == null && _assigning)
             {
-                list = new List<VariableExpression>();
-                list.Add(expression);
+                list = [expression];
                 _collector[expression] = list;
             }
             else if (list != null)

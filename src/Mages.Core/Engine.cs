@@ -32,7 +32,7 @@
             var cfg = configuration ?? Configuration.Default;
             _parser = cfg.Parser ?? Configuration.Default.Parser;
             _scope = new GlobalScope(cfg.Scope);
-            _plugins = new List<Plugin>();
+            _plugins = [];
             this.Apply(cfg);
         }
 

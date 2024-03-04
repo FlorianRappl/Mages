@@ -64,7 +64,7 @@
                 _scanner = scanner;
                 _start = scanner.Position;
                 _errors = null;
-                _parts = new List<List<IToken>>();
+                _parts = [];
                 _tokenizer = tokenizer;
                 _literal = literal;
             }
@@ -241,7 +241,7 @@
             {
                 if (_errors == null)
                 {
-                    _errors = new List<ParseError>();
+                    _errors = [];
                 }
 
                 _errors.Add(new ParseError(code, range));

@@ -30,11 +30,10 @@
         {
             _position = position;
             _symbols = symbols;
-            _completion = new List<String>();
+            _completion = [];
             _breakable = new Stack<Boolean>();
             _breakable.Push(false);
-            _variables = new List<List<String>>();
-            _variables.Add(new List<String>());
+            _variables = [[]];
         }
 
         #endregion

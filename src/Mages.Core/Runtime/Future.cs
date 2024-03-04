@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Represents an awaitable object definition.
@@ -17,6 +18,46 @@
             Add("result", null);
             Add("error", null);
             Add("notify", null);
+        }
+
+        /// <summary>
+        /// Wraps a task in a future object.
+        /// </summary>
+        /// <param name="task">The task to wrap.</param>
+        public Future(Task task) : this()
+        {
+            task.ContinueWith(result =>
+            {
+                if (result.IsFaulted)
+                {
+                    SetError(result.Exception.InnerException);
+                }
+                else
+                {
+                    var type = result.GetType();
+                    var value = type.GetProperty("Result")?.GetValue(result, null);
+                    SetResult(value.WrapObject());
+                }
+            });
+        }
+
+        /// <summary>
+        /// Wraps a task in a future object.
+        /// </summary>
+        /// <param name="task">The task to wrap.</param>
+        public Future(Task<Object> task) : this()
+        {
+            task.ContinueWith(result =>
+            {
+                if (result.IsFaulted)
+                {
+                    SetError(result.Exception.InnerException);
+                }
+                else
+                {
+                    SetResult(result.Result.WrapObject());
+                }
+            });
         }
 
         /// <summary>
@@ -39,7 +80,7 @@
         /// <summary>
         /// Gets the error message, if any.
         /// </summary>
-        public String Error => this.GetProperty("error") as String;
+        public Exception Error => this.GetProperty("error") as Exception;
 
         /// <summary>
         /// Sets the result in case of success.
@@ -55,7 +96,7 @@
         /// Sets the error message in case of failure.
         /// </summary>
         /// <param name="error">The specific error message.</param>
-        public void SetError(String error)
+        public void SetError(Exception error)
         {
             this["error"] = error;
             SetDone(null, error);
@@ -66,7 +107,7 @@
         /// is immediately called if the result is already determined.
         /// </summary>
         /// <param name="callback">The callback action.</param>
-        public void SetCallback(Action<Object, String> callback)
+        public void SetCallback(Action<Object, Exception> callback)
         {
             if (IsCompleted)
             {
@@ -82,15 +123,35 @@
             }
         }
 
-        private void SetDone(Object result, String error)
+        private void SetDone(Object result, Exception error)
         {
-            var notify = this["notify"] as Function;
             this["done"] = true;
 
-            if (notify != null)
+            if (this["notify"] is Function notify)
             {
-                notify.Invoke(new [] { result, error });
+                notify.Invoke([result, error]);
             }
+        }
+
+        /// <summary>
+        /// Converts the future to a task.
+        /// </summary>
+        /// <param name="f">The future to convert to.</param>
+        public static explicit operator Task<Object>(Future f)
+        {
+            var tcs = new TaskCompletionSource<Object>();
+            f.SetCallback((value, error) =>
+            {
+                if (error is not null)
+                {
+                    tcs.SetException(error);
+                }
+                else
+                {
+                    tcs.SetResult(value);
+                }
+            });
+            return tcs.Task;
         }
     }
 }

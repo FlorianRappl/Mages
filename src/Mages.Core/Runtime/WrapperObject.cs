@@ -30,7 +30,7 @@
         {
             _content = content;
             _type = content.GetType();
-            _extends = new Dictionary<String, Object>();
+            _extends = [];
             _proxies = _type.GetMemberProxies(this);
         }
 
@@ -42,7 +42,7 @@
         {
             _type = type;
             _content = null;
-            _extends = new Dictionary<String, Object>();
+            _extends = [];
             _proxies = type.GetStaticProxies(this);
         }
 

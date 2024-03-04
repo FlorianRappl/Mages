@@ -719,7 +719,7 @@
             }
             else
             {
-                arguments = new List<IExpression>();
+                arguments = [];
             }
 
             var end = token.End;

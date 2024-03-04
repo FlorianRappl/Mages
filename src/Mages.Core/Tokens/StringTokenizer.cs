@@ -168,7 +168,7 @@
             {
                 if (_errors == null)
                 {
-                    _errors = new List<ParseError>();
+                    _errors = [];
                 }
 
                 _errors.Add(new ParseError(code, range));
