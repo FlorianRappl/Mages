@@ -18,14 +18,22 @@
             if (obj is Function function || TypeFunctions.TryFind(obj, out function))
             {
                 // We can call something, so let's prepare arguments
-                var arguments = new Object[_length];
 
-                for (var i = 0; i < _length; i++)
+                if (_length == 0)
                 {
-                    arguments[i] = context.Pop();
+                    result = function.Invoke([]);
                 }
+                else
+                {
+                    var arguments = new Object[_length];
 
-                result = function.Invoke(arguments);
+                    for (var i = 0; i < _length; i++)
+                    {
+                        arguments[i] = context.Pop();
+                    }
+
+                    result = function.Invoke(arguments);
+                }
             }
             else
             {
@@ -39,9 +47,6 @@
             context.Push(result);
         }
 
-        public override String ToString()
-        {
-            return String.Concat("getc ", _length.ToString());
-        }
+        public override String ToString() => String.Concat("getc ", _length.ToString());
     }
 }
