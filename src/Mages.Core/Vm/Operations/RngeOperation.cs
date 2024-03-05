@@ -20,7 +20,7 @@
             var from = context.Pop().ToNumber();
             var to = context.Pop().ToNumber();
             var step = context.Pop().ToNumber();
-            var result = Range.Create(from, to, step);
+            var result = RangeHelpers.Create(from, to, step);
             context.Push(result);
         }
 

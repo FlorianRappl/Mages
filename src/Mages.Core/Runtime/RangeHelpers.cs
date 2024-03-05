@@ -2,7 +2,7 @@
 {
     using System;
 
-    static class Range
+    static class RangeHelpers
     {
         public static Double[,] Create(Double from, Double to)
         {

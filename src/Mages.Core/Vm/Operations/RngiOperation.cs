@@ -19,7 +19,7 @@
         {
             var from = context.Pop().ToNumber();
             var to = context.Pop().ToNumber();
-            var result = Range.Create(from, to);
+            var result = RangeHelpers.Create(from, to);
             context.Push(result);
         }
 
