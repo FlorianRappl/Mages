@@ -19,16 +19,10 @@
             return new TextRange(start, end);
         }
 
-        struct TextRange : ITextRange
+        struct TextRange(TextPosition start, TextPosition end) : ITextRange
         {
-            private readonly TextPosition _start;
-            private readonly TextPosition _end;
-
-            public TextRange(TextPosition start, TextPosition end)
-            {
-                _start = start;
-                _end = end;
-            }
+            private readonly TextPosition _start = start;
+            private readonly TextPosition _end = end;
 
             public TextPosition Start => _start;
 

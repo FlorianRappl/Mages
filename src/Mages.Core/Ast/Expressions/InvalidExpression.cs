@@ -3,26 +3,18 @@
     /// <summary>
     /// Represents an invalid expression.
     /// </summary>
-    public sealed class InvalidExpression : ComputingExpression, IExpression
+    /// <remarks>
+    /// Creates a new invalid expression.
+    /// </remarks>
+    public sealed class InvalidExpression(ErrorCode error, ITextRange payload) : ComputingExpression(payload.Start, payload.End), IExpression
     {
         #region Fields
 
-        private readonly ErrorCode _error;
-        private readonly ITextRange _payload;
+        private readonly ErrorCode _error = error;
+        private readonly ITextRange _payload = payload;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new invalid expression.
-        /// </summary>
-        public InvalidExpression(ErrorCode error, ITextRange payload)
-            : base(payload.Start, payload.End)
-        {
-            _error = error;
-            _payload = payload;
-        }
 
         #endregion
 

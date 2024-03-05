@@ -7,14 +7,9 @@
     /// Pops one value and tries to remove the key from the object.
     /// Pushes the result on the stack.
     /// </summary>
-    sealed class DelKeyOperation : IOperation
+    sealed class DelKeyOperation(String name) : IOperation
     {
-        private readonly String _name;
-
-        public DelKeyOperation(String name)
-        {
-            _name = name;
-        }
+        private readonly String _name = name;
 
         public void Invoke(IExecutionContext context)
         {

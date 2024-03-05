@@ -3,28 +3,19 @@
     /// <summary>
     /// Represents an if statement.
     /// </summary>
-    public sealed class IfStatement : BaseStatement, IStatement
+    /// <remarks>
+    /// Creates a new if statement.
+    /// </remarks>
+    public sealed class IfStatement(IExpression condition, IStatement primary, IStatement secondary, TextPosition start) : BaseStatement(start, secondary.End), IStatement
     {
         #region Fields
 
-        private readonly IExpression _condition;
-        private readonly IStatement _primary;
-        private readonly IStatement _secondary;
+        private readonly IExpression _condition = condition;
+        private readonly IStatement _primary = primary;
+        private readonly IStatement _secondary = secondary;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new if statement.
-        /// </summary>
-        public IfStatement(IExpression condition, IStatement primary, IStatement secondary, TextPosition start)
-            : base(start, secondary.End)
-        {
-            _condition = condition;
-            _primary = primary;
-            _secondary = secondary;
-        }
 
         #endregion
 

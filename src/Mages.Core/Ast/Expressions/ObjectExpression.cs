@@ -3,24 +3,17 @@
     /// <summary>
     /// Represents an object literal.
     /// </summary>
-    public sealed class ObjectExpression : ComputingExpression, IExpression
+    /// <remarks>
+    /// Creates a new object expression.
+    /// </remarks>
+    public sealed class ObjectExpression(IExpression[] values, TextPosition start, TextPosition end) : ComputingExpression(start, end), IExpression
     {
         #region Fields
 
-        private readonly IExpression[] _values;
+        private readonly IExpression[] _values = values;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new object expression.
-        /// </summary>
-        public ObjectExpression(IExpression[] values, TextPosition start, TextPosition end)
-            : base(start, end)
-        {
-            _values = values;
-        }
 
         #endregion
 

@@ -5,21 +5,15 @@
     using System.Collections.Generic;
     using System.Text;
 
-    sealed class InterpolationTokenizer : ITokenizer
+    sealed class InterpolationTokenizer(ITokenizer tokenizer) : ITokenizer
     {
         #region Fields
 
         private static readonly Int32[] DigitWeights = new[] { 4096, 256, 16, 1 };
-        private readonly ITokenizer _tokenizer;
+        private readonly ITokenizer _tokenizer = tokenizer;
 
         #endregion
-
         #region ctor
-
-        public InterpolationTokenizer(ITokenizer tokenizer)
-        {
-            _tokenizer = tokenizer;
-        }
 
         #endregion
 
@@ -47,27 +41,16 @@
 
         #region State
 
-        struct StringState
+        struct StringState(IScanner scanner, ITokenizer tokenizer, Boolean literal)
         {
-            private readonly IScanner _scanner;
-            private readonly TextPosition _start;
-            private readonly List<List<IToken>> _parts;
-            private readonly ITokenizer _tokenizer;
-            private readonly Boolean _literal;
+            private readonly IScanner _scanner = scanner;
+            private readonly TextPosition _start = scanner.Position;
+            private readonly List<List<IToken>> _parts = [];
+            private readonly ITokenizer _tokenizer = tokenizer;
+            private readonly Boolean _literal = literal;
 
-            private StringBuilder _buffer;
-            private List<ParseError> _errors;
-
-            public StringState(IScanner scanner, ITokenizer tokenizer, Boolean literal)
-            {
-                _buffer = StringBuilderPool.Pull();
-                _scanner = scanner;
-                _start = scanner.Position;
-                _errors = null;
-                _parts = [];
-                _tokenizer = tokenizer;
-                _literal = literal;
-            }
+            private StringBuilder _buffer = StringBuilderPool.Pull();
+            private List<ParseError> _errors = null;
 
             public IToken Normal()
             {

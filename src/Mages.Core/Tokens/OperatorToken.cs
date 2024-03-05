@@ -2,24 +2,16 @@
 {
     using System;
 
-    sealed class OperatorToken : IToken
+    sealed class OperatorToken(TokenType type, String payload, TextPosition start, TextPosition end) : IToken
     {
-        private readonly TokenType _type;
-        private readonly String _payload;
-        private readonly TextPosition _start;
-        private readonly TextPosition _end;
+        private readonly TokenType _type = type;
+        private readonly String _payload = payload;
+        private readonly TextPosition _start = start;
+        private readonly TextPosition _end = end;
 
         public OperatorToken(TokenType type, String payload, TextPosition position)
             : this(type, payload, position, position)
         {
-        }
-
-        public OperatorToken(TokenType type, String payload, TextPosition start, TextPosition end)
-        {
-            _type = type;
-            _payload = payload;
-            _start = start;
-            _end = end;
         }
 
         public TokenType Type => _type;

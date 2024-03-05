@@ -3,28 +3,19 @@
     /// <summary>
     /// Represents a function expression.
     /// </summary>
-    public sealed class FunctionExpression : ComputingExpression, IExpression
+    /// <remarks>
+    /// Creates a new function expression.
+    /// </remarks>
+    public sealed class FunctionExpression(AbstractScope scope, ParameterExpression parameters, IStatement body) : ComputingExpression(parameters.Start, body.End), IExpression
     {
         #region Fields
 
-        private readonly AbstractScope _scope;
-        private readonly ParameterExpression _parameters;
-        private readonly IStatement _body;
+        private readonly AbstractScope _scope = scope;
+        private readonly ParameterExpression _parameters = parameters;
+        private readonly IStatement _body = body;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new function expression.
-        /// </summary>
-        public FunctionExpression(AbstractScope scope, ParameterExpression parameters, IStatement body)
-            : base(parameters.Start, body.End)
-        {
-            _scope = scope;
-            _parameters = parameters;
-            _body = body;
-        }
 
         #endregion
 

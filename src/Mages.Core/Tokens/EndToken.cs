@@ -2,14 +2,9 @@
 {
     using System;
 
-    sealed class EndToken : IToken
+    sealed class EndToken(TextPosition position) : IToken
     {
-        private readonly TextPosition _position;
-
-        public EndToken(TextPosition position)
-        {
-            _position = position;
-        }
+        private readonly TextPosition _position = position;
 
         public TokenType Type => TokenType.End;
 

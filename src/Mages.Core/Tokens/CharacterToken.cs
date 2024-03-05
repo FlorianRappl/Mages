@@ -2,18 +2,11 @@
 {
     using System;
 
-    sealed class CharacterToken : IToken
+    sealed class CharacterToken(TokenType type, Int32 character, TextPosition position) : IToken
     {
-        private readonly TokenType _type;
-        private readonly Int32 _character;
-        private readonly TextPosition _position;
-
-        public CharacterToken(TokenType type, Int32 character, TextPosition position)
-        {
-            _type = type;
-            _character = character;
-            _position = position;
-        }
+        private readonly TokenType _type = type;
+        private readonly Int32 _character = character;
+        private readonly TextPosition _position = position;
 
         public TokenType Type => _type;
 

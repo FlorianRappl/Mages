@@ -3,28 +3,19 @@
     /// <summary>
     /// Represents a conditional expression.
     /// </summary>
-    public sealed class ConditionalExpression : ComputingExpression, IExpression
+    /// <remarks>
+    /// Creates a new conditional expression.
+    /// </remarks>
+    public sealed class ConditionalExpression(IExpression condition, IExpression primary, IExpression secondary) : ComputingExpression(condition.Start, secondary.End), IExpression
     {
         #region Fields
 
-        private readonly IExpression _condition;
-        private readonly IExpression _primary;
-        private readonly IExpression _secondary;
+        private readonly IExpression _condition = condition;
+        private readonly IExpression _primary = primary;
+        private readonly IExpression _secondary = secondary;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new conditional expression.
-        /// </summary>
-        public ConditionalExpression(IExpression condition, IExpression primary, IExpression secondary)
-            : base(condition.Start, secondary.End)
-        {
-            _condition = condition;
-            _primary = primary;
-            _secondary = secondary;
-        }
 
         #endregion
 

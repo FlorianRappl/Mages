@@ -6,14 +6,9 @@
     /// <summary>
     /// Pops at least two elements from the stack and pushes one.
     /// </summary>
-    sealed class SetcOperation : IOperation
+    sealed class SetcOperation(Int32 length) : IOperation
     {
-        private readonly Int32 _length;
-
-        public SetcOperation(Int32 length)
-        {
-            _length = length;
-        }
+        private readonly Int32 _length = length;
 
         public void Invoke(IExecutionContext context)
         {

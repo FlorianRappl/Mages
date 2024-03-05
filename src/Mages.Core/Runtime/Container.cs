@@ -98,14 +98,9 @@
             }
         }
 
-        sealed class ServiceLifeTime : IDisposable
+        sealed class ServiceLifeTime(Object service) : IDisposable
         {
-            private Object _service;
-
-            public ServiceLifeTime(Object service)
-            {
-                _service = service;
-            }
+            private Object _service = service;
 
             public void Dispose()
             {

@@ -1,3 +1,7 @@
+# 3.0.0
+
+- Added wrapping of `Task` in `Future` (#64)
+
 # 2.0.3
 
 - Include checksum in chocolatey package

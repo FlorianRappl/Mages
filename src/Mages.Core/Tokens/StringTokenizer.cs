@@ -37,23 +37,14 @@
 
         #region State
 
-        struct StringState
+        struct StringState(IScanner scanner, Boolean literal)
         {
-            private readonly IScanner _scanner;
-            private readonly TextPosition _start;
-            private readonly Boolean _literal;
+            private readonly IScanner _scanner = scanner;
+            private readonly TextPosition _start = scanner.Position;
+            private readonly Boolean _literal = literal;
 
-            private StringBuilder _buffer;
-            private List<ParseError> _errors;
-
-            public StringState(IScanner scanner, Boolean literal)
-            {
-                _buffer = StringBuilderPool.Pull();
-                _scanner = scanner;
-                _start = scanner.Position;
-                _errors = null;
-                _literal = literal;
-            }
+            private StringBuilder _buffer = StringBuilderPool.Pull();
+            private List<ParseError> _errors = null;
 
             public IToken Normal()
             {

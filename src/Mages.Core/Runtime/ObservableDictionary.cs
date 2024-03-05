@@ -8,11 +8,14 @@
     /// <summary>
     /// Represents the observable dictionary from MAGES.
     /// </summary>
-    public class ObservableDictionary : IDictionary<String, Object>
+    /// <remarks>
+    /// Creates a new observable dictionary with the given container.
+    /// </remarks>
+    public class ObservableDictionary(IDictionary<String, Object> container) : IDictionary<String, Object>
     {
         #region Fields
 
-        private readonly IDictionary<String, Object> _container;
+        private readonly IDictionary<String, Object> _container = container;
 
         #endregion
 
@@ -33,14 +36,6 @@
         public ObservableDictionary()
             : this(new Dictionary<String, Object>())
         {
-        }
-
-        /// <summary>
-        /// Creates a new observable dictionary with the given container.
-        /// </summary>
-        public ObservableDictionary(IDictionary<String, Object> container)
-        {
-            _container = container;
         }
 
         #endregion

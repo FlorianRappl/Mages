@@ -5,24 +5,17 @@
     /// <summary>
     /// The class for an argument expression.
     /// </summary>
-    public sealed class ArgumentsExpression : ComputingExpression, IExpression
+    /// <remarks>
+    /// Creates new arguments expression.
+    /// </remarks>
+    public sealed class ArgumentsExpression(IExpression[] arguments, TextPosition start, TextPosition end) : ComputingExpression(start, end), IExpression
     {
         #region Fields
 
-        private readonly IExpression[] _arguments;
+        private readonly IExpression[] _arguments = arguments;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates new arguments expression.
-        /// </summary>
-        public ArgumentsExpression(IExpression[] arguments, TextPosition start, TextPosition end)
-            : base(start, end)
-        {
-            _arguments = arguments;
-        }
 
         #endregion
 

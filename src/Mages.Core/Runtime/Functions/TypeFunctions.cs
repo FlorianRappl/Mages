@@ -42,14 +42,17 @@
         /// <returns>True if the getter could be found, otherwise false.</returns>
         public static Boolean TryFind(Object instance, out Function function)
         {
-            var type = instance.GetType();
-
-            foreach (var getter in _getters)
+            if (instance is not null)
             {
-                if (getter.Key.IsAssignableFrom(type))
+                var type = instance.GetType();
+
+                foreach (var getter in _getters)
                 {
-                    function = getter.Value.Invoke(instance);
-                    return true;
+                    if (getter.Key.IsAssignableFrom(type))
+                    {
+                        function = getter.Value.Invoke(instance);
+                        return true;
+                    }
                 }
             }
 

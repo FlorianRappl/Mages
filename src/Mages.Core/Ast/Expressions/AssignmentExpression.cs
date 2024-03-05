@@ -5,26 +5,18 @@
     /// <summary>
     /// Represents an assignment expression.
     /// </summary>
-    public sealed class AssignmentExpression : ComputingExpression, IExpression
+    /// <remarks>
+    /// Creates a new assignment expression.
+    /// </remarks>
+    public sealed class AssignmentExpression(IExpression variable, IExpression value) : ComputingExpression(variable.Start, value.End), IExpression
     {
         #region Fields
 
-        private readonly IExpression _variable;
-        private readonly IExpression _value;
+        private readonly IExpression _variable = variable;
+        private readonly IExpression _value = value;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new assignment expression.
-        /// </summary>
-        public AssignmentExpression(IExpression variable, IExpression value)
-            : base(variable.Start, value.End)
-        {
-            _variable = variable;
-            _value = value;
-        }
 
         #endregion
 

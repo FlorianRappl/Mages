@@ -5,30 +5,20 @@
     /// <summary>
     /// Represents a for statement.
     /// </summary>
-    public sealed class ForStatement : BreakableStatement, IStatement
+    /// <remarks>
+    /// Creates a new for statement.
+    /// </remarks>
+    public sealed class ForStatement(Boolean declared, IExpression initialization, IExpression condition, IExpression afterthought, IStatement body, TextPosition start) : BreakableStatement(body, start, body.End), IStatement
     {
         #region Fields
 
-        private readonly Boolean _declared;
-        private readonly IExpression _initialization;
-        private readonly IExpression _condition;
-        private readonly IExpression _afterthought;
+        private readonly Boolean _declared = declared;
+        private readonly IExpression _initialization = initialization;
+        private readonly IExpression _condition = condition;
+        private readonly IExpression _afterthought = afterthought;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new for statement.
-        /// </summary>
-        public ForStatement(Boolean declared, IExpression initialization, IExpression condition, IExpression afterthought, IStatement body, TextPosition start)
-            : base(body, start, body.End)
-        {
-            _declared = declared;
-            _initialization = initialization;
-            _condition = condition;
-            _afterthought = afterthought;
-        }
 
         #endregion
 

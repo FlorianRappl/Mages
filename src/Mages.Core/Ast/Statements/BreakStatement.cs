@@ -5,27 +5,20 @@
     /// <summary>
     /// Represents a break statement.
     /// </summary>
-    public sealed class BreakStatement : BaseStatement, IStatement
+    /// <remarks>
+    /// Creates a new break statement with the given payload.
+    /// </remarks>
+    /// <param name="expression">The payload.</param>
+    /// <param name="start">The start position.</param>
+    /// <param name="end">The end position.</param>
+    public sealed class BreakStatement(IExpression expression, TextPosition start, TextPosition end) : BaseStatement(start, end), IStatement
     {
         #region Fields
 
-        private readonly IExpression _expression;
+        private readonly IExpression _expression = expression;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new break statement with the given payload.
-        /// </summary>
-        /// <param name="expression">The payload.</param>
-        /// <param name="start">The start position.</param>
-        /// <param name="end">The end position.</param>
-        public BreakStatement(IExpression expression, TextPosition start, TextPosition end)
-            : base(start, end)
-        {
-            _expression = expression;
-        }
 
         #endregion
 

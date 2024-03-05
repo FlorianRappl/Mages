@@ -6,33 +6,33 @@
     /// <summary>
     /// Takes two elements from the stack and pushes one.
     /// </summary>
-    sealed class GetcOperation : IOperation
+    sealed class GetcOperation(Int32 length) : IOperation
     {
-        private readonly Int32 _length;
-
-        public GetcOperation(Int32 length)
-        {
-            _length = length;
-        }
+        private readonly Int32 _length = length;
 
         public void Invoke(IExecutionContext context)
         {
             var result = default(Object);
             var obj = context.Pop();
-            var arguments = new Object[_length];
 
-            for (var i = 0; i < arguments.Length; i++)
+            if (obj is Function function || TypeFunctions.TryFind(obj, out function))
             {
-                arguments[i] = context.Pop();
-            }
+                // We can call something, so let's prepare arguments
+                var arguments = new Object[_length];
 
-            if (obj != null)
-            {
-                var function = obj as Function;
-
-                if (function != null || TypeFunctions.TryFind(obj, out function))
+                for (var i = 0; i < _length; i++)
                 {
-                    result = function.Invoke(arguments);
+                    arguments[i] = context.Pop();
+                }
+
+                result = function.Invoke(arguments);
+            }
+            else
+            {
+                // Nothing to call, we still need to pop the pushed arguments
+                for (var i = 0; i < _length; i++)
+                {
+                    context.Pop();
                 }
             }
 

@@ -5,26 +5,18 @@
     /// <summary>
     /// Base class for all pre unary expressions.
     /// </summary>
-    public abstract class PreUnaryExpression : ComputingExpression, IExpression
+    /// <remarks>
+    /// Creates a new pre unary expression.
+    /// </remarks>
+    public abstract class PreUnaryExpression(TextPosition start, IExpression value, String op) : ComputingExpression(start, value.End), IExpression
     {
         #region Fields
 
-        private readonly IExpression _value;
-        private readonly String _operator;
+        private readonly IExpression _value = value;
+        private readonly String _operator = op;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new pre unary expression.
-        /// </summary>
-        public PreUnaryExpression(TextPosition start, IExpression value, String op)
-            : base(start, value.End)
-        {
-            _value = value;
-            _operator = op;
-        }
 
         #endregion
 
@@ -70,45 +62,24 @@
 
         #region Operations
 
-        internal sealed class Not : PreUnaryExpression
+        internal sealed class Not(TextPosition start, IExpression value) : PreUnaryExpression(start, value, "~")
         {
-            public Not(TextPosition start, IExpression value)
-                : base(start, value, "~")
-            {
-            }
         }
 
-        internal sealed class Minus : PreUnaryExpression
+        internal sealed class Minus(TextPosition start, IExpression value) : PreUnaryExpression(start, value, "-")
         {
-            public Minus(TextPosition start, IExpression value)
-                : base(start, value, "-")
-            {
-            }
         }
 
-        internal sealed class Plus : PreUnaryExpression
+        internal sealed class Plus(TextPosition start, IExpression value) : PreUnaryExpression(start, value, "+")
         {
-            public Plus(TextPosition start, IExpression value)
-                : base(start, value, "+")
-            {
-            }
         }
 
-        internal sealed class Type : PreUnaryExpression
+        internal sealed class Type(TextPosition start, IExpression value) : PreUnaryExpression(start, value, "&")
         {
-            public Type(TextPosition start, IExpression value)
-                : base(start, value, "&")
-            {
-            }
         }
 
-        internal sealed class Increment : PreUnaryExpression
+        internal sealed class Increment(TextPosition start, IExpression value) : PreUnaryExpression(start, value, "++")
         {
-            public Increment(TextPosition start, IExpression value)
-                : base(start, value, "++")
-            {
-            }
-
             public override void Validate(IValidationContext context)
             {
                 if (Value is AssignableExpression == false)
@@ -119,13 +90,8 @@
             }
         }
 
-        internal sealed class Decrement : PreUnaryExpression
+        internal sealed class Decrement(TextPosition start, IExpression value) : PreUnaryExpression(start, value, "--")
         {
-            public Decrement(TextPosition start, IExpression value)
-                : base(start, value, "--")
-            {
-            }
-
             public override void Validate(IValidationContext context)
             {
                 if (Value is AssignableExpression == false)

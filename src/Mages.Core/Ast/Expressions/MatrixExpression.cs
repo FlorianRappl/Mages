@@ -3,24 +3,17 @@
     /// <summary>
     /// Represents a matrix expression.
     /// </summary>
-    public sealed class MatrixExpression : ComputingExpression, IExpression
+    /// <remarks>
+    /// Creates a new matrix expression.
+    /// </remarks>
+    public sealed class MatrixExpression(IExpression[][] values, TextPosition start, TextPosition end) : ComputingExpression(start, end), IExpression
     {
         #region Fields
 
-        private readonly IExpression[][] _values;
+        private readonly IExpression[][] _values = values;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new matrix expression.
-        /// </summary>
-        public MatrixExpression(IExpression[][] values, TextPosition start, TextPosition end)
-            : base(start, end)
-        {
-            _values = values;
-        }
 
         #endregion
 

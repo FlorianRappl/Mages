@@ -4,16 +4,10 @@
     using System.Collections;
     using System.Collections.Generic;
 
-    abstract class BaseScope : IDictionary<String, Object>
+    abstract class BaseScope(IDictionary<String, Object> scope, IDictionary<String, Object> parent) : IDictionary<String, Object>
     {
-        protected readonly IDictionary<String, Object> _scope;
-        protected readonly IDictionary<String, Object> _parent;
-
-        public BaseScope(IDictionary<String, Object> scope, IDictionary<String, Object> parent)
-        {
-            _scope = scope;
-            _parent = parent;
-        }
+        protected readonly IDictionary<String, Object> _scope = scope;
+        protected readonly IDictionary<String, Object> _parent = parent;
 
         public IDictionary<String, Object> Parent => _parent;
 

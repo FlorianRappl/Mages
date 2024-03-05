@@ -5,24 +5,17 @@
     /// <summary>
     /// Represents a "var ...;" statement.
     /// </summary>
-    public sealed class VarStatement : BaseStatement, IStatement
+    /// <remarks>
+    /// Creates a new var statement.
+    /// </remarks>
+    public sealed class VarStatement(IExpression assignment, TextPosition start, TextPosition end) : BaseStatement(start, end), IStatement
     {
         #region Fields
 
-        private readonly IExpression _assignment;
+        private readonly IExpression _assignment = assignment;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new var statement.
-        /// </summary>
-        public VarStatement(IExpression assignment, TextPosition start, TextPosition end)
-            : base(start, end)
-        {
-            _assignment = assignment;
-        }
 
         #endregion
 

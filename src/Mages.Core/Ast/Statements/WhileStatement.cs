@@ -3,24 +3,17 @@
     /// <summary>
     /// Represents a while statement.
     /// </summary>
-    public sealed class WhileStatement : BreakableStatement, IStatement
+    /// <remarks>
+    /// Creates a new while statement.
+    /// </remarks>
+    public sealed class WhileStatement(IExpression condition, IStatement body, TextPosition start) : BreakableStatement(body, start, body.End), IStatement
     {
         #region Fields
 
-        private readonly IExpression _condition;
+        private readonly IExpression _condition = condition;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new while statement.
-        /// </summary>
-        public WhileStatement(IExpression condition, IStatement body, TextPosition start)
-            : base(body, start, body.End)
-        {
-            _condition = condition;
-        }
 
         #endregion
 

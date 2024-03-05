@@ -2,18 +2,11 @@
 {
     using System;
 
-    sealed class CommentToken : IToken
+    sealed class CommentToken(String comment, TextPosition start, TextPosition end) : IToken
     {
-        private readonly String _comment;
-        private readonly TextPosition _start;
-        private readonly TextPosition _end;
-
-        public CommentToken(String comment, TextPosition start, TextPosition end)
-        {
-            _comment = comment;
-            _start = start;
-            _end = end;
-        }
+        private readonly String _comment = comment;
+        private readonly TextPosition _start = start;
+        private readonly TextPosition _end = end;
 
         public TokenType Type => TokenType.Comment;
 

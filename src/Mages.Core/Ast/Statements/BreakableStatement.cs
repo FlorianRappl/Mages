@@ -3,27 +3,20 @@
     /// <summary>
     /// Represents a breakable statement.
     /// </summary>
-    public abstract class BreakableStatement : BaseStatement
+    /// <remarks>
+    /// Creates a new breakable statement.
+    /// </remarks>
+    /// <param name="body">The body to use.</param>
+    /// <param name="start">The start position.</param>
+    /// <param name="end">The end position.</param>
+    public abstract class BreakableStatement(IStatement body, TextPosition start, TextPosition end) : BaseStatement(start, end)
     {
         #region Fields
 
-        private readonly IStatement _body;
+        private readonly IStatement _body = body;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new breakable statement.
-        /// </summary>
-        /// <param name="body">The body to use.</param>
-        /// <param name="start">The start position.</param>
-        /// <param name="end">The end position.</param>
-        public BreakableStatement(IStatement body, TextPosition start, TextPosition end)
-            : base(start, end)
-        {
-            _body = body;
-        }
 
         #endregion
 

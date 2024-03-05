@@ -6,16 +6,10 @@
     /// <summary>
     /// Populates the local scope with one of the arguments.
     /// </summary>
-    sealed class ArgOperation : IOperation
+    sealed class ArgOperation(Int32 index, String name) : IOperation
     {
-        private readonly Int32 _index;
-        private readonly String _name;
-
-        public ArgOperation(Int32 index, String name)
-        {
-            _index = index;
-            _name = name;
-        }
+        private readonly Int32 _index = index;
+        private readonly String _name = name;
 
         public void Invoke(IExecutionContext context)
         {

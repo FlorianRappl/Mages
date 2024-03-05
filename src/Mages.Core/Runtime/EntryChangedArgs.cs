@@ -5,17 +5,11 @@
     /// <summary>
     /// Contains the event data for changes observed in a dictionary.
     /// </summary>
-    public class EntryChangedArgs : EventArgs
+    /// <remarks>
+    /// Creates a new event data container.
+    /// </remarks>
+    public class EntryChangedArgs(String key, Object oldValue, Object newValue) : EventArgs
     {
-        /// <summary>
-        /// Creates a new event data container.
-        /// </summary>
-        public EntryChangedArgs(String key, Object oldValue, Object newValue)
-        {
-            Key = key;
-            OldValue = oldValue;
-            NewValue = newValue;
-        }
 
         /// <summary>
         /// Gets the key that changed.
@@ -24,7 +18,7 @@
         {
             get;
             private set;
-        }
+        } = key;
 
         /// <summary>
         /// Gets the previously assigned value, if any.
@@ -33,7 +27,7 @@
         {
             get;
             private set;
-        }
+        } = oldValue;
 
         /// <summary>
         /// Gets the currently assigned value, if any.
@@ -42,6 +36,6 @@
         {
             get;
             private set;
-        }
+        } = newValue;
     }
 }

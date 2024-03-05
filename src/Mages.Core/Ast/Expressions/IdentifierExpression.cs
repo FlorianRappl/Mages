@@ -5,24 +5,17 @@
     /// <summary>
     /// Represents a generalized identifier, which is not a variable.
     /// </summary>
-    public sealed class IdentifierExpression : ComputingExpression, IExpression
+    /// <remarks>
+    /// Creates a new identifier expression.
+    /// </remarks>
+    public sealed class IdentifierExpression(String name, TextPosition start, TextPosition end) : ComputingExpression(start, end), IExpression
     {
         #region Fields
 
-        private readonly String _name;
+        private readonly String _name = name;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new identifier expression.
-        /// </summary>
-        public IdentifierExpression(String name, TextPosition start, TextPosition end)
-            : base(start, end)
-        {
-            _name = name;
-        }
 
         #endregion
 

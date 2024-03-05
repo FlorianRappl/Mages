@@ -5,26 +5,18 @@
     /// <summary>
     /// Represents an interpolated string expression.
     /// </summary>
-    public sealed class InterpolatedExpression : ComputingExpression, IExpression
+    /// <remarks>
+    /// Creates a new interpolated string expression.
+    /// </remarks>
+    public sealed class InterpolatedExpression(ConstantExpression format, IExpression[] replacements) : ComputingExpression(format.Start, format.End), IExpression
     {
         #region Fields
 
-        private readonly ConstantExpression _format;
-        private readonly IExpression[] _replacements;
+        private readonly ConstantExpression _format = format;
+        private readonly IExpression[] _replacements = replacements;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new interpolated string expression.
-        /// </summary>
-        public InterpolatedExpression(ConstantExpression format, IExpression[] replacements)
-            : base(format.Start, format.End)
-        {
-            _format = format;
-            _replacements = replacements;
-        }
 
         #endregion
 

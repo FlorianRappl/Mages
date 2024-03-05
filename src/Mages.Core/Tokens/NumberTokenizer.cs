@@ -40,27 +40,16 @@
 
         #region State
 
-        struct NumberState
+        struct NumberState(IScanner scanner)
         {
-            private readonly IScanner _scanner;
-            private readonly TextPosition _start;
+            private readonly IScanner _scanner = scanner;
+            private readonly TextPosition _start = scanner.Position;
 
-            private List<ParseError> _errors;
-            private UInt64 _value;
-            private UInt16 _digits;
-            private Int32 _powers;
-            private Int32 _shifts;
-
-            public NumberState(IScanner scanner)
-            {
-                _scanner = scanner;
-                _start = scanner.Position;
-                _errors = null;
-                _value = 0;
-                _digits = 0;
-                _powers = 0;
-                _shifts = 0;
-            }
+            private List<ParseError> _errors = null;
+            private UInt64 _value = 0;
+            private UInt16 _digits = 0;
+            private Int32 _powers = 0;
+            private Int32 _shifts = 0;
 
             public Double Number => _value * Math.Pow(10.0, _shifts + _powers - _digits);
 

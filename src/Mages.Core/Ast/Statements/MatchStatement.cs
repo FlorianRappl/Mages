@@ -3,26 +3,18 @@
     /// <summary>
     /// Represents an match statement.
     /// </summary>
-    public sealed class MatchStatement : BaseStatement, IStatement
+    /// <remarks>
+    /// Creates a new match statement.
+    /// </remarks>
+    public sealed class MatchStatement(IExpression reference, IStatement cases, TextPosition start) : BaseStatement(start, cases.End), IStatement
     {
         #region Fields
 
-        private readonly IExpression _reference;
-        private readonly IStatement _cases;
+        private readonly IExpression _reference = reference;
+        private readonly IStatement _cases = cases;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new match statement.
-        /// </summary>
-        public MatchStatement(IExpression reference, IStatement cases, TextPosition start)
-            : base(start, cases.End)
-        {
-            _reference = reference;
-            _cases = cases;
-        }
 
         #endregion
 

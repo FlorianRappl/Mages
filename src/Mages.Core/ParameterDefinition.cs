@@ -5,19 +5,13 @@
     /// <summary>
     /// Represents the definition of a function parameter.
     /// </summary>
-    public struct ParameterDefinition : IEquatable<ParameterDefinition>
+    /// <remarks>
+    /// Creates a new parameter definition.
+    /// </remarks>
+    public struct ParameterDefinition(String name, Boolean required) : IEquatable<ParameterDefinition>
     {
-        private readonly String _name;
-        private readonly Boolean _required;
-
-        /// <summary>
-        /// Creates a new parameter definition.
-        /// </summary>
-        public ParameterDefinition(String name, Boolean required)
-        {
-            _name = name;
-            _required = required;
-        }
+        private readonly String _name = name;
+        private readonly Boolean _required = required;
 
         /// <summary>
         /// Gets the name of the parameter.

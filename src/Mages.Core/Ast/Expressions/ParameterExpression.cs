@@ -3,25 +3,17 @@
     /// <summary>
     /// Represents an expression containing function parameters.
     /// </summary>
-    public sealed class ParameterExpression : ComputingExpression, IExpression
+    /// <remarks>
+    /// Creates a new parameter expression.
+    /// </remarks>
+    public sealed class ParameterExpression(IExpression[] parameters, TextPosition start, TextPosition end) : ComputingExpression(start, end), IExpression
     {
         #region Fields
 
-        private readonly IExpression[] _parameters;
+        private readonly IExpression[] _parameters = parameters;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new parameter expression.
-        /// </summary>
-        public ParameterExpression(IExpression[] parameters, TextPosition start, TextPosition end)
-            : base(start, end)
-        {
-            _parameters = parameters;
-
-        }
 
         #endregion
 

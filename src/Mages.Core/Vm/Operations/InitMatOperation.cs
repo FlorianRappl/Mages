@@ -6,16 +6,10 @@
     /// <summary>
     /// Peeks the top element from the stack.
     /// </summary>
-    sealed class InitMatOperation : IOperation
+    sealed class InitMatOperation(Int32 row, Int32 col) : IOperation
     {
-        private readonly Int32 _row;
-        private readonly Int32 _col;
-
-        public InitMatOperation(Int32 row, Int32 col)
-        {
-            _row = row;
-            _col = col;
-        }
+        private readonly Int32 _row = row;
+        private readonly Int32 _col = col;
 
         public void Invoke(IExecutionContext context)
         {

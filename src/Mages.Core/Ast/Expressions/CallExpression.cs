@@ -3,26 +3,18 @@
     /// <summary>
     /// Represents a function call.
     /// </summary>
-    public sealed class CallExpression : AssignableExpression, IExpression
+    /// <remarks>
+    /// Creates a new function call expression.
+    /// </remarks>
+    public sealed class CallExpression(IExpression function, ArgumentsExpression arguments) : AssignableExpression(function.Start, arguments.End), IExpression
     {
         #region Fields
 
-        private readonly IExpression _function;
-        private readonly ArgumentsExpression _arguments;
+        private readonly IExpression _function = function;
+        private readonly ArgumentsExpression _arguments = arguments;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new function call expression.
-        /// </summary>
-        public CallExpression(IExpression function, ArgumentsExpression arguments)
-            : base(function.Start, arguments.End)
-        {
-            _function = function;
-            _arguments = arguments;
-        }
 
         #endregion
 

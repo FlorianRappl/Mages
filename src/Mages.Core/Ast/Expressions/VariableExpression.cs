@@ -5,26 +5,18 @@
     /// <summary>
     /// Represents the access of a variable.
     /// </summary>
-    public sealed class VariableExpression : AssignableExpression, IExpression
+    /// <remarks>
+    /// Creates a new variable expression.
+    /// </remarks>
+    public sealed class VariableExpression(String name, AbstractScope scope, TextPosition start, TextPosition end) : AssignableExpression(start, end), IExpression
     {
         #region Fields
 
-        private readonly String _name;
-        private readonly AbstractScope _scope;
+        private readonly String _name = name;
+        private readonly AbstractScope _scope = scope;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new variable expression.
-        /// </summary>
-        public VariableExpression(String name, AbstractScope scope, TextPosition start, TextPosition end)
-            : base(start, end)
-        {
-            _name = name;
-            _scope = scope;
-        }
 
         #endregion
 

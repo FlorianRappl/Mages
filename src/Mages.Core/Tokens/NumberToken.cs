@@ -5,22 +5,14 @@
     using System.Globalization;
     using System.Linq;
 
-    sealed class NumberToken : IToken
+    sealed class NumberToken(Double value, IEnumerable<ParseError> errors, TextPosition start, TextPosition end) : IToken
     {
         private static readonly IEnumerable<ParseError> NoErrors = Enumerable.Empty<ParseError>();
 
-        private readonly Double _value;
-        private readonly TextPosition _start;
-        private readonly TextPosition _end;
-        private readonly IEnumerable<ParseError> _errors;
-
-        public NumberToken(Double value, IEnumerable<ParseError> errors, TextPosition start, TextPosition end)
-        {
-            _value = value;
-            _start = start;
-            _end = end;
-            _errors = errors ?? NoErrors;
-        }
+        private readonly Double _value = value;
+        private readonly TextPosition _start = start;
+        private readonly TextPosition _end = end;
+        private readonly IEnumerable<ParseError> _errors = errors ?? NoErrors;
 
         public IEnumerable<ParseError> Errors => _errors;
 

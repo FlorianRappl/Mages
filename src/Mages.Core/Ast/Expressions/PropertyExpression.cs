@@ -3,26 +3,18 @@
     /// <summary>
     /// Represents a property (name-value pair) of an object.
     /// </summary>
-    public sealed class PropertyExpression : ComputingExpression, IExpression
+    /// <remarks>
+    /// Creates a new property.
+    /// </remarks>
+    public sealed class PropertyExpression(IExpression name, IExpression value) : ComputingExpression(name.Start, value.End), IExpression
     {
         #region Fields
 
-        private readonly IExpression _name;
-        private readonly IExpression _value;
+        private readonly IExpression _name = name;
+        private readonly IExpression _value = value;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new property.
-        /// </summary>
-        public PropertyExpression(IExpression name, IExpression value)
-            : base(name.Start, value.End)
-        {
-            _name = name;
-            _value = value;
-        }
 
         #endregion
 

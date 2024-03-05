@@ -3,34 +3,22 @@
     using System;
     using System.IO;
 
-    sealed class StringScanner : BaseScanner, IScanner
+    sealed class StringScanner(String source) : BaseScanner, IScanner
     {
         #region Fields
 
-        private readonly StringReader _source;
+        private readonly StringReader _source = new StringReader(source);
 
-        private Int32 _current;
-        private Int32 _p0;
-        private Int32 _p1;
-        private Int32 _p2;
-        private Int32 _p3;
+        private Int32 _current = CharacterTable.NullPtr;
+        private Int32 _p0 = CharacterTable.NullPtr;
+        private Int32 _p1 = CharacterTable.NullPtr;
+        private Int32 _p2 = CharacterTable.NullPtr;
+        private Int32 _p3 = CharacterTable.NullPtr;
         private Boolean _skip;
-        private Int32 _pIndex;
+        private Int32 _pIndex = 0;
 
         #endregion
-
         #region ctor
-
-        public StringScanner(String source)
-        {
-            _source = new StringReader(source);
-            _pIndex = 0;
-            _p0 = CharacterTable.NullPtr;
-            _p1 = CharacterTable.NullPtr;
-            _p2 = CharacterTable.NullPtr;
-            _p3 = CharacterTable.NullPtr;
-            _current = CharacterTable.NullPtr;
-        }
 
         #endregion
 

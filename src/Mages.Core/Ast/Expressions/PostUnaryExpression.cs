@@ -5,26 +5,18 @@
     /// <summary>
     /// Base class for all post unary expressions.
     /// </summary>
-    public abstract class PostUnaryExpression : ComputingExpression, IExpression
+    /// <remarks>
+    /// Creates a new post unary expression.
+    /// </remarks>
+    public abstract class PostUnaryExpression(IExpression value, TextPosition end, String op) : ComputingExpression(value.Start, end), IExpression
     {
         #region Fields
 
-        private readonly IExpression _value;
-        private readonly String _operator;
+        private readonly IExpression _value = value;
+        private readonly String _operator = op;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new post unary expression.
-        /// </summary>
-        public PostUnaryExpression(IExpression value, TextPosition end, String op)
-            : base(value.Start, end)
-        {
-            _value = value;
-            _operator = op;
-        }
 
         #endregion
 
@@ -70,29 +62,16 @@
 
         #region Operations
 
-        internal sealed class Factorial : PostUnaryExpression
+        internal sealed class Factorial(IExpression expression, TextPosition end) : PostUnaryExpression(expression, end, "!")
         {
-            public Factorial(IExpression expression, TextPosition end)
-                : base(expression, end, "!")
-            {
-            }
         }
 
-        internal sealed class Transpose : PostUnaryExpression
+        internal sealed class Transpose(IExpression expression, TextPosition end) : PostUnaryExpression(expression, end, "'")
         {
-            public Transpose(IExpression expression, TextPosition end)
-                : base(expression, end, "'")
-            {
-            }
         }
 
-        internal sealed class Increment : PostUnaryExpression
+        internal sealed class Increment(IExpression expression, TextPosition end) : PostUnaryExpression(expression, end, "++")
         {
-            public Increment(IExpression expression, TextPosition end)
-                : base(expression, end, "++")
-            {
-            }
-
             public override void Validate(IValidationContext context)
             {
                 if (Value is AssignableExpression == false)
@@ -103,13 +82,8 @@
             }
         }
 
-        internal sealed class Decrement : PostUnaryExpression
+        internal sealed class Decrement(IExpression expression, TextPosition end) : PostUnaryExpression(expression, end, "--")
         {
-            public Decrement(IExpression expression, TextPosition end)
-                : base(expression, end, "--")
-            {
-            }
-
             public override void Validate(IValidationContext context)
             {
                 if (Value is AssignableExpression == false)

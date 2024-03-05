@@ -11,7 +11,11 @@
     /// <summary>
     /// Represents the walker to create operations.
     /// </summary>
-    public sealed class OperationTreeWalker : ITreeWalker, IValidationContext
+    /// <remarks>
+    /// Creates a new operation tree walker.
+    /// </remarks>
+    /// <param name="operations">The list of operations to populate.</param>
+    public sealed class OperationTreeWalker(List<IOperation> operations) : ITreeWalker, IValidationContext
     {
         #region Operator Mappings
 
@@ -57,27 +61,14 @@
 
         #region Fields
 
-        private readonly List<IOperation> _operations;
-        private readonly Stack<LoopInfo> _loops;
-        private Boolean _assigning;
-        private Boolean _declaring;
+        private readonly List<IOperation> _operations = operations;
+        private readonly Stack<LoopInfo> _loops = new Stack<LoopInfo>();
+        private Boolean _assigning = false;
+        private Boolean _declaring = false;
         private Boolean _member;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new operation tree walker.
-        /// </summary>
-        /// <param name="operations">The list of operations to populate.</param>
-        public OperationTreeWalker(List<IOperation> operations)
-        {
-            _operations = operations;
-            _loops = new Stack<LoopInfo>();
-            _assigning = false;
-            _declaring = false;
-        }
 
         #endregion
 

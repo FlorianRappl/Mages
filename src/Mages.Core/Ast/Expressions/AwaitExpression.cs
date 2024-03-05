@@ -3,24 +3,17 @@
     /// <summary>
     /// Represents a future wrapper.
     /// </summary>
-    public sealed class AwaitExpression : ComputingExpression, IExpression
+    /// <remarks>
+    /// Creates a new await expression.
+    /// </remarks>
+    public sealed class AwaitExpression(TextPosition start, IExpression payload) : ComputingExpression(start, payload.End), IExpression
     {
         #region Fields
 
-        private readonly IExpression _payload;
+        private readonly IExpression _payload = payload;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new await expression.
-        /// </summary>
-        public AwaitExpression(TextPosition start, IExpression payload)
-            : base(start, payload.End)
-        {
-            _payload = payload;
-        }
 
         #endregion
 

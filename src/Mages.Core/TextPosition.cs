@@ -5,30 +5,22 @@
     /// <summary>
     /// Represents a position within a text source.
     /// </summary>
-    public struct TextPosition : IEquatable<TextPosition>
+    /// <remarks>
+    /// Creates a new text position.
+    /// </remarks>
+    /// <param name="row">The row number.</param>
+    /// <param name="column">The column number.</param>
+    /// <param name="index">The character index.</param>
+    public struct TextPosition(Int32 row, Int32 column, Int32 index) : IEquatable<TextPosition>
     {
         #region Fields
 
-        private Int32 _row;
-        private Int32 _column;
-        private Int32 _index;
+        private Int32 _row = row;
+        private Int32 _column = column;
+        private Int32 _index = index;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new text position.
-        /// </summary>
-        /// <param name="row">The row number.</param>
-        /// <param name="column">The column number.</param>
-        /// <param name="index">The character index.</param>
-        public TextPosition(Int32 row, Int32 column, Int32 index)
-        {
-            _row = row;
-            _column = column;
-            _index = index;
-        }
 
         #endregion
 

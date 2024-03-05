@@ -3,28 +3,19 @@
     /// <summary>
     /// The range expression.
     /// </summary>
-    public sealed class RangeExpression : ComputingExpression, IExpression
+    /// <remarks>
+    /// Creates a new range expression.
+    /// </remarks>
+    public sealed class RangeExpression(IExpression from, IExpression step, IExpression to) : ComputingExpression(from.Start, to.End), IExpression
     {
         #region Fields
 
-        private readonly IExpression _from;
-        private readonly IExpression _step;
-        private readonly IExpression _to;
+        private readonly IExpression _from = from;
+        private readonly IExpression _step = step;
+        private readonly IExpression _to = to;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new range expression.
-        /// </summary>
-        public RangeExpression(IExpression from, IExpression step, IExpression to)
-            : base(from.Start, to.End)
-        {
-            _from = from;
-            _step = step;
-            _to = to;
-        }
 
         #endregion
 

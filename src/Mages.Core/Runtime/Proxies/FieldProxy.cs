@@ -3,15 +3,9 @@
     using System;
     using System.Reflection;
 
-    sealed class FieldProxy : BaseProxy
+    sealed class FieldProxy(WrapperObject obj, FieldInfo field) : BaseProxy(obj)
     {
-        private readonly FieldInfo _field;
-
-        public FieldProxy(WrapperObject obj, FieldInfo field)
-            : base(obj)
-        {
-            _field = field;
-        }
+        private readonly FieldInfo _field = field;
 
         protected override Object GetValue()
         {

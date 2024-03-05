@@ -2,20 +2,12 @@
 {
     using System;
 
-    sealed class IdentToken : IToken
+    sealed class IdentToken(TokenType type, String identifier, TextPosition start, TextPosition end) : IToken
     {
-        private readonly TokenType _type;
-        private readonly String _identifier;
-        private readonly TextPosition _start;
-        private readonly TextPosition _end;
-
-        public IdentToken(TokenType type, String identifier, TextPosition start, TextPosition end)
-        {
-            _type = type;
-            _identifier = identifier;
-            _start = start;
-            _end = end;
-        }
+        private readonly TokenType _type = type;
+        private readonly String _identifier = identifier;
+        private readonly TextPosition _start = start;
+        private readonly TextPosition _end = end;
 
         public TokenType Type => _type;
 

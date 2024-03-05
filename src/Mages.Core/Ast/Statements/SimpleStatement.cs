@@ -3,24 +3,17 @@
     /// <summary>
     /// Represents a simple statement containing an expression.
     /// </summary>
-    public sealed class SimpleStatement : BaseStatement, IStatement
+    /// <remarks>
+    /// Creates a new simple statement.
+    /// </remarks>
+    public sealed class SimpleStatement(IExpression expression, TextPosition end) : BaseStatement(expression.Start, end), IStatement
     {
         #region Fields
 
-        private readonly IExpression _expression;
+        private readonly IExpression _expression = expression;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new simple statement.
-        /// </summary>
-        public SimpleStatement(IExpression expression, TextPosition end)
-            : base(expression.Start, end)
-        {
-            _expression = expression;
-        }
 
         #endregion
 

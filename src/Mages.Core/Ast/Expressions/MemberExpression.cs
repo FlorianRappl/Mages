@@ -3,26 +3,18 @@
     /// <summary>
     /// Represents a member expression.
     /// </summary>
-    public sealed class MemberExpression : AssignableExpression, IExpression
+    /// <remarks>
+    /// Creates a new member expression.
+    /// </remarks>
+    public sealed class MemberExpression(IExpression obj, IExpression member) : AssignableExpression(obj.Start, member.End), IExpression
     {
         #region Fields
 
-        private readonly IExpression _obj;
-        private readonly IExpression _member;
+        private readonly IExpression _obj = obj;
+        private readonly IExpression _member = member;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new member expression.
-        /// </summary>
-        public MemberExpression(IExpression obj, IExpression member)
-            : base(obj.Start, member.End)
-        {
-            _obj = obj;
-            _member = member;
-        }
 
         #endregion
 

@@ -6,14 +6,9 @@
     /// <summary>
     /// Peeks the top element from the stack.
     /// </summary>
-    sealed class SetsOperation : IOperation
+    sealed class SetsOperation(String name) : IOperation
     {
-        private readonly String _name;
-
-        public SetsOperation(String name)
-        {
-            _name = name;
-        }
+        private readonly String _name = name;
 
         public void Invoke(IExecutionContext context)
         {

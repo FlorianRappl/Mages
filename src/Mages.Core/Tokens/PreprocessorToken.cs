@@ -3,18 +3,11 @@
     using Mages.Core.Source;
     using System;
 
-    sealed class PreprocessorToken : IToken
+    sealed class PreprocessorToken(String payload, TextPosition start, TextPosition end) : IToken
     {
-        private readonly TextPosition _start;
-        private readonly TextPosition _end;
-        private readonly String _payload;
-
-        public PreprocessorToken(String payload, TextPosition start, TextPosition end)
-        {
-            _payload = payload;
-            _start = start;
-            _end = end;
-        }
+        private readonly TextPosition _start = start;
+        private readonly TextPosition _end = end;
+        private readonly String _payload = payload;
 
         public TokenType Type => TokenType.Preprocessor;
 

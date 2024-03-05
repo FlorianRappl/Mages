@@ -15,7 +15,7 @@
         /// <param name="f">The callback to invoke if fulfilled.</param>
         /// <returns>The result of the callback or null.</returns>
         public static Object Is<T>(Object[] args, Func<T, Object> f) =>
-            args[0] is T ? f((T)args[0]) : null;
+            args[0] is T t1 ? f(t1) : null;
 
         /// <summary>
         /// Checks if the first two values of the given arguments are of type
@@ -27,7 +27,7 @@
         /// <param name="f">The callback to invoke if fulfilled.</param>
         /// <returns>The result of the callback or null.</returns>
         public static Object Is<T1, T2>(Object[] args, Func<T1, T2, Object> f) =>
-            args[0] is T1 && args[1] is T2 ? f((T1)args[0], (T2)args[1]) : null;
+            args[0] is T1 t1 && args[1] is T2 t2 ? f(t1, t2) : null;
 
         /// <summary>
         /// Checks if the first three values of the given arguments are of type
@@ -40,7 +40,7 @@
         /// <param name="f">The callback to invoke if fulfilled.</param>
         /// <returns>The result of the callback or null.</returns>
         public static Object Is<T1, T2, T3>(Object[] args, Func<T1, T2, T3, Object> f) =>
-            args[0] is T1 && args[1] is T2 && args[2] is T3 ? f((T1)args[0], (T2)args[1], (T3)args[2]) : null;
+            args[0] is T1 t1 && args[1] is T2 t2 && args[2] is T3 t3 ? f(t1, t2, t3) : null;
 
         /// <summary>
         /// Checks if the first four values of the given arguments are of type
@@ -54,7 +54,7 @@
         /// <param name="f">The callback to invoke if fulfilled.</param>
         /// <returns>The result of the callback or null.</returns>
         public static Object Is<T1, T2, T3, T4>(Object[] args, Func<T1, T2, T3, T4, Object> f) =>
-            args[0] is T1 && args[1] is T2 && args[2] is T3 && args[3] is T4 ? f((T1)args[0], (T2)args[1], (T3)args[2], (T4)args[3]) : null;
+            args[0] is T1 t1 && args[1] is T2 t2 && args[2] is T3 t3 && args[3] is T4 t4 ? f(t1, t2, t3, t4) : null;
 
         /// <summary>
         /// Checks if the first three values of the given arguments are of type
@@ -66,7 +66,7 @@
         /// <param name="f">The callback to invoke if fulfilled.</param>
         /// <returns>The result of the callback or null.</returns>
         public static Object IsAnyT2<T1, T3>(Object[] args, Func<T1, Object, T3, Object> f) =>
-            args[0] is T1 && args[2] is T3 ? f((T1)args[0], args[1], (T3)args[2]) : null;
+            args[0] is T1 t1 && args[2] is T3 t2 ? f(t1, args[1], t2) : null;
 
         /// <summary>
         /// Checks if the first argument is either T1 or T2 and the second argument is either T1 or T2.

@@ -2,20 +2,12 @@
 {
     using System;
 
-    sealed class TypeConverter
+    sealed class TypeConverter(Type from, Type to, Func<Object, Object> converter, Int32 rating)
     {
-        private readonly Type _from;
-        private readonly Type _to;
-        private readonly Func<Object, Object> _converter;
-        private readonly Int32 _rating;
-
-        public TypeConverter(Type from, Type to, Func<Object, Object> converter, Int32 rating)
-        {
-            _from = from;
-            _to = to;
-            _converter = converter;
-            _rating = rating;
-        }
+        private readonly Type _from = from;
+        private readonly Type _to = to;
+        private readonly Func<Object, Object> _converter = converter;
+        private readonly Int32 _rating = rating;
 
         public static TypeConverter Create<TFrom, TTo>(Func<TFrom, Object> converter, Int32 rating)
         {

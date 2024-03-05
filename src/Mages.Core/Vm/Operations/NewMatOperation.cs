@@ -5,16 +5,10 @@
     /// <summary>
     /// Pushes one new element on the stack.
     /// </summary>
-    sealed class NewMatOperation : IOperation
+    sealed class NewMatOperation(Int32 rows, Int32 cols) : IOperation
     {
-        private readonly Int32 _rows;
-        private readonly Int32 _cols;
-
-        public NewMatOperation(Int32 rows, Int32 cols)
-        {
-            _rows = rows;
-            _cols = cols;
-        }
+        private readonly Int32 _rows = rows;
+        private readonly Int32 _cols = cols;
 
         public void Invoke(IExecutionContext context)
         {

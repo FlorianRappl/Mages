@@ -3,24 +3,18 @@
     /// <summary>
     /// Represents an abstract (compile-time) scope information.
     /// </summary>
-    public sealed class AbstractScope
+    /// <remarks>
+    /// Creates a new abstract scope.
+    /// </remarks>
+    /// <param name="parent">The parent scope to use, if any.</param>
+    public sealed class AbstractScope(AbstractScope parent)
     {
         #region Fields
 
-        private readonly AbstractScope _parent;
+        private readonly AbstractScope _parent = parent;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new abstract scope.
-        /// </summary>
-        /// <param name="parent">The parent scope to use, if any.</param>
-        public AbstractScope(AbstractScope parent)
-        {
-            _parent = parent;
-        }
 
         #endregion
 

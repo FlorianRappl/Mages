@@ -5,17 +5,13 @@
     /// <summary>
     /// Represents an expression that can be assigned.
     /// </summary>
-    public abstract class AssignableExpression : BaseExpression
+    /// <remarks>
+    /// Creates a new assignable expression.
+    /// </remarks>
+    public abstract class AssignableExpression(TextPosition start, TextPosition end) : BaseExpression(start, end)
     {
-        #region ctor
 
-        /// <summary>
-        /// Creates a new assignable expression.
-        /// </summary>
-        public AssignableExpression(TextPosition start, TextPosition end)
-            : base(start, end)
-        {
-        }
+        #region ctor
 
         #endregion
 

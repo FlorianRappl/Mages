@@ -6,14 +6,9 @@
     /// Checks if the parameters |Object[]| is less / equal than i by
     /// popping one value from the stack and pushing back two values.
     /// </summary>
-    sealed class ArgcOperation : IOperation
+    sealed class ArgcOperation(Int32 index) : IOperation
     {
-        private readonly Int32 _index;
-
-        public ArgcOperation(Int32 index)
-        {
-            _index = index;
-        }
+        private readonly Int32 _index = index;
 
         public void Invoke(IExecutionContext context)
         {

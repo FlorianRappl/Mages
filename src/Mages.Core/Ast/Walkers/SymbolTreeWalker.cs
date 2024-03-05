@@ -8,13 +8,18 @@
     /// <summary>
     /// Represents the walker to gather symbol information.
     /// </summary>
-    public sealed class SymbolTreeWalker : BaseTreeWalker
+    /// <remarks>
+    /// Creates a new symbol tree walker with a new general and missing symbols collector.
+    /// </remarks>
+    /// <param name="collector">The target for general symbol information.</param>
+    /// <param name="missing">The target for missing symbols.</param>
+    public sealed class SymbolTreeWalker(IDictionary<VariableExpression, List<VariableExpression>> collector, IList<VariableExpression> missing) : BaseTreeWalker
     {
         #region Fields
 
-        private readonly IDictionary<VariableExpression, List<VariableExpression>> _collector;
-        private readonly IList<VariableExpression> _missing;
-        private Boolean _assigning;
+        private readonly IDictionary<VariableExpression, List<VariableExpression>> _collector = collector;
+        private readonly IList<VariableExpression> _missing = missing;
+        private Boolean _assigning = false;
 
         #endregion
 
@@ -35,18 +40,6 @@
         public SymbolTreeWalker(IList<VariableExpression> missing)
             : this(new Dictionary<VariableExpression, List<VariableExpression>>(), missing)
         {
-        }
-
-        /// <summary>
-        /// Creates a new symbol tree walker with a new general and missing symbols collector.
-        /// </summary>
-        /// <param name="collector">The target for general symbol information.</param>
-        /// <param name="missing">The target for missing symbols.</param>
-        public SymbolTreeWalker(IDictionary<VariableExpression, List<VariableExpression>> collector, IList<VariableExpression> missing)
-        {
-            _assigning = false;
-            _collector = collector;
-            _missing = missing;
         }
 
         #endregion

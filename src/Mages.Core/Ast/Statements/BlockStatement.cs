@@ -5,24 +5,17 @@
     /// <summary>
     /// Represents a block of statements.
     /// </summary>
-    public sealed class BlockStatement : BaseStatement, IStatement
+    /// <remarks>
+    /// Creates a new block statement.
+    /// </remarks>
+    public sealed class BlockStatement(IStatement[] statements, TextPosition start, TextPosition end) : BaseStatement(start, end), IStatement
     {
         #region Fields
 
-        private readonly IStatement[] _statements;
+        private readonly IStatement[] _statements = statements;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new block statement.
-        /// </summary>
-        public BlockStatement(IStatement[] statements, TextPosition start, TextPosition end)
-            : base(start, end)
-        {
-            _statements = statements;
-        }
 
         #endregion
 

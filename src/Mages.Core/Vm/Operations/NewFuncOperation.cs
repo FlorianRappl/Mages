@@ -6,16 +6,10 @@
     /// <summary>
     /// Pushes one new element on the stack.
     /// </summary>
-    sealed class NewFuncOperation : IOperation
+    sealed class NewFuncOperation(ParameterDefinition[] parameters, IOperation[] operations) : IOperation
     {
-        private readonly ParameterDefinition[] _parameters;
-        private readonly IOperation[] _operations;
-
-        public NewFuncOperation(ParameterDefinition[] parameters, IOperation[] operations)
-        {
-            _parameters = parameters;
-            _operations = operations;
-        }
+        private readonly ParameterDefinition[] _parameters = parameters;
+        private readonly IOperation[] _operations = operations;
 
         public void Invoke(IExecutionContext context)
         {

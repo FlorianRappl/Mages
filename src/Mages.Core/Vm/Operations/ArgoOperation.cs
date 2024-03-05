@@ -6,14 +6,9 @@
     /// Assigns the argument at index i by popping two values
     /// from the scope and pushing one value back.
     /// </summary>
-    sealed class ArgoOperation : IOperation
+    sealed class ArgoOperation(Int32 index) : IOperation
     {
-        private readonly Int32 _index;
-
-        public ArgoOperation(Int32 index)
-        {
-            _index = index;
-        }
+        private readonly Int32 _index = index;
 
         public void Invoke(IExecutionContext context)
         {

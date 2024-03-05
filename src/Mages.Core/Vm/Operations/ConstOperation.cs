@@ -6,19 +6,14 @@
     /// <summary>
     /// Pushes a constant value on the stack.
     /// </summary>
-    sealed class ConstOperation : IOperation
+    sealed class ConstOperation(Object constant) : IOperation
     {
-        private readonly Object _constant;
+        private readonly Object _constant = constant;
 
         /// <summary>
         /// Contains a const operation pushing null on the stack.
         /// </summary>
         public static readonly IOperation Null = new ConstOperation(null);
-
-        public ConstOperation(Object constant)
-        {
-            _constant = constant;
-        }
 
         public void Invoke(IExecutionContext context)
         {

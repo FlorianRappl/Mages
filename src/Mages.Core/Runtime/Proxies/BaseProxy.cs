@@ -3,14 +3,9 @@
     using Mages.Core.Runtime.Converters;
     using System;
 
-    abstract class BaseProxy
+    abstract class BaseProxy(WrapperObject obj)
     {
-        protected readonly WrapperObject _obj;
-
-        public BaseProxy(WrapperObject obj)
-        {
-            _obj = obj;
-        }
+        protected readonly WrapperObject _obj = obj;
 
         public Object Value
         {

@@ -6,16 +6,10 @@
     /// <summary>
     /// Pops two elements from the stack and pushes three new element on the stack.
     /// </summary>
-    sealed class NewMethOperation : IOperation
+    sealed class NewMethOperation(ParameterDefinition[] parameters, IOperation[] operations) : IOperation
     {
-        private readonly ParameterDefinition[] _parameters;
-        private readonly IOperation[] _operations;
-
-        public NewMethOperation(ParameterDefinition[] parameters,IOperation[] operations)
-        {
-            _parameters = parameters;
-            _operations = operations;
-        }
+        private readonly ParameterDefinition[] _parameters = parameters;
+        private readonly IOperation[] _operations = operations;
 
         public void Invoke(IExecutionContext context)
         {

@@ -6,14 +6,9 @@
     /// Tries to remove the named variable from the scope and pushes the result
     /// on the stack.
     /// </summary>
-    sealed class DelVarOperation : IOperation
+    sealed class DelVarOperation(String name) : IOperation
     {
-        private readonly String _name;
-
-        public DelVarOperation(String name)
-        {
-            _name = name;
-        }
+        private readonly String _name = name;
 
         public void Invoke(IExecutionContext context)
         {

@@ -8,27 +8,20 @@
     /// <summary>
     /// Represents the walker to validate the AST.
     /// </summary>
-    public sealed class ValidationTreeWalker : ITreeWalker, IValidationContext
+    /// <remarks>
+    /// Creates a new validation tree walker with the list of errors
+    /// to populate.
+    /// </remarks>
+    /// <param name="errors">The list to populate.</param>
+    public sealed class ValidationTreeWalker(List<ParseError> errors) : ITreeWalker, IValidationContext
     {
         #region Fields
 
-        private readonly List<ParseError> _errors;
-        private readonly Stack<BreakableStatement> _loops;
+        private readonly List<ParseError> _errors = errors;
+        private readonly Stack<BreakableStatement> _loops = new Stack<BreakableStatement>();
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new validation tree walker with the list of errors
-        /// to populate.
-        /// </summary>
-        /// <param name="errors">The list to populate.</param>
-        public ValidationTreeWalker(List<ParseError> errors)
-        {
-            _errors = errors;
-            _loops = new Stack<BreakableStatement>();
-        }
 
         #endregion
 

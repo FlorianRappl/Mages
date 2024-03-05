@@ -4,18 +4,11 @@
     using System;
     using System.Reflection;
 
-    abstract class FunctionProxy : BaseProxy
+    abstract class FunctionProxy(WrapperObject obj, MethodBase[] methods) : BaseProxy(obj)
     {
-        protected readonly MethodBase[] _methods;
-        private readonly Int32 _maxParameters;
+        protected readonly MethodBase[] _methods = methods;
+        private readonly Int32 _maxParameters = methods.MaxParameters();
         protected Function _proxy;
-
-        public FunctionProxy(WrapperObject obj, MethodBase[] methods)
-            : base(obj)
-        {
-            _methods = methods;
-            _maxParameters = methods.MaxParameters();
-        }
 
         protected Object TryCurry(Object[] arguments)
         {

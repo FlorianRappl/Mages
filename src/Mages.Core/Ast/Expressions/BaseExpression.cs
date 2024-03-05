@@ -3,25 +3,18 @@
     /// <summary>
     /// Represents the shared core of all expressions.
     /// </summary>
-    public abstract class BaseExpression
+    /// <remarks>
+    /// Creates a new expression.
+    /// </remarks>
+    public abstract class BaseExpression(TextPosition start, TextPosition end)
     {
         #region Fields
 
-        private readonly TextPosition _start;
-        private readonly TextPosition _end;
+        private readonly TextPosition _start = start;
+        private readonly TextPosition _end = end;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new expression.
-        /// </summary>
-        public BaseExpression(TextPosition start, TextPosition end)
-        {
-            _start = start;
-            _end = end;
-        }
 
         #endregion
 

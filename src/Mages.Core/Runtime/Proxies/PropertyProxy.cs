@@ -3,15 +3,9 @@
     using System;
     using System.Reflection;
 
-    sealed class PropertyProxy : BaseProxy
+    sealed class PropertyProxy(WrapperObject obj, PropertyInfo property) : BaseProxy(obj)
     {
-        private readonly PropertyInfo _property;
-
-        public PropertyProxy(WrapperObject obj, PropertyInfo property)
-            : base(obj)
-        {
-            _property = property;
-        }
+        private readonly PropertyInfo _property = property;
 
         protected override Object GetValue()
         {

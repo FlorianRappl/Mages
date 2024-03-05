@@ -3,26 +3,19 @@
     /// <summary>
     /// Represents a delete expression.
     /// </summary>
-    public sealed class DeleteExpression : ComputingExpression, IExpression
+    /// <remarks>
+    /// Creates a new delete statement with the given payload.
+    /// </remarks>
+    /// <param name="start">The start position.</param>
+    /// <param name="payload">The payload to transport.</param>
+    public sealed class DeleteExpression(TextPosition start, IExpression payload) : ComputingExpression(start, payload.End), IExpression
     {
         #region Fields
 
-        private readonly IExpression _payload;
+        private readonly IExpression _payload = payload;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new delete statement with the given payload.
-        /// </summary>
-        /// <param name="start">The start position.</param>
-        /// <param name="payload">The payload to transport.</param>
-        public DeleteExpression(TextPosition start, IExpression payload)
-            : base(start, payload.End)
-        {
-            _payload = payload;
-        }
 
         #endregion
 

@@ -6,25 +6,18 @@
     /// <summary>
     /// Defines the plugin essentials.
     /// </summary>
-    public class Plugin
+    /// <remarks>
+    /// Creates a new plugin.
+    /// </remarks>
+    public class Plugin(IDictionary<String, String> metaData, IDictionary<String, Object> content)
     {
         #region Fields
 
-        private readonly IDictionary<String, String> _metaData;
-        private readonly IDictionary<String, Object> _content;
+        private readonly IDictionary<String, String> _metaData = metaData;
+        private readonly IDictionary<String, Object> _content = content;
 
         #endregion
-        
         #region ctor
-
-        /// <summary>
-        /// Creates a new plugin.
-        /// </summary>
-        public Plugin(IDictionary<String, String> metaData, IDictionary<String, Object> content)
-        {
-            _metaData = metaData;
-            _content = content;
-        }
 
         #endregion
 

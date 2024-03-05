@@ -4,14 +4,9 @@
     using System.Collections.Generic;
     using System.Reflection;
 
-    sealed class TargetWrapper
+    sealed class TargetWrapper(Object target)
     {
-        private readonly Object _target;
-
-        public TargetWrapper(Object target)
-        {
-            _target = target;
-        }
+        private readonly Object _target = target;
 
         public static Type Construct(Type returnType, ParameterInfo[] parameters)
         {
@@ -72,14 +67,9 @@
         }
     }
 
-    sealed class ActionTargetWrapper<TFrom>
+    sealed class ActionTargetWrapper<TFrom>(Object target)
     {
-        private readonly Object _target;
-
-        public ActionTargetWrapper(Object target)
-        {
-            _target = target;
-        }
+        private readonly Object _target = target;
 
         public void Invoke(TFrom arg)
         {
@@ -88,14 +78,9 @@
         }
     }
 
-    sealed class ActionTargetWrapper<TFrom1, TFrom2>
+    sealed class ActionTargetWrapper<TFrom1, TFrom2>(Object target)
     {
-        private readonly Object _target;
-
-        public ActionTargetWrapper(Object target)
-        {
-            _target = target;
-        }
+        private readonly Object _target = target;
 
         public void Invoke(TFrom1 arg1, TFrom2 arg2)
         {
@@ -104,14 +89,9 @@
         }
     }
 
-    sealed class ActionTargetWrapper<TFrom1, TFrom2, TFrom3>
+    sealed class ActionTargetWrapper<TFrom1, TFrom2, TFrom3>(Object target)
     {
-        private readonly Object _target;
-
-        public ActionTargetWrapper(Object target)
-        {
-            _target = target;
-        }
+        private readonly Object _target = target;
 
         public void Invoke(TFrom1 arg1, TFrom2 arg2, TFrom3 arg3)
         {
@@ -120,14 +100,9 @@
         }
     }
 
-    sealed class ActionTargetWrapper<TFrom1, TFrom2, TFrom3, TFrom4>
+    sealed class ActionTargetWrapper<TFrom1, TFrom2, TFrom3, TFrom4>(Object target)
     {
-        private readonly Object _target;
-
-        public ActionTargetWrapper(Object target)
-        {
-            _target = target;
-        }
+        private readonly Object _target = target;
 
         public void Invoke(TFrom1 arg1, TFrom2 arg2, TFrom3 arg3, TFrom4 arg4)
         {
@@ -136,14 +111,9 @@
         }
     }
 
-    sealed class ActionTargetWrapper<TFrom1, TFrom2, TFrom3, TFrom4, TFrom5>
+    sealed class ActionTargetWrapper<TFrom1, TFrom2, TFrom3, TFrom4, TFrom5>(Object target)
     {
-        private readonly Object _target;
-
-        public ActionTargetWrapper(Object target)
-        {
-            _target = target;
-        }
+        private readonly Object _target = target;
 
         public void Invoke(TFrom1 arg1, TFrom2 arg2, TFrom3 arg3, TFrom4 arg4, TFrom5 arg5)
         {
@@ -152,14 +122,9 @@
         }
     }
 
-    sealed class FuncTargetWrapper<TTo>
+    sealed class FuncTargetWrapper<TTo>(Object target)
     {
-        private readonly Object _target;
-
-        public FuncTargetWrapper(Object target)
-        {
-            _target = target;
-        }
+        private readonly Object _target = target;
 
         public TTo Invoke()
         {
@@ -170,14 +135,9 @@
         }
     }
 
-    sealed class FuncTargetWrapper<TFrom, TTo>
+    sealed class FuncTargetWrapper<TFrom, TTo>(Object target)
     {
-        private readonly Object _target;
-
-        public FuncTargetWrapper(Object target)
-        {
-            _target = target;
-        }
+        private readonly Object _target = target;
 
         public TTo Invoke(TFrom arg)
         {
@@ -188,14 +148,9 @@
         }
     }
 
-    sealed class FuncTargetWrapper<TFrom1, TFrom2, TTo>
+    sealed class FuncTargetWrapper<TFrom1, TFrom2, TTo>(Object target)
     {
-        private readonly Object _target;
-
-        public FuncTargetWrapper(Object target)
-        {
-            _target = target;
-        }
+        private readonly Object _target = target;
 
         public TTo Invoke(TFrom1 arg1, TFrom2 arg2)
         {
@@ -206,14 +161,9 @@
         }
     }
 
-    sealed class FuncTargetWrapper<TFrom1, TFrom2, TFrom3, TTo>
+    sealed class FuncTargetWrapper<TFrom1, TFrom2, TFrom3, TTo>(Object target)
     {
-        private readonly Object _target;
-
-        public FuncTargetWrapper(Object target)
-        {
-            _target = target;
-        }
+        private readonly Object _target = target;
 
         public TTo Invoke(TFrom1 arg1, TFrom2 arg2, TFrom3 arg3)
         {
@@ -224,14 +174,9 @@
         }
     }
 
-    sealed class FuncTargetWrapper<TFrom1, TFrom2, TFrom3, TFrom4, TTo>
+    sealed class FuncTargetWrapper<TFrom1, TFrom2, TFrom3, TFrom4, TTo>(Object target)
     {
-        private readonly Object _target;
-
-        public FuncTargetWrapper(Object target)
-        {
-            _target = target;
-        }
+        private readonly Object _target = target;
 
         public TTo Invoke(TFrom1 arg1, TFrom2 arg2, TFrom3 arg3, TFrom4 arg4)
         {
@@ -242,14 +187,9 @@
         }
     }
 
-    sealed class FuncTargetWrapper<TFrom1, TFrom2, TFrom3, TFrom4, TFrom5, TTo>
+    sealed class FuncTargetWrapper<TFrom1, TFrom2, TFrom3, TFrom4, TFrom5, TTo>(Object target)
     {
-        private readonly Object _target;
-
-        public FuncTargetWrapper(Object target)
-        {
-            _target = target;
-        }
+        private readonly Object _target = target;
 
         public TTo Invoke(TFrom1 arg1, TFrom2 arg2, TFrom3 arg3, TFrom4 arg4, TFrom5 arg5)
         {

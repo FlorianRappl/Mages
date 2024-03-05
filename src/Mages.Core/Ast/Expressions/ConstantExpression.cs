@@ -7,24 +7,17 @@
     /// <summary>
     /// Represents a constant (predefined value) expression.
     /// </summary>
-    public abstract class ConstantExpression : ComputingExpression, IExpression
+    /// <remarks>
+    /// Creates a new constant expression for the given value.
+    /// </remarks>
+    public abstract class ConstantExpression(Object value, TextPosition start, TextPosition end) : ComputingExpression(start, end), IExpression
     {
         #region Fields
 
-        private readonly Object _value;
+        private readonly Object _value = value;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new constant expression for the given value.
-        /// </summary>
-        public ConstantExpression(Object value, TextPosition start, TextPosition end)
-            : base(start, end)
-        {
-            _value = value;
-        }
 
         #endregion
 
@@ -84,15 +77,9 @@
 
         #region Operations
 
-        internal sealed class StringConstant : ConstantExpression
+        internal sealed class StringConstant(String value, ITextRange range, IEnumerable<ParseError> errors) : ConstantExpression(value, range.Start, range.End)
         {
-            private readonly IEnumerable<ParseError> _errors;
-
-            public StringConstant(String value, ITextRange range, IEnumerable<ParseError> errors)
-                : base(value, range.Start, range.End)
-            {
-                _errors = errors;
-            }
+            private readonly IEnumerable<ParseError> _errors = errors;
 
             public override void Validate(IValidationContext context)
             {
@@ -105,23 +92,13 @@
             }
         }
 
-        internal sealed class BooleanConstant : ConstantExpression
+        internal sealed class BooleanConstant(Boolean value, ITextRange range) : ConstantExpression(value, range.Start, range.End)
         {
-            public BooleanConstant(Boolean value, ITextRange range)
-                : base(value, range.Start, range.End)
-            {
-            }
         }
 
-        internal sealed class NumberConstant : ConstantExpression
+        internal sealed class NumberConstant(Double value, ITextRange range, IEnumerable<ParseError> errors) : ConstantExpression(value, range.Start, range.End)
         {
-            private readonly IEnumerable<ParseError> _errors;
-
-            public NumberConstant(Double value, ITextRange range, IEnumerable<ParseError> errors)
-                : base(value, range.Start, range.End)
-            {
-                _errors = errors;
-            }
+            private readonly IEnumerable<ParseError> _errors = errors;
 
             public override void Validate(IValidationContext context)
             {

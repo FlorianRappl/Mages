@@ -3,24 +3,17 @@
     /// <summary>
     /// Represents an case statement.
     /// </summary>
-    public sealed class CaseStatement : BreakableStatement, IStatement
+    /// <remarks>
+    /// Creates a new case statement.
+    /// </remarks>
+    public sealed class CaseStatement(IExpression condition, IStatement body) : BreakableStatement(body, condition.Start, body.End), IStatement
     {
         #region Fields
 
-        private readonly IExpression _condition;
+        private readonly IExpression _condition = condition;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new case statement.
-        /// </summary>
-        public CaseStatement(IExpression condition, IStatement body)
-            : base(body, condition.Start, body.End)
-        {
-            _condition = condition;
-        }
 
         #endregion
 

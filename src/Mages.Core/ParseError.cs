@@ -3,27 +3,20 @@
     /// <summary>
     /// A class to encapsulate data of a parse error.
     /// </summary>
-    public sealed class ParseError : ITextRange
+    /// <remarks>
+    /// Creates a new parse error object with these properties.
+    /// </remarks>
+    /// <param name="code">The code of the error.</param>
+    /// <param name="range">The text range of the error.</param>
+    public sealed class ParseError(ErrorCode code, ITextRange range) : ITextRange
     {
         #region Fields
 
-        private readonly ErrorCode _code;
-        private readonly ITextRange _range;
+        private readonly ErrorCode _code = code;
+        private readonly ITextRange _range = range;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new parse error object with these properties.
-        /// </summary>
-        /// <param name="code">The code of the error.</param>
-        /// <param name="range">The text range of the error.</param>
-        public ParseError(ErrorCode code, ITextRange range)
-        {
-            _code = code;
-            _range = range;
-        }
 
         #endregion
 

@@ -3,17 +3,13 @@
     /// <summary>
     /// Represents an empty expression (potentially invalid).
     /// </summary>
-    public sealed class EmptyExpression : ComputingExpression, IExpression
+    /// <remarks>
+    /// Creates a new empty expression.
+    /// </remarks>
+    public sealed class EmptyExpression(TextPosition position) : ComputingExpression(position, position), IExpression
     {
-        #region ctor
 
-        /// <summary>
-        /// Creates a new empty expression.
-        /// </summary>
-        public EmptyExpression(TextPosition position)
-            : base(position, position)
-        {
-        }
+        #region ctor
 
         #endregion
 

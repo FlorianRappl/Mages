@@ -6,14 +6,9 @@
     /// <summary>
     /// Pushes the loaded value on the stack.
     /// </summary>
-    sealed class GetsOperation : IOperation
+    sealed class GetsOperation(String name) : IOperation
     {
-        private readonly String _name;
-
-        public GetsOperation(String name)
-        {
-            _name = name;
-        }
+        private readonly String _name = name;
 
         public void Invoke(IExecutionContext context)
         {

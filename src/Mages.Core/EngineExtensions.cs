@@ -383,18 +383,11 @@
             return new Plugin(meta, content);
         }
 
-        sealed class Placement : IPlacement
+        sealed class Placement(Engine engine, String name, IDictionary<String, Object> obj) : IPlacement
         {
-            private readonly Engine _engine;
-            private readonly String _name;
-            private readonly IDictionary<String, Object> _obj;
-
-            public Placement(Engine engine, String name, IDictionary<String, Object> obj)
-            {
-                _engine = engine;
-                _name = name;
-                _obj = obj;
-            }
+            private readonly Engine _engine = engine;
+            private readonly String _name = name;
+            private readonly IDictionary<String, Object> _obj = obj;
 
             public void WithName(String name)
             {

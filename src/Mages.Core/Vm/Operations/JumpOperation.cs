@@ -5,14 +5,9 @@
     /// <summary>
     /// Changes the currently executing position.
     /// </summary>
-    sealed class JumpOperation : IOperation
+    sealed class JumpOperation(Int32 offset) : IOperation
     {
-        private readonly Int32 _offset;
-
-        public JumpOperation(Int32 offset)
-        {
-            _offset = offset;
-        }
+        private readonly Int32 _offset = offset;
 
         public void Invoke(IExecutionContext context)
         {

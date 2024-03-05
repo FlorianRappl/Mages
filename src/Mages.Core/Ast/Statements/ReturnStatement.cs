@@ -5,27 +5,20 @@
     /// <summary>
     /// Represents a return statement.
     /// </summary>
-    public sealed class ReturnStatement : BaseStatement, IStatement
+    /// <remarks>
+    /// Creates a new return statement with the given payload.
+    /// </remarks>
+    /// <param name="expression">The payload to transport.</param>
+    /// <param name="start">The start position.</param>
+    /// <param name="end">The end position.</param>
+    public sealed class ReturnStatement(IExpression expression, TextPosition start, TextPosition end) : BaseStatement(start, end), IStatement
     {
         #region Fields
 
-        private readonly IExpression _expression;
+        private readonly IExpression _expression = expression;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new return statement with the given payload.
-        /// </summary>
-        /// <param name="expression">The payload to transport.</param>
-        /// <param name="start">The start position.</param>
-        /// <param name="end">The end position.</param>
-        public ReturnStatement(IExpression expression, TextPosition start, TextPosition end)
-            : base(start, end)
-        {
-            _expression = expression;
-        }
 
         #endregion
 

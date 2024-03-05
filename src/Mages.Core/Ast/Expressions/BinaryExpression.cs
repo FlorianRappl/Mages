@@ -5,28 +5,19 @@
     /// <summary>
     /// The base class for all binary expressions.
     /// </summary>
-    public abstract class BinaryExpression : ComputingExpression, IExpression
+    /// <remarks>
+    /// Creates a new binary expression.
+    /// </remarks>
+    public abstract class BinaryExpression(IExpression left, IExpression right, String op) : ComputingExpression(left.Start, right.End), IExpression
     {
         #region Fields
 
-        private readonly IExpression _left;
-        private readonly IExpression _right;
-        private readonly String _operator;
+        private readonly IExpression _left = left;
+        private readonly IExpression _right = right;
+        private readonly String _operator = op;
 
         #endregion
-
         #region ctor
-
-        /// <summary>
-        /// Creates a new binary expression.
-        /// </summary>
-        public BinaryExpression(IExpression left, IExpression right, String op)
-            : base(left.Start, right.End)
-        {
-            _left = left;
-            _right = right;
-            _operator = op;
-        }
 
         #endregion
 
@@ -83,132 +74,68 @@
 
         #region Operations
 
-        internal sealed class Pipe : BinaryExpression
+        internal sealed class Pipe(IExpression left, IExpression right) : BinaryExpression(left, right, "|")
         {
-            public Pipe(IExpression left, IExpression right)
-                : base(left, right, "|")
-            {
-            }
         }
 
-        internal sealed class And : BinaryExpression
+        internal sealed class And(IExpression left, IExpression right) : BinaryExpression(left, right, "&&")
         {
-            public And(IExpression left, IExpression right)
-                : base(left, right, "&&")
-            {
-            }
         }
 
-        internal sealed class Or : BinaryExpression
+        internal sealed class Or(IExpression left, IExpression right) : BinaryExpression(left, right, "||")
         {
-            public Or(IExpression left, IExpression right)
-                : base(left, right, "||")
-            {
-            }
         }
 
-        internal sealed class Equal : BinaryExpression
+        internal sealed class Equal(IExpression left, IExpression right) : BinaryExpression(left, right, "==")
         {
-            public Equal(IExpression left, IExpression right)
-                : base(left, right, "==")
-            {
-            }
         }
 
-        internal sealed class NotEqual : BinaryExpression
+        internal sealed class NotEqual(IExpression left, IExpression right) : BinaryExpression(left, right, "~=")
         {
-            public NotEqual(IExpression left, IExpression right)
-                : base(left, right, "~=")
-            {
-            }
         }
 
-        internal sealed class Greater : BinaryExpression
+        internal sealed class Greater(IExpression left, IExpression right) : BinaryExpression(left, right, ">")
         {
-            public Greater(IExpression left, IExpression right)
-                : base(left, right, ">")
-            {
-            }
         }
 
-        internal sealed class Less : BinaryExpression
+        internal sealed class Less(IExpression left, IExpression right) : BinaryExpression(left, right, "<")
         {
-            public Less(IExpression left, IExpression right)
-                : base(left, right, "<")
-            {
-            }
         }
 
-        internal sealed class GreaterEqual : BinaryExpression
+        internal sealed class GreaterEqual(IExpression left, IExpression right) : BinaryExpression(left, right, ">=")
         {
-            public GreaterEqual(IExpression left, IExpression right)
-                : base(left, right, ">=")
-            {
-            }
         }
 
-        internal sealed class LessEqual : BinaryExpression
+        internal sealed class LessEqual(IExpression left, IExpression right) : BinaryExpression(left, right, "<=")
         {
-            public LessEqual(IExpression left, IExpression right)
-                : base(left, right, "<=")
-            {
-            }
         }
 
-        internal sealed class Add : BinaryExpression
+        internal sealed class Add(IExpression left, IExpression right) : BinaryExpression(left, right, "+")
         {
-            public Add(IExpression left, IExpression right)
-                : base(left, right, "+")
-            {
-            }
         }
 
-        internal sealed class Subtract : BinaryExpression
+        internal sealed class Subtract(IExpression left, IExpression right) : BinaryExpression(left, right, "-")
         {
-            public Subtract(IExpression left, IExpression right)
-                : base(left, right, "-")
-            {
-            }
         }
 
-        internal sealed class Multiply : BinaryExpression
+        internal sealed class Multiply(IExpression left, IExpression right) : BinaryExpression(left, right, "*")
         {
-            public Multiply(IExpression left, IExpression right)
-                : base(left, right, "*")
-            {
-            }
         }
 
-        internal sealed class LeftDivide : BinaryExpression
+        internal sealed class LeftDivide(IExpression left, IExpression right) : BinaryExpression(left, right, "\\")
         {
-            public LeftDivide(IExpression left, IExpression right)
-                : base(left, right, "\\")
-            {
-            }
         }
 
-        internal sealed class RightDivide : BinaryExpression
+        internal sealed class RightDivide(IExpression left, IExpression right) : BinaryExpression(left, right, "/")
         {
-            public RightDivide(IExpression left, IExpression right)
-                : base(left, right, "/")
-            {
-            }
         }
 
-        internal sealed class Power : BinaryExpression
+        internal sealed class Power(IExpression left, IExpression right) : BinaryExpression(left, right, "^")
         {
-            public Power(IExpression left, IExpression right)
-                : base(left, right, "^")
-            {
-            }
         }
 
-        internal sealed class Modulo : BinaryExpression
+        internal sealed class Modulo(IExpression left, IExpression right) : BinaryExpression(left, right, "%")
         {
-            public Modulo(IExpression left, IExpression right)
-                : base(left, right, "%")
-            {
-            }
         }
 
         #endregion

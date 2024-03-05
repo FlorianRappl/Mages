@@ -5,17 +5,13 @@
     /// <summary>
     /// Represents a computed expression (not-assignable).
     /// </summary>
-    public abstract class ComputingExpression : BaseExpression
+    /// <remarks>
+    /// Creates a new computing expression.
+    /// </remarks>
+    public abstract class ComputingExpression(TextPosition start, TextPosition end) : BaseExpression(start, end)
     {
-        #region ctor
 
-        /// <summary>
-        /// Creates a new computing expression.
-        /// </summary>
-        public ComputingExpression(TextPosition start, TextPosition end)
-            : base(start, end)
-        {
-        }
+        #region ctor
 
         #endregion
 
