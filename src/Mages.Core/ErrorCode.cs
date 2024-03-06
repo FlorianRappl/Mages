@@ -227,4 +227,9 @@ public enum ErrorCode
     /// </summary>
     [Description("A JSX element needs to be closed with a closing tag ( '</foo>' ) matching the elements name ('<foo>' ).")]
     JsxElementNotClosed,
+    /// <summary>
+    /// See description.
+    /// </summary>
+    [Description("A JSX closing tag ( '</foo>' ) can only exist after an opening tag with the elements name ('<foo>' ).")]
+    JsxElementNotOpened,
 }

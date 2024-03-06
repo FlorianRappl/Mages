@@ -877,6 +877,22 @@ sealed class ExpressionParser : IParser
         {
             return ParseJsxContent(tokens);
         }
+        else if (tokens.Current.Type == TokenType.JsxStartClose)
+        {
+            var current = tokens.Current;
+
+            while (tokens.Current.IsNeither(TokenType.SemiColon, TokenType.End, TokenType.Greater))
+            {
+                tokens.NextNonIgnorable();
+            }
+
+            if (tokens.Current.Type == TokenType.Greater)
+            {
+                tokens.NextNonIgnorable();
+            }
+
+            return new InvalidExpression(ErrorCode.JsxElementNotOpened, current);
+        }
 
         return ParseAtomic(tokens);
     }
@@ -885,16 +901,18 @@ sealed class ExpressionParser : IParser
     {
         if (tokens.Current.Type == TokenType.Less)
         {
+            var start = tokens.Current.Start;
             var scope = _scopes.Current;
             tokens.NextNonIgnorable();
             var element = ParseJsxElement(tokens);
             var props = ParseJsxProps(tokens);
             var selfClosing = tokens.Current.Type == TokenType.JsxEndClose;
+            var end = tokens.Current.End;
             tokens.NextNonIgnorable();
 
             if (selfClosing)
             {
-                return new JsxExpression(scope, element, props, []);
+                return new JsxExpression(scope, element, props, [], start.To(end));
             }
 
             var children = ParseJsxChildren(tokens);
@@ -906,11 +924,12 @@ sealed class ExpressionParser : IParser
 
                 if (tokens.Current.Type == TokenType.Greater)
                 {
+                    end = tokens.Current.End;
                     tokens.NextNonIgnorable();
 
                     if (controlElement.Is(element))
                     {
-                        return new JsxExpression(scope, element, props, children);
+                        return new JsxExpression(scope, element, props, children, start.To(end));
                     }
                 }
             }
@@ -1010,7 +1029,7 @@ sealed class ExpressionParser : IParser
         {
             expr = ParseIdentifier(tokens);
 
-            if (expr != null)
+            if (expr is not null)
             {
                 // use a member expression
                 while (tokens.Current.Type == TokenType.Dot)

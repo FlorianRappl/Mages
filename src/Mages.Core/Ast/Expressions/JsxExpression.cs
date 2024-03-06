@@ -6,7 +6,7 @@
 /// <remarks>
 /// Creates a new JSX expression.
 /// </remarks>
-public sealed class JsxExpression(AbstractScope scope, IExpression element, IExpression[] props, IExpression[] children) : ComputingExpression(element.Start, element.End), IExpression
+public sealed class JsxExpression(AbstractScope scope, IExpression element, IExpression[] props, IExpression[] children, ITextRange range) : ComputingExpression(range.Start, range.End), IExpression
 {
     #region Fields
 

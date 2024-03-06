@@ -1,10 +1,8 @@
-![MAGES Logo](https://raw.githubusercontent.com/FlorianRappl/Mages/main/logo.png)
+![MAGES Logo](./logo.png)
 
 # MAGES
 
-[![GitHub CI](https://github.com/FlorianRappl/Mages/actions/workflows/ci.yml/badge.svg)](https://github.com/FlorianRappl/Mages/actions/workflows/ci.yml)
-[![NuGet](https://img.shields.io/nuget/v/MAGES.svg?style=flat-square)](https://www.nuget.org/packages/Mages/)
-[![Issues](https://img.shields.io/github/issues/FlorianRappl/MAGES.svg?style=flat-square)](https://github.com/FlorianRappl/Mages/issues)
+[![GitHub CI](https://github.com/FlorianRappl/Mages/actions/workflows/ci.yml/badge.svg)](https://github.com/FlorianRappl/Mages/actions/workflows/ci.yml) [![NuGet](https://img.shields.io/nuget/v/MAGES.svg?style=flat-square)](https://www.nuget.org/packages/Mages/) [![Issues](https://img.shields.io/github/issues/FlorianRappl/MAGES.svg?style=flat-square)](https://github.com/FlorianRappl/Mages/issues)
 
 ## Mages: Another Generalized Expression Simplifier
 
@@ -14,11 +12,13 @@ Among other applications, MAGES has been used in [Microsoft's PowerToys](https:/
 
 ### Current Status
 
+MAGES was just updated (v3.0.0) with object metadata, direct list support, and JSX syntax.
+
 ### Previous Status
 
 **2023**:
 
-MAGES was just updated (v2.0.0) with support for complex numbers. Also, the build target and runtime has been updated to make use of modern possibilities.
+MAGES was updated (v2.0.0) with support for complex numbers. Also, the build target and runtime has been updated to make use of modern possibilities.
 
 **2018**:
 
