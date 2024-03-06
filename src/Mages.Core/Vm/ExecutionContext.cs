@@ -13,7 +13,7 @@ using System.Collections.Generic;
 /// <param name="scope">The global scope to use.</param>
 public sealed class ExecutionContext(IOperation[] operations, IDictionary<String, Object> scope) : IExecutionContext
 {
-    private readonly Stack<Object> _stack = new Stack<Object>(64);
+    private readonly Stack<Object> _stack = new(64);
     private readonly IOperation[] _operations = operations;
     private readonly IDictionary<String, Object> _scope = scope;
     private Int32 _position = 0;

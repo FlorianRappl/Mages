@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 static class MagesNumber
 {
-    private static readonly Function Create = new Function(args =>
+    private static readonly Function Create = new(args =>
     {
         return Curry.MinOne(Create, args) ??
             args[0].ToNumber();

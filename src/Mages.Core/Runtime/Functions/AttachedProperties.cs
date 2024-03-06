@@ -8,7 +8,7 @@ using System.Collections.Generic;
 /// </summary>
 public static class AttachedProperties
 {
-    private static readonly Dictionary<Type, Dictionary<String, Func<Object, Object>>> _properties = new Dictionary<Type, Dictionary<String, Func<Object, Object>>>
+    private static readonly Dictionary<Type, Dictionary<String, Func<Object, Object>>> _properties = new()
     {
         { typeof(Function), CreateFunctionProperties() }
     };

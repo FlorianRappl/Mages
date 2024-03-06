@@ -30,7 +30,7 @@ abstract class BaseScanner : IDisposable
 
     #region Properties
 
-    public TextPosition Position => new TextPosition(_row, _column, _position);
+    public TextPosition Position => new(_row, _column, _position);
 
     #endregion
 

@@ -105,6 +105,7 @@ static class Global
         { "real", ComplexFunctions.Real },
         { "imag", ComplexFunctions.Imag },
         { "arg", ComplexFunctions.Arg },
+        { "jsx", StandardFunctions.Jsx },
 
         // Constants
         { "e", Constants.E },

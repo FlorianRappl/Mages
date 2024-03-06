@@ -18,7 +18,7 @@ public sealed class ValidationTreeWalker(List<ParseError> errors) : ITreeWalker,
     #region Fields
 
     private readonly List<ParseError> _errors = errors;
-    private readonly Stack<BreakableStatement> _loops = new Stack<BreakableStatement>();
+    private readonly Stack<BreakableStatement> _loops = new();
 
     #endregion
 

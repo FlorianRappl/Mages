@@ -11,8 +11,8 @@ static class StringBuilderPool
 {
     #region Fields
 
-		private static readonly Stack<StringBuilder> _builder = new Stack<StringBuilder>();
-    private static readonly Object _lock = new Object();
+		private static readonly Stack<StringBuilder> _builder = new();
+    private static readonly Object _lock = new();
 
     #endregion
 

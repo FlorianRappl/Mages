@@ -123,7 +123,7 @@ public static class Keywords
     /// </summary>
     public static readonly String Delete = "delete";
 
-    private static readonly Dictionary<String, Object> KeywordConstants = new Dictionary<String, Object>
+    private static readonly Dictionary<String, Object> KeywordConstants = new()
     {
         { True, true },
         { False, false },

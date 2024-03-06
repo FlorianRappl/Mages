@@ -20,7 +20,7 @@ public sealed class OperationTreeWalker(List<IOperation> operations) : ITreeWalk
 {
     #region Operator Mappings
 
-    private static readonly Dictionary<String, Action<OperationTreeWalker, PreUnaryExpression>> PreUnaryOperatorMapping = new Dictionary<String, Action<OperationTreeWalker, PreUnaryExpression>>
+    private static readonly Dictionary<String, Action<OperationTreeWalker, PreUnaryExpression>> PreUnaryOperatorMapping = new()
     {
         { "~", (walker, expr) => walker.Handle(expr, StandardOperators.Not) },
         { "+", (walker, expr) => walker.Handle(expr, StandardOperators.Positive) },
@@ -30,7 +30,7 @@ public sealed class OperationTreeWalker(List<IOperation> operations) : ITreeWalk
         { "--", (walker, expr) => walker.Place(DecOperation.Instance, expr.Value, false) }
     };
 
-    private static readonly Dictionary<String, Action<OperationTreeWalker, PostUnaryExpression>> PostUnaryOperatorMapping = new Dictionary<String, Action<OperationTreeWalker, PostUnaryExpression>>
+    private static readonly Dictionary<String, Action<OperationTreeWalker, PostUnaryExpression>> PostUnaryOperatorMapping = new()
     {
         { "!", (walker, expr) => walker.Handle(expr, StandardOperators.Factorial) },
         { "'", (walker, expr) => walker.Handle(expr, StandardOperators.Transpose) },
@@ -38,7 +38,7 @@ public sealed class OperationTreeWalker(List<IOperation> operations) : ITreeWalk
         { "--", (walker, expr) => walker.Place(DecOperation.Instance, expr.Value, true) }
     };
 
-    private static readonly Dictionary<String, Action<OperationTreeWalker, BinaryExpression>> BinaryOperatorMapping = new Dictionary<String, Action<OperationTreeWalker, BinaryExpression>>
+    private static readonly Dictionary<String, Action<OperationTreeWalker, BinaryExpression>> BinaryOperatorMapping = new()
     {
         { "&&", (walker, expr) => walker.Handle(expr, StandardOperators.And) },
         { "||", (walker, expr) => walker.Handle(expr, StandardOperators.Or) },
@@ -62,10 +62,10 @@ public sealed class OperationTreeWalker(List<IOperation> operations) : ITreeWalk
 
     #region Fields
 
-    private static readonly Regex startsWithUpperCase = new Regex("^[A-Z]");
+    private static readonly Regex startsWithUpperCase = new("^[A-Z]");
 
     private readonly List<IOperation> _operations = operations;
-    private readonly Stack<LoopInfo> _loops = new Stack<LoopInfo>();
+    private readonly Stack<LoopInfo> _loops = new();
     private Boolean _assigning = false;
     private Boolean _declaring = false;
     private Boolean _member;

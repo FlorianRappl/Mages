@@ -994,6 +994,7 @@ sealed class ExpressionParser : IParser
         {
             end = current.End;
             buffer.Append(current.Payload);
+            tokens.MoveNext();
             current = tokens.Current;
         }
 

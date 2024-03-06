@@ -13,12 +13,12 @@ public static class Stringify
     /// <summary>
     /// Contains the stringify function.
     /// </summary>
-    public static readonly Function Default = new Function(args => This(args.Length > 0 ? args[0] : null));
+    public static readonly Function Default = new(args => This(args.Length > 0 ? args[0] : null));
 
     /// <summary>
     /// Contains the JSON function.
     /// </summary>
-    public static readonly Function Json = new Function(args => AsJson(args.Length > 0 ? args[0] : null));
+    public static readonly Function Json = new(args => AsJson(args.Length > 0 ? args[0] : null));
 
     /// <summary>
     /// Converts the number to a string.

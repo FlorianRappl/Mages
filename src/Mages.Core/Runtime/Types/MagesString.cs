@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 static class MagesString
 {
-    private static readonly Function Create = new Function(args =>
+    private static readonly Function Create = new(args =>
     {
         return Curry.MinOne(Create, args) ??
             Stringify.This(args[0]);

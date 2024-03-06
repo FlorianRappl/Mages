@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 static class MagesUndefined
 {
-    private static readonly Function Create = new Function(args =>
+    private static readonly Function Create = new(args =>
     {
         return Curry.MinOne(Create, args) ?? null;
     });

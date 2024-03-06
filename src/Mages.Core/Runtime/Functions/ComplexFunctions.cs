@@ -11,7 +11,7 @@ public static class ComplexFunctions
     /// <summary>
     /// Exposes the complex constructor function.
     /// </summary>
-    public static readonly Function Cmplx = new Function(args => 
+    public static readonly Function Cmplx = new(args => 
         Curry.MinTwo(Cmplx, args) ??
         If.Is<Double, Double>(args, (x, y) => new Complex(x, y)) ??
         Complex.Zero
@@ -20,7 +20,7 @@ public static class ComplexFunctions
     /// <summary>
     /// Exposes the complex conjugate function.
     /// </summary>
-    public static readonly Function Conj = new Function(args =>
+    public static readonly Function Conj = new(args =>
         Curry.MinOne(Conj, args) ??
         If.Is<Double>(args, x => new Complex(x, 0)) ??
         If.Is<Complex>(args, x => new Complex(x.Real, -x.Imaginary)) ??
@@ -32,7 +32,7 @@ public static class ComplexFunctions
     /// <summary>
     /// Exposes the complex real function.
     /// </summary>
-    public static readonly Function Real = new Function(args =>
+    public static readonly Function Real = new(args =>
         Curry.MinOne(Real, args) ??
         If.Is<Double>(args, x => x) ??
         If.Is<Complex>(args, x => x.Real) ??
@@ -44,7 +44,7 @@ public static class ComplexFunctions
     /// <summary>
     /// Exposes the complex imag function.
     /// </summary>
-    public static readonly Function Imag = new Function(args =>
+    public static readonly Function Imag = new(args =>
         Curry.MinOne(Imag, args) ??
         If.Is<Double>(args, _ => 0.0) ??
         If.Is<Complex>(args, x => x.Imaginary) ??
@@ -56,7 +56,7 @@ public static class ComplexFunctions
     /// <summary>
     /// Exposes the complex arg function.
     /// </summary>
-    public static readonly Function Arg = new Function(args =>
+    public static readonly Function Arg = new(args =>
     {
         return Curry.MinOne(Arg, args) ??
             If.Is<Double>(args, x => new Complex(x, 0.0).Phase) ??

@@ -7,7 +7,7 @@ sealed class StringScanner(String source) : BaseScanner, IScanner
 {
     #region Fields
 
-    private readonly StringReader _source = new StringReader(source);
+    private readonly StringReader _source = new(source);
 
     private Int32 _current = CharacterTable.NullPtr;
     private Int32 _p0 = CharacterTable.NullPtr;

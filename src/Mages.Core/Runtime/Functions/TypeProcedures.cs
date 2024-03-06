@@ -8,7 +8,7 @@ using System.Collections.Generic;
 /// </summary>
 public static class TypeProcedures
 {
-    private static Dictionary<Type, Func<Object, Procedure>> _setters = new Dictionary<Type, Func<Object, Procedure>>
+    private static Dictionary<Type, Func<Object, Procedure>> _setters = new()
     {
         { typeof(Double[,]), obj => ((Double[,])obj).Setter },
         { typeof(IDictionary<String, Object>), obj => ((IDictionary<String, Object>)obj).Setter },

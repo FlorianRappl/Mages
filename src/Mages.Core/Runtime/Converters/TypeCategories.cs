@@ -6,7 +6,7 @@ using System.Numerics;
 
 static class TypeCategories
 {
-    public static readonly Dictionary<Type, List<Type>> Mapping = new Dictionary<Type, List<Type>>
+    public static readonly Dictionary<Type, List<Type>> Mapping = new()
     {
         { typeof(Double), new List<Type> { typeof(Double), typeof(Single), typeof(Decimal), typeof(Byte), typeof(UInt16), typeof(UInt32), typeof(UInt64), typeof(Int16), typeof(Int32), typeof(Int64) } },
         { typeof(Complex), new List<Type> { typeof(Complex) } },

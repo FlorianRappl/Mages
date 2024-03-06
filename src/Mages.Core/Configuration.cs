@@ -9,7 +9,7 @@ using System.Collections.Generic;
 /// </summary>
 public class Configuration
 {
-    internal static readonly Configuration Default = new Configuration
+    internal static readonly Configuration Default = new ()
     {
         Parser = new ExpressionParser(),
         Scope = null,

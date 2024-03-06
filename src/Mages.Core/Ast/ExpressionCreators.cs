@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 static class ExpressionCreators
 {
-    public static readonly Dictionary<TokenType, Func<IExpression, IExpression, BinaryExpression>> Binary = new Dictionary<TokenType, Func<IExpression, IExpression, BinaryExpression>>
+    public static readonly Dictionary<TokenType, Func<IExpression, IExpression, BinaryExpression>> Binary = new()
     {
         { TokenType.Equal, (a, b) => new BinaryExpression.Equal(a, b) },
         { TokenType.NotEqual, (a, b) => new BinaryExpression.NotEqual(a, b) },
@@ -24,7 +24,7 @@ static class ExpressionCreators
         { TokenType.Pipe, (a, b) => new BinaryExpression.Pipe(a, b) },
     };
 
-    public static readonly Dictionary<TokenType, Func<TextPosition, IExpression, PreUnaryExpression>> PreUnary = new Dictionary<TokenType, Func<TextPosition, IExpression, PreUnaryExpression>>
+    public static readonly Dictionary<TokenType, Func<TextPosition, IExpression, PreUnaryExpression>> PreUnary = new()
     {
         { TokenType.Add, (p, x) => new PreUnaryExpression.Plus(p, x) },
         { TokenType.Subtract, (p, x) => new PreUnaryExpression.Minus(p, x) },
@@ -34,7 +34,7 @@ static class ExpressionCreators
         { TokenType.Type, (p, x) => new PreUnaryExpression.Type(p, x) },
     };
 
-    public static readonly Dictionary<TokenType, Func<IExpression, TextPosition, PostUnaryExpression>> PostUnary = new Dictionary<TokenType, Func<IExpression, TextPosition, PostUnaryExpression>>
+    public static readonly Dictionary<TokenType, Func<IExpression, TextPosition, PostUnaryExpression>> PostUnary = new()
     {
         { TokenType.Factorial, (x, p) => new PostUnaryExpression.Factorial(x, p) },
         { TokenType.Transpose, (x, p) => new PostUnaryExpression.Transpose(x, p) },

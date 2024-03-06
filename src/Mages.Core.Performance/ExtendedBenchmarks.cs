@@ -13,8 +13,8 @@ public class ExtendedBenchmarks
     private static readonly String ObjectAccessMages = "obj = new { a: 2, b: 3, c: 4}; obj.a * obj.b - obj.c";
     private static readonly String ObjectAccessYamp = "obj = object(); obj.a = 2; obj.b = 3; obj.c = 4; obj.a * obj.b - obj.c";
 
-    private static readonly Parser YampParser = new Parser();
-    private static readonly Engine MagesEngine = new Engine();
+    private static readonly Parser YampParser = new();
+    private static readonly Engine MagesEngine = new();
 
     [Benchmark]
     public Value Yamp_CreateAndUseFunction()

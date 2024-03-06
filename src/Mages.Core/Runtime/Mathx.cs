@@ -55,11 +55,11 @@ static class Mathx
 
     public static Complex Max(Complex a, Complex b) => IsGreaterThan(a, b) ? a : b;
 
-    public static Complex Ceiling(Complex value) => new Complex(Math.Ceiling(value.Real), Math.Ceiling(value.Imaginary));
+    public static Complex Ceiling(Complex value) => new(Math.Ceiling(value.Real), Math.Ceiling(value.Imaginary));
 
-    public static Complex Floor(Complex value) => new Complex(Math.Floor(value.Real), Math.Floor(value.Imaginary));
+    public static Complex Floor(Complex value) => new(Math.Floor(value.Real), Math.Floor(value.Imaginary));
 
-    public static Complex Round(Complex value) => new Complex(Math.Round(value.Real), Math.Round(value.Imaginary));
+    public static Complex Round(Complex value) => new(Math.Round(value.Real), Math.Round(value.Imaginary));
 
     public static Double Sign(Double value) => (Double)Math.Sign(value);
 
@@ -96,7 +96,7 @@ static class Mathx
         return a - z;
     }
 
-    public static Complex Factorial(Complex value) => new Complex(Factorial(value.Real), Factorial(value.Imaginary));
+    public static Complex Factorial(Complex value) => new(Factorial(value.Real), Factorial(value.Imaginary));
 
     public static Double Factorial(Double value)
     {

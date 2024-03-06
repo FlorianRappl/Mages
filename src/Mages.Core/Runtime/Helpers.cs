@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 static class Helpers
 {
-    public static readonly TypeConverterMap Converters = new TypeConverterMap();
+    public static readonly TypeConverterMap Converters = new();
     private static readonly Object[] Empty = new Object[0];
 
     public static Object Getter(this String str, Object[] arguments)
@@ -280,6 +280,22 @@ static class Helpers
         for (var i = 0; i < arguments.Length; i++)
         {
             obj[i.ToString()] = arguments[i];
+        }
+
+        return obj;
+    }
+
+    public static IDictionary<String, Object> ToJsxObject(this Object[] arguments)
+    {
+        var obj = new Dictionary<String, Object>
+        {
+            ["type"] = arguments.Length > 0 ? arguments[0] : null,
+            ["props"] = arguments.Length > 1 ? arguments[1] : null,
+        };
+
+        if (arguments.Length > 2 && obj["props"] is IDictionary<String, Object> props)
+        {
+            props["children"] = arguments[2];
         }
 
         return obj;

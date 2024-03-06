@@ -8,7 +8,7 @@ using System.Collections.Generic;
 /// </summary>
 public static class TypeFunctions
 {
-    private static Dictionary<Type, Func<Object, Function>> _getters = new Dictionary<Type, Func<Object, Function>>
+    private static Dictionary<Type, Func<Object, Function>> _getters = new()
     {
         { typeof(Double[,]), obj => ((Double[,])obj).Getter },
         { typeof(String), obj => ((String)obj).Getter },

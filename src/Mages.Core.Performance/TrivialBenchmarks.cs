@@ -12,8 +12,8 @@ public class TrivialBenchmarks
     private static readonly String CallStandardFunctions = "sin(pi / 4) * cos(pi * 0.25) + exp(2) * log(3)";
     private static readonly String Transpose4x5Matrix = "M = [1,2,3,4,5;6,7,8,9,10;11,12,13,14,15;16,17+2,18/3,19*4,20-5]'; 0";
 
-    private static readonly Parser YampParser = new Parser();
-    private static readonly Engine MagesEngine = new Engine();
+    private static readonly Parser YampParser = new();
+    private static readonly Engine MagesEngine = new();
 
     [Benchmark]
     public Double Yamp_AddTwoNumbers()

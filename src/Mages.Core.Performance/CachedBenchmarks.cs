@@ -7,7 +7,7 @@ using System.Collections.Generic;
 public class CachedBenchmarks
 {
     private static readonly String CallStandardFunctions = "sin(pi / 4) * cos(pi * 0.25) + exp(2) * log(3)";
-    private static readonly Engine MagesEngine = new Engine();
+    private static readonly Engine MagesEngine = new();
     private static readonly Dictionary<String, Func<Object>> FunctionCache = [];
 
     [Benchmark]
