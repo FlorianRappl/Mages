@@ -1,26 +1,25 @@
-﻿namespace Mages.Core.Vm.Operations
+﻿namespace Mages.Core.Vm.Operations;
+
+using System;
+
+/// <summary>
+/// Stops the execution without changing the stack.
+/// </summary>
+sealed class RetOperation : IOperation
 {
-    using System;
+    public static readonly IOperation Instance = new RetOperation();
 
-    /// <summary>
-    /// Stops the execution without changing the stack.
-    /// </summary>
-    sealed class RetOperation : IOperation
+    private RetOperation()
     {
-        public static readonly IOperation Instance = new RetOperation();
+    }
 
-        private RetOperation()
-        {
-        }
+    public void Invoke(IExecutionContext context)
+    {
+        context.Pause();
+    }
 
-        public void Invoke(IExecutionContext context)
-        {
-            context.Pause();
-        }
-
-        public override String ToString()
-        {
-            return "ret";
-        }
+    public override String ToString()
+    {
+        return "ret";
     }
 }

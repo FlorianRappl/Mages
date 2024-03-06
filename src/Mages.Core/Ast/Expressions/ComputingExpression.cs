@@ -1,27 +1,21 @@
-﻿namespace Mages.Core.Ast.Expressions
+﻿namespace Mages.Core.Ast.Expressions;
+
+using System;
+
+/// <summary>
+/// Represents a computed expression (not-assignable).
+/// </summary>
+/// <remarks>
+/// Creates a new computing expression.
+/// </remarks>
+public abstract class ComputingExpression(TextPosition start, TextPosition end) : BaseExpression(start, end)
 {
-    using System;
+    #region Properties
 
     /// <summary>
-    /// Represents a computed expression (not-assignable).
+    /// Gets if the expression is assignable.
     /// </summary>
-    /// <remarks>
-    /// Creates a new computing expression.
-    /// </remarks>
-    public abstract class ComputingExpression(TextPosition start, TextPosition end) : BaseExpression(start, end)
-    {
+    public Boolean IsAssignable => false;
 
-        #region ctor
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets if the expression is assignable.
-        /// </summary>
-        public Boolean IsAssignable => false;
-
-        #endregion
-    }
+    #endregion
 }

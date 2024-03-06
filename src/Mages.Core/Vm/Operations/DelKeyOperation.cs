@@ -1,32 +1,31 @@
-﻿namespace Mages.Core.Vm.Operations
+﻿namespace Mages.Core.Vm.Operations;
+
+using System;
+using System.Collections.Generic;
+
+/// <summary>
+/// Pops one value and tries to remove the key from the object.
+/// Pushes the result on the stack.
+/// </summary>
+sealed class DelKeyOperation(String name) : IOperation
 {
-    using System;
-    using System.Collections.Generic;
+    private readonly String _name = name;
 
-    /// <summary>
-    /// Pops one value and tries to remove the key from the object.
-    /// Pushes the result on the stack.
-    /// </summary>
-    sealed class DelKeyOperation(String name) : IOperation
+    public void Invoke(IExecutionContext context)
     {
-        private readonly String _name = name;
+        var obj = context.Pop() as IDictionary<String, Object>;
+        var result = false;
 
-        public void Invoke(IExecutionContext context)
+        if (obj != null)
         {
-            var obj = context.Pop() as IDictionary<String, Object>;
-            var result = false;
-
-            if (obj != null)
-            {
-                result = obj.Remove(_name);
-            }
-
-            context.Push(result);
+            result = obj.Remove(_name);
         }
 
-        public override String ToString()
-        {
-            return "delkey " + _name;
-        }
+        context.Push(result);
+    }
+
+    public override String ToString()
+    {
+        return "delkey " + _name;
     }
 }

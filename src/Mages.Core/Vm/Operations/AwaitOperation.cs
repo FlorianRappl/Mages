@@ -1,72 +1,71 @@
-﻿namespace Mages.Core.Vm.Operations
+﻿namespace Mages.Core.Vm.Operations;
+
+using Mages.Core.Runtime;
+using System;
+
+sealed class AwaitOperation : IOperation
 {
-    using Mages.Core.Runtime;
-    using System;
+    public static readonly IOperation Instance = new AwaitOperation();
 
-    sealed class AwaitOperation : IOperation
+    private AwaitOperation()
     {
-        public static readonly IOperation Instance = new AwaitOperation();
+    }
 
-        private AwaitOperation()
+    public void Invoke(IExecutionContext context)
+    {
+        var value = context.Pop();
+        var promise = value as Future;
+
+        if (promise != null)
         {
-        }
-
-        public void Invoke(IExecutionContext context)
-        {
-            var value = context.Pop();
-            var promise = value as Future;
-
-            if (promise != null)
+            if (!promise.IsCompleted)
             {
-                if (!promise.IsCompleted)
-                {
-                    var continuation = new Future();
-                    var position = context.Position;
-                    context.Pause();
-                    context.Push(continuation);
+                var continuation = new Future();
+                var position = context.Position;
+                context.Pause();
+                context.Push(continuation);
 
-                    promise.SetCallback((result, error) =>
-                    {
-                        Conclude(promise, context);
-                        context.Position = position + 1;
-
-                        try
-                        {
-                            (context as ExecutionContext).Execute();
-                            continuation.SetResult(context.Pop());
-                        }
-                        catch (Exception ex)
-                        {
-                            continuation.SetError(ex);
-                        }
-                    });
-                }
-                else
+                promise.SetCallback((result, error) =>
                 {
                     Conclude(promise, context);
-                }
+                    context.Position = position + 1;
+
+                    try
+                    {
+                        (context as ExecutionContext).Execute();
+                        continuation.SetResult(context.Pop());
+                    }
+                    catch (Exception ex)
+                    {
+                        continuation.SetError(ex);
+                    }
+                });
             }
             else
             {
-                context.Push(value);
+                Conclude(promise, context);
             }
         }
-
-        private void Conclude(Future promise, IExecutionContext context)
+        else
         {
-            var error = promise.Error;
+            context.Push(value);
+        }
+    }
 
-            if (error != null)
-            {
-                throw error;
-            }
+    private void Conclude(Future promise, IExecutionContext context)
+    {
+        var error = promise.Error;
 
-            context.Push(promise.Result);
+        if (error != null)
+        {
+            throw error;
         }
 
-        public override String ToString()
-        {
-            return "await";
-        }
+        context.Push(promise.Result);
+    }
+
+    public override String ToString()
+    {
+        return "await";
     }
 }

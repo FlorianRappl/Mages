@@ -1,14 +1,13 @@
-﻿namespace Mages.Core
+﻿namespace Mages.Core;
+
+using System;
+
+static class Undefined
 {
-    using System;
+    public static readonly Object Instance = new Object();
 
-    static class Undefined
+    public static Boolean IsUndefined(this Object o)
     {
-        public static readonly Object Instance = new Object();
-
-        public static Boolean IsUndefined(this Object o)
-        {
-            return Object.ReferenceEquals(o, Instance);
-        }
+        return Object.ReferenceEquals(o, Instance);
     }
 }

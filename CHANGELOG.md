@@ -1,5 +1,6 @@
 # 3.0.0
 
+- Improved GC allocations (#81)
 - Added wrapping of `Task` in `Future` (#64)
 
 # 2.0.3

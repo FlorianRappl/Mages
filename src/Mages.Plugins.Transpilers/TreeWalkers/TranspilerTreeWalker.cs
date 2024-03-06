@@ -304,6 +304,11 @@
             _assigning = assigning;
         }
 
+        void ITreeWalker.Visit(JsxExpression expression)
+        {
+            //TODO
+        }
+
         void ITreeWalker.Visit(ObjectExpression expression)
         {
             expression.Validate(this);

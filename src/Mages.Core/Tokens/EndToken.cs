@@ -1,22 +1,21 @@
-﻿namespace Mages.Core.Tokens
+﻿namespace Mages.Core.Tokens;
+
+using System;
+
+sealed class EndToken(TextPosition position) : IToken
 {
-    using System;
+    private readonly TextPosition _position = position;
 
-    sealed class EndToken(TextPosition position) : IToken
+    public TokenType Type => TokenType.End;
+
+    public String Payload => String.Empty;
+
+    public TextPosition Start => _position;
+
+    public TextPosition End => _position;
+
+    public override String ToString()
     {
-        private readonly TextPosition _position = position;
-
-        public TokenType Type => TokenType.End;
-
-        public String Payload => String.Empty;
-
-        public TextPosition Start => _position;
-
-        public TextPosition End => _position;
-
-        public override String ToString()
-        {
-            return $"EOF / {_position}";
-        }
+        return $"EOF / {_position}";
     }
 }

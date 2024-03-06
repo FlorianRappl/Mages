@@ -1,24 +1,23 @@
-﻿namespace Mages.Core.Vm.Operations
+﻿namespace Mages.Core.Vm.Operations;
+
+using System;
+
+/// <summary>
+/// Tries to remove the named variable from the scope and pushes the result
+/// on the stack.
+/// </summary>
+sealed class DelVarOperation(String name) : IOperation
 {
-    using System;
+    private readonly String _name = name;
 
-    /// <summary>
-    /// Tries to remove the named variable from the scope and pushes the result
-    /// on the stack.
-    /// </summary>
-    sealed class DelVarOperation(String name) : IOperation
+    public void Invoke(IExecutionContext context)
     {
-        private readonly String _name = name;
+        var result = context.Scope.Remove(_name);
+        context.Push(result);
+    }
 
-        public void Invoke(IExecutionContext context)
-        {
-            var result = context.Scope.Remove(_name);
-            context.Push(result);
-        }
-
-        public override String ToString()
-        {
-            return "delvar " + _name;
-        }
+    public override String ToString()
+    {
+        return "delvar " + _name;
     }
 }

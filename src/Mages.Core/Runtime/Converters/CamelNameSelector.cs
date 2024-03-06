@@ -1,67 +1,66 @@
-﻿namespace Mages.Core.Runtime.Converters
+﻿namespace Mages.Core.Runtime.Converters;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+
+sealed class CamelNameSelector : INameSelector
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
+    public static readonly INameSelector Instance = new CamelNameSelector();
 
-    sealed class CamelNameSelector : INameSelector
+    private CamelNameSelector()
     {
-        public static readonly INameSelector Instance = new CamelNameSelector();
+    }
 
-        private CamelNameSelector()
+    public String Select(IEnumerable<String> registered, MemberInfo member)
+    {
+        var name = member.Name;
+
+        if (member is Type == false)
         {
+            if (member is ConstructorInfo)
+            {
+                name = "create";
+            }
+            else if (member is PropertyInfo && name == "Item")
+            {
+                name = "at";
+            }
+            else
+            {
+                name = ConvertToCamelCase(name);
+            }
         }
 
-        public String Select(IEnumerable<String> registered, MemberInfo member)
+        while (registered.Contains(name))
         {
-            var name = member.Name;
-
-            if (member is Type == false)
-            {
-                if (member is ConstructorInfo)
-                {
-                    name = "create";
-                }
-                else if (member is PropertyInfo && name == "Item")
-                {
-                    name = "at";
-                }
-                else
-                {
-                    name = ConvertToCamelCase(name);
-                }
-            }
-
-            while (registered.Contains(name))
-            {
-                name = "_" + name;
-            }
-
-            return name;
+            name = "_" + name;
         }
 
-        private static String ConvertToCamelCase(String str)
+        return name;
+    }
+
+    private static String ConvertToCamelCase(String str)
+    {
+        if (str != null)
         {
-            if (str != null)
+            if (str.Length > 1)
             {
-                if (str.Length > 1)
+                var words = str.Split(new [] { '-' }, StringSplitOptions.RemoveEmptyEntries);
+                var result = String.Concat(words[0].Substring(0, 1).ToLowerInvariant(), words[0].Substring(1));
+
+                for (var i = 1; i < words.Length; i++)
                 {
-                    var words = str.Split(new [] { '-' }, StringSplitOptions.RemoveEmptyEntries);
-                    var result = String.Concat(words[0].Substring(0, 1).ToLowerInvariant(), words[0].Substring(1));
-
-                    for (var i = 1; i < words.Length; i++)
-                    {
-                        result = String.Concat(result, words[i].Substring(0, 1).ToUpperInvariant(), words[i].Substring(1));
-                    }
-
-                    return result;
+                    result = String.Concat(result, words[i].Substring(0, 1).ToUpperInvariant(), words[i].Substring(1));
                 }
 
-                return str.ToLowerInvariant();
+                return result;
             }
 
-            return str;
+            return str.ToLowerInvariant();
         }
+
+        return str;
     }
 }

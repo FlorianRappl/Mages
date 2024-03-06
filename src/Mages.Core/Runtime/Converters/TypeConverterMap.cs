@@ -1,108 +1,107 @@
-﻿namespace Mages.Core.Runtime.Converters
+﻿namespace Mages.Core.Runtime.Converters;
+
+using System;
+using System.Collections.Generic;
+
+sealed class TypeConverterMap
 {
-    using System;
-    using System.Collections.Generic;
+    private readonly Dictionary<Type, Dictionary<Type, Func<Object, Object>>> _cache = [];
 
-    sealed class TypeConverterMap
+    public Func<Object, Object> FindConverter(Type to)
     {
-        private readonly Dictionary<Type, Dictionary<Type, Func<Object, Object>>> _cache = [];
-
-        public Func<Object, Object> FindConverter(Type to)
+        if (to != typeof(Object))
         {
-            if (to != typeof(Object))
+            var mapping = GetConverterMappingFromCache(to);
+
+            return obj =>
             {
-                var mapping = GetConverterMappingFromCache(to);
-
-                return obj =>
+                if (obj != null)
                 {
-                    if (obj != null)
+                    var converter = default(Func<Object, Object>);
+                    var type = obj.GetType();
+
+                    if (mapping.TryGetValue(type, out converter))
                     {
-                        var converter = default(Func<Object, Object>);
-                        var type = obj.GetType();
-
-                        if (mapping.TryGetValue(type, out converter))
-                        {
-                            return converter.Invoke(obj);
-                        }
+                        return converter.Invoke(obj);
                     }
+                }
 
-                    return obj;
-                };
-            }
-
-            return StandardConverters.Identity;
+                return obj;
+            };
         }
 
-        public Func<Object, Object> FindConverter(Type from, Type to)
+        return StandardConverters.Identity;
+    }
+
+    public Func<Object, Object> FindConverter(Type from, Type to)
+    {
+        if (from != to && to != typeof(Object))
         {
-            if (from != to && to != typeof(Object))
+            var converters = StandardConverters.List;
+            var length = converters.Count;
+
+            for (var i = 0; i < length; ++i)
             {
-                var converters = StandardConverters.List;
-                var length = converters.Count;
+                var converter = converters[i];
 
-                for (var i = 0; i < length; ++i)
+                if (converter.From.IsAssignableFrom(from) && to.IsAssignableFrom(converter.To))
                 {
-                    var converter = converters[i];
-
-                    if (converter.From.IsAssignableFrom(from) && to.IsAssignableFrom(converter.To))
-                    {
-                        return converter.Converter;
-                    }
+                    return converter.Converter;
                 }
-                
-                if (typeof(Array).IsAssignableFrom(to))
-                {
-                    var element = to.GetElementType();
-                    var converter = FindConverter(element);
-                    return ArrayConverters.Get(from, element, converter);
-                }
-
-                if (typeof(Delegate).IsAssignableFrom(to))
-                {
-                    var inv = to.GetMethod("Invoke");
-                    var p = inv.GetParameters();
-                    var t = TargetWrapper.Construct(inv.ReturnType, p);
-
-                    if (t != null)
-                    {
-                        return obj =>
-                        {
-                            var g = t.GetConstructor(new[] { typeof(Object) }).Invoke(new[] { obj });
-                            return Delegate.CreateDelegate(to, g, "Invoke");
-                        };
-                    }
-                }
-
-                return StandardConverters.Default;
+            }
+            
+            if (typeof(Array).IsAssignableFrom(to))
+            {
+                var element = to.GetElementType();
+                var converter = FindConverter(element);
+                return ArrayConverters.Get(from, element, converter);
             }
 
-            return StandardConverters.Identity;
-        }
-
-        private Dictionary<Type, Func<Object, Object>> GetConverterMappingFromCache(Type to)
-        {
-            var mapping = default(Dictionary<Type, Func<Object, Object>>);
-
-            if (!_cache.TryGetValue(to, out mapping))
+            if (typeof(Delegate).IsAssignableFrom(to))
             {
-                var converters = StandardConverters.List;
-                var length = converters.Count;
-                mapping = [];
+                var inv = to.GetMethod("Invoke");
+                var p = inv.GetParameters();
+                var t = TargetWrapper.Construct(inv.ReturnType, p);
 
-                for (var i = 0; i < length; ++i)
+                if (t != null)
                 {
-                    var converter = converters[i];
-
-                    if (to.IsAssignableFrom(converter.To))
+                    return obj =>
                     {
-                        mapping.Add(converter.From, converter.Converter);
-                    }
+                        var g = t.GetConstructor(new[] { typeof(Object) }).Invoke(new[] { obj });
+                        return Delegate.CreateDelegate(to, g, "Invoke");
+                    };
                 }
-
-                _cache.Add(to, mapping);
             }
 
-            return mapping;
+            return StandardConverters.Default;
         }
+
+        return StandardConverters.Identity;
+    }
+
+    private Dictionary<Type, Func<Object, Object>> GetConverterMappingFromCache(Type to)
+    {
+        var mapping = default(Dictionary<Type, Func<Object, Object>>);
+
+        if (!_cache.TryGetValue(to, out mapping))
+        {
+            var converters = StandardConverters.List;
+            var length = converters.Count;
+            mapping = [];
+
+            for (var i = 0; i < length; ++i)
+            {
+                var converter = converters[i];
+
+                if (to.IsAssignableFrom(converter.To))
+                {
+                    mapping.Add(converter.From, converter.Converter);
+                }
+            }
+
+            _cache.Add(to, mapping);
+        }
+
+        return mapping;
     }
 }

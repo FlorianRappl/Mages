@@ -1,18 +1,17 @@
-﻿namespace Mages.Core
+﻿namespace Mages.Core;
+
+/// <summary>
+/// Represents a range of characters within the source code.
+/// </summary>
+public interface ITextRange
 {
     /// <summary>
-    /// Represents a range of characters within the source code.
+    /// Gets the start position of the token.
     /// </summary>
-    public interface ITextRange
-    {
-        /// <summary>
-        /// Gets the start position of the token.
-        /// </summary>
-        TextPosition Start { get; }
+    TextPosition Start { get; }
 
-        /// <summary>
-        /// Gets the end position of the token.
-        /// </summary>
-        TextPosition End { get; }
-    }
+    /// <summary>
+    /// Gets the end position of the token.
+    /// </summary>
+    TextPosition End { get; }
 }

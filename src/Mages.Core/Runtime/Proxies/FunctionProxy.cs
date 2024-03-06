@@ -1,27 +1,26 @@
-﻿namespace Mages.Core.Runtime.Proxies
+﻿namespace Mages.Core.Runtime.Proxies;
+
+using Mages.Core.Runtime.Functions;
+using System;
+using System.Reflection;
+
+abstract class FunctionProxy(WrapperObject obj, MethodBase[] methods) : BaseProxy(obj)
 {
-    using Mages.Core.Runtime.Functions;
-    using System;
-    using System.Reflection;
+    protected readonly MethodBase[] _methods = methods;
+    private readonly Int32 _maxParameters = methods.MaxParameters();
+    protected Function _proxy;
 
-    abstract class FunctionProxy(WrapperObject obj, MethodBase[] methods) : BaseProxy(obj)
+    protected Object TryCurry(Object[] arguments)
     {
-        protected readonly MethodBase[] _methods = methods;
-        private readonly Int32 _maxParameters = methods.MaxParameters();
-        protected Function _proxy;
+        return Curry.Min(_maxParameters, _proxy, arguments);
+    }
 
-        protected Object TryCurry(Object[] arguments)
-        {
-            return Curry.Min(_maxParameters, _proxy, arguments);
-        }
+    protected override Object GetValue()
+    {
+        return _proxy;
+    }
 
-        protected override Object GetValue()
-        {
-            return _proxy;
-        }
-
-        protected override void SetValue(Object value)
-        {
-        }
+    protected override void SetValue(Object value)
+    {
     }
 }

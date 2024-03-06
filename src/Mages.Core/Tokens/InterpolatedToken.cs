@@ -1,39 +1,38 @@
-﻿namespace Mages.Core.Tokens
+﻿namespace Mages.Core.Tokens;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+sealed class InterpolatedToken(String content, List<List<IToken>> parts, IEnumerable<ParseError> errors, TextPosition start, TextPosition end) : IToken
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    private static readonly IEnumerable<ParseError> NoErrors = Enumerable.Empty<ParseError>();
 
-    sealed class InterpolatedToken(String content, List<List<IToken>> parts, IEnumerable<ParseError> errors, TextPosition start, TextPosition end) : IToken
+    private readonly String _content = content;
+    private readonly TextPosition _start = start;
+    private readonly TextPosition _end = end;
+    private readonly IEnumerable<ParseError> _errors = errors ?? NoErrors;
+    private readonly List<List<IToken>> _parts = parts;
+
+    public Int32 ReplacementCount => _parts.Count;
+
+    public IEnumerable<IToken> this[Int32 index]
     {
-        private static readonly IEnumerable<ParseError> NoErrors = Enumerable.Empty<ParseError>();
+        get { return _parts[index]; }
+    }
 
-        private readonly String _content = content;
-        private readonly TextPosition _start = start;
-        private readonly TextPosition _end = end;
-        private readonly IEnumerable<ParseError> _errors = errors ?? NoErrors;
-        private readonly List<List<IToken>> _parts = parts;
+    public IEnumerable<ParseError> Errors => _errors;
 
-        public Int32 ReplacementCount => _parts.Count;
+    public TokenType Type => TokenType.InterpolatedString;
 
-        public IEnumerable<IToken> this[Int32 index]
-        {
-            get { return _parts[index]; }
-        }
+    public String Payload => _content;
 
-        public IEnumerable<ParseError> Errors => _errors;
+    public TextPosition Start => _start;
 
-        public TokenType Type => TokenType.InterpolatedString;
+    public TextPosition End => _end;
 
-        public String Payload => _content;
-
-        public TextPosition Start => _start;
-
-        public TextPosition End => _end;
-
-        public override String ToString()
-        {
-            return $"InterpolatedString / {_start} -- {_end} / '{_content}'";
-        }
+    public override String ToString()
+    {
+        return $"InterpolatedString / {_start} -- {_end} / '{_content}'";
     }
 }

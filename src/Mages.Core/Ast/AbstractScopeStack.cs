@@ -1,28 +1,27 @@
-﻿namespace Mages.Core.Ast
+﻿namespace Mages.Core.Ast;
+
+using System.Collections.Generic;
+
+sealed class AbstractScopeStack
 {
-    using System.Collections.Generic;
+    private readonly Stack<AbstractScope> _scopes;
 
-    sealed class AbstractScopeStack
+    public AbstractScopeStack(AbstractScope root)
     {
-        private readonly Stack<AbstractScope> _scopes;
+        _scopes = new Stack<AbstractScope>();
+        _scopes.Push(root);
+    }
 
-        public AbstractScopeStack(AbstractScope root)
-        {
-            _scopes = new Stack<AbstractScope>();
-            _scopes.Push(root);
-        }
+    public AbstractScope Current => _scopes.Peek();
 
-        public AbstractScope Current => _scopes.Peek();
+    public void PushNew()
+    {
+        var scope = new AbstractScope(Current);
+        _scopes.Push(scope);
+    }
 
-        public void PushNew()
-        {
-            var scope = new AbstractScope(Current);
-            _scopes.Push(scope);
-        }
-
-        public AbstractScope PopCurrent()
-        {
-            return _scopes.Pop();
-        }
+    public AbstractScope PopCurrent()
+    {
+        return _scopes.Pop();
     }
 }

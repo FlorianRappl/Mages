@@ -1,32 +1,25 @@
-﻿namespace Mages.Core.Tokens
+﻿namespace Mages.Core.Tokens;
+
+static class TextPositionExtensions
 {
-    static class TextPositionExtensions
+    public static ITextRange ToRange(this TextPosition position)
     {
-        public static ITextRange ToRange(this TextPosition position)
-        {
-            var start = position;
-            var end = new TextPosition(start.Row, start.Column + 1, start.Index + 1);
-            return start.To(end);
-        }
+        var start = position;
+        var end = new TextPosition(start.Row, start.Column + 1, start.Index + 1);
+        return start.To(end);
+    }
 
-        public static ITextRange From(this TextPosition end, TextPosition start)
-        {
-            return start.To(end);
-        }
+    public static ITextRange From(this TextPosition end, TextPosition start) => start.To(end);
 
-        public static ITextRange To(this TextPosition start, TextPosition end)
-        {
-            return new TextRange(start, end);
-        }
+    public static ITextRange To(this TextPosition start, TextPosition end) => new TextRange(start, end);
 
-        struct TextRange(TextPosition start, TextPosition end) : ITextRange
-        {
-            private readonly TextPosition _start = start;
-            private readonly TextPosition _end = end;
+    readonly struct TextRange(TextPosition start, TextPosition end) : ITextRange
+    {
+        private readonly TextPosition _start = start;
+        private readonly TextPosition _end = end;
 
-            public TextPosition Start => _start;
+        public TextPosition Start => _start;
 
-            public TextPosition End => _end;
-        }
+        public TextPosition End => _end;
     }
 }

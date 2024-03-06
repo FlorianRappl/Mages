@@ -1,29 +1,28 @@
-﻿namespace Mages.Core.Performance
+﻿namespace Mages.Core.Performance;
+
+using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Running;
+using System;
+
+static class Program
 {
-    using BenchmarkDotNet.Configs;
-    using BenchmarkDotNet.Running;
-    using System;
-
-    static class Program
+    static void Main(String[] arguments)
     {
-        static void Main(String[] arguments)
-        {
-            var config = DefaultConfig.Instance.WithOptions(ConfigOptions.DisableOptimizationsValidator);
-            var shouldPause = true;
-            BenchmarkRunner.Run<TrivialBenchmarks>(config);
-            Pause(shouldPause);
-            BenchmarkRunner.Run<CachedBenchmarks>(config);
-            Pause(shouldPause);
-            BenchmarkRunner.Run<ExtendedBenchmarks>(config);
-        }
+        var config = DefaultConfig.Instance.WithOptions(ConfigOptions.DisableOptimizationsValidator);
+        var shouldPause = true;
+        BenchmarkRunner.Run<TrivialBenchmarks>(config);
+        Pause(shouldPause);
+        BenchmarkRunner.Run<CachedBenchmarks>(config);
+        Pause(shouldPause);
+        BenchmarkRunner.Run<ExtendedBenchmarks>(config);
+    }
 
-        private static void Pause(Boolean shouldPause)
+    private static void Pause(Boolean shouldPause)
+    {
+        if (shouldPause)
         {
-            if (shouldPause)
-            {
-                Console.WriteLine("Execution paused. Press any key to continue ...");
-                Console.ReadLine();
-            }
+            Console.WriteLine("Execution paused. Press any key to continue ...");
+            Console.ReadLine();
         }
     }
 }

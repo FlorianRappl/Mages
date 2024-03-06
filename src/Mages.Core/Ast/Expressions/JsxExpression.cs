@@ -1,18 +1,22 @@
 ﻿namespace Mages.Core.Ast.Expressions;
 
 /// <summary>
-/// Represents a function expression.
+/// Represents an expression containing a JSX subset.
 /// </summary>
 /// <remarks>
-/// Creates a new function expression.
+/// Creates a new JSX expression.
 /// </remarks>
-public sealed class FunctionExpression(AbstractScope scope, ParameterExpression parameters, IStatement body) : ComputingExpression(parameters.Start, body.End), IExpression
+public sealed class JsxExpression(AbstractScope scope, IExpression element, IExpression[] props, IExpression[] children) : ComputingExpression(element.Start, element.End), IExpression
 {
     #region Fields
 
     private readonly AbstractScope _scope = scope;
-    private readonly ParameterExpression _parameters = parameters;
-    private readonly IStatement _body = body;
+    private readonly IExpression _element = element;
+    private readonly IExpression[] _props = props;
+    private readonly IExpression[] _children = children;
+
+    #endregion
+    #region ctor
 
     #endregion
 
@@ -24,14 +28,19 @@ public sealed class FunctionExpression(AbstractScope scope, ParameterExpression 
     public AbstractScope Scope => _scope;
 
     /// <summary>
-    /// Gets the defined parameters.
+    /// Gets the defined element. In case of a fragment this is null.
     /// </summary>
-    public ParameterExpression Parameters => _parameters;
+    public IExpression Element => _element;
 
     /// <summary>
-    /// Gets the body to use.
+    /// Gets the props to use.
     /// </summary>
-    public IStatement Body => _body;
+    public IExpression[] Props => _props;
+
+    /// <summary>
+    /// Gets the children to use.
+    /// </summary>
+    public IExpression[] Children => _children;
 
     #endregion
 

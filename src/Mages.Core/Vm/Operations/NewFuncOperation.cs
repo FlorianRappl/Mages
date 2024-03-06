@@ -1,30 +1,29 @@
-﻿namespace Mages.Core.Vm.Operations
+﻿namespace Mages.Core.Vm.Operations;
+
+using Mages.Core.Runtime;
+using System;
+
+/// <summary>
+/// Pushes one new element on the stack.
+/// </summary>
+sealed class NewFuncOperation(ParameterDefinition[] parameters, IOperation[] operations) : IOperation
 {
-    using Mages.Core.Runtime;
-    using System;
+    private readonly ParameterDefinition[] _parameters = parameters;
+    private readonly IOperation[] _operations = operations;
 
-    /// <summary>
-    /// Pushes one new element on the stack.
-    /// </summary>
-    sealed class NewFuncOperation(ParameterDefinition[] parameters, IOperation[] operations) : IOperation
+    public void Invoke(IExecutionContext context)
     {
-        private readonly ParameterDefinition[] _parameters = parameters;
-        private readonly IOperation[] _operations = operations;
+        var parentScope = context.Scope;
+        var function = new LocalFunction(parentScope, _parameters, _operations);
+        context.Push(function.Pointer);
+    }
 
-        public void Invoke(IExecutionContext context)
-        {
-            var parentScope = context.Scope;
-            var function = new LocalFunction(parentScope, _parameters, _operations);
-            context.Push(function.Pointer);
-        }
-
-        public override String ToString()
-        {
-            var instructions = new String[3];
-            instructions[0] = "newfunc start";
-            instructions[1] = _operations.Serialize();
-            instructions[2] = "newfunc end";
-            return String.Join(Environment.NewLine, instructions);
-        }
+    public override String ToString()
+    {
+        var instructions = new String[3];
+        instructions[0] = "newfunc start";
+        instructions[1] = _operations.Serialize();
+        instructions[2] = "newfunc end";
+        return String.Join(Environment.NewLine, instructions);
     }
 }

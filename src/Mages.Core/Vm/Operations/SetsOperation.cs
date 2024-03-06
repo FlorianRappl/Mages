@@ -1,25 +1,24 @@
-﻿namespace Mages.Core.Vm.Operations
+﻿namespace Mages.Core.Vm.Operations;
+
+using Mages.Core.Runtime;
+using System;
+
+/// <summary>
+/// Peeks the top element from the stack.
+/// </summary>
+sealed class SetsOperation(String name) : IOperation
 {
-    using Mages.Core.Runtime;
-    using System;
+    private readonly String _name = name;
 
-    /// <summary>
-    /// Peeks the top element from the stack.
-    /// </summary>
-    sealed class SetsOperation(String name) : IOperation
+    public void Invoke(IExecutionContext context)
     {
-        private readonly String _name = name;
+        var value = context.Pop();
+        context.Scope.SetProperty(_name, value);
+        context.Push(value);
+    }
 
-        public void Invoke(IExecutionContext context)
-        {
-            var value = context.Pop();
-            context.Scope.SetProperty(_name, value);
-            context.Push(value);
-        }
-
-        public override String ToString()
-        {
-            return String.Concat("sets ", _name);
-        }
+    public override String ToString()
+    {
+        return String.Concat("sets ", _name);
     }
 }

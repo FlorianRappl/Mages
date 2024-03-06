@@ -1,28 +1,27 @@
-﻿namespace Mages.Core.Vm
+﻿namespace Mages.Core.Vm;
+
+using System;
+
+/// <summary>
+/// Extension methods for IExecutionContext instances.
+/// </summary>
+public static class ExecutionContextExtensions
 {
-    using System;
+    /// <summary>
+    /// Stops the execution of the given context.
+    /// </summary>
+    /// <param name="context">The context to stop.</param>
+    public static void Stop(this IExecutionContext context)
+    {
+        context.Position = Int32.MaxValue;
+    }
 
     /// <summary>
-    /// Extension methods for IExecutionContext instances.
+    /// Pauses the execution of the given context.
     /// </summary>
-    public static class ExecutionContextExtensions
+    /// <param name="context">The context to pause.</param>
+    public static void Pause(this IExecutionContext context)
     {
-        /// <summary>
-        /// Stops the execution of the given context.
-        /// </summary>
-        /// <param name="context">The context to stop.</param>
-        public static void Stop(this IExecutionContext context)
-        {
-            context.Position = Int32.MaxValue;
-        }
-
-        /// <summary>
-        /// Pauses the execution of the given context.
-        /// </summary>
-        /// <param name="context">The context to pause.</param>
-        public static void Pause(this IExecutionContext context)
-        {
-            context.Position = context.End;
-        }
+        context.Position = context.End;
     }
 }

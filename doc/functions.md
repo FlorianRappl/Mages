@@ -284,9 +284,9 @@ M = rand(3, 2) // a 3x2 matrix with numbers between 0 and 1
 Works with one argument, which could be anything.
 
 ```
-x = type(true) // "Boolean"
-x = type([1, 2, 3]) // "Matrix"
-x = type("foo") // "String"
+x = type(true).name // "Boolean"
+x = type([1, 2, 3]).name // "Matrix"
+x = type("foo").name // "String"
 ```
 
 ### Checking Types

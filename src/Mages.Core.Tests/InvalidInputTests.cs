@@ -284,7 +284,7 @@
                 return new ParameterDefinition(v, r);
             }
 
-            return default(ParameterDefinition);
+            return default;
         }
     }
 }

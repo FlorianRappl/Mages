@@ -1,56 +1,55 @@
-﻿namespace Mages.Core
+﻿namespace Mages.Core;
+
+using System;
+
+/// <summary>
+/// Represents the definition of a function parameter.
+/// </summary>
+/// <remarks>
+/// Creates a new parameter definition.
+/// </remarks>
+public struct ParameterDefinition(String name, Boolean required) : IEquatable<ParameterDefinition>
 {
-    using System;
+    private readonly String _name = name;
+    private readonly Boolean _required = required;
 
     /// <summary>
-    /// Represents the definition of a function parameter.
+    /// Gets the name of the parameter.
     /// </summary>
-    /// <remarks>
-    /// Creates a new parameter definition.
-    /// </remarks>
-    public struct ParameterDefinition(String name, Boolean required) : IEquatable<ParameterDefinition>
+    public String Name => _name;
+
+    /// <summary>
+    /// Gets if the parameter is required.
+    /// </summary>
+    public Boolean IsRequired => _required;
+
+    /// <summary>
+    /// Gets the hash code.
+    /// </summary>
+    public override Int32 GetHashCode()
     {
-        private readonly String _name = name;
-        private readonly Boolean _required = required;
+        return _name.GetHashCode() + _required.GetHashCode();
+    }
 
-        /// <summary>
-        /// Gets the name of the parameter.
-        /// </summary>
-        public String Name => _name;
-
-        /// <summary>
-        /// Gets if the parameter is required.
-        /// </summary>
-        public Boolean IsRequired => _required;
-
-        /// <summary>
-        /// Gets the hash code.
-        /// </summary>
-        public override Int32 GetHashCode()
+    /// <summary>
+    /// Checks for equality to the other object.
+    /// </summary>
+    public override Boolean Equals(Object obj)
+    {
+        if (obj is ParameterDefinition)
         {
-            return _name.GetHashCode() + _required.GetHashCode();
+            return Equals((ParameterDefinition)obj);
         }
 
-        /// <summary>
-        /// Checks for equality to the other object.
-        /// </summary>
-        public override Boolean Equals(Object obj)
-        {
-            if (obj is ParameterDefinition)
-            {
-                return Equals((ParameterDefinition)obj);
-            }
+        return false;
+    }
 
-            return false;
-        }
-
-        /// <summary>
-        /// Checks for equality to the other parameter definition.
-        /// </summary>
-        public Boolean Equals(ParameterDefinition other)
-        {
-            return String.CompareOrdinal(_name, other._name) == 0 && 
-                _required == other._required;
-        }
+    /// <summary>
+    /// Checks for equality to the other parameter definition.
+    /// </summary>
+    public Boolean Equals(ParameterDefinition other)
+    {
+        return String.CompareOrdinal(_name, other._name) == 0 && 
+            _required == other._required;
     }
 }
