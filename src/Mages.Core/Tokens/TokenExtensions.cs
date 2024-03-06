@@ -40,6 +40,12 @@ static class TokenExtensions
         return type == a || type == b;
     }
 
+    public static Boolean IsOneOf(this IToken token, TokenType a, TokenType b, TokenType c)
+    {
+        var type = token.Type;
+        return type == a || type == b || type == c;
+    }
+
     public static Boolean IsOneOf(this IToken token, TokenType a, TokenType b, TokenType c, TokenType d)
     {
         var type = token.Type;

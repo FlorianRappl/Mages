@@ -5,6 +5,9 @@ using Mages.Core.Ast.Statements;
 using Mages.Core.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
+using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 sealed class ExpressionParser : IParser
 {
@@ -875,7 +878,14 @@ sealed class ExpressionParser : IParser
     {
         if (tokens.Current.Type == TokenType.Less)
         {
-            return ParseJsxContent(tokens);
+            var jsx = ParseJsxContent(tokens);
+
+            if (tokens.Current.IsIgnorable())
+            {
+                tokens.NextNonIgnorable();
+            }
+
+            return jsx;
         }
         else if (tokens.Current.Type == TokenType.JsxStartClose)
         {
@@ -906,15 +916,16 @@ sealed class ExpressionParser : IParser
             tokens.NextNonIgnorable();
             var element = ParseJsxElement(tokens);
             var props = ParseJsxProps(tokens);
-            var selfClosing = tokens.Current.Type == TokenType.JsxEndClose;
-            var end = tokens.Current.End;
-            tokens.NextNonIgnorable();
 
-            if (selfClosing)
+            // Self-closing case
+            if (tokens.Current.Type == TokenType.JsxEndClose)
             {
+                var end = tokens.Current.End;
+                tokens.NextNonIgnorable();
                 return new JsxExpression(scope, element, props, [], start.To(end));
             }
 
+            tokens.MoveNext();
             var children = ParseJsxChildren(tokens);
 
             if (tokens.Current.Type == TokenType.JsxStartClose)
@@ -924,8 +935,8 @@ sealed class ExpressionParser : IParser
 
                 if (tokens.Current.Type == TokenType.Greater)
                 {
-                    end = tokens.Current.End;
-                    tokens.NextNonIgnorable();
+                    var end = tokens.Current.End;
+                    tokens.MoveNext();
 
                     if (controlElement.Is(element))
                     {
@@ -998,7 +1009,7 @@ sealed class ExpressionParser : IParser
             current = tokens.Current;
         }
 
-        var text = StringBuilderPool.Stringify(buffer).Trim();
+        var text = StringBuilderPool.Stringify(buffer);
         return ConstantExpression.From(text, start.To(end));
     }
 
@@ -1007,6 +1018,14 @@ sealed class ExpressionParser : IParser
         if (tokens.Current.Type == TokenType.OpenScope)
         {
             tokens.NextNonIgnorable();
+
+            if (tokens.Current.Type == TokenType.CloseScope)
+            {
+                // Special case of empty expression
+                tokens.NextNonIgnorable();
+                return null;
+            }
+
             var value = ParseConditional(tokens);
 
             if (tokens.Current.Type == TokenType.CloseScope)
@@ -1021,27 +1040,63 @@ sealed class ExpressionParser : IParser
         return new InvalidExpression(ErrorCode.JsxExpressionExpected, tokens.Current);
     }
 
-    private static IExpression ParseJsxElement(IEnumerator<IToken> tokens)
+    private IExpression ParseJsxElement(IEnumerator<IToken> tokens)
     {
-        IExpression expr = null;
-
-        // Non-fragment case, i.e., non-empty
-        if (tokens.Current.Type != TokenType.Greater)
+        if (tokens.Current.Type == TokenType.Greater)
         {
-            expr = ParseIdentifier(tokens);
+            // Fragment case, i.e., empty
+            return new IdentifierExpression("", tokens.Current.Start, tokens.Current.End);
+        }
 
-            if (expr is not null)
+        var expr = ParseJsxIdentifier(tokens);
+
+        if (expr is IdentifierExpression ident)
+        {
+            if (!ident.Name.IsUppercased() && tokens.Current.Type != TokenType.Dot)
+            {
+                return ident;
+            }
+
+            expr = new VariableExpression(ident.Name, _scopes.Current, ident.Start, ident.End);
+
+            while (tokens.Current.Type == TokenType.Dot)
             {
                 // use a member expression
-                while (tokens.Current.Type == TokenType.Dot)
-                {
-                    var identifier = ParseIdentifier(tokens.NextNonIgnorable());
-                    expr = new MemberExpression(expr, identifier);
-                }
+                var identifier = ParseVariable(tokens.NextNonIgnorable());
+                expr = new MemberExpression(expr, identifier);
             }
         }
 
         return expr;
+    }
+
+    private IExpression ParseJsxIdentifier(IEnumerator<IToken> tokens)
+    {
+        var start = tokens.Current;
+
+        if (start.IsNeither(TokenType.Identifier, TokenType.Keyword))
+        {
+            tokens.NextNonIgnorable();
+            return new InvalidExpression(ErrorCode.IdentifierExpected, start);
+        }
+
+        var end = start;
+        var name = StringBuilderPool.Pull();
+
+        do
+        {
+            end = tokens.Current;
+            name.Append(end.Payload);
+            tokens.MoveNext();
+        }
+        while (tokens.Current.IsOneOf(TokenType.Identifier, TokenType.Subtract, TokenType.Number, TokenType.Keyword));
+
+        if (tokens.Current.IsIgnorable())
+        {
+            tokens.NextNonIgnorable();
+        }
+
+        return new IdentifierExpression(name.Stringify(), start.Start, end.End);
     }
 
     private IExpression[] ParseJsxProps(IEnumerator<IToken> tokens)
@@ -1059,7 +1114,7 @@ sealed class ExpressionParser : IParser
 
     private IExpression ParseJsxProp(IEnumerator<IToken> tokens)
     {
-        var ident = ParseIdentifier(tokens);
+        var ident = ParseJsxIdentifier(tokens);
 
         if (tokens.Current.Type == TokenType.Assignment)
         {
@@ -1076,7 +1131,12 @@ sealed class ExpressionParser : IParser
             }
             else
             {
+                var current = tokens.Current;
                 var value = ParseJsxExpressionSwitch(tokens);
+
+                // Special case of empty expression is not allowed here
+                value ??= new InvalidExpression(ErrorCode.JsxExpressionPropEmpty, current);
+
                 return new PropertyExpression(ident, value);
             }
         }
@@ -1090,7 +1150,13 @@ sealed class ExpressionParser : IParser
 
         while (tokens.Current.IsNeither(TokenType.JsxStartClose, TokenType.End))
         {
-            children.Add(ParseJsxContent(tokens));
+            var child = ParseJsxContent(tokens);
+
+            // ignore special case of empty expressions
+            if (child is not null)
+            {
+                children.Add(child);
+            }
         }
 
         return [.. children];

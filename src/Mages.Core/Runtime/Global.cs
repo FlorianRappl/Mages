@@ -106,6 +106,7 @@ static class Global
         { "imag", ComplexFunctions.Imag },
         { "arg", ComplexFunctions.Arg },
         { "jsx", StandardFunctions.Jsx },
+        { "html", Stringify.Html },
 
         // Constants
         { "e", Constants.E },

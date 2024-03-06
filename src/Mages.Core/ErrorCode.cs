@@ -215,8 +215,13 @@ public enum ErrorCode
     /// <summary>
     /// See description.
     /// </summary>
-    [Description("A JSX property value must follow with an expression switch ( '{' ) or a constant string.")]
+    [Description("A JSX prop value must follow with an expression switch ( '{' ) or a constant string.")]
     JsxExpressionPropSyntax,
+    /// <summary>
+    /// See description.
+    /// </summary>
+    [Description("A JSX prop expression must have some content and cannot be empty.")]
+    JsxExpressionPropEmpty,
     /// <summary>
     /// See description.
     /// </summary>

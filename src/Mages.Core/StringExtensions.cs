@@ -60,4 +60,20 @@ public static class StringExtensions
 
         return round == 0 && curly == 0 && square == 0;
     }
+
+    /// <summary>
+    /// Checks if the provided string starts with an uppercase letter.
+    /// </summary>
+    /// <param name="source">The string to check.</param>
+    /// <returns>True if the string starts with an uppercase letter, otherwise false.</returns>
+    public static Boolean IsUppercased(this String source)
+    {
+        if (!String.IsNullOrEmpty(source))
+        {
+            var chr = source[0];
+            return chr >= 'A' && chr <= 'Z';
+        }
+
+        return false;
+    }
 }

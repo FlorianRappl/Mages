@@ -1,5 +1,4 @@
-﻿using Mages.Core.Tokens;
-using System;
+﻿using System;
 
 namespace Mages.Core.Ast.Expressions;
 
@@ -37,6 +36,11 @@ static class ExpressionExtensions
             if (first is IdentifierExpression i1 && second is IdentifierExpression i2)
             {
                 return i1.Name == i2.Name;
+            }
+
+            if (first is VariableExpression v1 && second is VariableExpression v2)
+            {
+                return v1.Scope == v2.Scope && v1.Name == v2.Name;
             }
 
             if (first is MemberExpression m1 && second is MemberExpression m2)

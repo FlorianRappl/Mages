@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Numerics;
 
@@ -19,6 +20,11 @@ public static class Stringify
     /// Contains the JSON function.
     /// </summary>
     public static readonly Function Json = new(args => AsJson(args.Length > 0 ? args[0] : null));
+
+    /// <summary>
+    /// Contains the HTML function.
+    /// </summary>
+    public static readonly Function Html = new(args => AsHtml(args.Length > 0 ? args[0] : null));
 
     /// <summary>
     /// Converts the number to a string.
@@ -125,6 +131,81 @@ public static class Stringify
     {
         var escaped = str.Replace("\"", "\\\"");
         return String.Concat("\"", escaped, "\"");
+    }
+
+    /// <summary>
+    /// Converts the given MAGES object to an HTML string.
+    /// </summary>
+    /// <param name="value">The object to represent.</param>
+    /// <returns>The HTML representation.</returns>
+    public static String AsHtml(Object value)
+    {
+        if (value is IDictionary<String, Object> jsxElement)
+        {
+            jsxElement.TryGetValue("type", out var type);
+            jsxElement.TryGetValue("props", out var props);
+
+            if (type is not null)
+            {
+                if (type is Function f)
+                {
+                    return AsHtml(f([props]));
+                }
+                else if (type is String name)
+                {
+                    var (attrs, content) = InspectProps(props);
+                    // Fragment case -> type is ""
+                    return String.IsNullOrEmpty(name) ? content : $"<{name}{attrs}>{content}</{name}>";
+                }
+            }
+            else
+            {
+                var content = new List<String>();
+
+                foreach (var child in jsxElement)
+                {
+                    content.Add(AsHtml(child.Value));
+                }
+
+                return String.Join("", content);
+            }
+        }
+        else if (value is String str)
+        {
+            return str;
+        }
+        else if (value is Double d)
+        {
+            return d.ToString();
+        }
+
+        return "";
+    }
+
+    private static (string, string) InspectProps(Object args)
+    {
+        var content = "";
+
+        if (args is IDictionary<String, Object> props)
+        {
+            var attrs = new List<String> { "" };
+
+            foreach (var (key, value) in props)
+            {
+                if (key == "children")
+                {
+                    content = AsHtml(value);
+                }
+                else
+                {
+                    attrs.Add($"{key}=\"{value}\"");
+                }
+            }
+
+            return (String.Join(" ", attrs), content);
+        }
+
+        return ("", content);
     }
 
     /// <summary>

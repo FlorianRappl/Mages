@@ -293,9 +293,12 @@ static class Helpers
             ["props"] = arguments.Length > 1 ? arguments[1] : null,
         };
 
-        if (arguments.Length > 2 && obj["props"] is IDictionary<String, Object> props)
+        if (arguments.Length > 2 && arguments[2] is IDictionary<String, Object> array && obj["props"] is IDictionary<String, Object> props)
         {
-            props["children"] = arguments[2];
+            if (array.Count > 0 || !props.ContainsKey("children"))
+            {
+                props["children"] = arguments[2];
+            }
         }
 
         return obj;

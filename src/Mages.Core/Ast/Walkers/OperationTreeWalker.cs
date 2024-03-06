@@ -7,7 +7,6 @@ using Mages.Core.Vm;
 using Mages.Core.Vm.Operations;
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 /// <summary>
 /// Represents the walker to create operations.
@@ -61,8 +60,6 @@ public sealed class OperationTreeWalker(List<IOperation> operations) : ITreeWalk
     #endregion
 
     #region Fields
-
-    private static readonly Regex startsWithUpperCase = new("^[A-Z]");
 
     private readonly List<IOperation> _operations = operations;
     private readonly Stack<LoopInfo> _loops = new();
@@ -120,14 +117,12 @@ public sealed class OperationTreeWalker(List<IOperation> operations) : ITreeWalk
     void ITreeWalker.Visit(DeleteExpression expression)
     {
         expression.Validate(this);
-        var member = expression.Payload as MemberExpression;
 
-        if (member != null)
+        if (expression.Payload is MemberExpression member)
         {
-            var variable = member.Member as IdentifierExpression;
             member.Validate(this);
 
-            if (variable != null)
+            if (member.Member is IdentifierExpression variable)
             {
                 member.Object.Accept(this);
                 variable.Validate(this);
@@ -135,16 +130,11 @@ public sealed class OperationTreeWalker(List<IOperation> operations) : ITreeWalk
                 _operations.Add(op);
             }
         }
-        else
+        else if (expression.Payload is VariableExpression variable)
         {
-            var variable = expression.Payload as VariableExpression;
-
-            if (variable != null)
-            {
-                variable.Validate(this);
-                var op = new DelVarOperation(variable.Name);
-                _operations.Add(op);
-            }
+            variable.Validate(this);
+            var op = new DelVarOperation(variable.Name);
+            _operations.Add(op);
         }
     }
 
@@ -264,12 +254,15 @@ public sealed class OperationTreeWalker(List<IOperation> operations) : ITreeWalk
 
     void ITreeWalker.Visit(ArgumentsExpression expression)
     {
-        var arguments = expression.Arguments;
         expression.Validate(this);
+        ReverseAccept(expression.Arguments);
+    }
 
-        for (var i = arguments.Length - 1; i >= 0; i--)
+    private void ReverseAccept(IExpression[] exprs)
+    {
+        for (var i = exprs.Length - 1; i >= 0; i--)
         {
-            arguments[i].Accept(this);
+            exprs[i].Accept(this);
         }
     }
 
@@ -286,25 +279,22 @@ public sealed class OperationTreeWalker(List<IOperation> operations) : ITreeWalk
 
     void ITreeWalker.Visit(BinaryExpression expression)
     {
-        var action = default(Action<OperationTreeWalker, BinaryExpression>);
         expression.Validate(this);
-        BinaryOperatorMapping.TryGetValue(expression.Operator, out action);
+        BinaryOperatorMapping.TryGetValue(expression.Operator, out var action);
         action.Invoke(this, expression);
     }
 
     void ITreeWalker.Visit(PreUnaryExpression expression)
     {
-        var action = default(Action<OperationTreeWalker, PreUnaryExpression>);
         expression.Validate(this);
-        PreUnaryOperatorMapping.TryGetValue(expression.Operator, out action);
+        PreUnaryOperatorMapping.TryGetValue(expression.Operator, out var action);
         action.Invoke(this, expression);
     }
 
     void ITreeWalker.Visit(PostUnaryExpression expression)
     {
-        var action = default(Action<OperationTreeWalker, PostUnaryExpression>);
         expression.Validate(this);
-        PostUnaryOperatorMapping.TryGetValue(expression.Operator, out action);
+        PostUnaryOperatorMapping.TryGetValue(expression.Operator, out var action);
         action.Invoke(this, expression);
     }
 
@@ -416,11 +406,7 @@ public sealed class OperationTreeWalker(List<IOperation> operations) : ITreeWalk
     void ITreeWalker.Visit(JsxExpression expression)
     {
         expression.Validate(this);
-
-        foreach (var child in expression.Children)
-        {
-            child.Accept(this);
-        }
+        ReverseAccept(expression.Children);
 
         _operations.Add(new GetsOperation("list"));
         _operations.Add(new GetcOperation(expression.Children.Length));
@@ -432,15 +418,7 @@ public sealed class OperationTreeWalker(List<IOperation> operations) : ITreeWalk
             prop.Accept(this);
         }
 
-        if (expression.Element is IdentifierExpression ident && startsWithUpperCase.IsMatch(ident.Name))
-        {
-            _operations.Add(new ConstOperation(ident.Name));
-        }
-        else
-        {
-            expression.Element.Accept(this);
-        }
-
+        expression.Element.Accept(this);
         _operations.Add(new GetsOperation("jsx"));
         _operations.Add(new GetcOperation(3));
     }
@@ -485,9 +463,7 @@ public sealed class OperationTreeWalker(List<IOperation> operations) : ITreeWalk
 
         for (var i = 0; i < expressions.Length; i++)
         {
-            var identifier = expressions[i] as VariableExpression;
-            
-            if (identifier == null)
+            if (expressions[i] is not VariableExpression identifier)
             {
                 var assignment = expressions[i] as AssignmentExpression;
                 identifier = (VariableExpression)assignment.Variable;
@@ -534,11 +510,7 @@ public sealed class OperationTreeWalker(List<IOperation> operations) : ITreeWalk
         var replacements = expression.Replacements;
         var length = replacements.Length + 1;
         expression.Validate(this);
-
-        for (var i = replacements.Length - 1; i >= 0; i--)
-        {
-            replacements[i].Accept(this);
-        }
+        ReverseAccept(replacements);
 
         expression.Format.Accept(this);
         CallFunction(StandardFunctions.Format, length);
