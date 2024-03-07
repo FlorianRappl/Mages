@@ -196,9 +196,16 @@ public static class Stringify
                 {
                     content = AsHtml(value);
                 }
+                else if (value is Boolean b)
+                {
+                    var k = key.ToLowerInvariant();
+                    var val = b ? k : String.Empty;
+                    attrs.Add($"{k}=\"{val}\"");
+                }
                 else
                 {
-                    attrs.Add($"{key}=\"{value}\"");
+                    var k = key.ToLowerInvariant();
+                    attrs.Add($"{k}=\"{value}\"");
                 }
             }
 

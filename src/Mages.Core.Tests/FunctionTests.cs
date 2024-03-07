@@ -794,5 +794,26 @@
             var result = "max(-1, 3i)".Eval();
             Assert.AreEqual(new Complex(0.0, 3.0), (Complex)result);
         }
+
+        [Test]
+        public void HtmlWithFragmentInside()
+        {
+            var result = " <><h1 x-foo-bar={27+19} class=\"yo\">Foo</h1><p>Bar</p></>  | html".Eval();
+            Assert.AreEqual("<h1 x-foo-bar=\"46\" class=\"yo\">Foo</h1><p>Bar</p>", (String)result);
+        }
+
+        [Test]
+        public void HtmlWithTextInside()
+        {
+            var result = "<foo> Hi!... <strong> dear, friend.. </strong> oh my~ </foo> | html".Eval();
+            Assert.AreEqual("<foo> Hi!... <strong> dear, friend.. </strong> oh my~ </foo>", (String)result);
+        }
+
+        [Test]
+        public void HtmlWithPropsAndTextInside()
+        {
+            var result = "<foo disabled tabIndex={2+3} bla=\"ooo\">\r\n  Hello <strong>World</strong>!\r\n</foo> | html".Eval();
+            Assert.AreEqual("<foo disabled=\"disabled\" tabindex=\"5\" bla=\"ooo\">\n  Hello <strong>World</strong>!\n</foo>", (String)result);
+        }
     }
 }

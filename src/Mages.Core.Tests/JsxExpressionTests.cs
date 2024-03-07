@@ -61,5 +61,47 @@
             var expr = "<></>".ToExpression();
             Assert.IsInstanceOf<JsxExpression>(expr);
         }
+
+        [Test]
+        public void JsxWithPropExpressionIsValidExpression()
+        {
+            var expr = "<foo>bar<bar x={2} /></foo>".ToExpression();
+            Assert.IsInstanceOf<JsxExpression>(expr);
+        }
+
+        [Test]
+        public void JsxWithSelfClosingChildIsValidExpression()
+        {
+            var expr = "<foo>bar<bar /></foo>".ToExpression();
+            Assert.IsInstanceOf<JsxExpression>(expr);
+        }
+
+        [Test]
+        public void JsxWithStringPropIsValidExpression()
+        {
+            var expr = "<foo x=\"2\" />".ToExpression();
+            Assert.IsInstanceOf<JsxExpression>(expr);
+        }
+
+        [Test]
+        public void JsxWithCompleteContentIsValidExpression()
+        {
+            var expr = "<foo disabled tabIndex={2+3} bla=\"ooo\">\r\n  Hello <strong>World</strong>!\r\n</foo>".ToExpression();
+            Assert.IsInstanceOf<JsxExpression>(expr);
+        }
+
+        [Test]
+        public void JsxWithTextAndTagMixtureIsValidExpression()
+        {
+            var expr = "<foo> Hi!... <strong> dear, friend.. </strong> oh my~ </foo>".ToExpression();
+            Assert.IsInstanceOf<JsxExpression>(expr);
+        }
+
+        [Test]
+        public void JsxWithFragmentAndKeywordPropExpression()
+        {
+            var expr = "<><h1 x-foo-bar={27+19} class=\"yo\">Foo</h1><p>Bar</p></>".ToExpression();
+            Assert.IsInstanceOf<JsxExpression>(expr);
+        }
     }
 }
