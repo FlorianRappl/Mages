@@ -4,6 +4,7 @@ using Mages.Core.Runtime.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Numerics;
 
 /// <summary>
@@ -685,6 +686,11 @@ public static class StandardFunctions
     public static readonly Function Rand = new(args => (args.Length > 1 ? If.Is<Double, Double>(args, SimpleRandom.CreateMatrix) : null) ??
         (args.Length > 0 ? If.Is<Double>(args, SimpleRandom.CreateVector) : null) ??
         SimpleRandom.GetNumber());
+
+    /// <summary>
+    /// Contains the random integer function.
+    /// </summary>
+    public static readonly Function Randi = new(args => SimpleRandom.GetInteger((int)args[0]));
 
     /// <summary>
     /// Contains the throw function.
