@@ -261,6 +261,14 @@ Works without any arguments.
 x = rand() // any number between 0 and 1
 ```
 
+### Generate Single Random Integer
+
+Works with one argument.
+
+```
+x = randi(5) // any integer between 0 and 5
+```
+
 ### Generate Random Vector
 
 Works with one argument.
