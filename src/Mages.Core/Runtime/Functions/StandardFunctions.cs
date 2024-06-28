@@ -687,6 +687,13 @@ public static class StandardFunctions
         SimpleRandom.GetNumber());
 
     /// <summary>
+    /// Contains the random integer function.
+    /// </summary>
+    public static readonly Function Randi = new(args => Curry.MinOne(Randi, args) ??
+        If.Is<Double>(args, x => SimpleRandom.GetInteger((int)x)) ??
+        0);
+
+    /// <summary>
     /// Contains the throw function.
     /// </summary>
     public static readonly Function Throw = new(args => Curry.MinOne(Throw, args) ??

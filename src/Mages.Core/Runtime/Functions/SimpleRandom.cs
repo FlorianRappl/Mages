@@ -27,6 +27,12 @@ static class SimpleRandom
         return _random.NextDouble();
     }
 
+    public static Int32 GetInteger(Int32 maximum)
+    {
+        EnsureRandom();
+        return (Int32)Math.Round(_random.NextDouble() * maximum);
+    }
+
     private static Double[,] CreateMatrix(Int32 rows, Int32 cols)
     {
         var matrix = new Double[rows, cols];

@@ -41,6 +41,7 @@ static class Global
         { "gamma", StandardFunctions.Gamma },
         { "sqrt", StandardFunctions.Sqrt },
         { "rand", StandardFunctions.Rand },
+        { "randi", StandardFunctions.Randi },
         { "sin", StandardFunctions.Sin },
         { "cos", StandardFunctions.Cos },
         { "tan", StandardFunctions.Tan },
