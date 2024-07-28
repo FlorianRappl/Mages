@@ -23,7 +23,7 @@ jobs:
           8.0.x
 
     - name: Get Certificates
-      run: cert-sync /etc/ssl/certs/ca-bundle.crt
+      run: cert-sync --user cacert.pem
 
     - name: Build
       run: ./build.sh
