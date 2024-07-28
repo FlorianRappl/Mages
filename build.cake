@@ -36,9 +36,9 @@ if (isRunningOnGitHubActions)
     }
 }
 
-var buildDir = Directory("./src/Mages.Core/bin") + Directory(configuration) + Directory("netstandard2.0");
-var replDir = Directory("./src/Mages.Repl/bin") + Directory(configuration) + Directory("netcoreapp3.1");
-var installerDir = Directory("./src/Mages.Repl.Installer/bin") + Directory(configuration) + Directory("net45");
+var buildDir = Directory("./src/Mages.Core/bin") + Directory(configuration) + Directory("netstandard2.1");
+var replDir = Directory("./src/Mages.Repl/bin") + Directory(configuration) + Directory("net60");
+var installerDir = Directory("./src/Mages.Repl.Installer/bin") + Directory(configuration) + Directory("net50");
 var buildResultDir = Directory("./bin") + Directory(version);
 var nugetRoot = buildResultDir + Directory("nuget");
 var chocolateyRoot = buildResultDir + Directory("chocolatey");
@@ -123,7 +123,7 @@ Task("Copy-Files")
     .IsDependentOn("Build")
     .Does(() =>
     {
-        var nugetBin = nugetRoot + Directory("lib") + Directory("netstandard2.0");
+        var nugetBin = nugetRoot + Directory("lib") + Directory("netstandard2.1");
         CreateDirectory(nugetBin);
         CreateDirectory(squirrelBin);
         CreateDirectory(releaseDir);
@@ -268,7 +268,7 @@ Task("Publish-GitHub-Release")
             TargetCommitish = isPublish ? "main" : "devel"
         }).Result;
 
-        var target = nugetRoot + Directory("lib") + Directory("netstandard2.0");
+        var target = nugetRoot + Directory("lib") + Directory("netstandard2.1");
         var libPath = target + File("Mages.Core.dll");
         var releaseFiles = GetFiles(releaseDir.Path.FullPath + "/*");
 
