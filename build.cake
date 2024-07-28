@@ -71,7 +71,10 @@ Task("Restore-Packages")
     .IsDependentOn("Clean")
     .Does(() =>
     {
-        NuGetRestore("./src/Mages.sln");
+        NuGetRestore("./src/Mages.sln", new NuGetRestoreSettings
+        {
+            DisableParallelProcessing = isRunningOnUnix && isRunningOnGitHubActions,
+        });
     });
 
 Task("Update-Assembly-Version")

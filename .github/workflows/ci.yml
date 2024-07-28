@@ -22,9 +22,6 @@ jobs:
           7.0.x
           8.0.x
 
-    - name: Get Certificates
-      run: cert-sync --user cacert.pem
-
     - name: Build
       run: ./build.sh
 
