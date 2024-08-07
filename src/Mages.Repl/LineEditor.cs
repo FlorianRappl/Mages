@@ -20,6 +20,7 @@
         private readonly List<Line> _lines;
         private readonly Handler[] _handlers;
         private readonly History _history;
+        private readonly Action _onCancelled;
         private Int32 _lineIndex;
         private Boolean _done;
         private String _prompt;
@@ -165,9 +166,10 @@
 
         #region ctor
 
-        public LineEditor(History history)
+        public LineEditor(History history, Action onCancelled)
         {
             _done = false;
+            _onCancelled = onCancelled;
             _handlers = new[]
             {
                 new Handler(ConsoleKey.Home, CmdHome),
@@ -230,12 +232,6 @@
 
         #region Methods
 
-        public void Interrupt()
-        {
-            // Interrupt the editor
-            _editThread.Abort();
-        }
-
         public String Edit(String prompt, String initial)
         {
             _editThread = Thread.CurrentThread;
@@ -254,9 +250,9 @@
                 {
                     EditLoop();
                 }
-                catch (ThreadAbortException)
+                catch (OperationCanceledException)
                 {
-                    Thread.ResetAbort();
+                    _onCancelled.Invoke();
                     Console.WriteLine();
                     return null;
                 }
@@ -344,12 +340,24 @@
             }
         }
 
+        private static ConsoleKeyInfo ReadKey()
+        {
+            var key = Console.ReadKey(true);
+
+            if (key.Modifiers == ConsoleModifiers.Control && key.Key == ConsoleKey.C)
+            {
+                throw new OperationCanceledException();
+            }
+
+            return key;
+        }
+
         private void EditLoop()
         {
             while (!_done)
             {
-                var mod = default(ConsoleModifiers);
-                var cki = Console.ReadKey(true);
+                ConsoleModifiers mod;
+                var cki = ReadKey();
 
                 if (cki.Key == ConsoleKey.Escape)
                 {
@@ -360,7 +368,7 @@
                     }
                     else
                     {
-                        cki = Console.ReadKey(true);
+                        cki = ReadKey();
                         mod = ConsoleModifiers.Alt;
                     }
                 }
@@ -745,7 +753,9 @@
         private void UpdateCompletionWindow()
         {
             if (_completion != null)
+            {
                 throw new Exception("This method should only be called if the window has been hidden");
+            }
 
             var completion = AutoCompleteEvent(AvailableText, _position);
             var completions = completion.Result;

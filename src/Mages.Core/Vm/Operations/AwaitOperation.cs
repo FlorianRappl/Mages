@@ -14,9 +14,8 @@ sealed class AwaitOperation : IOperation
     public void Invoke(IExecutionContext context)
     {
         var value = context.Pop();
-        var promise = value as Future;
 
-        if (promise != null)
+        if (value is Future promise)
         {
             if (!promise.IsCompleted)
             {
@@ -32,7 +31,7 @@ sealed class AwaitOperation : IOperation
 
                     try
                     {
-                        (context as ExecutionContext).Execute();
+                        ((ExecutionContext)context).Execute();
                         continuation.SetResult(context.Pop());
                     }
                     catch (Exception ex)

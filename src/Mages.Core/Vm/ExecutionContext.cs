@@ -11,7 +11,7 @@ using System.Collections.Generic;
 /// </remarks>
 /// <param name="operations">The operations to use.</param>
 /// <param name="scope">The global scope to use.</param>
-public sealed class ExecutionContext(IOperation[] operations, IDictionary<String, Object> scope) : IExecutionContext
+sealed class ExecutionContext(IOperation[] operations, IDictionary<String, Object> scope) : IExecutionContext
 {
     private readonly Stack<Object> _stack = new(64);
     private readonly IOperation[] _operations = operations;

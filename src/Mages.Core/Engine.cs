@@ -20,6 +20,25 @@ public class Engine
 
     #endregion
 
+    #region Events
+
+    /// <summary>
+    /// Event emitted when an execution error occurs.
+    /// </summary>
+    public event EventHandler<ErrorEventArgs> OnError;
+
+    /// <summary>
+    /// Event emitted when the execution starts.
+    /// </summary>
+    public event EventHandler<RunningEventArgs> OnRunning;
+
+    /// <summary>
+    /// Event emitted when the execution ended.
+    /// </summary>
+    public event EventHandler<StoppedEventArgs> OnStopped;
+
+    #endregion
+
     #region ctor
 
     /// <summary>
@@ -85,7 +104,7 @@ public class Engine
         if (!_plugins.Contains(plugin))
         {
             _plugins.Add(plugin);
-            
+
             foreach (var item in plugin.Content)
             {
                 if (!Globals.ContainsKey(item.Key))
@@ -108,9 +127,7 @@ public class Engine
 
             foreach (var item in plugin.Content)
             {
-                var value = default(Object);
-
-                if (Globals.TryGetValue(item.Key, out value) && value == item.Value)
+                if (Globals.TryGetValue(item.Key, out var value) && value == item.Value)
                 {
                     Globals.Remove(item.Key);
                 }
@@ -127,12 +144,7 @@ public class Engine
     {
         var statements = _parser.ParseStatements(source);
         var operations = statements.MakeRunnable();
-        return () =>
-        {
-            var context = new ExecutionContext(operations, _scope);
-            context.Execute();
-            return context.Pop();
-        };
+        return () => Run(operations);
     }
 
     /// <summary>
@@ -144,8 +156,37 @@ public class Engine
     {
         var statements = _parser.ParseStatements(source);
         var operations = statements.MakeRunnable();
+        return Run(operations);
+    }
+
+    #endregion
+
+    #region Helpers
+
+    private Object Run(IOperation[] operations)
+    {
         var context = new ExecutionContext(operations, _scope);
-        context.Execute();
+        OnRunning?.Invoke(this, new RunningEventArgs(context));
+
+        try
+        {
+            context.Execute();
+        }
+        catch (Exception error)
+        {
+            var e = new ErrorEventArgs(this, error);
+            OnError?.Invoke(this, e);
+
+            if (!e.IsHandled)
+            {
+                throw;
+            }
+        }
+        finally
+        {
+            OnStopped?.Invoke(this, new StoppedEventArgs(context));
+        }
+
         return context.Pop();
     }
 

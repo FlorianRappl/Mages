@@ -14,7 +14,6 @@ sealed class SetcOperation(Int32 length) : IOperation
     {
         var value = context.Pop();
         var obj = context.Pop();
-        var function = default(Procedure);
         var arguments = new Object[_length];
 
         for (var i = 0; i < arguments.Length; i++)
@@ -22,7 +21,7 @@ sealed class SetcOperation(Int32 length) : IOperation
             arguments[i] = context.Pop();
         }
 
-        if (obj != null && TypeProcedures.TryFind(obj, out function))
+        if (obj != null && TypeProcedures.TryFind(obj, out var function))
         {
             function.Invoke(arguments, value);
         }

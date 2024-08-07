@@ -168,9 +168,8 @@ public static class EngineExtensions
     {
         var future = new Future();
         var result = engine.Interpret(source);
-        var promise = result as Future;
 
-        if (promise != null)
+        if (result is Future promise)
         {
             promise.ContinueWith(future);
         }

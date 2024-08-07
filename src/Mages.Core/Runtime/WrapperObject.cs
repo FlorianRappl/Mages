@@ -12,7 +12,7 @@ using System.Linq;
 public sealed class WrapperObject : IDictionary<String, Object>
 {
     #region Fields
-    
+
     private readonly Object _content;
     private readonly Type _type;
     private readonly Dictionary<String, Object> _extends;
@@ -57,15 +57,12 @@ public sealed class WrapperObject : IDictionary<String, Object>
     /// <returns>The wrapper or null dependent on the value.</returns>
     public static WrapperObject CreateFor(Object value)
     {
-        var result = default(WrapperObject);
-
         if (value != null)
         {
-            var type = value as Type;
-            result = type != null ? new WrapperObject(type) : new WrapperObject(value);
+            return value is Type type ? new WrapperObject(type) : new WrapperObject(value);
         }
 
-        return result;
+        return default;
     }
 
     #endregion
