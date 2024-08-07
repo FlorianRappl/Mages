@@ -88,9 +88,7 @@ static class ReflectionExtensions
 
     public static Object Convert(this Type source, Object value, Type target)
     {
-        var wrapper = value as WrapperObject;
-
-        if (wrapper == null)
+        if (value is not WrapperObject wrapper)
         {
             var converter = Helpers.Converters.FindConverter(source, target);
             return converter.Invoke(value);
