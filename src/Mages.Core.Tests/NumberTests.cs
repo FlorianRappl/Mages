@@ -67,6 +67,19 @@
             Assert.AreEqual(9223372036854776000.0, ((NumberToken)result).Value);
         }
 
+        [TestCase("0.8409014139716477191")]
+        [TestCase("0.84090141397164771912")]
+        public void NumberScannerLargePrecisionValue(string source)
+        {
+            var scanner = new StringScanner(source);
+            Assert.IsTrue(scanner.MoveNext());
+            var tokenizer = new NumberTokenizer();
+            var result = tokenizer.Next(scanner);
+            Assert.IsInstanceOf<NumberToken>(result);
+            // double has a precision of ~15-17 digits
+            Assert.AreEqual(0.840901413971647, ((NumberToken)result).Value, 1e-15);
+        }
+
         [Test]
         public void NumberScannerScientificPlus()
         {

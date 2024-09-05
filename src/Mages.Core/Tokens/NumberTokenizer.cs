@@ -267,21 +267,55 @@
             {
                 if (_shifts > 0)
                 {
-                    _shifts++;
-                }
-                else
-                {
-                    var newValue = _value * scale + diff;
-
-                    if (newValue < _value)
-                    {
+                // overflow encountered previously; do not attempt to add
                         _shifts++;
                     }
                     else
                     {
+                if (TryMultiply(_value, scale, out var product) &&
+                    TryAdd(product, diff, out var newValue))
+                {
                         _value = newValue;
                     }
+                else
+                {
+                    // overflow!
+                    _shifts++;
                 }
+            }
+        }
+
+        private static bool TryMultiply(ulong x, ulong y, out ulong result)
+        {
+            result = 0;
+            if (x == 0 || y == 0)
+            {
+                result = 0;
+                return true;
+            }
+
+            // Check for overflow
+            if (x > ulong.MaxValue / y)
+            {
+                return false;
+                }
+
+            result = x * y;
+            return true;
+        }
+
+        private static bool TryAdd(ulong x, ulong y, out ulong result)
+        {
+            result = 0;
+
+            // Check for overflow
+            if (x > ulong.MaxValue - y)
+            {
+                return false;
+            }
+
+            result = x + y;
+            return true;
             }
         }
 
