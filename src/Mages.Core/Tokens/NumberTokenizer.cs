@@ -267,55 +267,22 @@
             {
                 if (_shifts > 0)
                 {
-                // overflow encountered previously; do not attempt to add
-                        _shifts++;
+                    // overflow encountered previously; do not attempt to add
+                    _shifts++;
+                }
+                else
+                {
+                    if (NumberHelper.TryMultiply(_value, scale, out var product) &&
+                        NumberHelper.TryAdd(product, diff, out var newValue))
+                    {
+                        _value = newValue;
                     }
                     else
                     {
-                if (TryMultiply(_value, scale, out var product) &&
-                    TryAdd(product, diff, out var newValue))
-                {
-                        _value = newValue;
+                        // overflow!
+                        _shifts++;
                     }
-                else
-                {
-                    // overflow!
-                    _shifts++;
                 }
-            }
-        }
-
-        private static bool TryMultiply(ulong x, ulong y, out ulong result)
-        {
-            result = 0;
-            if (x == 0 || y == 0)
-            {
-                result = 0;
-                return true;
-            }
-
-            // Check for overflow
-            if (x > ulong.MaxValue / y)
-            {
-                return false;
-                }
-
-            result = x * y;
-            return true;
-        }
-
-        private static bool TryAdd(ulong x, ulong y, out ulong result)
-        {
-            result = 0;
-
-            // Check for overflow
-            if (x > ulong.MaxValue - y)
-            {
-                return false;
-            }
-
-            result = x + y;
-            return true;
             }
         }
 
