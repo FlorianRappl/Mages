@@ -258,18 +258,15 @@ sealed class NumberTokenizer : ITokenizer
             {
                 _shifts++;
             }
+            else if (NumberHelper.TryMultiply(_value, scale, out var product) && NumberHelper.TryAdd(product, diff, out var newValue))
+            {
+                // assign new value
+                _value = newValue;
+            }
             else
             {
-                var newValue = _value * scale + diff;
-
-                if (newValue < _value)
-                {
-                    _shifts++;
-                }
-                else
-                {
-                    _value = newValue;
-                }
+                // overflow!
+                _shifts++;
             }
         }
     }
