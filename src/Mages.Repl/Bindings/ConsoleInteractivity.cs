@@ -5,7 +5,6 @@
 
     sealed class ConsoleInteractivity : IInteractivity
     {
-        private const Int32 BufferSize = 4096;
         private readonly LineEditor _editor;
         private readonly List<CancellationRegistration> _blockers;
         private Boolean _warned;
@@ -19,9 +18,9 @@
         public ConsoleInteractivity()
         {
             var history = new History("Mages.Repl", 300);
-            _editor = new LineEditor(history);
+            _editor = new LineEditor(history, OnCancelled);
             _blockers = new List<CancellationRegistration>();
-            Console.CancelKeyPress += OnCancelled;
+            Console.TreatControlCAsInput = true;
         }
 
         public void Write(String output)
@@ -75,7 +74,6 @@
         private Boolean ShouldNotStop()
         {
             var preventExit = _editor.AvailableText.Length > 0 || _editor.Prompt.StartsWith(" ");
-            _editor.Interrupt();
 
             if (preventExit)
             {
@@ -104,19 +102,25 @@
             return new CancellationRegistration(shouldCancel, _blockers);
         }
 
-        private void OnCancelled(Object sender, ConsoleCancelEventArgs e)
+        private void OnCancelled()
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write("^C");
             Console.ResetColor();
 
+            var allNegative = true;
+
             foreach (var blocker in _blockers)
             {
                 if (blocker.ShouldCancel())
                 {
-                    e.Cancel = true;
-                    break;
+                    allNegative = false;
                 }
+            }
+
+            if (allNegative)
+            {
+                Environment.Exit(1);
             }
         }
 

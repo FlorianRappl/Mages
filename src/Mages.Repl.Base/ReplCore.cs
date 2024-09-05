@@ -2,8 +2,10 @@
 {
     using Mages.Core;
     using Mages.Core.Runtime;
+    using Mages.Core.Vm;
     using System;
     using System.IO;
+    using System.Threading.Tasks;
 
     public sealed class ReplCore
     {
@@ -12,8 +14,36 @@
 
         public ReplCore(IResolver resolver)
         {
+            var currentContext = default(IExecutionContext);
+
             _interactivity = resolver.Interactivity;
             _engine = resolver.CreateEngine();
+
+            _engine.OnRunning += (sender, e) =>
+            {
+                currentContext = e.Context;
+            };
+
+            _engine.OnStopped += (sender, e) =>
+            {
+                currentContext = null;
+            };
+
+            _engine.OnError += (sender, e) => 
+            {
+                _interactivity.Error(e.Error.Message);
+            };
+
+            _interactivity.HandleCancellation(() =>
+            {
+                if (currentContext != null)
+                {
+                    currentContext.Stop();
+                    return true;
+                }
+
+                return false;
+            });
         }
 
         public void Run(String file)
@@ -95,7 +125,7 @@
         {
             try
             {
-                var result = _interactivity.Run(_engine, content);
+                var result = _engine.Interpret(content);
 
                 if (showOutput)
                 {
@@ -114,9 +144,8 @@
             {
                 _interactivity.Display(ex.Error, content);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                _interactivity.Error(ex.Message);
             }
 
             _interactivity.Write(Environment.NewLine);

@@ -1,32 +1,31 @@
-﻿namespace Mages.Core.Vm.Operations
+﻿namespace Mages.Core.Vm.Operations;
+
+using Mages.Core.Runtime;
+using System;
+using System.Collections.Generic;
+
+/// <summary>
+/// Pops three elements from the stack and pushes on element.
+/// </summary>
+sealed class InitObjOperation : IOperation
 {
-    using Mages.Core.Runtime;
-    using System;
-    using System.Collections.Generic;
+    public static readonly IOperation Instance = new InitObjOperation();
 
-    /// <summary>
-    /// Pops three elements from the stack and pushes on element.
-    /// </summary>
-    sealed class InitObjOperation : IOperation
+    private InitObjOperation()
     {
-        public static readonly IOperation Instance = new InitObjOperation();
+    }
 
-        private InitObjOperation()
-        {
-        }
+    public void Invoke(IExecutionContext context)
+    {
+        var value = context.Pop();
+        var name = (String)context.Pop();
+        var obj = (IDictionary<String, Object>)context.Pop();
+        obj.SetProperty(name, value);
+        context.Push(obj);
+    }
 
-        public void Invoke(IExecutionContext context)
-        {
-            var value = context.Pop();
-            var name = (String)context.Pop();
-            var obj = (IDictionary<String, Object>)context.Pop();
-            obj.SetProperty(name, value);
-            context.Push(obj);
-        }
-
-        public override String ToString()
-        {
-            return "initobj";
-        }
+    public override String ToString()
+    {
+        return "initobj";
     }
 }

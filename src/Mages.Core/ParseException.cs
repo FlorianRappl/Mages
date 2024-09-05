@@ -1,30 +1,24 @@
-﻿namespace Mages.Core
+﻿namespace Mages.Core;
+
+using System;
+
+/// <summary>
+/// Represents the exception that is thrown on trying
+/// to interpret invalid code.
+/// </summary>
+/// <remarks>
+/// Creates a new parse exception.
+/// </remarks>
+/// <param name="error">The error that occured.</param>
+public class ParseException(ParseError error) : Exception("The given source code contains errors.")
 {
-    using System;
 
     /// <summary>
-    /// Represents the exception that is thrown on trying
-    /// to interpret invalid code.
+    /// Gets the detected parse error.
     /// </summary>
-    public class ParseException : Exception
+    public ParseError Error
     {
-        /// <summary>
-        /// Creates a new parse exception.
-        /// </summary>
-        /// <param name="error">The error that occured.</param>
-        public ParseException(ParseError error)
-            : base("The given source code contains errors.")
-        {
-            Error = error;
-        }
-
-        /// <summary>
-        /// Gets the detected parse error.
-        /// </summary>
-        public ParseError Error
-        {
-            get;
-            private set;
-        }
-    }
+        get;
+        private set;
+    } = error;
 }

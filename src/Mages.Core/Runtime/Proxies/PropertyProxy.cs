@@ -1,41 +1,34 @@
-﻿namespace Mages.Core.Runtime.Proxies
+﻿namespace Mages.Core.Runtime.Proxies;
+
+using System;
+using System.Reflection;
+
+sealed class PropertyProxy(WrapperObject obj, PropertyInfo property) : BaseProxy(obj)
 {
-    using System;
-    using System.Reflection;
+    private readonly PropertyInfo _property = property;
 
-    sealed class PropertyProxy : BaseProxy
+    protected override Object GetValue()
     {
-        private readonly PropertyInfo _property;
-
-        public PropertyProxy(WrapperObject obj, PropertyInfo property)
-            : base(obj)
+        if (_property.CanRead)
         {
-            _property = property;
+            var target = _obj.Content;
+
+            try { return _property.GetValue(target, null); }
+            catch { return null; }
         }
 
-        protected override Object GetValue()
+        return null;
+    }
+
+    protected override void SetValue(Object value)
+    {
+        if (_property.CanWrite)
         {
-            if (_property.CanRead)
-            {
-                var target = _obj.Content;
+            var target = _obj.Content;
+            var result = Convert(value, _property.PropertyType);
 
-                try { return _property.GetValue(target, null); }
-                catch { return null; }
-            }
-
-            return null;
-        }
-
-        protected override void SetValue(Object value)
-        {
-            if (_property.CanWrite)
-            {
-                var target = _obj.Content;
-                var result = Convert(value, _property.PropertyType);
-
-                try { _property.SetValue(target, result, null); }
-                catch { }
-            }
+            try { _property.SetValue(target, result, null); }
+            catch { }
         }
     }
 }

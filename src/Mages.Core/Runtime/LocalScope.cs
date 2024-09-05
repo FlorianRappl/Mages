@@ -1,25 +1,19 @@
-﻿namespace Mages.Core.Runtime
+﻿namespace Mages.Core.Runtime;
+
+using System;
+using System.Collections.Generic;
+
+sealed class LocalScope(IDictionary<String, Object> parent) : BaseScope(new Dictionary<String, Object>(), parent)
 {
-    using System;
-    using System.Collections.Generic;
-
-    sealed class LocalScope : BaseScope
+    protected override void SetValue(String key, Object value)
     {
-        public LocalScope(IDictionary<String, Object> parent)
-            : base(new Dictionary<String, Object>(), parent)
+        if (_scope.ContainsKey(key))
         {
+            _scope[key] = value;
         }
-
-        protected override void SetValue(String key, Object value)
+        else
         {
-            if (_scope.ContainsKey(key))
-            {
-                _scope[key] = value;
-            }
-            else
-            {
-                _parent[key] = value;
-            }
+            _parent[key] = value;
         }
     }
 }

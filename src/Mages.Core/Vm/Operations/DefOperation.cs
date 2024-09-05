@@ -1,38 +1,32 @@
-﻿namespace Mages.Core.Vm.Operations
+﻿namespace Mages.Core.Vm.Operations;
+
+using System;
+
+/// <summary>
+/// Peeks the top element from the stack.
+/// </summary>
+sealed class DefOperation(String name) : IOperation
 {
-    using System;
+    private readonly String _name = name;
 
-    /// <summary>
-    /// Peeks the top element from the stack.
-    /// </summary>
-    sealed class DefOperation : IOperation
+    public void Invoke(IExecutionContext context)
     {
-        private readonly String _name;
+        var value = context.Pop();
 
-        public DefOperation(String name)
+        if (context.Scope.ContainsKey(_name))
         {
-            _name = name;
+            context.Scope[_name] = value;
+        }
+        else
+        {
+            context.Scope.Add(_name, value);
         }
 
-        public void Invoke(IExecutionContext context)
-        {
-            var value = context.Pop();
+        context.Push(value);
+    }
 
-            if (context.Scope.ContainsKey(_name))
-            {
-                context.Scope[_name] = value;
-            }
-            else
-            {
-                context.Scope.Add(_name, value);
-            }
-
-            context.Push(value);
-        }
-
-        public override String ToString()
-        {
-            return String.Concat("def ", _name);
-        }
+    public override String ToString()
+    {
+        return String.Concat("def ", _name);
     }
 }

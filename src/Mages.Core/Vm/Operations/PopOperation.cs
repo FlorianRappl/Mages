@@ -1,26 +1,25 @@
-﻿namespace Mages.Core.Vm.Operations
+﻿namespace Mages.Core.Vm.Operations;
+
+using System;
+
+/// <summary>
+/// Pops one element from the stack.
+/// </summary>
+sealed class PopOperation : IOperation
 {
-    using System;
+    public static readonly IOperation Instance = new PopOperation();
 
-    /// <summary>
-    /// Pops one element from the stack.
-    /// </summary>
-    sealed class PopOperation : IOperation
+    private PopOperation()
     {
-        public static readonly IOperation Instance = new PopOperation();
+    }
 
-        private PopOperation()
-        {
-        }
+    public void Invoke(IExecutionContext context)
+    {
+        context.Pop();
+    }
 
-        public void Invoke(IExecutionContext context)
-        {
-            context.Pop();
-        }
-
-        public override String ToString()
-        {
-            return "pop";
-        }
+    public override String ToString()
+    {
+        return "pop";
     }
 }

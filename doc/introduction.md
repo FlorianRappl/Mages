@@ -100,7 +100,7 @@ On starting the REPL we see the following:
           \/         \/        \/        \/        \/
 
   (c) Florian Rappl, 2024
-  Version 2.0.2
+  Version 2.0.3
   Running on Microsoft Windows NT 6.2.9200.0
 
   For help type 'help()'.

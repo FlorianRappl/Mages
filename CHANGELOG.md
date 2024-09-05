@@ -1,3 +1,15 @@
+# 3.0.0
+
+- Improved GC allocations (#81)
+- Added wrapping of `Task` in `Future` (#64)
+- Added JSX syntax (#120)
+- Added default `jsx` and `html` function (#120)
+- Added events to `Engine` to handle uncaught errors (#121)
+
+# 2.0.3
+
+- Include checksum in chocolatey package
+
 # 2.0.2
 
 - Fixed vulnerability using outdated version of `System.Drawing.Common` for plugins

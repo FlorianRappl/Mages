@@ -1,197 +1,196 @@
-﻿namespace Mages.Core.Runtime.Functions
+﻿namespace Mages.Core.Runtime.Functions;
+
+using System;
+
+/// <summary>
+/// Provide helpers to enable currying.
+/// </summary>
+public static class Curry
 {
-    using System;
+    /// <summary>
+    /// Checks if the provided args deliver at least one argument.
+    /// Otherwise returns null.
+    /// </summary>
+    /// <param name="function">The function to return or capture.</param>
+    /// <param name="args">The args to check and potentially capture.</param>
+    /// <returns>A curried function or null.</returns>
+    public static Object MinOne(Function function, Object[] args)
+    {
+        return args.Length < 1 ? function : null;
+    }
 
     /// <summary>
-    /// Provide helpers to enable currying.
+    /// Checks if the provided args deliver at least two arguments.
+    /// Otherwise returns null.
     /// </summary>
-    public static class Curry
+    /// <param name="function">The function to return or capture.</param>
+    /// <param name="args">The args to check and potentially capture.</param>
+    /// <returns>A curried function or null.</returns>
+    public static Object MinTwo(Function function, Object[] args)
     {
-        /// <summary>
-        /// Checks if the provided args deliver at least one argument.
-        /// Otherwise returns null.
-        /// </summary>
-        /// <param name="function">The function to return or capture.</param>
-        /// <param name="args">The args to check and potentially capture.</param>
-        /// <returns>A curried function or null.</returns>
-        public static Object MinOne(Function function, Object[] args)
+        if (args.Length < 2)
         {
-            return args.Length < 1 ? function : null;
+            return args.Length == 0 ? function : rest => function(Recombine2(args, rest));
         }
 
-        /// <summary>
-        /// Checks if the provided args deliver at least two arguments.
-        /// Otherwise returns null.
-        /// </summary>
-        /// <param name="function">The function to return or capture.</param>
-        /// <param name="args">The args to check and potentially capture.</param>
-        /// <returns>A curried function or null.</returns>
-        public static Object MinTwo(Function function, Object[] args)
-        {
-            if (args.Length < 2)
-            {
-                return args.Length == 0 ? function : rest => function(Recombine2(args, rest));
-            }
+        return null;
+    }
 
-            return null;
+    /// <summary>
+    /// Checks if the provided args deliver at least three arguments.
+    /// Otherwise returns null.
+    /// </summary>
+    /// <param name="function">The function to return or capture.</param>
+    /// <param name="args">The args to check and potentially capture.</param>
+    /// <returns>A curried function or null.</returns>
+    public static Object MinThree(Function function, Object[] args)
+    {
+        if (args.Length < 3)
+        {
+            return args.Length == 0 ? function : rest => function(RecombineN(args, rest));
         }
 
-        /// <summary>
-        /// Checks if the provided args deliver at least three arguments.
-        /// Otherwise returns null.
-        /// </summary>
-        /// <param name="function">The function to return or capture.</param>
-        /// <param name="args">The args to check and potentially capture.</param>
-        /// <returns>A curried function or null.</returns>
-        public static Object MinThree(Function function, Object[] args)
-        {
-            if (args.Length < 3)
-            {
-                return args.Length == 0 ? function : rest => function(RecombineN(args, rest));
-            }
+        return null;
+    }
 
-            return null;
+    /// <summary>
+    /// Checks if the provided args deliver at least count argument(s).
+    /// Otherwise returns null.
+    /// </summary>
+    /// <param name="count">The required number of arguments.</param>
+    /// <param name="function">The function to return or capture.</param>
+    /// <param name="args">The args to check and potentially capture.</param>
+    /// <returns>A curried function or null.</returns>
+    public static Object Min(Int32 count, Function function, Object[] args)
+    {
+        if (args.Length < count)
+        {
+            return args.Length == 0 ? function : rest => function(RecombineN(args, rest));
         }
 
-        /// <summary>
-        /// Checks if the provided args deliver at least count argument(s).
-        /// Otherwise returns null.
-        /// </summary>
-        /// <param name="count">The required number of arguments.</param>
-        /// <param name="function">The function to return or capture.</param>
-        /// <param name="args">The args to check and potentially capture.</param>
-        /// <returns>A curried function or null.</returns>
-        public static Object Min(Int32 count, Function function, Object[] args)
+        return null;
+    }
+
+    /// <summary>
+    /// Creates a function that shuffles the arguments of a given function
+    /// according to the current arguments.
+    /// </summary>
+    /// <param name="args">The arguments to create the shuffle function.</param>
+    /// <returns>The created shuffle function.</returns>
+    public static Function Shuffle(Object[] args)
+    {
+        var end = args.Length - 1;
+        var target = args[end] as Function;
+
+        if (target != null)
         {
-            if (args.Length < count)
+            var wrapper = target.Target as LocalFunction;
+            var parameters = wrapper?.Parameters;
+
+            if (parameters != null)
             {
-                return args.Length == 0 ? function : rest => function(RecombineN(args, rest));
-            }
+                var indices = new Int32[parameters.Length];
+                var result = default(Function);
+                var required = ShuffleParameters(args, parameters, indices);
 
-            return null;
-        }
-
-        /// <summary>
-        /// Creates a function that shuffles the arguments of a given function
-        /// according to the current arguments.
-        /// </summary>
-        /// <param name="args">The arguments to create the shuffle function.</param>
-        /// <returns>The created shuffle function.</returns>
-        public static Function Shuffle(Object[] args)
-        {
-            var end = args.Length - 1;
-            var target = args[end] as Function;
-
-            if (target != null)
-            {
-                var wrapper = target.Target as LocalFunction;
-                var parameters = wrapper?.Parameters;
-
-                if (parameters != null)
+                result = new Function(shuffledArgs =>
                 {
-                    var indices = new Int32[parameters.Length];
-                    var result = default(Function);
-                    var required = ShuffleParameters(args, parameters, indices);
+                    var length = indices.Length;
+                    var normalArgs = new Object[length];
+                    var matchedRequired = 0;
 
-                    result = new Function(shuffledArgs =>
+                    for (var i = 0; i < length; i++)
                     {
-                        var length = indices.Length;
-                        var normalArgs = new Object[length];
-                        var matchedRequired = 0;
+                        var index = indices[i];
 
-                        for (var i = 0; i < length; i++)
+                        if (index < shuffledArgs.Length)
                         {
-                            var index = indices[i];
+                            normalArgs[i] = shuffledArgs[index];
 
-                            if (index < shuffledArgs.Length)
+                            if (parameters[i].IsRequired)
                             {
-                                normalArgs[i] = shuffledArgs[index];
-
-                                if (parameters[i].IsRequired)
-                                {
-                                    matchedRequired++;
-                                }
-                            }
-                            else
-                            {
-                                normalArgs[i] = Undefined.Instance;
+                                matchedRequired++;
                             }
                         }
-
-                        if (matchedRequired < required)
+                        else
                         {
-                            return Curry.Min(length + 1, result, shuffledArgs);
+                            normalArgs[i] = Undefined.Instance;
                         }
+                    }
 
-                        return target.Invoke(normalArgs);
-                    });
+                    if (matchedRequired < required)
+                    {
+                        return Curry.Min(length + 1, result, shuffledArgs);
+                    }
 
-                    return result;
-                }
+                    return target.Invoke(normalArgs);
+                });
+
+                return result;
             }
-
-            return target;
         }
 
-        private static Int32 ShuffleParameters(Object[] args, ParameterDefinition[] parameters, Int32[] indices)
+        return target;
+    }
+
+    private static Int32 ShuffleParameters(Object[] args, ParameterDefinition[] parameters, Int32[] indices)
+    {
+        var start = 0;
+        var required = 0;
+
+        for (var i = 0; i < indices.Length; i++)
         {
-            var start = 0;
-            var required = 0;
+            indices[i] = i;
 
-            for (var i = 0; i < indices.Length; i++)
+            if (parameters[i].IsRequired)
             {
-                indices[i] = i;
-
-                if (parameters[i].IsRequired)
-                {
-                    required++;
-                }
+                required++;
             }
+        }
 
-            foreach (var arg in args)
+        foreach (var arg in args)
+        {
+            var s = arg as String;
+
+            if (s != null)
             {
-                var s = arg as String;
-
-                if (s != null)
+                for (var j = 0; j < parameters.Length; j++)
                 {
-                    for (var j = 0; j < parameters.Length; j++)
+                    if (parameters[j].Name.Equals(s, StringComparison.Ordinal))
                     {
-                        if (parameters[j].Name.Equals(s, StringComparison.Ordinal))
+                        for (var i = 0; i < j; i++)
                         {
-                            for (var i = 0; i < j; i++)
+                            if (indices[i] >= start)
                             {
-                                if (indices[i] >= start)
-                                {
-                                    indices[i]++;
-                                }
+                                indices[i]++;
                             }
-
-                            indices[j] = start++;
-                            break;
                         }
+
+                        indices[j] = start++;
+                        break;
                     }
                 }
             }
-
-            return required;
         }
 
-        private static Object[] Recombine2(Object[] oldArgs, Object[] newArgs)
+        return required;
+    }
+
+    private static Object[] Recombine2(Object[] oldArgs, Object[] newArgs)
+    {
+        return newArgs.Length > 0 ? new[] { oldArgs[0], newArgs[0] } : oldArgs;
+    }
+
+    private static Object[] RecombineN(Object[] oldArgs, Object[] newArgs)
+    {
+        if (newArgs.Length > 0)
         {
-            return newArgs.Length > 0 ? new[] { oldArgs[0], newArgs[0] } : oldArgs;
+            var args = new Object[oldArgs.Length + newArgs.Length];
+            oldArgs.CopyTo(args, 0);
+            newArgs.CopyTo(args, oldArgs.Length);
+            return args;
         }
 
-        private static Object[] RecombineN(Object[] oldArgs, Object[] newArgs)
-        {
-            if (newArgs.Length > 0)
-            {
-                var args = new Object[oldArgs.Length + newArgs.Length];
-                oldArgs.CopyTo(args, 0);
-                newArgs.CopyTo(args, oldArgs.Length);
-                return args;
-            }
-
-            return oldArgs;
-        }
+        return oldArgs;
     }
 }

@@ -1,22 +1,21 @@
-﻿namespace Mages.Core.Runtime.Types
+﻿namespace Mages.Core.Runtime.Types;
+
+using Mages.Core.Runtime.Converters;
+using Mages.Core.Runtime.Functions;
+using System;
+using System.Collections.Generic;
+
+static class MagesCMatrix
 {
-    using Mages.Core.Runtime.Converters;
-    using Mages.Core.Runtime.Functions;
-    using System;
-    using System.Collections.Generic;
-
-    static class MagesCMatrix
+    private static readonly Function Create = new(args =>
     {
-        private static readonly Function Create = new Function(args =>
-        {
-            return Curry.MinOne(Create, args) ??
-                args[0].ToComplex().ToMatrix();
-        });
+        return Curry.MinOne(Create, args) ??
+            args[0].ToComplex().ToMatrix();
+    });
 
-        public static readonly IDictionary<String, Object> Type = new Dictionary<String, Object>
-        {
-            { "name", "CMatrix" },
-            { "create", Create },
-        };
-    }
+    public static readonly IDictionary<String, Object> Type = new Dictionary<String, Object>
+    {
+        { "name", "CMatrix" },
+        { "create", Create },
+    };
 }

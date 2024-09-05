@@ -1,47 +1,51 @@
-﻿namespace Mages.Core.Vm.Operations
+﻿namespace Mages.Core.Vm.Operations;
+
+using Mages.Core.Runtime.Functions;
+using System;
+
+/// <summary>
+/// Takes two elements from the stack and pushes one.
+/// </summary>
+sealed class GetcOperation(Int32 length) : IOperation
 {
-    using Mages.Core.Runtime.Functions;
-    using System;
+    private readonly Int32 _length = length;
 
-    /// <summary>
-    /// Takes two elements from the stack and pushes one.
-    /// </summary>
-    sealed class GetcOperation : IOperation
+    public void Invoke(IExecutionContext context)
     {
-        private readonly Int32 _length;
+        var result = default(Object);
+        var obj = context.Pop();
 
-        public GetcOperation(Int32 length)
+        if (obj is Function function || TypeFunctions.TryFind(obj, out function))
         {
-            _length = length;
-        }
+            // We can call something, so let's prepare arguments
 
-        public void Invoke(IExecutionContext context)
-        {
-            var result = default(Object);
-            var obj = context.Pop();
-            var arguments = new Object[_length];
-
-            for (var i = 0; i < arguments.Length; i++)
+            if (_length == 0)
             {
-                arguments[i] = context.Pop();
+                result = function.Invoke([]);
             }
-
-            if (obj != null)
+            else
             {
-                var function = obj as Function;
+                var arguments = new Object[_length];
 
-                if (function != null || TypeFunctions.TryFind(obj, out function))
+                for (var i = 0; i < _length; i++)
                 {
-                    result = function.Invoke(arguments);
+                    arguments[i] = context.Pop();
                 }
+
+                result = function.Invoke(arguments);
             }
-
-            context.Push(result);
         }
-
-        public override String ToString()
+        else
         {
-            return String.Concat("getc ", _length.ToString());
+            // Nothing to call, we still need to pop the pushed arguments
+            for (var i = 0; i < _length; i++)
+            {
+                context.Pop();
+            }
         }
+
+        context.Push(result);
     }
+
+    public override String ToString() => String.Concat("getc ", _length.ToString());
 }

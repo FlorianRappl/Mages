@@ -1,59 +1,64 @@
-﻿namespace Mages.Core.Runtime.Functions
+﻿namespace Mages.Core.Runtime.Functions;
+
+using System;
+
+static class SimpleRandom
 {
-    using System;
+    [ThreadStatic]
+    private static Random _random;
 
-    static class SimpleRandom
+    public static Double[,] CreateMatrix(Double x, Double y)
     {
-        [ThreadStatic]
-        private static Random _random;
+        var rows = ToInteger(x);
+        var cols = ToInteger(y);
+        return CreateMatrix(rows, cols);
+    }
 
-        public static Double[,] CreateMatrix(Double x, Double y)
+    public static Double[,] CreateVector(Double length)
+    {
+        var rows = 1;
+        var cols = ToInteger(length);
+        return CreateMatrix(rows, cols);
+    }
+
+    public static Double GetNumber()
+    {
+        EnsureRandom();
+        return _random.NextDouble();
+    }
+
+    public static Int32 GetInteger(Int32 maximum)
+    {
+        EnsureRandom();
+        return (Int32)Math.Round(_random.NextDouble() * maximum);
+    }
+
+    private static Double[,] CreateMatrix(Int32 rows, Int32 cols)
+    {
+        var matrix = new Double[rows, cols];
+        EnsureRandom();
+
+        for (var i = 0; i < rows; i++)
         {
-            var rows = ToInteger(x);
-            var cols = ToInteger(y);
-            return CreateMatrix(rows, cols);
-        }
-
-        public static Double[,] CreateVector(Double length)
-        {
-            var rows = 1;
-            var cols = ToInteger(length);
-            return CreateMatrix(rows, cols);
-        }
-
-        public static Double GetNumber()
-        {
-            EnsureRandom();
-            return _random.NextDouble();
-        }
-
-        private static Double[,] CreateMatrix(Int32 rows, Int32 cols)
-        {
-            var matrix = new Double[rows, cols];
-            EnsureRandom();
-
-            for (var i = 0; i < rows; i++)
+            for (var j = 0; j < cols; j++)
             {
-                for (var j = 0; j < cols; j++)
-                {
-                    matrix[i, j] = _random.NextDouble();
-                }
+                matrix[i, j] = _random.NextDouble();
             }
-
-            return matrix;
         }
 
-        private static Int32 ToInteger(Double argument)
-        {
-            return Math.Max((Int32)argument, 0);
-        }
+        return matrix;
+    }
 
-        private static void EnsureRandom()
+    private static Int32 ToInteger(Double argument)
+    {
+        return Math.Max((Int32)argument, 0);
+    }
+
+    private static void EnsureRandom()
+    {
+        if (_random == null)
         {
-            if (_random == null)
-            {
-                _random = new Random();
-            }
+            _random = new Random();
         }
     }
 }

@@ -1,22 +1,26 @@
-![MAGES Logo](https://raw.githubusercontent.com/FlorianRappl/Mages/main/logo.png)
+![MAGES Logo](./logo.png)
 
 # MAGES
 
-[![GitHub CI](https://github.com/FlorianRappl/Mages/actions/workflows/ci.yml/badge.svg)](https://github.com/FlorianRappl/Mages/actions/workflows/ci.yml)
-[![NuGet](https://img.shields.io/nuget/v/MAGES.svg?style=flat-square)](https://www.nuget.org/packages/Mages/)
-[![Issues](https://img.shields.io/github/issues/FlorianRappl/MAGES.svg?style=flat-square)](https://github.com/FlorianRappl/Mages/issues)
+[![GitHub CI](https://github.com/FlorianRappl/Mages/actions/workflows/ci.yml/badge.svg)](https://github.com/FlorianRappl/Mages/actions/workflows/ci.yml) [![NuGet](https://img.shields.io/nuget/v/MAGES.svg?style=flat-square)](https://www.nuget.org/packages/Mages/) [![Issues](https://img.shields.io/github/issues/FlorianRappl/MAGES.svg?style=flat-square)](https://github.com/FlorianRappl/Mages/issues)
 
 ## Mages: Another Generalized Expression Simplifier
 
 MAGES is the official successor to [YAMP](https://github.com/FlorianRappl/YAMP). It is a very simple, yet powerful, expression parser and interpreter. You can use MAGES to include a sophisticated, easy to customize, and lightweight scripting engine to your application.
 
-Among other applications, MAGES is used in [Microsoft's PowerToys](https://github.com/microsoft/PowerToys).
+Among other applications, MAGES has been used in [Microsoft's PowerToys](https://github.com/microsoft/PowerToys).
 
 ### Current Status
 
-MAGES was just updated (v2.0.0) with support for complex numbers. Also, the build target and runtime has been updated to make use of modern possibilities.
+MAGES was just updated (v3.0.0) with object metadata, direct list support, and JSX syntax.
 
 ### Previous Status
+
+**2023**:
+
+MAGES was updated (v2.0.0) with support for complex numbers. Also, the build target and runtime has been updated to make use of modern possibilities.
+
+**2018**:
 
 The first stable version has been released. The current version 1.6.0 contains an improved REPL. The library contains everything to perform lightweight scripting operations in C#. A [CodeProject article](http://www.codeproject.com/Articles/1108939/MAGES-Ultimate-Scripting-for-NET) about the library (also containing some background and performance comparisons) is also available.
 
@@ -24,7 +28,7 @@ The first stable version has been released. The current version 1.6.0 contains a
 
 MAGES itself does not have any dependencies, however, the tests are dependent on NUnit and the benchmarks use BenchmarkDotNet. Usually, MAGES should be installed via the NuGet package source. If this does not work for you, then clone the source and build MAGES yourself. Make sure that all unit tests pass.
 
-The whole library was designed to be consumed from .NET 3.5 (or higher) applications. This means it is (amongst others) compatible with Unity / Mono 2.6. The NuGet package is available via [the official package feed](https://www.nuget.org/packages/MAGES).
+The whole library was designed to be consumed from .NET Core 3.0 (or higher) / .NET 5.0 (or higher) applications. This means it is (amongst others) compatible with Unity 2021.2 or Mono 6.4. The NuGet package is available via [the official package feed](https://www.nuget.org/packages/MAGES).
 
 ### Get Me Started!
 

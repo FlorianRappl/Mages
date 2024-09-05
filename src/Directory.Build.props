@@ -3,7 +3,7 @@
     <Product>Mages</Product>
     <Authors>Florian Rappl</Authors>
     <Company>smapiot</Company>
-    <Version>2.0.2</Version>
+    <Version>3.0.0</Version>
     <Copyright>Copyright (c) 2024, Florian Rappl</Copyright>
     <PackageLicenseUrl>https://github.com/FlorianRappl/MAGES/blob/main/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/FlorianRappl/MAGES/</PackageProjectUrl>

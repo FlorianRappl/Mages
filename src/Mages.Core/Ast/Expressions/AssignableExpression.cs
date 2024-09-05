@@ -1,31 +1,21 @@
-﻿namespace Mages.Core.Ast.Expressions
+﻿namespace Mages.Core.Ast.Expressions;
+
+using System;
+
+/// <summary>
+/// Represents an expression that can be assigned.
+/// </summary>
+/// <remarks>
+/// Creates a new assignable expression.
+/// </remarks>
+public abstract class AssignableExpression(TextPosition start, TextPosition end) : BaseExpression(start, end)
 {
-    using System;
+    #region Properties
 
     /// <summary>
-    /// Represents an expression that can be assigned.
+    /// Gets if the expression is assignable.
     /// </summary>
-    public abstract class AssignableExpression : BaseExpression
-    {
-        #region ctor
+    public Boolean IsAssignable => true;
 
-        /// <summary>
-        /// Creates a new assignable expression.
-        /// </summary>
-        public AssignableExpression(TextPosition start, TextPosition end)
-            : base(start, end)
-        {
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets if the expression is assignable.
-        /// </summary>
-        public Boolean IsAssignable => true;
-
-        #endregion
-    }
+    #endregion
 }

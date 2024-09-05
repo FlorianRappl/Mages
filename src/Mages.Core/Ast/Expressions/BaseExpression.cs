@@ -1,42 +1,31 @@
-﻿namespace Mages.Core.Ast.Expressions
+﻿namespace Mages.Core.Ast.Expressions;
+
+/// <summary>
+/// Represents the shared core of all expressions.
+/// </summary>
+/// <remarks>
+/// Creates a new expression.
+/// </remarks>
+public abstract class BaseExpression(TextPosition start, TextPosition end)
 {
+    #region Fields
+
+    private readonly TextPosition _start = start;
+    private readonly TextPosition _end = end;
+
+    #endregion
+
+    #region Properties
+
     /// <summary>
-    /// Represents the shared core of all expressions.
+    /// Gets the start position of the expression.
     /// </summary>
-    public abstract class BaseExpression
-    {
-        #region Fields
+    public TextPosition Start => _start;
 
-        private readonly TextPosition _start;
-        private readonly TextPosition _end;
+    /// <summary>
+    /// Gets the end position of the expression.
+    /// </summary>
+    public TextPosition End => _end;
 
-        #endregion
-
-        #region ctor
-
-        /// <summary>
-        /// Creates a new expression.
-        /// </summary>
-        public BaseExpression(TextPosition start, TextPosition end)
-        {
-            _start = start;
-            _end = end;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets the start position of the expression.
-        /// </summary>
-        public TextPosition Start => _start;
-
-        /// <summary>
-        /// Gets the end position of the expression.
-        /// </summary>
-        public TextPosition End => _end;
-
-        #endregion
-    }
+    #endregion
 }

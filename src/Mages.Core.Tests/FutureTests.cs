@@ -32,6 +32,23 @@ sum
 f(5)", 10.0, engine => engine.SetFunction("calcAsync", FutureMock.Number(5.0)));
         }
 
+        private static async Task<Int32> MyAsyncTest(Int32 value)
+        {
+            await Task.Delay(10);
+            return value * 10;
+        }
+
+        [Test]
+        public void ConvertTaskToFuture_Issue64()
+        {
+            Test(@"var f = x => {
+  var y = await calcAsync(20);
+  return x + y;
+};
+
+f(5)", 205.0, engine => engine.SetFunction("calcAsync", new Func<Int32, Task<Int32>>(MyAsyncTest)));
+        }
+
         [Test]
         public void CalculateMultipleAsyncInFunction()
         {

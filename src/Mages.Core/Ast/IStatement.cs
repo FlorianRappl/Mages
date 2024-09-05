@@ -1,9 +1,8 @@
-﻿namespace Mages.Core.Ast
+﻿namespace Mages.Core.Ast;
+
+/// <summary>
+/// An abstract statement from the AST.
+/// </summary>
+public interface IStatement : IValidatable, IWalkable
 {
-    /// <summary>
-    /// An abstract statement from the AST.
-    /// </summary>
-    public interface IStatement : IValidatable, IWalkable
-    {
-    }
 }

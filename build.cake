@@ -36,9 +36,9 @@ if (isRunningOnGitHubActions)
     }
 }
 
-var buildDir = Directory("./src/Mages.Core/bin") + Directory(configuration) + Directory("netstandard2.0");
-var replDir = Directory("./src/Mages.Repl/bin") + Directory(configuration) + Directory("netcoreapp3.1");
-var installerDir = Directory("./src/Mages.Repl.Installer/bin") + Directory(configuration) + Directory("net45");
+var buildDir = Directory("./src/Mages.Core/bin") + Directory(configuration) + Directory("netstandard2.1");
+var replDir = Directory("./src/Mages.Repl/bin") + Directory(configuration) + Directory("net60");
+var installerDir = Directory("./src/Mages.Repl.Installer/bin") + Directory(configuration) + Directory("net50");
 var buildResultDir = Directory("./bin") + Directory(version);
 var nugetRoot = buildResultDir + Directory("nuget");
 var chocolateyRoot = buildResultDir + Directory("chocolatey");
@@ -71,7 +71,10 @@ Task("Restore-Packages")
     .IsDependentOn("Clean")
     .Does(() =>
     {
-        NuGetRestore("./src/Mages.sln");
+        NuGetRestore("./src/Mages.sln", new NuGetRestoreSettings
+        {
+            DisableParallelProcessing = isRunningOnUnix && isRunningOnGitHubActions,
+        });
     });
 
 Task("Update-Assembly-Version")
@@ -123,7 +126,7 @@ Task("Copy-Files")
     .IsDependentOn("Build")
     .Does(() =>
     {
-        var nugetBin = nugetRoot + Directory("lib") + Directory("netstandard2.0");
+        var nugetBin = nugetRoot + Directory("lib") + Directory("netstandard2.1");
         CreateDirectory(nugetBin);
         CreateDirectory(squirrelBin);
         CreateDirectory(releaseDir);
@@ -204,10 +207,11 @@ Task("Create-Squirrel-Package")
     });
 
 Task("Create-Chocolatey-Package")
-    .IsDependentOn("Copy-Files")
+    .IsDependentOn("Create-Squirrel-Package")
     .WithCriteria(() => isRunningOnWindows)
     .Does(() => {
-        var content = String.Format("$packageName = 'Mages'{1}$installerType = 'exe'{1}$url32 = 'https://github.com/FlorianRappl/Mages/releases/download/v{0}/Mages.exe'{1}$silentArgs = ''{1}{1}Install-ChocolateyPackage \"$packageName\" \"$installerType\" \"$silentArgs\" \"$url32\"", version, Environment.NewLine);
+        var checksum = CalculateFileHash(releaseDir.Path.FullPath + "/MagesSetup.exe", HashAlgorithm.SHA256).ToHex();
+        var content = String.Format("$packageName = 'Mages'{1}$installerType = 'exe'{1}$url32 = 'https://github.com/FlorianRappl/Mages/releases/download/v{0}/MagesSetup.exe'{1}$silentArgs = ''{1}$checksum32 = '{2}'{1}{1}Install-ChocolateyPackage -PackageName \"$packageName\" -FileType \"$installerType\" -SilentArgs \"$silentArgs\" -Url \"$url32\" -Checksum \"$checksum32\" -ChecksumType \"sha256\"", version, Environment.NewLine, checksum);
         var nuspec = chocolateyRoot + File("Mages.nuspec");
         var toolsDirectory = chocolateyRoot + Directory("tools");
         var scriptFile = toolsDirectory + File("chocolateyInstall.ps1");
@@ -267,7 +271,7 @@ Task("Publish-GitHub-Release")
             TargetCommitish = isPublish ? "main" : "devel"
         }).Result;
 
-        var target = nugetRoot + Directory("lib") + Directory("netstandard2.0");
+        var target = nugetRoot + Directory("lib") + Directory("netstandard2.1");
         var libPath = target + File("Mages.Core.dll");
         var releaseFiles = GetFiles(releaseDir.Path.FullPath + "/*");
 
@@ -279,11 +283,6 @@ Task("Publish-GitHub-Release")
         foreach (var file in releaseFiles)
         {
             var name = System.IO.Path.GetFileName(file.FullPath);
-
-            if (name.Equals("Setup.exe"))
-            {
-                name = "Mages.exe";
-            }
 
             using (var fileStream = System.IO.File.OpenRead(file.FullPath))
             {

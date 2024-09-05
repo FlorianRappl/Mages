@@ -1,27 +1,26 @@
-﻿namespace Mages.Core.Vm.Operations
+﻿namespace Mages.Core.Vm.Operations;
+
+using System;
+using System.Collections.Generic;
+
+/// <summary>
+/// Pushes one new element on the stack.
+/// </summary>
+sealed class NewObjOperation : IOperation
 {
-    using System;
-    using System.Collections.Generic;
+    public static readonly IOperation Instance = new NewObjOperation();
 
-    /// <summary>
-    /// Pushes one new element on the stack.
-    /// </summary>
-    sealed class NewObjOperation : IOperation
+    private NewObjOperation()
     {
-        public static readonly IOperation Instance = new NewObjOperation();
+    }
 
-        private NewObjOperation()
-        {
-        }
+    public void Invoke(IExecutionContext context)
+    {
+        context.Push(new Dictionary<String, Object>());
+    }
 
-        public void Invoke(IExecutionContext context)
-        {
-            context.Push(new Dictionary<String, Object>());
-        }
-
-        public override String ToString()
-        {
-            return "newobj";
-        }
+    public override String ToString()
+    {
+        return "newobj";
     }
 }
