@@ -10,6 +10,8 @@ sealed class DelVarOperation(String name) : IOperation
 {
     private readonly String _name = name;
 
+    public String Name => _name;
+
     public void Invoke(IExecutionContext context)
     {
         var result = context.Scope.Remove(_name);

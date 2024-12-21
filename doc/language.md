@@ -271,3 +271,31 @@ cos(2.5) == cos()()(2.5)
 are therefore equal. In the previous example two calls without any arguments result in the function itself, such that the last call is operating on `cos` itself. Auto currying is applied to any standard function, custom created function (lambda expression), and wrapped .NET function.
 
 Auto currying allows to use functions to create functions without much ceremony and plays great together with the pipe operator, which expects functions requiring only a single argument on the right side.
+
+### Placeholders
+
+Calling a function with parameters supplied as `_` will result in a new function taking the number of used placeholders as arguments.
+
+Example:
+
+```
+var f = (x, y, z) => x + 2 * y + 3 * z
+```
+
+Classically, this could be called like `f(x, y, z)` or with auto-currying like `f(x, y)` or even `f(x)`. But what if we would like to have a function `g(y) = f(x, y, z)`? We would need to define this alias quite explicitly:
+
+```
+var g = (y) => f(1, y, 3)
+```
+
+With the placeholder parameter it can be written such as:
+
+```
+var g = f(1, _, 3)
+```
+
+The big advantage of this is that we get a simple way to pipe things:
+
+```
+4 | f(1, _, 3)
+```

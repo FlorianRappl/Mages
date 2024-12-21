@@ -7,6 +7,7 @@ using Mages.Core.Vm;
 using Mages.Core.Vm.Operations;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// Represents the walker to create operations.
@@ -328,10 +329,12 @@ public sealed class OperationTreeWalker(List<IOperation> operations) : ITreeWalk
     void ITreeWalker.Visit(CallExpression expression)
     {
         var assigning = _assigning;
+        var start = _operations.Count;
         _assigning = false;
 
         expression.Validate(this);
         expression.Arguments.Accept(this);
+        var end = _operations.Count;
         expression.Function.Accept(this);
 
         if (assigning)
@@ -340,7 +343,32 @@ public sealed class OperationTreeWalker(List<IOperation> operations) : ITreeWalk
         }
         else
         {
+            var extract = 0;
             _operations.Add(new GetcOperation(expression.Arguments.Count));
+
+            for (var i = start; i < end; i++)
+            {
+                if (_operations[i] is GetsOperation g && g.Name == "_")
+                {
+                    var c = extract++;
+                    _operations[i] = new GetsOperation($"_{c}");
+                }
+            }
+
+            if (extract > 0)
+            {
+                var parameters = new List<ParameterDefinition>();
+
+                for (var i = 0; i < extract; i++)
+                {
+                    var name = $"_{i}";
+                    _operations.Insert(start, new ArgOperation(extract - (i + 1), name));
+                    parameters.Add(new ParameterDefinition(name, true));
+                }
+
+                _operations.Insert(start + extract, ArgsOperation.Instance);
+                _operations.Add(ExtractFunction(false, parameters.ToArray(), start));
+            }
         }
 
         _assigning = assigning;

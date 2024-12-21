@@ -5,6 +5,7 @@
 - Improved GC allocations (#81)
 - Added wrapping of `Task` in `Future` (#64)
 - Added octal representation (e.g., `0o123`) for numbers
+- Added insertion points (`_`) to function calls (#129)
 - Added JSX syntax (#120)
 - Added default `jsx` and `html` function (#120)
 - Added events to `Engine` to handle uncaught errors (#121)

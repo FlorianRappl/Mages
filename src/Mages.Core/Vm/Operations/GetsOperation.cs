@@ -10,6 +10,8 @@ sealed class GetsOperation(String name) : IOperation
 {
     private readonly String _name = name;
 
+    public String Name => _name;
+
     public void Invoke(IExecutionContext context)
     {
         var value = context.Scope.GetProperty(_name);
