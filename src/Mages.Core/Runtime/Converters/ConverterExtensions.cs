@@ -25,8 +25,8 @@ public static class ConverterExtensions
         Boolean _ => MagesBoolean.Type,
         Double[,] _ => MagesMatrix.Type,
         Complex[,] _ => MagesCMatrix.Type,
-        Function _ => MagesFunction.Type,
-        IDictionary<String, Object> _ => MagesObject.Type,
+        Function fn => MagesFunction.GetFullType(fn),
+        IDictionary<String, Object> obj => MagesObject.GetFullType(obj),
         _ => MagesUndefined.Type,
     };
 

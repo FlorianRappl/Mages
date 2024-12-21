@@ -154,7 +154,7 @@ sealed class ExpressionParser : IParser
         }
         else
         {
-            secondary = new BlockStatement(new IStatement[0], primary.End, primary.End);
+            secondary = new BlockStatement([], primary.End, primary.End);
         }
 
         return new IfStatement(condition, primary, secondary, start);
@@ -753,7 +753,7 @@ sealed class ExpressionParser : IParser
         else
         {
             var error = ParseInvalid(ErrorCode.MatrixNotTerminated, tokens);
-            values.Add(new IExpression[] { error });
+            values.Add([error]);
         }
 
         return new MatrixExpression([.. values], start.Start, end.End);
@@ -1249,7 +1249,7 @@ sealed class ExpressionParser : IParser
         var args = x as ArgumentsExpression;
         return args != null ?
             new ParameterExpression(args.Arguments, args.Start, args.End) :
-            new ParameterExpression(new[] { x }, x.Start, x.End);
+            new ParameterExpression([x], x.Start, x.End);
     }
 
     private static Boolean CheckAssigned(IEnumerator<IToken> tokens)

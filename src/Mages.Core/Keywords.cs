@@ -160,34 +160,34 @@ public static class Keywords
     /// <summary>
     /// Gets the globally available statement keywords.
     /// </summary>
-    public static readonly String[] GlobalStatementKeywords = new []
-    {
+    public static readonly String[] GlobalStatementKeywords =
+    [
         Var,
         Return,
         While,
         If,
         Match
-    };
+    ];
 
     /// <summary>
     /// Gets the within-loop available statement keywords.
     /// </summary>
-    public static readonly String[] LoopControlKeywords = new[]
-    {
+    public static readonly String[] LoopControlKeywords =
+    [
         Break,
         Continue
-    };
+    ];
 
     /// <summary>
     /// Gets the available expression keywords.
     /// </summary>
-    public static readonly String[] ExpressionKeywords = new[]
-    {
+    public static readonly String[] ExpressionKeywords =
+    [
         True,
         False,
         New,
         Pi
-    };
+    ];
 
     /// <summary>
     /// Tries to get the constant's value.

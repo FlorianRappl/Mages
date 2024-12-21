@@ -93,7 +93,7 @@ public static class Curry
                 var result = default(Function);
                 var required = ShuffleParameters(args, parameters, indices);
 
-                result = new Function(shuffledArgs =>
+                result = Helpers.DeclareFunction(shuffledArgs =>
                 {
                     var length = indices.Length;
                     var normalArgs = new Object[length];
@@ -124,7 +124,7 @@ public static class Curry
                     }
 
                     return target.Invoke(normalArgs);
-                });
+                }, []);
 
                 return result;
             }
@@ -178,7 +178,7 @@ public static class Curry
 
     private static Object[] Recombine2(Object[] oldArgs, Object[] newArgs)
     {
-        return newArgs.Length > 0 ? new[] { oldArgs[0], newArgs[0] } : oldArgs;
+        return newArgs.Length > 0 ? [oldArgs[0], newArgs[0]] : oldArgs;
     }
 
     private static Object[] RecombineN(Object[] oldArgs, Object[] newArgs)

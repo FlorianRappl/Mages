@@ -17,4 +17,17 @@ static class MagesFunction
         { "name", "Function" },
         { "create", Create },
     };
+
+    public static IDictionary<String, Object> GetFullType(Function value)
+    {
+        var meta = Meta.For(value);
+        var info = new Dictionary<String, Object>(Type);
+
+        foreach (var kvp in meta)
+        {
+            info.Add(kvp.Key, kvp.Value);
+        }
+
+        return info;
+    }
 }

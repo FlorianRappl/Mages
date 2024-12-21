@@ -115,11 +115,11 @@ public sealed class Future : Dictionary<String, Object>
         }
         else
         {
-            this["notify"] = new Function(args =>
+            this["notify"] = Helpers.DeclareFunction(args =>
             {
                 callback.Invoke(Result, Error);
                 return null;
-            });
+            }, []);
         }
     }
 

@@ -3,6 +3,7 @@
 using Mages.Core.Vm;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 sealed class LocalFunction
 {
@@ -23,7 +24,7 @@ sealed class LocalFunction
         _parentScope = parentScope;
         _parameters = parameters;
         _operations = operations;
-        _pointer = new Function(Invoke);
+        _pointer = Helpers.DeclareFunction(Invoke, _parameters.Select(m => m.Name).ToArray());
     }
 
     public ParameterDefinition[] Parameters => _parameters;

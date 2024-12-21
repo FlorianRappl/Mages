@@ -34,7 +34,7 @@ sealed class JsonSerializer
             buffer.Append(' ', 2 * sublevel).Append(key).Append(": ");
             SerializeTo(item.Value, buffer, sublevel);
 
-            if (index + 1 < obj.Count)
+            if (++index < obj.Count)
             {
                 buffer.Append(',');
             }

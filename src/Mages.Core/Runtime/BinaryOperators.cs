@@ -85,7 +85,7 @@ static class BinaryOperators
 
     private static readonly Func<Double, Double, Object> ModNumbers = (y, x) => x % y;
     private static readonly Func<Complex, Complex, Object> ModCNumbers = (y, x) => Mathx.Mod(x, y);
-    private static readonly Func<Function, Object, Object> InvokeFunction = (f, arg) => f.Invoke(new[] { arg });
+    private static readonly Func<Function, Object, Object> InvokeFunction = (f, arg) => f.Invoke([arg]);
 
     #endregion
 

@@ -9,7 +9,7 @@ sealed class InterpolationTokenizer(ITokenizer tokenizer) : ITokenizer
 {
     #region Fields
 
-    private static readonly Int32[] DigitWeights = new[] { 4096, 256, 16, 1 };
+    private static readonly Int32[] DigitWeights = [4096, 256, 16, 1];
     private readonly ITokenizer _tokenizer = tokenizer;
 
     #endregion

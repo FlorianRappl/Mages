@@ -9,7 +9,7 @@ sealed class IndexProxy : FunctionProxy
     public IndexProxy(WrapperObject obj, PropertyInfo[] properties)
         : base(obj, properties.Where(m => m.CanRead).Select(m => m.GetGetMethod()).ToArray())
     {
-        _proxy = new Function(Invoke);
+        _proxy = Helpers.DeclareFunction(Invoke, ["...args"]);
     }
 
     private Object Invoke(Object[] arguments)

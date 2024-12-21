@@ -9,7 +9,7 @@ sealed class MethodProxy : FunctionProxy
     public MethodProxy(WrapperObject obj, MethodInfo[] methods)
         : base(obj, methods)
     {
-        _proxy = new Function(Invoke);
+        _proxy = Helpers.DeclareFunction(Invoke, ["...args"]);
     }
 
     private Object Invoke(Object[] arguments)

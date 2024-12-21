@@ -9,7 +9,7 @@ sealed class ConstructorProxy : FunctionProxy
     public ConstructorProxy(WrapperObject obj, ConstructorInfo[] ctors)
         : base(obj, ctors)
     {
-        _proxy = new Function(Invoke);
+        _proxy = Helpers.DeclareFunction(Invoke, ["...args"]);
     }
 
     private Object Invoke(Object[] arguments)

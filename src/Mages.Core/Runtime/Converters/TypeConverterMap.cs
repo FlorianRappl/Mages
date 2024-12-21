@@ -67,7 +67,7 @@ sealed class TypeConverterMap
                 {
                     return obj =>
                     {
-                        var g = t.GetConstructor(new[] { typeof(Object) }).Invoke(new[] { obj });
+                        var g = t.GetConstructor([typeof(Object)]).Invoke([obj]);
                         return Delegate.CreateDelegate(to, g, "Invoke");
                     };
                 }

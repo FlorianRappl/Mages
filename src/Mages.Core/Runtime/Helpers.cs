@@ -4,6 +4,7 @@ using Mages.Core.Runtime.Converters;
 using Mages.Core.Runtime.Functions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 static class Helpers
 {
     public static readonly TypeConverterMap Converters = new();
-    private static readonly Object[] Empty = new Object[0];
+    private static readonly Object[] Empty = [];
 
     public static Object Getter(this String str, Object[] arguments)
     {
@@ -348,14 +349,21 @@ static class Helpers
         return o.ToArrayObject();
     }
 
+    public static Function DeclareFunction(this Function f, String[] parameters)
+    {
+        Meta.Define(f, "parameters", parameters.ToArrayObject());
+        return f;
+    }
+
     public static Function WrapFunction(this MethodInfo method, Object target)
     {
         var parameters = method.GetParameters();
+        var names = parameters.Select(m => m.Name).ToArray();
         var f = default(Function);
 
         if (parameters.Length != 1 || parameters[0].ParameterType != typeof(Object[]) || method.ReturnType != typeof(Object))
         {
-            f = new Function(args =>
+            f = DeclareFunction(args =>
             {
                 var result = Curry.Min(parameters.Length, f, args);
 
@@ -365,11 +373,11 @@ static class Helpers
                 }
 
                 return result;
-            });
+            }, names);
         }
         else
         {
-            f = (Function)Delegate.CreateDelegate(typeof(Function), target, method);
+            f = DeclareFunction((Function)Delegate.CreateDelegate(typeof(Function), target, method), names);
         }
 
         return f;
