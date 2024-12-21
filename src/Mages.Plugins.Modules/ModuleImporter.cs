@@ -24,11 +24,11 @@
                 {
                     var engine = Cache.Find(path);
 
-                    if (engine == null)
+                    if (engine is null)
                     {
                         var callback = reader.Prepare(path);
 
-                        if (callback != null)
+                        if (callback is not null)
                         {
                             engine = _creator.CreateEngine();
                             Cache.Add(engine);

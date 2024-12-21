@@ -3,6 +3,7 @@
     <TargetFrameworks>netstandard2.1</TargetFrameworks>
     <AssemblyName>Mages.Plugins.Random</AssemblyName>
     <RootNamespace>Mages.Plugins.Random</RootNamespace>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

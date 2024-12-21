@@ -19,7 +19,7 @@ abstract class BaseProxy(WrapperObject obj)
 
     protected Object Convert(Object value, Type target)
     {
-        var source = value != null ? value.GetType() : target;
+        var source = value is not null ? value.GetType() : target;
         return source.Convert(value, target);
     }
 
@@ -29,7 +29,7 @@ abstract class BaseProxy(WrapperObject obj)
         {
             return _obj;
         }
-        else if (value != null)
+        else if (value is not null)
         {
             var source = value.GetType();
             var target = source.FindPrimitive();

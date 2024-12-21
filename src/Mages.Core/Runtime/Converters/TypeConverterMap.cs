@@ -15,7 +15,7 @@ sealed class TypeConverterMap
 
             return obj =>
             {
-                if (obj != null)
+                if (obj is not null)
                 {
                     var converter = default(Func<Object, Object>);
                     var type = obj.GetType();
@@ -63,7 +63,7 @@ sealed class TypeConverterMap
                 var p = inv.GetParameters();
                 var t = TargetWrapper.Construct(inv.ReturnType, p);
 
-                if (t != null)
+                if (t is not null)
                 {
                     return obj =>
                     {

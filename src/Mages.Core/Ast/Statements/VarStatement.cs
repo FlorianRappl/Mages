@@ -38,11 +38,11 @@ public sealed class VarStatement(IExpression assignment, TextPosition start, Tex
     {
         var assignment = _assignment as AssignmentExpression;
 
-        if (assignment == null)
+        if (assignment is null)
         {
             //TODO Report invalid construction
         }
-        else if (assignment.VariableName == null)
+        else if (assignment.VariableName is null)
         {
             //TODO Report invalid construction
         }

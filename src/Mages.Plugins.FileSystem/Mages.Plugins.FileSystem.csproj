@@ -3,6 +3,7 @@
     <TargetFrameworks>netstandard2.1</TargetFrameworks>
     <AssemblyName>Mages.Plugins.FileSystem</AssemblyName>
     <RootNamespace>Mages.Plugins.FileSystem</RootNamespace>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

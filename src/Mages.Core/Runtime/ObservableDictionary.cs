@@ -185,12 +185,7 @@ public class ObservableDictionary(IDictionary<String, Object> container) : IDict
     private void Emit(String key, Object oldValue, Object newValue)
     {
         var handler = Changed;
-
-        if (handler != null)
-        {
-            handler.Invoke(this, new EntryChangedArgs(key, oldValue, newValue));
-        }
-
+        handler?.Invoke(this, new EntryChangedArgs(key, oldValue, newValue));
         OnChanged(key, oldValue, newValue);
     }
 

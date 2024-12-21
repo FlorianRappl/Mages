@@ -36,7 +36,7 @@
 
             _interactivity.HandleCancellation(() =>
             {
-                if (currentContext != null)
+                if (currentContext is not null)
                 {
                     currentContext.Stop();
                     return true;
@@ -91,7 +91,7 @@
             {
                 input = _interactivity.GetLine("SWM> ", ShowAutoComplete);
 
-                if (input != null && input.Trim().Length > 0)
+                if (input is not null && input.Trim().Length > 0)
                 {
                     EvaluateCompleted(input);
                 }
@@ -109,7 +109,7 @@
             {
                 var rest = _interactivity.GetLine("   > ", ShowAutoComplete);
 
-                if (rest == null)
+                if (rest is null)
                     return;
 
                 if (rest.Length == 0)
@@ -131,7 +131,7 @@
                 {
                     var output = default(String);
 
-                    if (result != null)
+                    if (result is not null)
                     {
                         output = Stringify.This(result);
                     }

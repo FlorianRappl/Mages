@@ -23,7 +23,7 @@
         {
             var value = default(Object);
 
-            if (engine != null)
+            if (engine is not null)
             {
                 _exports.TryGetValue(engine, out value);
             }

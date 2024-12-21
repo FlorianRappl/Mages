@@ -639,7 +639,7 @@ sealed class ExpressionParser : IParser
                     var x = ParseUnary(tokens);
                     expressions.Push(x);
                 }
-                while (tokens.Current.Type == TokenType.Power && tokens.NextNonIgnorable() != null);
+                while (tokens.Current.Type == TokenType.Power && tokens.NextNonIgnorable() is not null);
 
                 do
                 {
@@ -1247,7 +1247,7 @@ sealed class ExpressionParser : IParser
     private static ParameterExpression GetParameters(IExpression x)
     {
         var args = x as ArgumentsExpression;
-        return args != null ?
+        return args is not null ?
             new ParameterExpression(args.Arguments, args.Start, args.End) :
             new ParameterExpression([x], x.Start, x.End);
     }

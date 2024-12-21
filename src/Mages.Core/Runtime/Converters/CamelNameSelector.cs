@@ -43,7 +43,7 @@ sealed class CamelNameSelector : INameSelector
 
     private static String ConvertToCamelCase(String str)
     {
-        if (str != null)
+        if (str is not null)
         {
             if (str.Length > 1)
             {

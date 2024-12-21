@@ -3,7 +3,9 @@
     <TargetFrameworks>netstandard2.1</TargetFrameworks>
     <AssemblyName>Mages.Plugins.Transpilers</AssemblyName>
     <RootNamespace>Mages.Plugins.Transpilers</RootNamespace>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="System.CodeDom" Version="5.0.0" />
   </ItemGroup>

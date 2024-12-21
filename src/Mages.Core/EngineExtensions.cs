@@ -101,7 +101,7 @@ public static class EngineExtensions
 
         foreach (var type in types)
         {
-            if (shouldInclude == null || shouldInclude.Invoke(type))
+            if (shouldInclude is null || shouldInclude.Invoke(type))
             {
                 var name = obj.Keys.FindName(type);
                 var value = type.Expose();
@@ -203,7 +203,7 @@ public static class EngineExtensions
 
             var constructor = type.GetConstructor([typeof(Engine)]);
 
-            if (constructor != null)
+            if (constructor is not null)
             {
                 var obj = constructor.Invoke(new[] { engine });
                 var plugin = ConstructInstancePlugin(obj);
@@ -230,7 +230,7 @@ public static class EngineExtensions
         {
             var plugin = engine.AddPlugin(type);
 
-            if (plugin != null)
+            if (plugin is not null)
             {
                 plugins.Add(plugin);
             }

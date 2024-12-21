@@ -6,6 +6,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Mages.Core.Tests</RootNamespace>
     <AssemblyName>Mages.Core.Tests</AssemblyName>
+    <LangVersion>latest</LangVersion>
     <ApplicationIcon />
     <StartupObject />
     <Platforms>x64</Platforms>

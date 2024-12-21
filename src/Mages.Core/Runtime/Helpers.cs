@@ -120,7 +120,7 @@ static class Helpers
     {
         var obj = value as IDictionary<String, Object>;
 
-        if (obj != null && obj.Count >= constraints.Count)
+        if (obj is not null && obj.Count >= constraints.Count)
         {
             foreach (var constraint in constraints)
             {
@@ -129,8 +129,8 @@ static class Helpers
                     var simple = constraint.Value as String;
                     var extended = constraint.Value as IDictionary<String, Object>;
 
-                    if ((simple == null || val.ToType()["name"].ToString() == simple) &&
-                        (extended == null || extended.Satisfies(val)))
+                    if ((simple is null || val.ToType()["name"].ToString() == simple) &&
+                        (extended is null || extended.Satisfies(val)))
                     {
                         continue;
                     }
@@ -367,7 +367,7 @@ static class Helpers
             {
                 var result = Curry.Min(parameters.Length, f, args);
 
-                if (result == null && method.TryMatch(parameters, ref args))
+                if (result is null && method.TryMatch(parameters, ref args))
                 {
                     result = method.Call(target, args);
                 }
@@ -390,7 +390,7 @@ static class Helpers
             return new Future(task);
         }
 
-        if (value != null)
+        if (value is not null)
         {
             var type = value.GetType();
             var target = type.FindPrimitive();

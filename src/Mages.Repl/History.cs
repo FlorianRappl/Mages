@@ -17,7 +17,7 @@
             if (size < 1)
                 throw new ArgumentException("size");
 
-            if (app != null)
+            if (app is not null)
             {
                 var dir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
@@ -27,7 +27,7 @@
                     catch { app = null; }
                 }
 
-                if (app != null)
+                if (app is not null)
                 {
                     _histfile = Path.Combine(dir, app) + ".history";
                 }
@@ -42,7 +42,7 @@
                 {
                     var line = String.Empty;
 
-                    while ((line = sr.ReadLine()) != null)
+                    while ((line = sr.ReadLine()) is not null)
                     {
                         if (!String.IsNullOrEmpty(line))
                         {
@@ -55,7 +55,7 @@
 
         public void Close()
         {
-            if (_histfile != null)
+            if (_histfile is not null)
             {
                 try
                 {
@@ -192,7 +192,7 @@
                 if (slot >= _history.Length)
                     slot = 0;
 
-                if (_history[slot] != null && _history[slot].IndexOf(term) != -1)
+                if (_history[slot] is not null && _history[slot].IndexOf(term) != -1)
                 {
                     _cursor = slot;
                     return _history[slot];

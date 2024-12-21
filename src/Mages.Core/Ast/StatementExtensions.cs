@@ -81,7 +81,7 @@ public static class StatementExtensions
     public static Boolean IsEmpty(this IStatement statement)
     {
         var simple = statement as SimpleStatement;
-        return simple != null && simple.Expression.IsEmpty();
+        return simple is not null && simple.Expression.IsEmpty();
     }
 
     /// <summary>

@@ -46,7 +46,7 @@ public sealed class DeleteExpression(TextPosition start, IExpression payload) : 
         var member = _payload as MemberExpression;
         var isIdentifier = _payload is VariableExpression;
 
-        if (member != null)
+        if (member is not null)
         {
             expression = member.Member;
             isIdentifier = expression is IdentifierExpression;

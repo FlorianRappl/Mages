@@ -55,7 +55,7 @@ sealed class AwaitOperation : IOperation
     {
         var error = promise.Error;
 
-        if (error != null)
+        if (error is not null)
         {
             throw error;
         }

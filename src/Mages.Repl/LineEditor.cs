@@ -330,7 +330,7 @@
 
         private void HandleChar(Char c)
         {
-            var completing = _completion != null;
+            var completing = _completion is not null;
             HideCompletions();
             InsertChar(c);
 
@@ -361,7 +361,7 @@
 
                 if (cki.Key == ConsoleKey.Escape)
                 {
-                    if (_completion != null)
+                    if (_completion is not null)
                     {
                         HideCompletions();
                         continue;
@@ -646,7 +646,7 @@
 
             width = Math.Min(width, CompletionMaxWidth);
 
-            if (_completion == null)
+            if (_completion is null)
             {
                 var left = Console.CursorLeft - prefix.Length;
 
@@ -673,7 +673,7 @@
 
         private void HideCompletions()
         {
-            if (_completion != null)
+            if (_completion is not null)
             {
                 _completion.Remove();
                 _completion = null;
@@ -685,7 +685,7 @@
             var completion = AutoCompleteEvent(AvailableText, _position);
             var completions = completion.Result;
 
-            if (completions == null)
+            if (completions is null)
             {
                 HideCompletions();
                 return;
@@ -752,7 +752,7 @@
 
         private void UpdateCompletionWindow()
         {
-            if (_completion != null)
+            if (_completion is not null)
             {
                 throw new Exception("This method should only be called if the window has been hidden");
             }
@@ -760,7 +760,7 @@
             var completion = AutoCompleteEvent(AvailableText, _position);
             var completions = completion.Result;
 
-            if (completions != null)
+            if (completions is not null)
             {
                 var ncompletions = completions.Length;
 
@@ -831,7 +831,7 @@
 
         private void CmdUp()
         {
-            if (_completion != null)
+            if (_completion is not null)
             {
                 _completion.SelectPrevious();
             }
@@ -848,7 +848,7 @@
 
         private void CmdDown()
         {
-            if (_completion != null)
+            if (_completion is not null)
             {
                 _completion.SelectNext();
             }
@@ -897,7 +897,7 @@
 
         private void CmdDone()
         {
-            if (_completion != null)
+            if (_completion is not null)
             {
                 InsertTextAtCursor(_completion.Current);
                 HideCompletions();
@@ -911,7 +911,7 @@
         {
             var complete = false;
 
-            if (AutoCompleteEvent != null)
+            if (AutoCompleteEvent is not null)
             {
                 if (IsFirstTabCompleting)
                 {
@@ -1004,7 +1004,7 @@
         {
             if (_position != 0)
             {
-                var completing = _completion != null;
+                var completing = _completion is not null;
                 HideCompletions();
                 CurrentLine._availableText.Remove(--_position, 1);
                 CurrentLine.ComputeRendered();

@@ -120,12 +120,12 @@ public sealed class SymbolTreeWalker(IDictionary<VariableExpression, List<Variab
     {
         var list = Find(expression.Name, expression.Scope);
 
-        if (list == null && _assigning)
+        if (list is null && _assigning)
         {
             list = [expression];
             _collector[expression] = list;
         }
-        else if (list != null)
+        else if (list is not null)
         {
             list.Add(expression);
         }

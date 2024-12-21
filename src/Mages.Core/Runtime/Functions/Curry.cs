@@ -82,12 +82,12 @@ public static class Curry
         var end = args.Length - 1;
         var target = args[end] as Function;
 
-        if (target != null)
+        if (target is not null)
         {
             var wrapper = target.Target as LocalFunction;
             var parameters = wrapper?.Parameters;
 
-            if (parameters != null)
+            if (parameters is not null)
             {
                 var indices = new Int32[parameters.Length];
                 var result = default(Function);
@@ -152,7 +152,7 @@ public static class Curry
         {
             var s = arg as String;
 
-            if (s != null)
+            if (s is not null)
             {
                 for (var j = 0; j < parameters.Length; j++)
                 {

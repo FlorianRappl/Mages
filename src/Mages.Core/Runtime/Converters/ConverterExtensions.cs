@@ -157,7 +157,7 @@ public static class ConverterExtensions
         {
             var result = new Dictionary<String, Object>();
 
-            if (value != null)
+            if (value is not null)
             {
                 result["0"] = value;
             }

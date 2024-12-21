@@ -30,7 +30,7 @@ public static class FunctionExtensions
         {
             var argument = arguments[i];
 
-            if (argument != null)
+            if (argument is not null)
             {
                 var from = argument.GetType();
                 var type = from.FindPrimitive();
@@ -92,7 +92,7 @@ public static class FunctionExtensions
         var local = function.Target as LocalFunction;
         var parameters = local?.Parameters;
 
-        if (parameters == null)
+        if (parameters is null)
         {
             var nativeParams = function.Method.GetParameters();
             var parameterNames = new String[nativeParams.Length];

@@ -22,7 +22,7 @@ public static class Container
     /// <returns>The optional lifetime controlling instance.</returns>
     public static IDisposable Register<T>(T service)
     {
-        if (service != null && !_container.Contains(service))
+        if (service is not null && !_container.Contains(service))
         {
             _container.Add(service);
             return new ServiceLifeTime(service);

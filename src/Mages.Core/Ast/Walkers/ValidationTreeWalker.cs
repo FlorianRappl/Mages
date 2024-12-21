@@ -24,7 +24,7 @@ public sealed class ValidationTreeWalker(List<ParseError> errors) : ITreeWalker,
 
     #region Properties
 
-    Boolean IValidationContext.IsInLoop => _loops.Count != 0 && _loops.Peek() != null;
+    Boolean IValidationContext.IsInLoop => _loops.Count != 0 && _loops.Peek() is not null;
 
     #endregion
 

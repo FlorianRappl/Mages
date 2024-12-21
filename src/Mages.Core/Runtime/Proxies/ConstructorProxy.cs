@@ -14,10 +14,10 @@ sealed class ConstructorProxy : FunctionProxy
 
     private Object Invoke(Object[] arguments)
     {
-        var types = arguments.Select(m => m != null ? m.GetType() : typeof(Object)).ToArray();
+        var types = arguments.Select(m => m is not null ? m.GetType() : typeof(Object)).ToArray();
         var ctor = _methods.Find(types, ref arguments) as ConstructorInfo;
 
-        if (ctor != null)
+        if (ctor is not null)
         {
             return ctor.Call(_obj, arguments);
         }

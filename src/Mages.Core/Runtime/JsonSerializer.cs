@@ -47,7 +47,7 @@ sealed class JsonSerializer
 
     private void SerializeTo(Object value, StringBuilder buffer, Int32 level)
     {
-        if (value == null)
+        if (value is null)
         {
             buffer.Append("null");
         }

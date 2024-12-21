@@ -21,6 +21,6 @@ sealed class ConstOperation(Object constant) : IOperation
 
     public override String ToString()
     {
-        return String.Concat("const ", _constant != null ? _constant.GetHashCode() : 0);
+        return String.Concat("const ", _constant is not null ? _constant.GetHashCode() : 0);
     }
 }

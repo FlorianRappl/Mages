@@ -16,7 +16,7 @@ sealed class DelKeyOperation(String name) : IOperation
         var obj = context.Pop() as IDictionary<String, Object>;
         var result = false;
 
-        if (obj != null)
+        if (obj is not null)
         {
             result = obj.Remove(_name);
         }

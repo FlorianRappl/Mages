@@ -21,7 +21,7 @@ sealed class SetpOperation : IOperation
         var obj = context.Pop() as IDictionary<String, Object>;
         var name = context.Pop() as String;
 
-        if (obj != null && name != null)
+        if (obj is not null && name is not null)
         {
             obj.SetProperty(name, value);
         }

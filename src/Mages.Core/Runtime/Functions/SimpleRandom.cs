@@ -56,9 +56,6 @@ static class SimpleRandom
 
     private static void EnsureRandom()
     {
-        if (_random == null)
-        {
-            _random = new Random();
-        }
+        _random ??= new Random();
     }
 }

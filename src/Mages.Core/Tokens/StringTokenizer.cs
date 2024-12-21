@@ -157,11 +157,7 @@ sealed class StringTokenizer : ITokenizer
 
         private void AddError(ErrorCode code, ITextRange range)
         {
-            if (_errors == null)
-            {
-                _errors = [];
-            }
-
+            _errors ??= [];
             _errors.Add(new ParseError(code, range));
         }
     }

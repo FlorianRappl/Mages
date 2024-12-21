@@ -30,10 +30,8 @@ public sealed class AssignmentExpression(IExpression variable, IExpression value
     public String VariableName 
     {
         get 
-        { 
-            var variable = Variable as VariableExpression;
-
-            if (variable != null)
+        {
+            if (Variable is VariableExpression variable)
             {
                 return variable.Name;
             }

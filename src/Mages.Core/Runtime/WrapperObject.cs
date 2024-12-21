@@ -57,7 +57,7 @@ public sealed class WrapperObject : IDictionary<String, Object>
     /// <returns>The wrapper or null dependent on the value.</returns>
     public static WrapperObject CreateFor(Object value)
     {
-        if (value != null)
+        if (value is not null)
         {
             return value is Type type ? new WrapperObject(type) : new WrapperObject(value);
         }

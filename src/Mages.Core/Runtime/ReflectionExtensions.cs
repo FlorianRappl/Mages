@@ -148,7 +148,7 @@ static class ReflectionExtensions
                     value = source.Convert(arguments[i], parameter.ParameterType);
                 }
 
-                if (value == null)
+                if (value is null)
                 {
                     break;
                 }
@@ -295,7 +295,7 @@ static class ReflectionExtensions
 
                     var converter = StandardConverters.List.Find(m => m.From == cit && m.To == ait);
 
-                    if (converter == null)
+                    if (converter is null)
                     {
                         return 0;
                     }
@@ -307,7 +307,7 @@ static class ReflectionExtensions
             {
                 var converter = StandardConverters.List.Find(m => m.From == ct && m.To == at);
 
-                if (converter != null)
+                if (converter is not null)
                 {
                     rating += converter.Rating;
                 }

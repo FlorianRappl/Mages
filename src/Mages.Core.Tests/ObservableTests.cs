@@ -65,7 +65,7 @@
             var keys = new List<String>();
             obs.Changed += (s, ev) => 
             {
-                if (ev.NewValue == null && ev.OldValue != null)
+                if (ev.NewValue is null && ev.OldValue is not null)
                 {
                     keys.Add(ev.Key);
                 }

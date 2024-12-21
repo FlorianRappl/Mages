@@ -88,13 +88,13 @@ public sealed class CompletionTreeWalker : BaseTreeWalker
     {
         var assignment = statement.Assignment as AssignmentExpression;
 
-        if (assignment != null)
+        if (assignment is not null)
         {
             var c = _variables.Count - 1;
             var variables = _variables[c];
             var variable = assignment.VariableName;
 
-            if (variable != null && !variables.Contains(variable))
+            if (variable is not null && !variables.Contains(variable))
             {
                 variables.Add(variable);
             }
@@ -148,7 +148,7 @@ public sealed class CompletionTreeWalker : BaseTreeWalker
     {
         var name = expression.VariableName;
 
-        if (name != null)
+        if (name is not null)
         {
             var c = _variables.Count - 1;
 
@@ -186,7 +186,7 @@ public sealed class CompletionTreeWalker : BaseTreeWalker
         {
             var variable = parameter as VariableExpression;
 
-            if (variable != null)
+            if (variable is not null)
             {
                 var variables = _variables[_variables.Count - 1];
 
@@ -243,13 +243,13 @@ public sealed class CompletionTreeWalker : BaseTreeWalker
             var prefix = String.Empty;
             var obj = Resolve(expression.Object);
 
-            if (member != null)
+            if (member is not null)
             {
                 var length = _position.Index - member.Start.Index;
                 prefix = member.Name.Substring(0, length);
             }
 
-            if (obj != null)
+            if (obj is not null)
             {
                 AddSuggestions(prefix, obj.Select(m => m.Key));
             }
@@ -273,11 +273,11 @@ public sealed class CompletionTreeWalker : BaseTreeWalker
         var host = _symbols;
         var name = default(String);
 
-        if (member != null)
+        if (member is not null)
         {
             var child = member.Member as IdentifierExpression;
 
-            if (child != null)
+            if (child is not null)
             {
                 host = Resolve(member.Object);
                 name = child.Name;
@@ -287,13 +287,13 @@ public sealed class CompletionTreeWalker : BaseTreeWalker
         {
             var variable = expression as VariableExpression;
 
-            if (variable != null)
+            if (variable is not null)
             {
                 name = variable.Name;
             }
         }
 
-        if (!String.IsNullOrEmpty(name) && host != null)
+        if (!String.IsNullOrEmpty(name) && host is not null)
         {
             host.TryGetValue(name, out value);
             return value as IDictionary<String, Object>;

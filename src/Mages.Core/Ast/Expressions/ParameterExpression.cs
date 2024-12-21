@@ -34,14 +34,14 @@ public sealed class ParameterExpression(IExpression[] parameters, TextPosition s
             {
                 var identifier = _parameters[i] as VariableExpression;
                 var assignment = _parameters[i] as AssignmentExpression;
-                var required = assignment == null;
+                var required = assignment is null;
 
                 if (!required)
                 {
                     identifier = assignment.Variable as VariableExpression;
                 }
 
-                if (identifier != null)
+                if (identifier is not null)
                 {
                     names[i] = new ParameterDefinition(identifier.Name, required);
                 }
@@ -86,7 +86,7 @@ public sealed class ParameterExpression(IExpression[] parameters, TextPosition s
             {
                 var assignment = (AssignmentExpression)parameter;
 
-                if (assignment.VariableName == null)
+                if (assignment.VariableName is null)
                 {
                     var error = new ParseError(ErrorCode.OptionalArgumentRequired, parameter);
                     context.Report(error);

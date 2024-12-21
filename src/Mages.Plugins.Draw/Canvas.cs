@@ -65,7 +65,7 @@
         {
             var brush = _brush as SolidBrush;
 
-            if (brush != null)
+            if (brush is not null)
             {
                 return ColorTranslator.ToHtml(brush.Color);
             }

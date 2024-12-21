@@ -39,7 +39,7 @@
             {
                 var result = _editor.Edit(prompt, String.Empty);
 
-                if (result != null)
+                if (result is not null)
                 {
                     _warned = false;
                 }
@@ -50,7 +50,7 @@
 
         public void Info(String result)
         {
-            if (result == null)
+            if (result is null)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write("Undefined");

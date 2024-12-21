@@ -21,7 +21,7 @@ sealed class SetcOperation(Int32 length) : IOperation
             arguments[i] = context.Pop();
         }
 
-        if (obj != null && TypeProcedures.TryFind(obj, out var function))
+        if (obj is not null && TypeProcedures.TryFind(obj, out var function))
         {
             function.Invoke(arguments, value);
         }

@@ -36,7 +36,7 @@ sealed class LocalFunction
         var scope = new LocalScope(_parentScope);
         var ctx = new ExecutionContext(_operations, scope);
 
-        if (_self != null)
+        if (_self is not null)
         {
             scope.Add("this", _self);
         }

@@ -4,6 +4,7 @@
     <ProjectGuid>{2239BDD1-07B4-44B0-A6DB-ED4C69B8797C}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
+    <LangVersion>latest</LangVersion>
     <RootNamespace>Mages.Repl.Installer</RootNamespace>
     <AssemblyName>mages.installer</AssemblyName>
     <ApplicationIcon />

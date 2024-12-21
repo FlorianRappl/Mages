@@ -279,7 +279,7 @@
 
         private static ParameterDefinition P(String v, Boolean r)
         {
-            if (v != null)
+            if (v is not null)
             {
                 return new ParameterDefinition(v, r);
             }

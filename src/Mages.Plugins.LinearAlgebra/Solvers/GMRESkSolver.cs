@@ -104,13 +104,12 @@
             var gamma = new Double[k + 1];
             var iter = 0;
 
-            if (Guess == null)
-            {
-                Guess = new Double[b.GetLength(0), b.GetLength(1)];
-            }
+            Guess ??= new Double[b.GetLength(0), b.GetLength(1)];
 
             if (Guess.GetLength(0) != b.GetLength(0) || Guess.GetLength(1) != b.GetLength(1))
+            {
                 throw new InvalidOperationException(ErrorMessages.DimensionMismatch);
+            }
 
             var H = new Double[k + 1, k];
             var V = new Double[Guess.GetLength(0), k];

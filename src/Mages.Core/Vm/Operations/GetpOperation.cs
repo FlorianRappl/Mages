@@ -22,9 +22,9 @@ sealed class GetpOperation : IOperation
         var obj = instance as IDictionary<String, Object>;
         var result = default(Object);
 
-        if (name != null && instance != null)
+        if (name is not null && instance is not null)
         {
-            if (obj == null || !obj.TryGetValue(name, out result))
+            if (obj is null || !obj.TryGetValue(name, out result))
             {
                 AttachedProperties.TryFind(instance, name, out result);
             }
