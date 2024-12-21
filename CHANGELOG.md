@@ -10,6 +10,7 @@
 - Added JSX syntax (#120)
 - Added default `jsx` and `html` function (#120)
 - Added events to `Engine` to handle uncaught errors (#121)
+- Added object metadata retrievable via `type` (#49)
 
 # 2.0.3
 
