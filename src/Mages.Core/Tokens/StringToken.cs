@@ -6,7 +6,7 @@ using System.Linq;
 
 sealed class StringToken(String content, IEnumerable<ParseError> errors, TextPosition start, TextPosition end) : IToken
 {
-    private static readonly IEnumerable<ParseError> NoErrors = Enumerable.Empty<ParseError>();
+    private static readonly IEnumerable<ParseError> NoErrors = [];
 
     private readonly String _content = content;
     private readonly TextPosition _start = start;

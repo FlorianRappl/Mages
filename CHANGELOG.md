@@ -1,7 +1,10 @@
 # 3.0.0
 
+- Fixed potential misinterpretation of fractions in hex numbers (#128)
+- Fixed usage of capital `X` or `B` for hex or binary representations
 - Improved GC allocations (#81)
 - Added wrapping of `Task` in `Future` (#64)
+- Added octal representation (e.g., `0o123`) for numbers
 - Added JSX syntax (#120)
 - Added default `jsx` and `html` function (#120)
 - Added events to `Engine` to handle uncaught errors (#121)

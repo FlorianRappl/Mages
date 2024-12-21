@@ -71,7 +71,7 @@ public sealed class SymbolTreeWalker(IDictionary<VariableExpression, List<Variab
         
         if (!_collector.TryGetValue(symbol, out references))
         {
-            return Enumerable.Empty<VariableExpression>();
+            return [];
         }
 
         return references;

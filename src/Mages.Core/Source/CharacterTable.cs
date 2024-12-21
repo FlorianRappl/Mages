@@ -213,6 +213,16 @@ static class CharacterTable
     public const Int32 One = 0x31;
 
     /// <summary>
+    /// The number 7.
+    /// </summary>
+    public const Int32 Seven = 0x37;
+
+    /// <summary>
+    /// The letter E.
+    /// </summary>
+    public const Int32 BigB = 0x42;
+
+    /// <summary>
     /// The letter E.
     /// </summary>
     public const Int32 BigE = 0x45;
@@ -221,6 +231,16 @@ static class CharacterTable
     /// The letter I.
     /// </summary>
     public const Int32 BigI = 0x49;
+
+    /// <summary>
+    /// The letter O.
+    /// </summary>
+    public const Int32 BigO = 0x4F;
+
+    /// <summary>
+    /// The letter X.
+    /// </summary>
+    public const Int32 BigX = 0x58;
 
     /// <summary>
     /// The letter a.
@@ -251,6 +271,11 @@ static class CharacterTable
     /// The letter n.
     /// </summary>
     public const Int32 SmallN = 0x6e;
+
+    /// <summary>
+    /// The letter o.
+    /// </summary>
+    public const Int32 SmallO = 0x6f;
 
     /// <summary>
     /// The letter r.

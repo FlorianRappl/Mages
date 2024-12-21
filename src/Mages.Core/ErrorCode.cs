@@ -237,4 +237,9 @@ public enum ErrorCode
     /// </summary>
     [Description("A JSX closing tag ( '</foo>' ) can only exist after an opening tag with the elements name ('<foo>' ).")]
     JsxElementNotOpened,
+    /// <summary>
+    /// See description.
+    /// </summary>
+    [Description("The seen dot operator is misplaced and cannot work for alternative number representations.")]
+    DotUnexpected,
 }

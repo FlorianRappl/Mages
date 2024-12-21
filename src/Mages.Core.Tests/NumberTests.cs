@@ -3,6 +3,7 @@
     using Mages.Core.Source;
     using Mages.Core.Tokens;
     using NUnit.Framework;
+    using System.Linq;
 
     [TestFixture]
     public class NumberTests
@@ -174,6 +175,20 @@
             var result = tokenizer.Next(scanner);
             Assert.IsInstanceOf<NumberToken>(result);
             Assert.AreEqual(26, ((NumberToken)result).Value);
+            Assert.IsFalse(((NumberToken)result).Errors?.Any() ?? false);
+        }
+
+        [Test]
+        public void NumberScannerHexWithFractionInvalid_Issue128()
+        {
+            var source = "0x1a.1";
+            var scanner = new StringScanner(source);
+            Assert.IsTrue(scanner.MoveNext());
+            var tokenizer = new NumberTokenizer();
+            var result = tokenizer.Next(scanner);
+            Assert.IsInstanceOf<NumberToken>(result);
+            Assert.AreEqual(26, ((NumberToken)result).Value);
+            Assert.IsTrue(((NumberToken)result).Errors?.Any() ?? false);
         }
 
         [Test]
@@ -186,6 +201,20 @@
             var result = tokenizer.Next(scanner);
             Assert.IsInstanceOf<NumberToken>(result);
             Assert.AreEqual(99, ((NumberToken)result).Value);
+            Assert.IsFalse(((NumberToken)result).Errors?.Any() ?? false);
+        }
+
+        [Test]
+        public void NumberScannerBinaryWithFractionInvalid_Issue128()
+        {
+            var source = "0b01100011.1";
+            var scanner = new StringScanner(source);
+            Assert.IsTrue(scanner.MoveNext());
+            var tokenizer = new NumberTokenizer();
+            var result = tokenizer.Next(scanner);
+            Assert.IsInstanceOf<NumberToken>(result);
+            Assert.AreEqual(99, ((NumberToken)result).Value);
+            Assert.IsTrue(((NumberToken)result).Errors?.Any() ?? false);
         }
 
         [Test]

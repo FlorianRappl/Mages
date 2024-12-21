@@ -52,11 +52,11 @@ public abstract class ConstantExpression(Object value, TextPosition start, TextP
         }
         else if (value is Double d)
         {
-            return new NumberConstant(d, range, Enumerable.Empty<ParseError>());
+            return new NumberConstant(d, range, []);
         }
         else if (value is String s)
         {
-            return new StringConstant(s, range, Enumerable.Empty<ParseError>());
+            return new StringConstant(s, range, []);
         }
 
         throw new InvalidOperationException();

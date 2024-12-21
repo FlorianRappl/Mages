@@ -62,13 +62,17 @@ sealed class NumberTokenizer : ITokenizer
 
             var current = _scanner.Current;
 
-            if (current == CharacterTable.SmallX)
+            if (current == CharacterTable.SmallX || current == CharacterTable.BigX)
             {
                 return Hex();
             }
-            else if (current == CharacterTable.SmallB)
+            else if (current == CharacterTable.SmallB || current == CharacterTable.BigB)
             {
                 return Binary();
+            }
+            else if (current == CharacterTable.SmallO || current == CharacterTable.BigO)
+            {
+                return Octal();
             }
             else if (current.IsDigit() || current == CharacterTable.FullStop)
             {
@@ -143,7 +147,26 @@ sealed class NumberTokenizer : ITokenizer
                 weight *= 2;
             }
 
-            return Final();
+            return FinalForAltInteger();
+        }
+
+        private IToken Octal()
+        {
+            var numbers = new List<Int32>();
+            var weight = 1;
+
+            while (_scanner.MoveNext() && _scanner.Current.IsInRange(CharacterTable.Zero, CharacterTable.Seven))
+            {
+                numbers.Add(_scanner.Current - CharacterTable.Zero);
+            }
+
+            for (var i = numbers.Count - 1; i >= 0; --i)
+            {
+                AddValue(1UL, (UInt64)(numbers[i] * weight));
+                weight *= 8;
+            }
+
+            return FinalForAltInteger();
         }
 
         private IToken Hex()
@@ -162,7 +185,7 @@ sealed class NumberTokenizer : ITokenizer
                 weight *= 16;
             }
 
-            return Final();
+            return FinalForAltInteger();
         }
 
         private IToken Decimal()
@@ -236,6 +259,16 @@ sealed class NumberTokenizer : ITokenizer
             return Final();
         }
 
+        private IToken FinalForAltInteger()
+        {
+            if (_scanner.Current == CharacterTable.FullStop)
+            {
+                AddError(ErrorCode.DotUnexpected, _scanner.Position.ToRange());
+            }
+
+            return Final();
+        }
+
         private IToken Final()
         {
             _scanner.MoveBack();
@@ -244,11 +277,7 @@ sealed class NumberTokenizer : ITokenizer
 
         private void AddError(ErrorCode code, ITextRange range)
         {
-            if (_errors == null)
-            {
-                _errors = [];
-            }
-
+            _errors ??= [];
             _errors.Add(new ParseError(code, range));
         }
 

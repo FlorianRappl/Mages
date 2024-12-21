@@ -7,7 +7,7 @@ using System.Linq;
 
 sealed class NumberToken(Double value, IEnumerable<ParseError> errors, TextPosition start, TextPosition end) : IToken
 {
-    private static readonly IEnumerable<ParseError> NoErrors = Enumerable.Empty<ParseError>();
+    private static readonly IEnumerable<ParseError> NoErrors = [];
 
     private readonly Double _value = value;
     private readonly TextPosition _start = start;
@@ -26,8 +26,5 @@ sealed class NumberToken(Double value, IEnumerable<ParseError> errors, TextPosit
 
     public TextPosition End => _end;
 
-    public override String ToString()
-    {
-        return $"Number / {_start} -- {_end} / '{_value}'";
-    }
+    public override String ToString() => $"Number / {_start} -- {_end} / '{_value}'";
 }
