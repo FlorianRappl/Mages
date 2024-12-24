@@ -3,7 +3,7 @@
 - Fixed potential misinterpretation of fractions in hex numbers (#128)
 - Fixed usage of capital `X` or `B` for hex or binary representations
 - Fixed bug in JSON representation using trailing comma
-- Fixed arithmetic overflow detection for number edge cases (#125)
+- Fixed arithmetic overflow detection for number edge cases (#125) by @josefblaha
 - Improved GC allocations (#81)
 - Added wrapping of `Task` in `Future` (#64)
 - Added octal representation (e.g., `0o123`) for numbers
@@ -12,6 +12,7 @@
 - Added default `jsx` and `html` function (#120)
 - Added events to `Engine` to handle uncaught errors (#121)
 - Added object metadata retrievable via `type` (#49)
+- Added a `randi` function to generate random integers (#124) by @GhostVaibhav
 
 # 2.0.3
 
