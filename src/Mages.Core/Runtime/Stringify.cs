@@ -2,9 +2,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Globalization;
 using System.Numerics;
+using System.Web;
 
 /// <summary>
 /// Helpers to stringify objects used by MAGES.
@@ -202,10 +202,21 @@ public static class Stringify
                     var val = b ? k : String.Empty;
                     attrs.Add($"{k}=\"{val}\"");
                 }
+                else if (value is Function)
+                {
+                    // Skip
+                }
+                else if (value is IDictionary<String, Object>)
+                {
+                    var k = key.ToLowerInvariant();
+                    var val = HttpUtility.HtmlEncode(AsJson(value));
+                    attrs.Add($"{k}=\"{val}\"");
+                }
                 else
                 {
                     var k = key.ToLowerInvariant();
-                    attrs.Add($"{k}=\"{value}\"");
+                    var val = HttpUtility.HtmlEncode(value);
+                    attrs.Add($"{k}=\"{val}\"");
                 }
             }
 

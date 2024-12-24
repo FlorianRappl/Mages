@@ -3,6 +3,7 @@
 - Fixed potential misinterpretation of fractions in hex numbers (#128)
 - Fixed usage of capital `X` or `B` for hex or binary representations
 - Fixed bug in JSON representation using trailing comma
+- Fixed arithmetic overflow detection for number edge cases (#125)
 - Improved GC allocations (#81)
 - Added wrapping of `Task` in `Future` (#64)
 - Added octal representation (e.g., `0o123`) for numbers
