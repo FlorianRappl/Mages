@@ -12,7 +12,7 @@
     sealed class NugetModuleFileReader : IModuleFileReader
     {
         private static readonly String LibName = "__lib";
-        private static readonly String[] AllowedExtensions = new[] { ".nupkg", ".nuget", ".pkg" };
+        private static readonly String[] AllowedExtensions = [".nupkg", ".nuget", ".pkg"];
         private readonly Mages.Repl.IFileSystem _fs;
 
         public NugetModuleFileReader(Mages.Repl.IFileSystem fs)
