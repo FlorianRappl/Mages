@@ -666,9 +666,8 @@ sealed class ExpressionParser : IParser
     private IExpression ParseUnary(IEnumerator<IToken> tokens)
     {
         var current = tokens.Current;
-        var creator = default(Func<TextPosition, IExpression, PreUnaryExpression>);
 
-        if (ExpressionCreators.PreUnary.TryGetValue(current.Type, out creator))
+        if (ExpressionCreators.PreUnary.TryGetValue(current.Type, out var creator))
         {
             var expr = ParseUnary(tokens.NextNonIgnorable());
             return creator.Invoke(current.Start, expr);

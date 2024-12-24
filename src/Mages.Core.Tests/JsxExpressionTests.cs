@@ -103,5 +103,15 @@
             var expr = "<><h1 x-foo-bar={27+19} class=\"yo\">Foo</h1><p>Bar</p></>".ToExpression();
             Assert.IsInstanceOf<JsxExpression>(expr);
         }
+
+        [Test]
+        public void JsxWithInlineFunctionIsValid()
+        {
+            var expr = "<foo onFoo={() => console.writeln(\"hello\")}>Hello.</foo>".ToExpression();
+            Assert.IsInstanceOf<JsxExpression>(expr);
+            var jsx = expr as JsxExpression;
+            Assert.AreEqual(1, jsx.Children.Length);
+            Assert.AreEqual(1, jsx.Props.Length);
+        }
     }
 }
