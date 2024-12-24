@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net60</TargetFramework>
     <OutputType>Exe</OutputType>
     <AssemblyName>Mages.Core.Performance</AssemblyName>
     <RootNamespace>Mages.Core.Performance</RootNamespace>
@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" Version="0.12.1" />
-    <PackageReference Include="YAMP" Version="1.5.3.15660" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.13.12" />
+    <PackageReference Include="YAMP" Version="1.6.0.40202" />
   </ItemGroup>
 </Project>

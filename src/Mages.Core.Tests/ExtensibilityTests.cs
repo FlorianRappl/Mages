@@ -561,7 +561,7 @@
         {
             var engine = new Engine();
             engine.SetStatic(typeof(WrapUnwrapTest)).WithName("Test");
-            var func = new Func<WrapUnwrapTest, Boolean>((obj) => obj != null);
+            var func = new Func<WrapUnwrapTest, Boolean>((obj) => obj is not null);
             engine.SetFunction("verify", func.Method, func.Target);
 
             var result = engine.Interpret("x = Test.create(); verify(x)");

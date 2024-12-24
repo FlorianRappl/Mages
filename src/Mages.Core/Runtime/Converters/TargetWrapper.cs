@@ -1,262 +1,201 @@
-﻿namespace Mages.Core.Runtime.Converters
+﻿namespace Mages.Core.Runtime.Converters;
+
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+
+sealed class TargetWrapper(Object target)
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Reflection;
+    private readonly Object _target = target;
 
-    sealed class TargetWrapper
+    public static Type Construct(Type returnType, ParameterInfo[] parameters)
     {
-        private readonly Object _target;
+        var types = new List<Type>();
 
-        public TargetWrapper(Object target)
+        foreach (var parameter in parameters)
         {
-            _target = target;
+            types.Add(parameter.ParameterType);
+        }
+        
+        if (returnType != typeof(void))
+        {
+            types.Add(returnType);
         }
 
-        public static Type Construct(Type returnType, ParameterInfo[] parameters)
+        if (types.Count == 0)
         {
-            var types = new List<Type>();
+            return typeof(TargetWrapper);
+        }
 
-            foreach (var parameter in parameters)
+        var type = GetType(parameters.Length, types.Count);
+        return type?.MakeGenericType([.. types]);
+    }
+
+    private static Type GetType(Int32 parameters, Int32 types)
+    {
+        if (types > parameters)
+        {
+            switch (parameters)
             {
-                types.Add(parameter.ParameterType);
+                case 0: return typeof(FuncTargetWrapper<>);
+                case 1: return typeof(FuncTargetWrapper<,>);
+                case 2: return typeof(FuncTargetWrapper<,,>);
+                case 3: return typeof(FuncTargetWrapper<,,,>);
+                case 4: return typeof(FuncTargetWrapper<,,,,>);
+                case 5: return typeof(FuncTargetWrapper<,,,,,>);
             }
-            
-            if (returnType != typeof(void))
+        }
+        else
+        {
+            switch (parameters)
             {
-                types.Add(returnType);
+                case 1: return typeof(ActionTargetWrapper<>);
+                case 2: return typeof(ActionTargetWrapper<,>);
+                case 3: return typeof(ActionTargetWrapper<,,>);
+                case 4: return typeof(ActionTargetWrapper<,,,>);
+                case 5: return typeof(ActionTargetWrapper<,,,,>);
             }
-
-            if (types.Count == 0)
-            {
-                return typeof(TargetWrapper);
-            }
-
-            var type = GetType(parameters.Length, types.Count);
-            return type?.MakeGenericType(types.ToArray());
         }
 
-        private static Type GetType(Int32 parameters, Int32 types)
-        {
-            if (types > parameters)
-            {
-                switch (parameters)
-                {
-                    case 0: return typeof(FuncTargetWrapper<>);
-                    case 1: return typeof(FuncTargetWrapper<,>);
-                    case 2: return typeof(FuncTargetWrapper<,,>);
-                    case 3: return typeof(FuncTargetWrapper<,,,>);
-                    case 4: return typeof(FuncTargetWrapper<,,,,>);
-                    case 5: return typeof(FuncTargetWrapper<,,,,,>);
-                }
-            }
-            else
-            {
-                switch (parameters)
-                {
-                    case 1: return typeof(ActionTargetWrapper<>);
-                    case 2: return typeof(ActionTargetWrapper<,>);
-                    case 3: return typeof(ActionTargetWrapper<,,>);
-                    case 4: return typeof(ActionTargetWrapper<,,,>);
-                    case 5: return typeof(ActionTargetWrapper<,,,,>);
-                }
-            }
-
-            return null;
-        }
-
-        public void Invoke()
-        {
-            var f = _target as Function;
-            f?.Call();
-        }
+        return null;
     }
 
-    sealed class ActionTargetWrapper<TFrom>
+    public void Invoke()
     {
-        private readonly Object _target;
-
-        public ActionTargetWrapper(Object target)
-        {
-            _target = target;
-        }
-
-        public void Invoke(TFrom arg)
-        {
-            var f = _target as Function;
-            f?.Call(arg);
-        }
+        var f = _target as Function;
+        f?.Call();
     }
+}
 
-    sealed class ActionTargetWrapper<TFrom1, TFrom2>
+sealed class ActionTargetWrapper<TFrom>(Object target)
+{
+    private readonly Object _target = target;
+
+    public void Invoke(TFrom arg)
     {
-        private readonly Object _target;
-
-        public ActionTargetWrapper(Object target)
-        {
-            _target = target;
-        }
-
-        public void Invoke(TFrom1 arg1, TFrom2 arg2)
-        {
-            var f = _target as Function;
-            f?.Call(arg1, arg2);
-        }
+        var f = _target as Function;
+        f?.Call(arg);
     }
+}
 
-    sealed class ActionTargetWrapper<TFrom1, TFrom2, TFrom3>
+sealed class ActionTargetWrapper<TFrom1, TFrom2>(Object target)
+{
+    private readonly Object _target = target;
+
+    public void Invoke(TFrom1 arg1, TFrom2 arg2)
     {
-        private readonly Object _target;
-
-        public ActionTargetWrapper(Object target)
-        {
-            _target = target;
-        }
-
-        public void Invoke(TFrom1 arg1, TFrom2 arg2, TFrom3 arg3)
-        {
-            var f = _target as Function;
-            f?.Call(arg1, arg2, arg3);
-        }
+        var f = _target as Function;
+        f?.Call(arg1, arg2);
     }
+}
 
-    sealed class ActionTargetWrapper<TFrom1, TFrom2, TFrom3, TFrom4>
+sealed class ActionTargetWrapper<TFrom1, TFrom2, TFrom3>(Object target)
+{
+    private readonly Object _target = target;
+
+    public void Invoke(TFrom1 arg1, TFrom2 arg2, TFrom3 arg3)
     {
-        private readonly Object _target;
-
-        public ActionTargetWrapper(Object target)
-        {
-            _target = target;
-        }
-
-        public void Invoke(TFrom1 arg1, TFrom2 arg2, TFrom3 arg3, TFrom4 arg4)
-        {
-            var f = _target as Function;
-            f?.Call(arg1, arg2, arg3, arg4);
-        }
+        var f = _target as Function;
+        f?.Call(arg1, arg2, arg3);
     }
+}
 
-    sealed class ActionTargetWrapper<TFrom1, TFrom2, TFrom3, TFrom4, TFrom5>
+sealed class ActionTargetWrapper<TFrom1, TFrom2, TFrom3, TFrom4>(Object target)
+{
+    private readonly Object _target = target;
+
+    public void Invoke(TFrom1 arg1, TFrom2 arg2, TFrom3 arg3, TFrom4 arg4)
     {
-        private readonly Object _target;
-
-        public ActionTargetWrapper(Object target)
-        {
-            _target = target;
-        }
-
-        public void Invoke(TFrom1 arg1, TFrom2 arg2, TFrom3 arg3, TFrom4 arg4, TFrom5 arg5)
-        {
-            var f = _target as Function;
-            f?.Call(arg1, arg2, arg3, arg4, arg5);
-        }
+        var f = _target as Function;
+        f?.Call(arg1, arg2, arg3, arg4);
     }
+}
 
-    sealed class FuncTargetWrapper<TTo>
+sealed class ActionTargetWrapper<TFrom1, TFrom2, TFrom3, TFrom4, TFrom5>(Object target)
+{
+    private readonly Object _target = target;
+
+    public void Invoke(TFrom1 arg1, TFrom2 arg2, TFrom3 arg3, TFrom4 arg4, TFrom5 arg5)
     {
-        private readonly Object _target;
-
-        public FuncTargetWrapper(Object target)
-        {
-            _target = target;
-        }
-
-        public TTo Invoke()
-        {
-            var f = _target as Function;
-            var r = f?.Call() ?? _target;
-            var c = Helpers.Converters.FindConverter(r.GetType(), typeof(TTo));
-            return (TTo)c.Invoke(r);
-        }
+        var f = _target as Function;
+        f?.Call(arg1, arg2, arg3, arg4, arg5);
     }
+}
 
-    sealed class FuncTargetWrapper<TFrom, TTo>
+sealed class FuncTargetWrapper<TTo>(Object target)
+{
+    private readonly Object _target = target;
+
+    public TTo Invoke()
     {
-        private readonly Object _target;
-
-        public FuncTargetWrapper(Object target)
-        {
-            _target = target;
-        }
-
-        public TTo Invoke(TFrom arg)
-        {
-            var f = _target as Function;
-            var r = f?.Call(arg) ?? _target;
-            var c = Helpers.Converters.FindConverter(r.GetType(), typeof(TTo));
-            return (TTo)c.Invoke(r);
-        }
+        var f = _target as Function;
+        var r = f?.Call() ?? _target;
+        var c = Helpers.Converters.FindConverter(r.GetType(), typeof(TTo));
+        return (TTo)c.Invoke(r);
     }
+}
 
-    sealed class FuncTargetWrapper<TFrom1, TFrom2, TTo>
+sealed class FuncTargetWrapper<TFrom, TTo>(Object target)
+{
+    private readonly Object _target = target;
+
+    public TTo Invoke(TFrom arg)
     {
-        private readonly Object _target;
-
-        public FuncTargetWrapper(Object target)
-        {
-            _target = target;
-        }
-
-        public TTo Invoke(TFrom1 arg1, TFrom2 arg2)
-        {
-            var f = _target as Function;
-            var r = f?.Call(arg1, arg2) ?? _target;
-            var c = Helpers.Converters.FindConverter(r.GetType(), typeof(TTo));
-            return (TTo)c.Invoke(r);
-        }
+        var f = _target as Function;
+        var r = f?.Call(arg) ?? _target;
+        var c = Helpers.Converters.FindConverter(r.GetType(), typeof(TTo));
+        return (TTo)c.Invoke(r);
     }
+}
 
-    sealed class FuncTargetWrapper<TFrom1, TFrom2, TFrom3, TTo>
+sealed class FuncTargetWrapper<TFrom1, TFrom2, TTo>(Object target)
+{
+    private readonly Object _target = target;
+
+    public TTo Invoke(TFrom1 arg1, TFrom2 arg2)
     {
-        private readonly Object _target;
-
-        public FuncTargetWrapper(Object target)
-        {
-            _target = target;
-        }
-
-        public TTo Invoke(TFrom1 arg1, TFrom2 arg2, TFrom3 arg3)
-        {
-            var f = _target as Function;
-            var r = f?.Call(arg1, arg2, arg3) ?? _target;
-            var c = Helpers.Converters.FindConverter(r.GetType(), typeof(TTo));
-            return (TTo)c.Invoke(r);
-        }
+        var f = _target as Function;
+        var r = f?.Call(arg1, arg2) ?? _target;
+        var c = Helpers.Converters.FindConverter(r.GetType(), typeof(TTo));
+        return (TTo)c.Invoke(r);
     }
+}
 
-    sealed class FuncTargetWrapper<TFrom1, TFrom2, TFrom3, TFrom4, TTo>
+sealed class FuncTargetWrapper<TFrom1, TFrom2, TFrom3, TTo>(Object target)
+{
+    private readonly Object _target = target;
+
+    public TTo Invoke(TFrom1 arg1, TFrom2 arg2, TFrom3 arg3)
     {
-        private readonly Object _target;
-
-        public FuncTargetWrapper(Object target)
-        {
-            _target = target;
-        }
-
-        public TTo Invoke(TFrom1 arg1, TFrom2 arg2, TFrom3 arg3, TFrom4 arg4)
-        {
-            var f = _target as Function;
-            var r = f?.Call(arg1, arg2, arg3, arg4) ?? _target;
-            var c = Helpers.Converters.FindConverter(r.GetType(), typeof(TTo));
-            return (TTo)c.Invoke(r);
-        }
+        var f = _target as Function;
+        var r = f?.Call(arg1, arg2, arg3) ?? _target;
+        var c = Helpers.Converters.FindConverter(r.GetType(), typeof(TTo));
+        return (TTo)c.Invoke(r);
     }
+}
 
-    sealed class FuncTargetWrapper<TFrom1, TFrom2, TFrom3, TFrom4, TFrom5, TTo>
+sealed class FuncTargetWrapper<TFrom1, TFrom2, TFrom3, TFrom4, TTo>(Object target)
+{
+    private readonly Object _target = target;
+
+    public TTo Invoke(TFrom1 arg1, TFrom2 arg2, TFrom3 arg3, TFrom4 arg4)
     {
-        private readonly Object _target;
+        var f = _target as Function;
+        var r = f?.Call(arg1, arg2, arg3, arg4) ?? _target;
+        var c = Helpers.Converters.FindConverter(r.GetType(), typeof(TTo));
+        return (TTo)c.Invoke(r);
+    }
+}
 
-        public FuncTargetWrapper(Object target)
-        {
-            _target = target;
-        }
+sealed class FuncTargetWrapper<TFrom1, TFrom2, TFrom3, TFrom4, TFrom5, TTo>(Object target)
+{
+    private readonly Object _target = target;
 
-        public TTo Invoke(TFrom1 arg1, TFrom2 arg2, TFrom3 arg3, TFrom4 arg4, TFrom5 arg5)
-        {
-            var f = _target as Function;
-            var r = f?.Call(arg1, arg2, arg3, arg4, arg5) ?? _target;
-            var c = Helpers.Converters.FindConverter(r.GetType(), typeof(TTo));
-            return (TTo)c.Invoke(r);
-        }
+    public TTo Invoke(TFrom1 arg1, TFrom2 arg2, TFrom3 arg3, TFrom4 arg4, TFrom5 arg5)
+    {
+        var f = _target as Function;
+        var r = f?.Call(arg1, arg2, arg3, arg4, arg5) ?? _target;
+        var c = Helpers.Converters.FindConverter(r.GetType(), typeof(TTo));
+        return (TTo)c.Invoke(r);
     }
 }

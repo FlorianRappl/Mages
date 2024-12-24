@@ -261,6 +261,14 @@ Works without any arguments.
 x = rand() // any number between 0 and 1
 ```
 
+### Generate Single Random Integer
+
+Works with one argument.
+
+```
+x = randi(5) // any integer between 0 and 5
+```
+
 ### Generate Random Vector
 
 Works with one argument.
@@ -284,9 +292,9 @@ M = rand(3, 2) // a 3x2 matrix with numbers between 0 and 1
 Works with one argument, which could be anything.
 
 ```
-x = type(true) // "Boolean"
-x = type([1, 2, 3]) // "Matrix"
-x = type("foo") // "String"
+x = type(true).name // "Boolean"
+x = type([1, 2, 3]).name // "Matrix"
+x = type("foo").name // "String"
 ```
 
 ### Checking Types
@@ -397,4 +405,23 @@ Shuffles the arguments of a given function (last argument) by the order of the g
 fab = (a, b) => a * b - b;
 fba = shuffle("b", "a", fab);
 fab(1, 2) - fba(1, 2) // -1
+```
+
+## Stringification
+
+### JSON
+
+Transforms the value into a valid JSON string. Does not stringify functions.
+
+```
+json(new { a: 42, b: "foo" }) // { "a": 42, "b": "foo" }
+```
+
+### HTML
+
+Transforms the value into a valid JSON string. Does only stringify valid JSX objects, numbers, and strings. Strings are automatically HTML-encoded.
+
+```
+"foo<b>ho</b>" | html // foo&lt;b&gt;ho&lt;/b&gt;
+<div class={"foo" + "bar"}>Hi</div> | html // <div class="foobar">Hi</div>
 ```

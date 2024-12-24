@@ -1,41 +1,40 @@
-﻿namespace Mages.Core.Vm.Operations
+﻿namespace Mages.Core.Vm.Operations;
+
+using Mages.Core.Runtime.Functions;
+using System;
+using System.Collections.Generic;
+
+/// <summary>
+/// Takes two elements from the stack and pushes the result.
+/// </summary>
+sealed class GetpOperation : IOperation
 {
-    using Mages.Core.Runtime.Functions;
-    using System;
-    using System.Collections.Generic;
+    public static readonly IOperation Instance = new GetpOperation();
 
-    /// <summary>
-    /// Takes two elements from the stack and pushes the result.
-    /// </summary>
-    sealed class GetpOperation : IOperation
+    private GetpOperation()
     {
-        public static readonly IOperation Instance = new GetpOperation();
+    }
 
-        private GetpOperation()
+    public void Invoke(IExecutionContext context)
+    {
+        var instance = context.Pop();
+        var name = context.Pop() as String;
+        var obj = instance as IDictionary<String, Object>;
+        var result = default(Object);
+
+        if (name is not null && instance is not null)
         {
-        }
-
-        public void Invoke(IExecutionContext context)
-        {
-            var instance = context.Pop();
-            var name = context.Pop() as String;
-            var obj = instance as IDictionary<String, Object>;
-            var result = default(Object);
-
-            if (name != null && instance != null)
+            if (obj is null || !obj.TryGetValue(name, out result))
             {
-                if (obj == null || !obj.TryGetValue(name, out result))
-                {
-                    AttachedProperties.TryFind(instance, name, out result);
-                }
+                AttachedProperties.TryFind(instance, name, out result);
             }
-            
-            context.Push(result);
         }
+        
+        context.Push(result);
+    }
 
-        public override String ToString()
-        {
-            return "getp";
-        }
+    public override String ToString()
+    {
+        return "getp";
     }
 }

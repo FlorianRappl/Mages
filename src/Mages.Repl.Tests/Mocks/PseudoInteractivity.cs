@@ -40,12 +40,7 @@
 
         public void Error(String message)
         {
-            var handler = OnError;
-
-            if (handler != null)
-            {
-                handler.Invoke(message);
-            }
+            OnError?.Invoke(message);
         }
 
         public IDisposable HandleCancellation(Func<Boolean> callback)
@@ -55,34 +50,17 @@
 
         public void Info(String result)
         {
-            var handler = OnInfo;
-
-            if (handler != null)
-            {
-                handler.Invoke(result);
-            }
+            OnInfo?.Invoke(result);
         }
 
         public String ReadLine()
         {
-            var handler = OnRead;
-
-            if (handler != null)
-            {
-                return handler.Invoke();
-            }
-
-            return null;
+            return OnRead?.Invoke();
         }
 
         public void Write(String output)
         {
-            var handler = OnWrite;
-
-            if (handler != null)
-            {
-                handler.Invoke(output);
-            }
+            OnWrite?.Invoke(output);
         }
     }
 }

@@ -12,8 +12,10 @@
         public void AddingNewPluginShouldNotOverrideExistingObjects()
         {
             var metaData = new Dictionary<String, String>();
-            var content = new Dictionary<String, Object>();
-            content["sin"] = 3.0;
+            var content = new Dictionary<String, Object>
+            {
+                ["sin"] = 3.0
+            };
             var plugin = new Plugin(metaData, content);
             var engine = new Engine();
             engine.AddPlugin(plugin);
@@ -27,8 +29,10 @@
         public void AddingNewPluginShouldAddNewObjects()
         {
             var metaData = new Dictionary<String, String>();
-            var content = new Dictionary<String, Object>();
-            content["foo"] = 3.0;
+            var content = new Dictionary<String, Object>
+            {
+                ["foo"] = 3.0
+            };
             var plugin = new Plugin(metaData, content);
             var engine = new Engine();
             engine.AddPlugin(plugin);
@@ -42,9 +46,11 @@
         public void AddingNewPluginShouldAddAllNew()
         {
             var metaData = new Dictionary<String, String>();
-            var content = new Dictionary<String, Object>();
-            content["a"] = new Function(args => (Double)args.Length);
-            content["b"] = 2.0;
+            var content = new Dictionary<String, Object>
+            {
+                ["a"] = new Function(args => (Double)args.Length),
+                ["b"] = 2.0
+            };
             var plugin = new Plugin(metaData, content);
             var engine = new Engine();
             engine.AddPlugin(plugin);
@@ -58,8 +64,10 @@
         public void RemovingInexistingPluginHasNoEffect()
         {
             var metaData = new Dictionary<String, String>();
-            var content = new Dictionary<String, Object>();
-            content["a"] = new Function(args => (Double)args.Length);
+            var content = new Dictionary<String, Object>
+            {
+                ["a"] = new Function(args => (Double)args.Length)
+            };
             var plugin = new Plugin(metaData, content);
             var engine = new Engine();
             engine.Globals["a"] = content["a"];
@@ -74,8 +82,10 @@
         public void RemovingExistingPluginRemovesNewFunction()
         {
             var metaData = new Dictionary<String, String>();
-            var content = new Dictionary<String, Object>();
-            content["a"] = new Function(args => (Double)args.Length);
+            var content = new Dictionary<String, Object>
+            {
+                ["a"] = new Function(args => (Double)args.Length)
+            };
             var plugin = new Plugin(metaData, content);
             var engine = new Engine();
             engine.AddPlugin(plugin);

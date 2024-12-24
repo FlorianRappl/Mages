@@ -113,7 +113,7 @@
             var topics = _globals.Keys;
             var substitute = topics.FirstOrDefault(m => m.Equals(entry, StringComparison.OrdinalIgnoreCase));
 
-            if (substitute == null)
+            if (substitute is null)
             {
                 var min = Int32.MaxValue;
 

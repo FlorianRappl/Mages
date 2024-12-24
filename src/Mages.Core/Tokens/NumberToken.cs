@@ -1,42 +1,30 @@
-﻿namespace Mages.Core.Tokens
+﻿namespace Mages.Core.Tokens;
+
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+
+sealed class NumberToken(Double value, IEnumerable<ParseError> errors, TextPosition start, TextPosition end) : IToken
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
+    private static readonly IEnumerable<ParseError> NoErrors = [];
 
-    sealed class NumberToken : IToken
-    {
-        private static readonly IEnumerable<ParseError> NoErrors = Enumerable.Empty<ParseError>();
+    private readonly Double _value = value;
+    private readonly TextPosition _start = start;
+    private readonly TextPosition _end = end;
+    private readonly IEnumerable<ParseError> _errors = errors ?? NoErrors;
 
-        private readonly Double _value;
-        private readonly TextPosition _start;
-        private readonly TextPosition _end;
-        private readonly IEnumerable<ParseError> _errors;
+    public IEnumerable<ParseError> Errors => _errors;
 
-        public NumberToken(Double value, IEnumerable<ParseError> errors, TextPosition start, TextPosition end)
-        {
-            _value = value;
-            _start = start;
-            _end = end;
-            _errors = errors ?? NoErrors;
-        }
+    public Double Value => _value;
 
-        public IEnumerable<ParseError> Errors => _errors;
+    public TokenType Type => TokenType.Number;
 
-        public Double Value => _value;
+    public String Payload => _value.ToString(NumberFormatInfo.InvariantInfo);
 
-        public TokenType Type => TokenType.Number;
+    public TextPosition Start => _start;
 
-        public String Payload => _value.ToString(NumberFormatInfo.InvariantInfo);
+    public TextPosition End => _end;
 
-        public TextPosition Start => _start;
-
-        public TextPosition End => _end;
-
-        public override String ToString()
-        {
-            return $"Number / {_start} -- {_end} / '{_value}'";
-        }
-    }
+    public override String ToString() => $"Number / {_start} -- {_end} / '{_value}'";
 }

@@ -1,47 +1,41 @@
-﻿namespace Mages.Core.Runtime.Proxies
+﻿namespace Mages.Core.Runtime.Proxies;
+
+using Mages.Core.Runtime.Converters;
+using System;
+
+abstract class BaseProxy(WrapperObject obj)
 {
-    using Mages.Core.Runtime.Converters;
-    using System;
+    protected readonly WrapperObject _obj = obj;
 
-    abstract class BaseProxy
+    public Object Value
     {
-        protected readonly WrapperObject _obj;
+        get { return Convert(GetValue()); }
+        set { SetValue(value); }
+    }
 
-        public BaseProxy(WrapperObject obj)
+    protected abstract void SetValue(Object value);
+
+    protected abstract Object GetValue();
+
+    protected Object Convert(Object value, Type target)
+    {
+        var source = value is not null ? value.GetType() : target;
+        return source.Convert(value, target);
+    }
+
+    private Object Convert(Object value)
+    {
+        if (Object.ReferenceEquals(value, _obj.Content))
         {
-            _obj = obj;
+            return _obj;
         }
-
-        public Object Value
+        else if (value is not null)
         {
-            get { return Convert(GetValue()); }
-            set { SetValue(value); }
-        }
-
-        protected abstract void SetValue(Object value);
-
-        protected abstract Object GetValue();
-
-        protected Object Convert(Object value, Type target)
-        {
-            var source = value != null ? value.GetType() : target;
+            var source = value.GetType();
+            var target = source.FindPrimitive();
             return source.Convert(value, target);
         }
 
-        private Object Convert(Object value)
-        {
-            if (Object.ReferenceEquals(value, _obj.Content))
-            {
-                return _obj;
-            }
-            else if (value != null)
-            {
-                var source = value.GetType();
-                var target = source.FindPrimitive();
-                return source.Convert(value, target);
-            }
-
-            return null;
-        }
+        return null;
     }
 }

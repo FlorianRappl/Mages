@@ -1,116 +1,110 @@
-﻿namespace Mages.Core.Runtime
+﻿namespace Mages.Core.Runtime;
+
+using Mages.Core.Runtime.Converters;
+using System;
+using System.Collections.Generic;
+
+/// <summary>
+/// A global accessible container for engine-independent services.
+/// </summary>
+public static class Container
 {
-    using Mages.Core.Runtime.Converters;
-    using System;
-    using System.Collections.Generic;
+    private static readonly List<Object> _container =
+    [
+        CamelNameSelector.Instance,
+    ];
 
     /// <summary>
-    /// A global accessible container for engine-independent services.
+    /// Registers the specified service in the container.
     /// </summary>
-    public static class Container
+    /// <typeparam name="T">The type of service to set.</typeparam>
+    /// <param name="service">The service to register.</param>
+    /// <returns>The optional lifetime controlling instance.</returns>
+    public static IDisposable Register<T>(T service)
     {
-        private static readonly List<Object> _container = new List<Object>
+        if (service is not null && !_container.Contains(service))
         {
-            CamelNameSelector.Instance,
-        };
-
-        /// <summary>
-        /// Registers the specified service in the container.
-        /// </summary>
-        /// <typeparam name="T">The type of service to set.</typeparam>
-        /// <param name="service">The service to register.</param>
-        /// <returns>The optional lifetime controlling instance.</returns>
-        public static IDisposable Register<T>(T service)
-        {
-            if (service != null && !_container.Contains(service))
-            {
-                _container.Add(service);
-                return new ServiceLifeTime(service);
-            }
-
-            return null;
+            _container.Add(service);
+            return new ServiceLifeTime(service);
         }
 
-        /// <summary>
-        /// Unregisters the specified service from the container.
-        /// </summary>
-        /// <typeparam name="T">The type of service to remove.</typeparam>
-        /// <param name="service">The service to remove.</param>
-        /// <returns>True if the service was removed, otherwise false.</returns>
-        public static Boolean Unregister<T>(T service)
+        return null;
+    }
+
+    /// <summary>
+    /// Unregisters the specified service from the container.
+    /// </summary>
+    /// <typeparam name="T">The type of service to remove.</typeparam>
+    /// <param name="service">The service to remove.</param>
+    /// <returns>True if the service was removed, otherwise false.</returns>
+    public static Boolean Unregister<T>(T service)
+    {
+        return _container.Remove(service);
+    }
+
+    /// <summary>
+    /// Unregisters the specified service from the container.
+    /// </summary>
+    /// <typeparam name="T">The type of service to remove.</typeparam>
+    /// <returns>The removed services, if any.</returns>
+    public static IEnumerable<T> Unregister<T>()
+    {
+        var services = new List<T>(GetAllServices<T>());
+
+        foreach (var service in services)
         {
-            return _container.Remove(service);
+            _container.Remove(service);
         }
 
-        /// <summary>
-        /// Unregisters the specified service from the container.
-        /// </summary>
-        /// <typeparam name="T">The type of service to remove.</typeparam>
-        /// <returns>The removed services, if any.</returns>
-        public static IEnumerable<T> Unregister<T>()
+        return services;
+    }
+
+    /// <summary>
+    /// Tries to get the specified service from the container.
+    /// </summary>
+    /// <typeparam name="T">The type of service to get.</typeparam>
+    /// <param name="defaultValue">The optional default instance.</param>
+    /// <returns>The service or a default instance.</returns>
+    public static T GetService<T>(T defaultValue = default)
+    {
+        for (var i = _container.Count - 1; i >= 0; i--)
         {
-            var services = new List<T>(GetAllServices<T>());
+            var service = _container[i];
 
-            foreach (var service in services)
+            if (service is T)
             {
-                _container.Remove(service);
-            }
-
-            return services;
+                return (T)service;
+            }   
         }
 
-        /// <summary>
-        /// Tries to get the specified service from the container.
-        /// </summary>
-        /// <typeparam name="T">The type of service to get.</typeparam>
-        /// <param name="defaultValue">The optional default instance.</param>
-        /// <returns>The service or a default instance.</returns>
-        public static T GetService<T>(T defaultValue = default(T))
+        return defaultValue;
+    }
+
+    /// <summary>
+    /// Tries to get the specified services from the container.
+    /// </summary>
+    /// <typeparam name="T">The type of service to get.</typeparam>
+    /// <returns>The services.</returns>
+    public static IEnumerable<T> GetAllServices<T>()
+    {
+        for (var i = 0; i < _container.Count; i++)
         {
-            for (var i = _container.Count - 1; i >= 0; i--)
+            var service = _container[i];
+
+            if (service is T)
             {
-                var service = _container[i];
-
-                if (service is T)
-                {
-                    return (T)service;
-                }   
-            }
-
-            return defaultValue;
-        }
-
-        /// <summary>
-        /// Tries to get the specified services from the container.
-        /// </summary>
-        /// <typeparam name="T">The type of service to get.</typeparam>
-        /// <returns>The services.</returns>
-        public static IEnumerable<T> GetAllServices<T>()
-        {
-            for (var i = 0; i < _container.Count; i++)
-            {
-                var service = _container[i];
-
-                if (service is T)
-                {
-                    yield return (T)service;
-                }
+                yield return (T)service;
             }
         }
+    }
 
-        sealed class ServiceLifeTime : IDisposable
+    sealed class ServiceLifeTime(Object service) : IDisposable
+    {
+        private Object _service = service;
+
+        public void Dispose()
         {
-            private Object _service;
-
-            public ServiceLifeTime(Object service)
-            {
-                _service = service;
-            }
-
-            public void Dispose()
-            {
-                Container.Unregister(_service);
-            }
+            Container.Unregister(_service);
         }
     }
 }

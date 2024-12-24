@@ -1,8 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net60</TargetFramework>
     <ProjectGuid>{027A32F7-4411-4083-AA01-0550EEA0E5A3}</ProjectGuid>
     <OutputType>Exe</OutputType>
+    <LangVersion>latest</LangVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Mages.Repl</RootNamespace>
     <AssemblyName>mages</AssemblyName>

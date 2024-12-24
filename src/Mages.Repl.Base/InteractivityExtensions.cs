@@ -1,8 +1,6 @@
 ﻿namespace Mages.Repl
 {
     using Mages.Core;
-    using Mages.Core.Ast;
-    using Mages.Core.Vm;
     using System;
 
     static class InteractivityExtensions
@@ -45,30 +43,6 @@
             var message = error.Code.GetMessage();
             var hint = String.Format("Line {1}, Column {2}: {0}", message, error.Start.Row, error.Start.Column);
             interactivity.Error(hint);
-        }
-
-        public static Object Run(this IInteractivity interactivity, Engine engine, String source)
-        {
-            var parser = engine.Parser;
-            var scope = engine.Scope;
-            var statements = parser.ParseStatements(source);
-            var operations = statements.MakeRunnable();
-            var context = new ExecutionContext(operations, scope);
-
-            using (interactivity.HandleCancellation(TriggerStop(context)))
-            {
-                context.Execute();
-                return context.Pop();
-            }
-        }
-
-        private static Func<Boolean> TriggerStop(ExecutionContext context)
-        {
-            return () =>
-            {
-                context.Stop();
-                return true;
-            };
         }
     }
 }

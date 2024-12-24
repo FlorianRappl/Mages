@@ -20,6 +20,7 @@
         private readonly List<Line> _lines;
         private readonly Handler[] _handlers;
         private readonly History _history;
+        private readonly Action _onCancelled;
         private Int32 _lineIndex;
         private Boolean _done;
         private String _prompt;
@@ -165,9 +166,10 @@
 
         #region ctor
 
-        public LineEditor(History history)
+        public LineEditor(History history, Action onCancelled)
         {
             _done = false;
+            _onCancelled = onCancelled;
             _handlers = new[]
             {
                 new Handler(ConsoleKey.Home, CmdHome),
@@ -230,12 +232,6 @@
 
         #region Methods
 
-        public void Interrupt()
-        {
-            // Interrupt the editor
-            _editThread.Abort();
-        }
-
         public String Edit(String prompt, String initial)
         {
             _editThread = Thread.CurrentThread;
@@ -254,9 +250,9 @@
                 {
                     EditLoop();
                 }
-                catch (ThreadAbortException)
+                catch (OperationCanceledException)
                 {
-                    Thread.ResetAbort();
+                    _onCancelled.Invoke();
                     Console.WriteLine();
                     return null;
                 }
@@ -334,7 +330,7 @@
 
         private void HandleChar(Char c)
         {
-            var completing = _completion != null;
+            var completing = _completion is not null;
             HideCompletions();
             InsertChar(c);
 
@@ -344,23 +340,35 @@
             }
         }
 
+        private static ConsoleKeyInfo ReadKey()
+        {
+            var key = Console.ReadKey(true);
+
+            if (key.Modifiers == ConsoleModifiers.Control && key.Key == ConsoleKey.C)
+            {
+                throw new OperationCanceledException();
+            }
+
+            return key;
+        }
+
         private void EditLoop()
         {
             while (!_done)
             {
-                var mod = default(ConsoleModifiers);
-                var cki = Console.ReadKey(true);
+                ConsoleModifiers mod;
+                var cki = ReadKey();
 
                 if (cki.Key == ConsoleKey.Escape)
                 {
-                    if (_completion != null)
+                    if (_completion is not null)
                     {
                         HideCompletions();
                         continue;
                     }
                     else
                     {
-                        cki = Console.ReadKey(true);
+                        cki = ReadKey();
                         mod = ConsoleModifiers.Alt;
                     }
                 }
@@ -638,7 +646,7 @@
 
             width = Math.Min(width, CompletionMaxWidth);
 
-            if (_completion == null)
+            if (_completion is null)
             {
                 var left = Console.CursorLeft - prefix.Length;
 
@@ -665,7 +673,7 @@
 
         private void HideCompletions()
         {
-            if (_completion != null)
+            if (_completion is not null)
             {
                 _completion.Remove();
                 _completion = null;
@@ -677,7 +685,7 @@
             var completion = AutoCompleteEvent(AvailableText, _position);
             var completions = completion.Result;
 
-            if (completions == null)
+            if (completions is null)
             {
                 HideCompletions();
                 return;
@@ -744,13 +752,15 @@
 
         private void UpdateCompletionWindow()
         {
-            if (_completion != null)
+            if (_completion is not null)
+            {
                 throw new Exception("This method should only be called if the window has been hidden");
+            }
 
             var completion = AutoCompleteEvent(AvailableText, _position);
             var completions = completion.Result;
 
-            if (completions != null)
+            if (completions is not null)
             {
                 var ncompletions = completions.Length;
 
@@ -821,7 +831,7 @@
 
         private void CmdUp()
         {
-            if (_completion != null)
+            if (_completion is not null)
             {
                 _completion.SelectPrevious();
             }
@@ -838,7 +848,7 @@
 
         private void CmdDown()
         {
-            if (_completion != null)
+            if (_completion is not null)
             {
                 _completion.SelectNext();
             }
@@ -887,7 +897,7 @@
 
         private void CmdDone()
         {
-            if (_completion != null)
+            if (_completion is not null)
             {
                 InsertTextAtCursor(_completion.Current);
                 HideCompletions();
@@ -901,7 +911,7 @@
         {
             var complete = false;
 
-            if (AutoCompleteEvent != null)
+            if (AutoCompleteEvent is not null)
             {
                 if (IsFirstTabCompleting)
                 {
@@ -994,7 +1004,7 @@
         {
             if (_position != 0)
             {
-                var completing = _completion != null;
+                var completing = _completion is not null;
                 HideCompletions();
                 CurrentLine._availableText.Remove(--_position, 1);
                 CurrentLine.ComputeRendered();

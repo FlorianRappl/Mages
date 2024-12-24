@@ -2,8 +2,10 @@
 {
     using Mages.Core;
     using Mages.Core.Runtime;
+    using Mages.Core.Vm;
     using System;
     using System.IO;
+    using System.Threading.Tasks;
 
     public sealed class ReplCore
     {
@@ -12,8 +14,36 @@
 
         public ReplCore(IResolver resolver)
         {
+            var currentContext = default(IExecutionContext);
+
             _interactivity = resolver.Interactivity;
             _engine = resolver.CreateEngine();
+
+            _engine.OnRunning += (sender, e) =>
+            {
+                currentContext = e.Context;
+            };
+
+            _engine.OnStopped += (sender, e) =>
+            {
+                currentContext = null;
+            };
+
+            _engine.OnError += (sender, e) => 
+            {
+                _interactivity.Error(e.Error.Message);
+            };
+
+            _interactivity.HandleCancellation(() =>
+            {
+                if (currentContext is not null)
+                {
+                    currentContext.Stop();
+                    return true;
+                }
+
+                return false;
+            });
         }
 
         public void Run(String file)
@@ -61,7 +91,7 @@
             {
                 input = _interactivity.GetLine("SWM> ", ShowAutoComplete);
 
-                if (input != null && input.Trim().Length > 0)
+                if (input is not null && input.Trim().Length > 0)
                 {
                     EvaluateCompleted(input);
                 }
@@ -79,7 +109,7 @@
             {
                 var rest = _interactivity.GetLine("   > ", ShowAutoComplete);
 
-                if (rest == null)
+                if (rest is null)
                     return;
 
                 if (rest.Length == 0)
@@ -95,13 +125,13 @@
         {
             try
             {
-                var result = _interactivity.Run(_engine, content);
+                var result = _engine.Interpret(content);
 
                 if (showOutput)
                 {
                     var output = default(String);
 
-                    if (result != null)
+                    if (result is not null)
                     {
                         output = Stringify.This(result);
                     }
@@ -114,9 +144,8 @@
             {
                 _interactivity.Display(ex.Error, content);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                _interactivity.Error(ex.Message);
             }
 
             _interactivity.Write(Environment.NewLine);

@@ -1,121 +1,109 @@
-﻿namespace Mages.Core.Ast.Expressions
+﻿namespace Mages.Core.Ast.Expressions;
+
+/// <summary>
+/// Represents an expression containing function parameters.
+/// </summary>
+/// <remarks>
+/// Creates a new parameter expression.
+/// </remarks>
+public sealed class ParameterExpression(IExpression[] parameters, TextPosition start, TextPosition end) : ComputingExpression(start, end), IExpression
 {
+    #region Fields
+
+    private readonly IExpression[] _parameters = parameters;
+
+    #endregion
+
+    #region Properties
+
     /// <summary>
-    /// Represents an expression containing function parameters.
+    /// Gets the contained expressions.
     /// </summary>
-    public sealed class ParameterExpression : ComputingExpression, IExpression
+    public IExpression[] Parameters => _parameters;
+
+    /// <summary>
+    /// Gets the available parameter names.
+    /// </summary>
+    public ParameterDefinition[] Names
     {
-        #region Fields
-
-        private readonly IExpression[] _parameters;
-
-        #endregion
-
-        #region ctor
-
-        /// <summary>
-        /// Creates a new parameter expression.
-        /// </summary>
-        public ParameterExpression(IExpression[] parameters, TextPosition start, TextPosition end)
-            : base(start, end)
+        get
         {
-            _parameters = parameters;
+            var names = new ParameterDefinition[_parameters.Length];
 
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets the contained expressions.
-        /// </summary>
-        public IExpression[] Parameters => _parameters;
-
-        /// <summary>
-        /// Gets the available parameter names.
-        /// </summary>
-        public ParameterDefinition[] Names
-        {
-            get
+            for (var i = 0; i < _parameters.Length; i++)
             {
-                var names = new ParameterDefinition[_parameters.Length];
+                var identifier = _parameters[i] as VariableExpression;
+                var assignment = _parameters[i] as AssignmentExpression;
+                var required = assignment is null;
 
-                for (var i = 0; i < _parameters.Length; i++)
+                if (!required)
                 {
-                    var identifier = _parameters[i] as VariableExpression;
-                    var assignment = _parameters[i] as AssignmentExpression;
-                    var required = assignment == null;
-
-                    if (!required)
-                    {
-                        identifier = assignment.Variable as VariableExpression;
-                    }
-
-                    if (identifier != null)
-                    {
-                        names[i] = new ParameterDefinition(identifier.Name, required);
-                    }
+                    identifier = assignment.Variable as VariableExpression;
                 }
 
-                return names;
+                if (identifier is not null)
+                {
+                    names[i] = new ParameterDefinition(identifier.Name, required);
+                }
             }
+
+            return names;
         }
+    }
 
-        #endregion
+    #endregion
 
-        #region Methods
+    #region Methods
 
-        /// <summary>
-        /// Accepts the visitor by showing him around.
-        /// </summary>
-        /// <param name="visitor">The visitor walking the tree.</param>
-        public void Accept(ITreeWalker visitor)
+    /// <summary>
+    /// Accepts the visitor by showing him around.
+    /// </summary>
+    /// <param name="visitor">The visitor walking the tree.</param>
+    public void Accept(ITreeWalker visitor)
+    {
+        visitor.Visit(this);
+    }
+
+    /// <summary>
+    /// Validates the expression with the given context.
+    /// </summary>
+    /// <param name="context">The validator to report errors to.</param>
+    public void Validate(IValidationContext context)
+    {
+        var containsOptional = false;
+
+        foreach (var parameter in _parameters)
         {
-            visitor.Visit(this);
-        }
-
-        /// <summary>
-        /// Validates the expression with the given context.
-        /// </summary>
-        /// <param name="context">The validator to report errors to.</param>
-        public void Validate(IValidationContext context)
-        {
-            var containsOptional = false;
-
-            foreach (var parameter in _parameters)
+            if (parameter is VariableExpression)
             {
-                if (parameter is VariableExpression)
+                if (containsOptional)
                 {
-                    if (containsOptional)
-                    {
-                        var error = new ParseError(ErrorCode.OptionalArgumentRequired, parameter);
-                        context.Report(error);
-                    }
-                }
-                else if (parameter is AssignmentExpression)
-                {
-                    var assignment = (AssignmentExpression)parameter;
-
-                    if (assignment.VariableName == null)
-                    {
-                        var error = new ParseError(ErrorCode.OptionalArgumentRequired, parameter);
-                        context.Report(error);
-                    }
-                    else
-                    {
-                        containsOptional = true;
-                        parameter.Validate(context);
-                    }
-                }
-                else
-                {
-                    var error = new ParseError(ErrorCode.IdentifierExpected, parameter);
+                    var error = new ParseError(ErrorCode.OptionalArgumentRequired, parameter);
                     context.Report(error);
                 }
             }
-        }
+            else if (parameter is AssignmentExpression)
+            {
+                var assignment = (AssignmentExpression)parameter;
 
-        #endregion
+                if (assignment.VariableName is null)
+                {
+                    var error = new ParseError(ErrorCode.OptionalArgumentRequired, parameter);
+                    context.Report(error);
+                }
+                else
+                {
+                    containsOptional = true;
+                    parameter.Validate(context);
+                }
+            }
+            else
+            {
+                var error = new ParseError(ErrorCode.IdentifierExpected, parameter);
+                context.Report(error);
+            }
+        }
     }
+
+    #endregion
 }

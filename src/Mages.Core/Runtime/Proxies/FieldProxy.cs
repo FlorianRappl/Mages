@@ -1,31 +1,24 @@
-﻿namespace Mages.Core.Runtime.Proxies
+﻿namespace Mages.Core.Runtime.Proxies;
+
+using System;
+using System.Reflection;
+
+sealed class FieldProxy(WrapperObject obj, FieldInfo field) : BaseProxy(obj)
 {
-    using System;
-    using System.Reflection;
+    private readonly FieldInfo _field = field;
 
-    sealed class FieldProxy : BaseProxy
+    protected override Object GetValue()
     {
-        private readonly FieldInfo _field;
+        var target = _obj.Content;
+        return _field.GetValue(target);
+    }
 
-        public FieldProxy(WrapperObject obj, FieldInfo field)
-            : base(obj)
-        {
-            _field = field;
-        }
+    protected override void SetValue(Object value)
+    {
+        var target = _obj.Content;
+        var result = Convert(value, _field.FieldType);
 
-        protected override Object GetValue()
-        {
-            var target = _obj.Content;
-            return _field.GetValue(target);
-        }
-
-        protected override void SetValue(Object value)
-        {
-            var target = _obj.Content;
-            var result = Convert(value, _field.FieldType);
-
-            try { _field.SetValue(target, result); } 
-            catch { }
-        }
+        try { _field.SetValue(target, result); } 
+        catch { }
     }
 }

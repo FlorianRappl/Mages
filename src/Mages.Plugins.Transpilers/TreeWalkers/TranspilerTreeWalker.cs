@@ -137,12 +137,12 @@
             expression.Validate(this);
             var member = expression.Payload as MemberExpression;
 
-            if (member != null)
+            if (member is not null)
             {
                 var variable = member.Member as IdentifierExpression;
                 member.Validate(this);
 
-                if (variable != null)
+                if (variable is not null)
                 {
                     variable.Validate(this);
                     InsertDelMember(() => member.Object.Accept(this), variable.Name);
@@ -152,7 +152,7 @@
             {
                 var variable = expression.Payload as VariableExpression;
 
-                if (variable != null)
+                if (variable is not null)
                 {
                     variable.Validate(this);
                     InsertDelVariable(variable.Name);
@@ -304,6 +304,11 @@
             _assigning = assigning;
         }
 
+        void ITreeWalker.Visit(JsxExpression expression)
+        {
+            //TODO
+        }
+
         void ITreeWalker.Visit(ObjectExpression expression)
         {
             expression.Validate(this);
@@ -342,7 +347,7 @@
                 var body = expression.Body;
                 var block = body as BlockStatement;
 
-                if (block != null)
+                if (block is not null)
                 {
                     _loops.Push(false);
 
@@ -401,7 +406,7 @@
             {
                 var identifier = expressions[i] as VariableExpression;
 
-                if (identifier == null)
+                if (identifier is null)
                 {
                     var assignment = expressions[i] as AssignmentExpression;
                     identifier = (VariableExpression)assignment.Variable;

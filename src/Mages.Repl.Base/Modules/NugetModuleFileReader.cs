@@ -12,7 +12,7 @@
     sealed class NugetModuleFileReader : IModuleFileReader
     {
         private static readonly String LibName = "__lib";
-        private static readonly String[] AllowedExtensions = new[] { ".nupkg", ".nuget", ".pkg" };
+        private static readonly String[] AllowedExtensions = [".nupkg", ".nuget", ".pkg"];
         private readonly Mages.Repl.IFileSystem _fs;
 
         public NugetModuleFileReader(Mages.Repl.IFileSystem fs)
@@ -24,7 +24,7 @@
         {
             var package = GetPackage(path);
 
-            if (package != null)
+            if (package is not null)
             {
                 var files = package.GetLibFiles().ToList();
                 return engine => ExposeLibrary(files, engine);
@@ -60,7 +60,7 @@
                 var manager = GetPackageManager();
                 var package = manager.LocalRepository.FindPackage(info.Name, info.Version);
 
-                if (package == null)
+                if (package is null)
                 {
                     package = manager.SourceRepository.FindPackage(info.Name, info.Version);
                     manager.LocalRepository.AddPackage(package);

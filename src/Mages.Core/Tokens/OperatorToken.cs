@@ -1,38 +1,29 @@
-﻿namespace Mages.Core.Tokens
+﻿namespace Mages.Core.Tokens;
+
+using System;
+
+sealed class OperatorToken(TokenType type, String payload, TextPosition start, TextPosition end) : IToken
 {
-    using System;
+    private readonly TokenType _type = type;
+    private readonly String _payload = payload;
+    private readonly TextPosition _start = start;
+    private readonly TextPosition _end = end;
 
-    sealed class OperatorToken : IToken
+    public OperatorToken(TokenType type, String payload, TextPosition position)
+        : this(type, payload, position, position)
     {
-        private readonly TokenType _type;
-        private readonly String _payload;
-        private readonly TextPosition _start;
-        private readonly TextPosition _end;
+    }
 
-        public OperatorToken(TokenType type, String payload, TextPosition position)
-            : this(type, payload, position, position)
-        {
-        }
+    public TokenType Type => _type;
 
-        public OperatorToken(TokenType type, String payload, TextPosition start, TextPosition end)
-        {
-            _type = type;
-            _payload = payload;
-            _start = start;
-            _end = end;
-        }
+    public String Payload => _payload;
 
-        public TokenType Type => _type;
+    public TextPosition Start => _start;
 
-        public String Payload => _payload;
+    public TextPosition End => _end;
 
-        public TextPosition Start => _start;
-
-        public TextPosition End => _end;
-
-        public override String ToString()
-        {
-            return $"Operator / {_start} -- {_end} / '{_payload}'";
-        }
+    public override String ToString()
+    {
+        return $"Operator / {_start} -- {_end} / '{_payload}'";
     }
 }

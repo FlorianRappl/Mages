@@ -1,43 +1,36 @@
-﻿namespace Mages.Core.Vm.Operations
+﻿namespace Mages.Core.Vm.Operations;
+
+using Mages.Core.Runtime.Functions;
+using System;
+
+/// <summary>
+/// Pops at least two elements from the stack and pushes one.
+/// </summary>
+sealed class SetcOperation(Int32 length) : IOperation
 {
-    using Mages.Core.Runtime.Functions;
-    using System;
+    private readonly Int32 _length = length;
 
-    /// <summary>
-    /// Pops at least two elements from the stack and pushes one.
-    /// </summary>
-    sealed class SetcOperation : IOperation
+    public void Invoke(IExecutionContext context)
     {
-        private readonly Int32 _length;
+        var value = context.Pop();
+        var obj = context.Pop();
+        var arguments = new Object[_length];
 
-        public SetcOperation(Int32 length)
+        for (var i = 0; i < arguments.Length; i++)
         {
-            _length = length;
+            arguments[i] = context.Pop();
         }
 
-        public void Invoke(IExecutionContext context)
+        if (obj is not null && TypeProcedures.TryFind(obj, out var function))
         {
-            var value = context.Pop();
-            var obj = context.Pop();
-            var function = default(Procedure);
-            var arguments = new Object[_length];
-
-            for (var i = 0; i < arguments.Length; i++)
-            {
-                arguments[i] = context.Pop();
-            }
-
-            if (obj != null && TypeProcedures.TryFind(obj, out function))
-            {
-                function.Invoke(arguments, value);
-            }
-
-            context.Push(value);
+            function.Invoke(arguments, value);
         }
 
-        public override String ToString()
-        {
-            return String.Concat("setc ", _length.ToString());
-        }
+        context.Push(value);
+    }
+
+    public override String ToString()
+    {
+        return String.Concat("setc ", _length.ToString());
     }
 }

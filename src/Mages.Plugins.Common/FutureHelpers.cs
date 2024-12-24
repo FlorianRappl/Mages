@@ -21,7 +21,7 @@
 
                 if (tc.IsFaulted)
                 {
-                    future.SetError(tc.Exception.InnerException.Message);
+                    future.SetError(tc.Exception.InnerException);
                 }
                 else
                 {
@@ -56,7 +56,7 @@
 
                 if (tc.IsFaulted)
                 {
-                    future.SetError(tc.Exception.InnerException.Message);
+                    future.SetError(tc.Exception.InnerException);
                 }
                 else
                 {

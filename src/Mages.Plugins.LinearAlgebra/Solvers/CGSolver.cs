@@ -66,7 +66,7 @@
         {
             var x = Guess;
 
-            if (x == null)
+            if (x is null)
             {
                 x = new Double[b.GetLength(0), b.GetLength(1)];
             }

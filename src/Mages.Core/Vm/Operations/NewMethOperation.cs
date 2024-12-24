@@ -1,40 +1,33 @@
-﻿namespace Mages.Core.Vm.Operations
+﻿namespace Mages.Core.Vm.Operations;
+
+using Mages.Core.Runtime;
+using System;
+
+/// <summary>
+/// Pops two elements from the stack and pushes three new element on the stack.
+/// </summary>
+sealed class NewMethOperation(ParameterDefinition[] parameters, IOperation[] operations) : IOperation
 {
-    using Mages.Core.Runtime;
-    using System;
+    private readonly ParameterDefinition[] _parameters = parameters;
+    private readonly IOperation[] _operations = operations;
 
-    /// <summary>
-    /// Pops two elements from the stack and pushes three new element on the stack.
-    /// </summary>
-    sealed class NewMethOperation : IOperation
+    public void Invoke(IExecutionContext context)
     {
-        private readonly ParameterDefinition[] _parameters;
-        private readonly IOperation[] _operations;
+        var name = context.Pop();
+        var obj = context.Pop();
+        var parentScope = context.Scope;
+        var function = new LocalFunction(obj, parentScope, _parameters, _operations);
+        context.Push(obj);
+        context.Push(name);
+        context.Push(function.Pointer);
+    }
 
-        public NewMethOperation(ParameterDefinition[] parameters,IOperation[] operations)
-        {
-            _parameters = parameters;
-            _operations = operations;
-        }
-
-        public void Invoke(IExecutionContext context)
-        {
-            var name = context.Pop();
-            var obj = context.Pop();
-            var parentScope = context.Scope;
-            var function = new LocalFunction(obj, parentScope, _parameters, _operations);
-            context.Push(obj);
-            context.Push(name);
-            context.Push(function.Pointer);
-        }
-
-        public override String ToString()
-        {
-            var instructions = new String[3];
-            instructions[0] = "newmeth start";
-            instructions[1] = _operations.Serialize();
-            instructions[2] = "newmeth end";
-            return String.Join(Environment.NewLine, instructions);
-        }
+    public override String ToString()
+    {
+        var instructions = new String[3];
+        instructions[0] = "newmeth start";
+        instructions[1] = _operations.Serialize();
+        instructions[2] = "newmeth end";
+        return String.Join(Environment.NewLine, instructions);
     }
 }

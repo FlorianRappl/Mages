@@ -28,10 +28,12 @@ A number is the usual suspect:
 ```
 binary_character ::= '0' | '1'
 hex_character ::= digit | [a - f] | [A - F]
+octal_character ::= [0 - 7]
 binary ::= '0' ('b' | 'B') binary_character+
 hex ::= '0' ('x' | 'X') hex_character+
+octal ::= '0' ('o' | 'O') octal_character+
 float ::= digit+ (. digit* (('e' | 'E') sign? digit+)?)?
-number ::= float | binary | hex
+number ::= float | binary | hex | octal
 ```
 
 Boolean primitive values are given by keywords:

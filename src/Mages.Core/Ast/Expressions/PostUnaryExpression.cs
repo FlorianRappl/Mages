@@ -1,125 +1,95 @@
-﻿namespace Mages.Core.Ast.Expressions
+﻿namespace Mages.Core.Ast.Expressions;
+
+using System;
+
+/// <summary>
+/// Base class for all post unary expressions.
+/// </summary>
+/// <remarks>
+/// Creates a new post unary expression.
+/// </remarks>
+public abstract class PostUnaryExpression(IExpression value, TextPosition end, String op) : ComputingExpression(value.Start, end), IExpression
 {
-    using System;
+    #region Fields
+
+    private readonly IExpression _value = value;
+    private readonly String _operator = op;
+
+    #endregion
+
+    #region Properties
 
     /// <summary>
-    /// Base class for all post unary expressions.
+    /// Gets the used value.
     /// </summary>
-    public abstract class PostUnaryExpression : ComputingExpression, IExpression
+    public IExpression Value => _value;
+
+    /// <summary>
+    /// Gets the operator string.
+    /// </summary>
+    public String Operator => _operator;
+
+    #endregion
+
+    #region Methods
+
+    /// <summary>
+    /// Accepts the visitor by showing him around.
+    /// </summary>
+    /// <param name="visitor">The visitor walking the tree.</param>
+    public void Accept(ITreeWalker visitor)
     {
-        #region Fields
+        visitor.Visit(this);
+    }
 
-        private readonly IExpression _value;
-        private readonly String _operator;
-
-        #endregion
-
-        #region ctor
-
-        /// <summary>
-        /// Creates a new post unary expression.
-        /// </summary>
-        public PostUnaryExpression(IExpression value, TextPosition end, String op)
-            : base(value.Start, end)
+    /// <summary>
+    /// Validates the expression with the given context.
+    /// </summary>
+    /// <param name="context">The validator to report errors to.</param>
+    public virtual void Validate(IValidationContext context)
+    {
+        if (_value is EmptyExpression)
         {
-            _value = value;
-            _operator = op;
+            var error = new ParseError(ErrorCode.OperandRequired, _value);
+            context.Report(error);
         }
+    }
 
-        #endregion
+    #endregion
 
-        #region Properties
+    #region Operations
 
-        /// <summary>
-        /// Gets the used value.
-        /// </summary>
-        public IExpression Value => _value;
+    internal sealed class Factorial(IExpression expression, TextPosition end) : PostUnaryExpression(expression, end, "!")
+    {
+    }
 
-        /// <summary>
-        /// Gets the operator string.
-        /// </summary>
-        public String Operator => _operator;
+    internal sealed class Transpose(IExpression expression, TextPosition end) : PostUnaryExpression(expression, end, "'")
+    {
+    }
 
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// Accepts the visitor by showing him around.
-        /// </summary>
-        /// <param name="visitor">The visitor walking the tree.</param>
-        public void Accept(ITreeWalker visitor)
+    internal sealed class Increment(IExpression expression, TextPosition end) : PostUnaryExpression(expression, end, "++")
+    {
+        public override void Validate(IValidationContext context)
         {
-            visitor.Visit(this);
-        }
-
-        /// <summary>
-        /// Validates the expression with the given context.
-        /// </summary>
-        /// <param name="context">The validator to report errors to.</param>
-        public virtual void Validate(IValidationContext context)
-        {
-            if (_value is EmptyExpression)
+            if (Value is AssignableExpression == false)
             {
-                var error = new ParseError(ErrorCode.OperandRequired, _value);
+                var error = new ParseError(ErrorCode.IncrementOperand, Value);
                 context.Report(error);
             }
         }
-
-        #endregion
-
-        #region Operations
-
-        internal sealed class Factorial : PostUnaryExpression
-        {
-            public Factorial(IExpression expression, TextPosition end)
-                : base(expression, end, "!")
-            {
-            }
-        }
-
-        internal sealed class Transpose : PostUnaryExpression
-        {
-            public Transpose(IExpression expression, TextPosition end)
-                : base(expression, end, "'")
-            {
-            }
-        }
-
-        internal sealed class Increment : PostUnaryExpression
-        {
-            public Increment(IExpression expression, TextPosition end)
-                : base(expression, end, "++")
-            {
-            }
-
-            public override void Validate(IValidationContext context)
-            {
-                if (Value is AssignableExpression == false)
-                {
-                    var error = new ParseError(ErrorCode.IncrementOperand, Value);
-                    context.Report(error);
-                }
-            }
-        }
-
-        internal sealed class Decrement : PostUnaryExpression
-        {
-            public Decrement(IExpression expression, TextPosition end)
-                : base(expression, end, "--")
-            {
-            }
-
-            public override void Validate(IValidationContext context)
-            {
-                if (Value is AssignableExpression == false)
-                {
-                    var error = new ParseError(ErrorCode.DecrementOperand, Value);
-                    context.Report(error);
-                }
-            }
-        }
-
-        #endregion
     }
+
+    internal sealed class Decrement(IExpression expression, TextPosition end) : PostUnaryExpression(expression, end, "--")
+    {
+        public override void Validate(IValidationContext context)
+        {
+            if (Value is AssignableExpression == false)
+            {
+                var error = new ParseError(ErrorCode.DecrementOperand, Value);
+                context.Report(error);
+            }
+        }
+    }
+
+    #endregion
 }

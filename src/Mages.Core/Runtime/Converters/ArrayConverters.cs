@@ -1,66 +1,65 @@
-﻿namespace Mages.Core.Runtime.Converters
+﻿namespace Mages.Core.Runtime.Converters;
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Numerics;
+
+static class ArrayConverters
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Numerics;
-
-    static class ArrayConverters
+    public static Func<Object, Object> Get(Type from, Type to, Func<Object, Object> converter)
     {
-        public static Func<Object, Object> Get(Type from, Type to, Func<Object, Object> converter)
+        if (typeof(IDictionary<String, Object>).IsAssignableFrom(from))
         {
-            if (typeof(IDictionary<String, Object>).IsAssignableFrom(from))
+            return obj =>
             {
-                return obj =>
-                {
-                    var items = (IDictionary<String, Object>)obj;
-                    return ConvertArray(to, converter, items.Values, items.Count);
-                };
-            }
-            else if (typeof(Double[,]).IsAssignableFrom(from))
+                var items = (IDictionary<String, Object>)obj;
+                return ConvertArray(to, converter, items.Values, items.Count);
+            };
+        }
+        else if (typeof(Double[,]).IsAssignableFrom(from))
+        {
+            return mat =>
             {
-                return mat =>
-                {
-                    var values = (Double[,])mat;
-                    return ConvertArray(to, converter, values, values.Length);
-                };
-            }
-            else if (typeof(Complex[,]).IsAssignableFrom(from))
+                var values = (Double[,])mat;
+                return ConvertArray(to, converter, values, values.Length);
+            };
+        }
+        else if (typeof(Complex[,]).IsAssignableFrom(from))
+        {
+            return mat =>
             {
-                return mat =>
-                {
-                    var values = (Complex[,])mat;
-                    return ConvertArray(to, converter, values, values.Length);
-                };
-            }
-            else if (typeof(String).IsAssignableFrom(from))
+                var values = (Complex[,])mat;
+                return ConvertArray(to, converter, values, values.Length);
+            };
+        }
+        else if (typeof(String).IsAssignableFrom(from))
+        {
+            return str =>
             {
-                return str =>
-                {
-                    var values = (String)str;
-                    return ConvertArray(to, converter, values, values.Length);
-                };
-            }
-            else
+                var values = (String)str;
+                return ConvertArray(to, converter, values, values.Length);
+            };
+        }
+        else
+        {
+            return any =>
             {
-                return any =>
-                {
-                    return ConvertArray(to, converter, new[] { any }, 1);
-                };
-            }
+                return ConvertArray(to, converter, new[] { any }, 1);
+            };
+        }
+    }
+
+    private static Object ConvertArray(Type to, Func<Object, Object> converter, IEnumerable values, Int32 length)
+    {
+        var result = Array.CreateInstance(to, length);
+        var i = 0;
+
+        foreach (var value in values)
+        {
+            result.SetValue(converter.Invoke(value), i++);
         }
 
-        private static Object ConvertArray(Type to, Func<Object, Object> converter, IEnumerable values, Int32 length)
-        {
-            var result = Array.CreateInstance(to, length);
-            var i = 0;
-
-            foreach (var value in values)
-            {
-                result.SetValue(converter.Invoke(value), i++);
-            }
-
-            return result;
-        }
+        return result;
     }
 }

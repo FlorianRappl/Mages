@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <ProjectGuid>{92BAD61F-F5B6-4E6D-A34A-939B994B2910}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Mages.Repl.Tests</RootNamespace>
     <AssemblyName>Mages.Repl.Tests</AssemblyName>
+    <LangVersion>latest</LangVersion>
     <ApplicationIcon />
     <StartupObject />
     <Platforms>x64</Platforms>
