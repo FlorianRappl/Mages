@@ -95,7 +95,8 @@ public static class EngineExtensions
     public static IPlacement SetStatic(this Engine engine, Assembly lib, Predicate<Type> shouldInclude = null)
     {
         var types = lib.GetExportedTypes();
-        var libNameParts = lib.GetName().Name.Split(['.', ',', ' ', '-', '+'], StringSplitOptions.RemoveEmptyEntries);
+        char[] chrs = ['.', ',', ' ', '-', '+'];
+        var libNameParts = lib.GetName().Name.Split(chrs, StringSplitOptions.RemoveEmptyEntries);
         var libName = String.Join(String.Empty, libNameParts);
         var obj = new Dictionary<String, Object>();
 

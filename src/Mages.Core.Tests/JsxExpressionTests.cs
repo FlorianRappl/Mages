@@ -105,9 +105,29 @@
         }
 
         [Test]
-        public void JsxWithInlineFunctionIsValid()
+        public void JsxWithInlineFunctionBodyIsValid()
         {
             var expr = "<foo onFoo={() => console.writeln(\"hello\")}>Hello.</foo>".ToExpression();
+            Assert.IsInstanceOf<JsxExpression>(expr);
+            var jsx = expr as JsxExpression;
+            Assert.AreEqual(1, jsx.Children.Length);
+            Assert.AreEqual(1, jsx.Props.Length);
+        }
+
+        [Test]
+        public void JsxWithGroupedInlineFunctionBodyIsValid()
+        {
+            var expr = "<foo onFoo={(() => console.writeln(\"hello\"))}>Hello.</foo>".ToExpression();
+            Assert.IsInstanceOf<JsxExpression>(expr);
+            var jsx = expr as JsxExpression;
+            Assert.AreEqual(1, jsx.Children.Length);
+            Assert.AreEqual(1, jsx.Props.Length);
+        }
+
+        [Test]
+        public void JsxWithInlineFunctionBlockIsValid()
+        {
+            var expr = "<foo onFoo={() => {console.writeln(\"hello\");}}>Hello.</foo>".ToExpression();
             Assert.IsInstanceOf<JsxExpression>(expr);
             var jsx = expr as JsxExpression;
             Assert.AreEqual(1, jsx.Children.Length);

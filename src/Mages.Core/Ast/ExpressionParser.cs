@@ -1025,7 +1025,7 @@ sealed class ExpressionParser : IParser
                 return null;
             }
 
-            var value = ParseConditional(tokens);
+            var value = ParseAssignment(tokens);
 
             if (tokens.Current.Type == TokenType.CloseScope)
             {

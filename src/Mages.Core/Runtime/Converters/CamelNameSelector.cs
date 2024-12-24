@@ -47,7 +47,7 @@ sealed class CamelNameSelector : INameSelector
         {
             if (str.Length > 1)
             {
-                var words = str.Split(['-'], StringSplitOptions.RemoveEmptyEntries);
+                var words = str.Split('-', StringSplitOptions.RemoveEmptyEntries);
                 var result = String.Concat(words[0].Substring(0, 1).ToLowerInvariant(), words[0].Substring(1));
 
                 for (var i = 1; i < words.Length; i++)
