@@ -140,6 +140,34 @@ public class OperationTests
     }
 
     [Test]
+    public void ComplexLessThanComparison()
+    {
+        var result = "4i < 3i".Eval();
+        Assert.AreEqual(false, result);
+    }
+
+    [Test]
+    public void ComplexLessThanInverseComparison()
+    {
+        var result = "3i > 4i".Eval();
+        Assert.AreEqual(false, result);
+    }
+
+    [Test]
+    public void ComplexGreaterThanComparison()
+    {
+        var result = "4i > 3i".Eval();
+        Assert.AreEqual(true, result);
+    }
+
+    [Test]
+    public void ComplexGreaterThanInverseComparison()
+    {
+        var result = "3i < 4i".Eval();
+        Assert.AreEqual(true, result);
+    }
+
+    [Test]
     public void BinaryAndWithMatricesYieldsMatrix()
     {
         var result = "[1,0;0,0] && [1,1;1,0]".Eval();
