@@ -505,6 +505,30 @@
         {
             Test("abs([1,2,3,4,5,6,7] < 5)", 2.0);
         }
+        
+        [Test]
+        public void StringEqualsNumber()
+        {
+            Test("`1` == 1", true);
+        }
+
+        [Test]
+        public void NumberEqualsString()
+        {
+            Test("1 == `1`", true);
+        }
+
+        [Test]
+        public void StringNotEqualsNumber()
+        {
+            Test("`2` ~= 2", false);
+        }
+
+        [Test]
+        public void NumberNotEqualsString()
+        {
+            Test("2 ~= `2`", false);
+        }
 
         [Test]
         public void Greater()
