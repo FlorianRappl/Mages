@@ -1,25 +1,24 @@
-﻿namespace Mages.Core.Tests
+﻿using NUnit.Framework;
+
+namespace Mages.Core.Tests;
+
+[TestFixture]
+public class PreprocessorTests
 {
-    using NUnit.Framework;
-
-    [TestFixture]
-    public class PreprocessorTests
+    [Test]
+    public void InitialSheBangIsIgnored()
     {
-        [Test]
-        public void InitialSheBangIsIgnored()
-        {
-            var source = @"#!/bin/mages
+        var source = @"#!/bin/mages
 2+3";
-            var result = source.Eval();
-            Assert.AreEqual(5.0, result);
-        }
+        var result = source.Eval();
+        Assert.AreEqual(5.0, result);
+    }
 
-        [Test]
-        public void TrailingPreprocessorIsTreatedLikeLineComment()
-        {
-            var source = @"2+3 # this is some comment";
-            var result = source.Eval();
-            Assert.AreEqual(5.0, result);
-        }
+    [Test]
+    public void TrailingPreprocessorIsTreatedLikeLineComment()
+    {
+        var source = @"2+3 # this is some comment";
+        var result = source.Eval();
+        Assert.AreEqual(5.0, result);
     }
 }

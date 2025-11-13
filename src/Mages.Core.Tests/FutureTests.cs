@@ -1,17 +1,17 @@
-﻿namespace Mages.Core.Tests
-{
-    using Mages.Core.Tests.Mocks;
-    using NUnit.Framework;
-    using System;
-    using System.Threading.Tasks;
+﻿using Mages.Core.Tests.Mocks;
+using NUnit.Framework;
+using System;
+using System.Threading.Tasks;
 
-    [TestFixture]
-    public class FutureTests
+namespace Mages.Core.Tests;
+
+[TestFixture]
+public class FutureTests
+{
+    [Test]
+    public void CalculateAsyncFunctionInForLoop()
     {
-        [Test]
-        public void CalculateAsyncFunctionInForLoop()
-        {
-            Test(@"var sum = 0.0;
+        Test(@"var sum = 0.0;
 
 for (var i = 0; i < 5; ++i) {
     sum += await calcAsync(10);
@@ -19,60 +19,59 @@ for (var i = 0; i < 5; ++i) {
 
 sum
 ", 15.0, engine => engine.SetFunction("calcAsync", FutureMock.Number(3.0)));
-        }
+    }
 
-        [Test]
-        public void CalculateAsyncInFunction()
-        {
-            Test(@"var f = x => {
+    [Test]
+    public void CalculateAsyncInFunction()
+    {
+        Test(@"var f = x => {
   var y = await calcAsync(20);
   return x + y;
 };
 
 f(5)", 10.0, engine => engine.SetFunction("calcAsync", FutureMock.Number(5.0)));
-        }
+    }
 
-        private static async Task<Int32> MyAsyncTest(Int32 value)
-        {
-            await Task.Delay(10);
-            return value * 10;
-        }
+    private static async Task<Int32> MyAsyncTest(Int32 value)
+    {
+        await Task.Delay(10);
+        return value * 10;
+    }
 
-        [Test]
-        public void ConvertTaskToFuture_Issue64()
-        {
-            Test(@"var f = x => {
+    [Test]
+    public void ConvertTaskToFuture_Issue64()
+    {
+        Test(@"var f = x => {
   var y = await calcAsync(20);
   return x + y;
 };
 
 f(5)", 205.0, engine => engine.SetFunction("calcAsync", new Func<Int32, Task<Int32>>(MyAsyncTest)));
-        }
+    }
 
-        [Test]
-        public void CalculateMultipleAsyncInFunction()
-        {
-            Test(@"var f = x => {
+    [Test]
+    public void CalculateMultipleAsyncInFunction()
+    {
+        Test(@"var f = x => {
   var y = await barAsync(20);
   var z = await fooAsync(5);
   return x + y * z;
 };
 
 f(5)", 80, engine =>
-            {
-                engine.SetFunction("barAsync", FutureMock.Number(5.0));
-                engine.SetFunction("fooAsync", FutureMock.Number(15.0));
-            });
-        }
-
-        private static void Test(String sourceCode, Object expected, Action<Engine> setup)
         {
-            var engine = new Engine();
-            setup.Invoke(engine);
-            var result = engine.InterpretAsync(sourceCode);
-            var tcs = new TaskCompletionSource<Object>();
-            result.SetCallback((value, error) => tcs.SetResult(value));
-            Assert.AreEqual(expected, tcs.Task.Result);
-        }
+            engine.SetFunction("barAsync", FutureMock.Number(5.0));
+            engine.SetFunction("fooAsync", FutureMock.Number(15.0));
+        });
+    }
+
+    private static void Test(String sourceCode, Object expected, Action<Engine> setup)
+    {
+        var engine = new Engine();
+        setup.Invoke(engine);
+        var result = engine.InterpretAsync(sourceCode);
+        var tcs = new TaskCompletionSource<Object>();
+        result.SetCallback((value, error) => tcs.SetResult(value));
+        Assert.AreEqual(expected, tcs.Task.Result);
     }
 }
