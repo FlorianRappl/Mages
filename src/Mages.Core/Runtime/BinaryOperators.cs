@@ -3,6 +3,7 @@
 using Mages.Core.Runtime.Converters;
 using Mages.Core.Runtime.Functions;
 using System;
+using System.Globalization;
 using System.Numerics;
 
 static class BinaryOperators
@@ -305,6 +306,8 @@ static class BinaryOperators
             If.Is<String, String>(args, EqStrings) ??
             If.IsEither<Double, Complex, Double, Complex>(args, CastNumber, CastNumber, EqCNumbers) ??
             If.IsEither<Double[,], Complex[,], Double[,], Complex[,]>(args, CastMatrix, CastMatrix, EqCMatrices) ??
+            If.Is<Double, String>(args, (a, b) => EqStrings(a.ToString(CultureInfo.InvariantCulture), b)) ??
+            If.Is<String, Double>(args, (a, b) => EqStrings(a, b.ToString(CultureInfo.InvariantCulture))) ??
             Object.ReferenceEquals(args[1], args[0]);
     }
 
@@ -320,6 +323,8 @@ static class BinaryOperators
             If.Is<String, String>(args, NeqStrings) ??
             If.IsEither<Double, Complex, Double, Complex>(args, CastNumber, CastNumber, NeqCNumbers) ??
             If.IsEither<Double[,], Complex[,], Double[,], Complex[,]>(args, CastMatrix, CastMatrix, NeqCMatrices) ??
+            If.Is<Double, String>(args, (a, b) => NeqStrings(a.ToString(CultureInfo.InvariantCulture), b)) ??
+            If.Is<String, Double>(args, (a, b) => NeqStrings(a, b.ToString(CultureInfo.InvariantCulture))) ??
             !Object.ReferenceEquals(args[1], args[0]);
     }
 
