@@ -299,3 +299,15 @@ The big advantage of this is that we get a simple way to pipe things:
 ```
 4 | f(1, _, 3)
 ```
+
+## JSX
+
+XML-like syntax is an integrated part of MAGES. Expressions such as
+
+```
+<div><p style="font-style:italic">hello</p><p>there<br/>said Obi.</p></div>
+```
+
+can just be used and will call the JSX-factory function `jsx`, which (by default, i.e., if not specified otherwise) will result in JSX-objects. These are just ordinary objects, but with a defined set of keys such as `props` and `children`.
+
+You can either use the JSX output to work on the JSX-objects, or you can pass it to a helper function such as `html`. This works well with JSX-objects and transforms it into a valid HTML string - also taking care of things such as HTML escaping.

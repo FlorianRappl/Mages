@@ -48,6 +48,14 @@ new { a: "foo", b: 42 } | type | json
 // }
 ```
 
+Placeholders for calling functions / specifying what should be curry'ed:
+
+```plain
+var f = (x, y, z) => x + 2 * y + 3 * z;
+5 | f(1, _, 2)
+// 17, by computing 1 + 2 * 5 + 3 * 2
+```
+
 ### Previous Status
 
 **2023**:

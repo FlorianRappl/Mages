@@ -406,3 +406,22 @@ fab = (a, b) => a * b - b;
 fba = shuffle("b", "a", fab);
 fab(1, 2) - fba(1, 2) // -1
 ```
+
+## Stringification
+
+### JSON
+
+Transforms the value into a valid JSON string. Does not stringify functions.
+
+```
+json(new { a: 42, b: "foo" }) // { "a": 42, "b": "foo" }
+```
+
+### HTML
+
+Transforms the value into a valid JSON string. Does only stringify valid JSX objects, numbers, and strings. Strings are automatically HTML-encoded.
+
+```
+"foo<b>ho</b>" | html // foo&lt;b&gt;ho&lt;/b&gt;
+<div class={"foo" + "bar"}>Hi</div> | html // <div class="foobar">Hi</div>
+```

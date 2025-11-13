@@ -172,7 +172,7 @@ public static class Stringify
         }
         else if (value is String str)
         {
-            return str;
+            return HttpUtility.HtmlEncode(str);
         }
         else if (value is Double d)
         {
