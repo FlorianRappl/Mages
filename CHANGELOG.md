@@ -1,3 +1,7 @@
+# 3.0.1
+
+- Fixed documentation regarding `pow` arguments (#132)
+
 # 3.0.0
 
 - Fixed potential misinterpretation of fractions in hex numbers (#128)

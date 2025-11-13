@@ -22,10 +22,12 @@ Works with numbers and matrices (applied to each value). Equivalent to the power
 Examples:
 
 ```
-x = pow(2, 3) // 8
-M = pow(2, [1, 2, 3]) // [2, 4, 8]
+x = pow(3, 2) // 8
+M = pow([1, 2, 3], 2) // [2, 4, 8]
 M = pow([1, 2, 3], [1, 2, 3]) // [1, 4, 27]
 ```
+
+**Remark**: Keep in mind that the first argument for the function represents the RHS of the operator. This allows currying such as `let cube = pow(3)` to be working as expected.
 
 ### Factorial of Values
 
