@@ -5,6 +5,6 @@
     <RootNamespace>Mages.Core</RootNamespace>
     <Description>A lightweight parser / interpreter for mathematical expressions.</Description>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Mages.Core.xml</DocumentationFile>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>13</LangVersion>
   </PropertyGroup>
 </Project>
