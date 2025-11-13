@@ -137,6 +137,7 @@ Task("Copy-Files")
         }, nugetBin);
         CopyDirectory(replDir, squirrelBin);
         CopyDirectory(installerDir, squirrelBin);
+        CopyFile("README.md", nugetRoot + File("README.md"));
         CopyFile("src/Mages.Nuget.nuspec", nugetRoot + File("Mages.nuspec"));
         CopyFile("src/Mages.Chocolatey.nuspec", chocolateyRoot + File("Mages.nuspec"));
         DeleteFiles(GetFiles(squirrelBin.Path.FullPath + "/*.pdb"));

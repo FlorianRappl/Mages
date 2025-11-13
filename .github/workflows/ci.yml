@@ -8,23 +8,24 @@ env:
   CHOCOLATEY_API_KEY: ${{ secrets.CHOCOLATEY_API_KEY }}
 
 jobs:
-  linux:
-    runs-on: ubuntu-latest
+  # linux:
+  #   runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v2
+  #   steps:
+  #   - uses: actions/checkout@v2
 
-    - uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: |
-          5.0.x
-          6.0.x
-          7.0.x
-          8.0.x
-          9.0.x
+  #   - uses: actions/setup-dotnet@v3
+  #     with:
+  #       dotnet-version: |
+  #         5.0.x
+  #         6.0.x
+  #         7.0.x
+  #         8.0.x
+  #         9.0.x
+  #         10.0.x
 
-    - name: Build
-      run: ./build.sh
+  #   - name: Build
+  #     run: ./build.sh
 
   windows:
     runs-on: windows-latest
@@ -40,6 +41,7 @@ jobs:
           7.0.x
           8.0.x
           9.0.x
+          10.0.x
 
     - name: Build
       run: |
