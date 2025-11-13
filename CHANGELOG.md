@@ -1,6 +1,7 @@
 # 3.0.1
 
 - Fixed documentation regarding `pow` arguments (#132)
+- Fixed number to string comparison consistency (#138) by @bman654
 
 # 3.0.0
 
