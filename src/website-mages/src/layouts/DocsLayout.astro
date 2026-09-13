@@ -1,0 +1,243 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  currentSlug?: string;
+}
+
+const { title, description, currentSlug = '' } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+
+const navSections = [
+  {
+    title: 'Overview',
+    items: [
+      { slug: 'introduction', title: 'Introduction' },
+      { slug: 'use-cases', title: 'Use Cases' },
+      { slug: 'first-steps', title: 'First Steps' },
+    ]
+  },
+  {
+    title: 'Language & Syntax',
+    items: [
+      { slug: 'language', title: 'Language Features' },
+      { slug: 'syntax', title: 'Syntax & Grammar' },
+      { slug: 'types', title: 'Type System' },
+      { slug: 'functions', title: 'Standard Functions' },
+    ]
+  },
+  {
+    title: 'Advanced & Extensibility',
+    items: [
+      { slug: 'plugins', title: 'Plugins' },
+      { slug: 'performance', title: 'Performance' },
+      { slug: 'advanced', title: 'Advanced Topics' },
+      { slug: 'contributing', title: 'Contributing' },
+    ]
+  }
+];
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="container docs-wrapper">
+    <aside class="docs-sidebar">
+      <div class="sidebar-sticky">
+        {navSections.map(section => (
+          <div class="nav-section">
+            <h3 class="section-title">{section.title}</h3>
+            <ul class="section-list">
+              {section.items.map(item => {
+                const isActive = currentSlug === item.slug;
+                return (
+                  <li>
+                    <a
+                      href={`${baseUrl}docs/${item.slug}`}
+                      class:list={['nav-item', { active: isActive }]}
+                    >
+                      {item.title}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </aside>
+
+    <article class="docs-content">
+      <div class="markdown-body">
+        <slot />
+      </div>
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .docs-wrapper {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 3rem;
+    padding-top: 2.5rem;
+    padding-bottom: 4rem;
+  }
+
+  .docs-sidebar {
+    border-right: 1px solid var(--border);
+    padding-right: 1.5rem;
+  }
+
+  .sidebar-sticky {
+    position: sticky;
+    top: 90px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+  }
+
+  .section-title {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+  }
+
+  .section-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .nav-item {
+    display: block;
+    padding: 0.45rem 0.75rem;
+    border-radius: 6px;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+
+  .nav-item:hover {
+    color: var(--text-main);
+    background: var(--bg-card);
+  }
+
+  .nav-item.active {
+    color: var(--primary-light);
+    background: rgba(147, 51, 234, 0.12);
+    font-weight: 600;
+    border-left: 3px solid var(--primary);
+  }
+
+  .docs-content {
+    min-width: 0;
+    max-width: 850px;
+  }
+
+  @media (max-width: 860px) {
+    .docs-wrapper {
+      grid-template-columns: 1fr;
+    }
+    .docs-sidebar {
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.5rem;
+    }
+  }
+
+  :global(.markdown-body) {
+    line-height: 1.75;
+    color: #e5e7eb;
+  }
+
+  :global(.markdown-body h1) {
+    font-size: 2.2rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.2rem;
+    color: #ffffff;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.8rem;
+  }
+
+  :global(.markdown-body h2) {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-top: 2.2rem;
+    margin-bottom: 0.8rem;
+    color: #f3f4f6;
+  }
+
+  :global(.markdown-body h3) {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: 1.8rem;
+    margin-bottom: 0.6rem;
+    color: #f3f4f6;
+  }
+
+  :global(.markdown-body p) {
+    margin-bottom: 1.2rem;
+  }
+
+  :global(.markdown-body ul, .markdown-body ol) {
+    margin-bottom: 1.2rem;
+    padding-left: 1.6rem;
+  }
+
+  :global(.markdown-body li) {
+    margin-bottom: 0.4rem;
+  }
+
+  :global(.markdown-body pre) {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.2rem;
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+    font-size: 0.9rem;
+  }
+
+  :global(.markdown-body code:not(pre code)) {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 0.2rem 0.45rem;
+    border-radius: 4px;
+    font-size: 0.88em;
+    color: var(--accent);
+  }
+
+  :global(.markdown-body blockquote) {
+    border-left: 4px solid var(--primary);
+    padding: 0.8rem 1.2rem;
+    background: rgba(147, 51, 234, 0.08);
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 1.4rem;
+    color: #d1d5db;
+  }
+
+  :global(.markdown-body table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+  }
+
+  :global(.markdown-body th, .markdown-body td) {
+    border: 1px solid var(--border);
+    padding: 0.75rem 1rem;
+    text-align: left;
+  }
+
+  :global(.markdown-body th) {
+    background: var(--bg-card);
+    color: #ffffff;
+  }
+</style>

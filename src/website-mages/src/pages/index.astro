@@ -1,0 +1,426 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const baseUrl = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+---
+
+<BaseLayout title="MAGES - Ultimate Scripting for .NET">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container hero-container">
+      <div class="hero-badge">
+        <span class="badge-dot"></span> Modern .NET Scripting & Expression Engine
+      </div>
+      <h1 class="hero-title">
+        Lightweight. Ultra-Fast.<br />
+        <span class="gradient-text">Mathematical Scripting.</span>
+      </h1>
+      <p class="hero-subtitle">
+        MAGES is a powerful expression parser, compiler, and interpreter for .NET applications.
+        Native support for complex numbers, matrices, JSX syntax, and first-class functions with zero external runtime dependencies.
+      </p>
+      <div class="hero-actions">
+        <a href={`${baseUrl}docs/first-steps`} class="btn btn-primary">
+          Get Started
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+        <a href={`${baseUrl}docs/introduction`} class="btn btn-secondary">Explore Documentation</a>
+      </div>
+
+      <!-- Quick Install Box -->
+      <div class="code-hero">
+        <div class="code-tab-header">
+          <span class="code-dot red"></span>
+          <span class="code-dot yellow"></span>
+          <span class="code-dot green"></span>
+          <span class="code-tab-title">Quick Install (.NET CLI)</span>
+        </div>
+        <pre><code><span class="cmd-comment"># Install MAGES library</span>
+<span class="cmd-prompt">$</span> dotnet add package Mages
+
+<span class="cmd-comment"># Install global CLI compiler & REPL</span>
+<span class="cmd-prompt">$</span> dotnet tool install --global Mages.Compiler
+
+<span class="cmd-comment"># Launch the interactive REPL</span>
+<span class="cmd-prompt">$</span> mages</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Grid -->
+  <section class="features">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Built for Modern .NET Applications</h2>
+        <p class="section-desc">Designed from the ground up for maximum throughput, low memory footprint, and seamless .NET integration.</p>
+      </div>
+
+      <div class="grid-features">
+        <div class="card">
+          <div class="card-icon">⚡</div>
+          <h3>Ultra High Performance</h3>
+          <p>Linear operation chain VM eliminates GC pressure. Compile expressions once and execute them with maximum throughput in your critical loops.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">📐</div>
+          <h3>Matrices & Complex Numbers</h3>
+          <p>First-class mathematical primitives including multi-dimensional matrices, linear algebra solvers, complex numbers, and trigonometric functions.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">⚛️</div>
+          <h3>JSX Syntax & Objects</h3>
+          <p>Write declarative tree structures directly in code using JSX syntax. Inspect object metadata dynamically using the built-in <code>type</code> and <code>json</code> operators.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">🛠️</div>
+          <h3>Global CLI Tool</h3>
+          <p>The <code>Mages.Compiler</code> package brings a full-featured command-line interpreter, interactive REPL, and script runner to any modern terminal.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">💻</div>
+          <h3>VS Code LSP Extension</h3>
+          <p>Language Server Protocol (LSP) extension with real-time diagnostics, syntax highlighting, IntelliSense completions, hover docs, and signature tooltips.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">🔌</div>
+          <h3>Extensible & Sandbox-Ready</h3>
+          <p>Easily expose custom C# classes, methods, and delegates. Full control over accessible APIs and scopes for sandboxed user scripting.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Code Preview Section -->
+  <section class="preview-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Clean, Expressive Syntax</h2>
+        <p class="section-desc">Look at how intuitive mathematical scripting feels in MAGES.</p>
+      </div>
+
+      <div class="preview-grid">
+        <div class="preview-card">
+          <h4>C# Host Integration</h4>
+          <pre><code><span class="keyword">using</span> Mages.Core;
+
+<span class="keyword">var</span> engine = <span class="keyword">new</span> Engine();
+<span class="comment">// Expose variables & functions</span>
+engine.Scope[<span class="string">"x"</span>] = 4.0;
+engine.SetFunction(<span class="string">"sq"</span>, (double v) => v * v);
+
+<span class="comment">// Evaluate or compile</span>
+<span class="keyword">var</span> result = engine.Interpret(<span class="string">"sq(x) + sin(pi / 2)"</span>);
+Console.WriteLine(result); <span class="comment">// 17.0</span></code></pre>
+        </div>
+
+        <div class="preview-card">
+          <h4>MAGES Language Features</h4>
+          <pre><code><span class="comment">// Functions, pipes, and currying</span>
+<span class="keyword">var</span> add = (a, b) => a + b;
+<span class="keyword">var</span> calc = 5 | add(10, _); <span class="comment">// 15</span>
+
+<span class="comment">// Matrix arithmetic & operations</span>
+<span class="keyword">var</span> A = [1, 2; 3, 4];
+<span class="keyword">var</span> invA = inv(A);
+<span class="keyword">var</span> I = A * invA;
+
+<span class="comment">// JSX templating</span>
+<span class="keyword">var</span> view = &lt;div class=<span class="string">"card"</span>&gt;&lt;h1&gt;MAGES&lt;/h1&gt;&lt;/div&gt; | html;</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="container cta-container">
+      <h2>Ready to add scripting to your application?</h2>
+      <p>Check out our step-by-step tutorial and API documentation.</p>
+      <div class="cta-actions">
+        <a href={`${baseUrl}docs/first-steps`} class="btn btn-primary">Start Tutorial</a>
+        <a href="https://github.com/FlorianRappl/MAGES" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">View on GitHub</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding: 6rem 0 4rem;
+    text-align: center;
+    background: radial-gradient(circle at 50% 20%, rgba(147, 51, 234, 0.15), transparent 70%);
+  }
+
+  .hero-container {
+    max-width: 850px;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.9rem;
+    border-radius: 9999px;
+    background: rgba(147, 51, 234, 0.12);
+    border: 1px solid rgba(147, 51, 234, 0.3);
+    color: var(--primary-light);
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+  }
+
+  .badge-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .hero-title {
+    font-size: 3.4rem;
+    line-height: 1.15;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #c084fc 0%, #38bdf8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3.5rem;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.6rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.2s;
+  }
+
+  .btn-primary {
+    background: var(--primary);
+    color: #ffffff !important;
+    box-shadow: 0 4px 14px rgba(147, 51, 234, 0.4);
+  }
+
+  .btn-primary:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+  }
+
+  .btn-secondary {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text-main) !important;
+  }
+
+  .btn-secondary:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--primary-light);
+    transform: translateY(-2px);
+  }
+
+  .code-hero {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    text-align: left;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+  }
+
+  .code-tab-header {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.6rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .code-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .code-dot.red { background: #ef4444; }
+  .code-dot.yellow { background: #eab308; }
+  .code-dot.green { background: #22c55e; }
+
+  .code-tab-title {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-left: 0.5rem;
+  }
+
+  .code-hero pre {
+    padding: 1.25rem 1.5rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .cmd-comment { color: #6b7280; }
+  .cmd-prompt { color: var(--accent); }
+
+  .features {
+    padding: 5rem 0;
+  }
+
+  .section-header {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 3.5rem;
+  }
+
+  .section-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.8rem;
+  }
+
+  .section-desc {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+  }
+
+  .grid-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.8rem;
+  }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    transition: all 0.2s;
+  }
+
+  .card:hover {
+    background: var(--bg-card-hover);
+    border-color: rgba(147, 51, 234, 0.4);
+    transform: translateY(-4px);
+  }
+
+  .card-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .card h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    color: #f3f4f6;
+  }
+
+  .card p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .preview-section {
+    padding: 4rem 0 5rem;
+    background: rgba(19, 21, 31, 0.4);
+  }
+
+  .preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+  }
+
+  .preview-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+  }
+
+  .preview-card h4 {
+    color: var(--primary-light);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .preview-card pre {
+    background: #0d0e15;
+    padding: 1.2rem;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    overflow-x: auto;
+  }
+
+  .keyword { color: #c084fc; font-weight: 600; }
+  .string { color: #38bdf8; }
+  .comment { color: #6b7280; font-style: italic; }
+
+  .cta {
+    padding: 6rem 0;
+    text-align: center;
+  }
+
+  .cta-container {
+    background: linear-gradient(135deg, rgba(147, 51, 234, 0.15), rgba(56, 189, 248, 0.1));
+    border: 1px solid rgba(147, 51, 234, 0.3);
+    border-radius: 16px;
+    padding: 4rem 2rem;
+    max-width: 900px;
+  }
+
+  .cta h2 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+  }
+
+  .cta p {
+    color: var(--text-muted);
+    font-size: 1.15rem;
+    margin-bottom: 2rem;
+  }
+
+  .cta-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 768px) {
+    .hero-title { font-size: 2.4rem; }
+    .preview-grid { grid-template-columns: 1fr; }
+  }
+</style>
