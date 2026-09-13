@@ -2,7 +2,7 @@
 {
     using System;
 
-    sealed class CompletionState
+    public sealed class CompletionState
     {
         private Int32 _selected;
         private Int32 _top;

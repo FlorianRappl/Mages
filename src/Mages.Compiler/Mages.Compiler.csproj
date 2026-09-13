@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>mages</ToolCommandName>
+    <PackageId>Mages.Compiler</PackageId>
+    <AssemblyName>mages</AssemblyName>
+    <RootNamespace>Mages.Compiler</RootNamespace>
+    <Description>Command-line tool and compiler / REPL for the MAGES language.</Description>
+    <LangVersion>latest</LangVersion>
+    <PackageOutputPath>../../bin/$(Version)/nuget</PackageOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Mages.Repl\Mages.Repl.csproj" />
+  </ItemGroup>
+</Project>

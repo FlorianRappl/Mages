@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    sealed class TutorialRunner : ITutorialRunner
+    public sealed class TutorialRunner : ITutorialRunner
     {
         public void RunAll(IInteractivity interactivity, IDictionary<String, Object> scope, Action<String> evaluate)
         {

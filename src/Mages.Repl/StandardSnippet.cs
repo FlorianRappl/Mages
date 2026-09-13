@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    sealed class StandardSnippet<T> : ITutorialSnippet
+    public sealed class StandardSnippet<T> : ITutorialSnippet
     {
         private readonly Func<T, IDictionary<String, Object>, Boolean> _checker;
 

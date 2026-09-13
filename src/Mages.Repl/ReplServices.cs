@@ -3,7 +3,7 @@
     using Mages.Repl.Bindings;
     using Ninject.Modules;
 
-    sealed class ReplServices : NinjectModule
+    public sealed class ReplServices : NinjectModule
     {
         public override void Load()
         {

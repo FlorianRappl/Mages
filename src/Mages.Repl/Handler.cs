@@ -2,7 +2,7 @@
 {
     using System;
 
-    struct Handler
+    public struct Handler
     {
         public readonly ConsoleKeyInfo KeyInfo;
         public readonly Action KeyHandler;

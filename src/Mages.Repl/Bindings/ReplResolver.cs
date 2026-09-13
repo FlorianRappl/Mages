@@ -1,6 +1,6 @@
 ﻿namespace Mages.Repl.Bindings
 {
-    sealed class ReplResolver : IResolver
+    public sealed class ReplResolver : IResolver
     {
         private readonly IFileSystem _fs;
         private readonly IInteractivity _interactivity;

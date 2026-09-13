@@ -1,4 +1,4 @@
-﻿namespace Mages.Repl
+namespace Mages.Repl
 {
     using CommandLine;
     using Ninject;
@@ -7,19 +7,19 @@
     using System.IO;
     using System.Security.Principal;
 
-    public static class Program
+    public static class ReplRunner
     {
-        internal static void Main(String[] arguments)
+        public static void Run(String[] arguments)
         {
             Parser.Default.ParseArguments<Options>(arguments).WithParsed(Run);
         }
 
         public static void Run()
         {
-            Main(new String[0]);
+            Run([]);
         }
 
-        private static void Run(Options options)
+        public static void Run(Options options)
         {
             if (options.IsUpdating)
             {
@@ -56,9 +56,14 @@
 
         private static Boolean IsAdministrator()
         {
-            var identity = WindowsIdentity.GetCurrent();
-            var principal = new WindowsPrincipal(identity);
-            return principal.IsInRole(WindowsBuiltInRole.Administrator);
+            if (OperatingSystem.IsWindows())
+            {
+                var identity = WindowsIdentity.GetCurrent();
+                var principal = new WindowsPrincipal(identity);
+                return principal.IsInRole(WindowsBuiltInRole.Administrator);
+            }
+
+            return false;
         }
     }
 }

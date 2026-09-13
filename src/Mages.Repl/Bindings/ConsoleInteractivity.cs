@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    sealed class ConsoleInteractivity : IInteractivity
+    public sealed class ConsoleInteractivity : IInteractivity
     {
         private readonly LineEditor _editor;
         private readonly List<CancellationRegistration> _blockers;

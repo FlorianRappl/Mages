@@ -1,23 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net60</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ProjectGuid>{027A32F7-4411-4083-AA01-0550EEA0E5A3}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <LangVersion>latest</LangVersion>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Mages.Repl</RootNamespace>
-    <AssemblyName>mages</AssemblyName>
-    <ApplicationIcon />
-    <StartupObject />
-    <Platforms>x64</Platforms>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <AssemblyName>Mages.Repl</AssemblyName>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

@@ -3,7 +3,7 @@
     using System;
     using System.IO;
 
-    sealed class OpenFileReader : IFileReader
+    public sealed class OpenFileReader : IFileReader
     {
         private readonly IInteractivity _interactivity;
 

@@ -3,7 +3,7 @@
     using CommandLine;
     using System;
 
-    sealed class Options
+    public sealed class Options
     {
         [Option("update", HelpText = "Checks for an application update.", Required = false)]
         public Boolean IsUpdating { get; set; }

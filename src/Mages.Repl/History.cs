@@ -3,7 +3,7 @@
     using System;
     using System.IO;
 
-    sealed class History
+    public sealed class History
     {
         private readonly String[] _history;
         private readonly String _histfile;

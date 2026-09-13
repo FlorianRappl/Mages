@@ -37,11 +37,10 @@ if (isRunningOnGitHubActions)
 }
 
 var buildDir = Directory("./src/Mages.Core/bin") + Directory(configuration) + Directory("netstandard2.1");
-var replDir = Directory("./src/Mages.Repl/bin") + Directory(configuration) + Directory("net60");
-var installerDir = Directory("./src/Mages.Repl.Installer/bin") + Directory(configuration) + Directory("net50");
+var compilerDir = Directory("./src/Mages.Compiler/bin") + Directory(configuration) + Directory("net10.0");
+var installerDir = Directory("./src/Mages.Repl.Installer/bin") + Directory(configuration) + Directory("net10.0");
 var buildResultDir = Directory("./bin") + Directory(version);
 var nugetRoot = buildResultDir + Directory("nuget");
-var chocolateyRoot = buildResultDir + Directory("chocolatey");
 var squirrelRoot = buildResultDir + Directory("squirrel");
 var squirrelBin = squirrelRoot + Directory("source");
 var releaseDir = squirrelRoot + Directory("release");
@@ -54,7 +53,6 @@ Setup(context =>
     Information("Building version {0} of MAGES.", version);
     Information("For the publish target the following environment variables need to be set:");
     Information("* NUGET_API_KEY");
-    Information("* CHOCOLATEY_API_KEY");
     Information("* GITHUB_API_TOKEN");
 });
 
@@ -64,17 +62,14 @@ Setup(context =>
 Task("Clean")
     .Does(() =>
     {
-        CleanDirectories(new DirectoryPath[] { buildDir, installerDir, buildResultDir, nugetRoot, chocolateyRoot, squirrelRoot });
+        CleanDirectories(new DirectoryPath[] { buildDir, installerDir, buildResultDir, nugetRoot, squirrelRoot });
     });
 
 Task("Restore-Packages")
     .IsDependentOn("Clean")
     .Does(() =>
     {
-        NuGetRestore("./src/Mages.sln", new NuGetRestoreSettings
-        {
-            DisableParallelProcessing = isRunningOnUnix && isRunningOnGitHubActions,
-        });
+        DotNetCoreRestore("./src/Mages.slnx");
     });
 
 Task("Update-Assembly-Version")
@@ -88,7 +83,7 @@ Task("Build")
     .IsDependentOn("Update-Assembly-Version")
     .Does(() =>
     {
-        DotNetCoreBuild($"./src/Mages.sln", new DotNetCoreBuildSettings
+        DotNetCoreBuild($"./src/Mages.slnx", new DotNetCoreBuildSettings
         {
            Configuration = configuration,
         });
@@ -135,11 +130,10 @@ Task("Copy-Files")
             buildDir + File("Mages.Core.dll"),
             buildDir + File("Mages.Core.xml")
         }, nugetBin);
-        CopyDirectory(replDir, squirrelBin);
+        CopyDirectory(compilerDir, squirrelBin);
         CopyDirectory(installerDir, squirrelBin);
         CopyFile("README.md", nugetRoot + File("README.md"));
         CopyFile("src/Mages.Nuget.nuspec", nugetRoot + File("Mages.nuspec"));
-        CopyFile("src/Mages.Chocolatey.nuspec", chocolateyRoot + File("Mages.nuspec"));
         DeleteFiles(GetFiles(squirrelBin.Path.FullPath + "/*.pdb"));
         DeleteFiles(GetFiles(squirrelBin.Path.FullPath + "/*.vshost.*"));
     });
@@ -163,6 +157,13 @@ Task("Create-Nuget-Package")
             OutputDirectory = nugetRoot,
             Symbols = false,
             Properties = new Dictionary<String, String> { { "Configuration", configuration } }
+        });
+
+        DotNetCorePack("./src/Mages.Compiler/Mages.Compiler.csproj", new DotNetCorePackSettings
+        {
+            Configuration = configuration,
+            OutputDirectory = nugetRoot,
+            ArgumentCustomization = args => args.Append($"/p:Version={version}")
         });
     });
     
@@ -204,46 +205,6 @@ Task("Create-Squirrel-Package")
         
         StartProcess(squirrelExe, new ProcessSettings {
             Arguments = $"pack --packId \"Mages\" --packVersion \"{version}\" --allowUnaware --no-msi --silent --setupIcon \"{setupIcon}\" --packDirectory \"{squirrelBin}\" --releaseDir \"{releaseDir}\""
-        });
-    });
-
-Task("Create-Chocolatey-Package")
-    .IsDependentOn("Create-Squirrel-Package")
-    .WithCriteria(() => isRunningOnWindows)
-    .Does(() => {
-        var checksum = CalculateFileHash(releaseDir.Path.FullPath + "/MagesSetup.exe", HashAlgorithm.SHA256).ToHex();
-        var content = String.Format("$packageName = 'Mages'{1}$installerType = 'exe'{1}$url32 = 'https://github.com/FlorianRappl/Mages/releases/download/v{0}/MagesSetup.exe'{1}$silentArgs = ''{1}$checksum32 = '{2}'{1}{1}Install-ChocolateyPackage -PackageName \"$packageName\" -FileType \"$installerType\" -SilentArgs \"$silentArgs\" -Url \"$url32\" -Checksum \"$checksum32\" -ChecksumType \"sha256\"", version, Environment.NewLine, checksum);
-        var nuspec = chocolateyRoot + File("Mages.nuspec");
-        var toolsDirectory = chocolateyRoot + Directory("tools");
-        var scriptFile = toolsDirectory + File("chocolateyInstall.ps1");
-
-        CreateDirectory(toolsDirectory);
-        System.IO.File.WriteAllText(scriptFile.Path.FullPath, content);
-        
-        ChocolateyPack(nuspec, new ChocolateyPackSettings
-        {
-            Version = version,
-            OutputDirectory = chocolateyRoot
-        });
-    });
-
-Task("Publish-Chocolatey-Package")
-    .IsDependentOn("Create-Chocolatey-Package")
-    .WithCriteria(() => isRunningOnWindows)
-    .Does(() => {
-        var apiKey = EnvironmentVariable("CHOCOLATEY_API_KEY");
-        var fileName = $"Mages.{version}.nupkg";
-        var package = chocolateyRoot + File(fileName);
-
-        if (String.IsNullOrEmpty(apiKey))
-        {
-            throw new InvalidOperationException("Could not resolve the Chocolatey API key.");
-        }
-
-        ChocolateyPush(package, new ChocolateyPushSettings
-        { 
-            Source = "https://chocolatey.org/",
-            ApiKey = apiKey 
         });
     });
     
@@ -298,7 +259,6 @@ Task("Publish-GitHub-Release")
 Task("Package")
     .IsDependentOn("Run-Unit-Tests")
     .IsDependentOn("Create-Squirrel-Package")
-    .IsDependentOn("Create-Chocolatey-Package")
     .IsDependentOn("Create-Nuget-Package");
 
 Task("Default")
@@ -306,8 +266,7 @@ Task("Default")
 
 Task("Publish-Packages")
     .IsDependentOn("Default")
-    .IsDependentOn("Publish-Nuget-Package")
-    .IsDependentOn("Publish-Chocolatey-Package");
+    .IsDependentOn("Publish-Nuget-Package");
 
 Task("Publish")
     .IsDependentOn("Publish-Packages")

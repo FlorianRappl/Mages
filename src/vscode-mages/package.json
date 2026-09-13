@@ -1,0 +1,93 @@
+{
+  "name": "vscode-mages",
+  "displayName": "MAGES Language Support",
+  "description": "Language support for MAGES with Language Server Protocol (LSP), syntax highlighting, and IntelliSense.",
+  "version": "4.0.0",
+  "publisher": "florianrappl",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FlorianRappl/MAGES"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Linters",
+    "Snippets"
+  ],
+  "keywords": [
+    "mages",
+    "lsp",
+    "language-server",
+    "mathematics",
+    "scripting"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onLanguage:mages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "mages",
+        "aliases": [
+          "MAGES",
+          "mages"
+        ],
+        "extensions": [
+          ".mages",
+          ".swm"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "mages",
+        "scopeName": "source.mages",
+        "path": "./syntaxes/mages.tmLanguage.json"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "MAGES Language Server",
+      "properties": {
+        "mages.trace.server": {
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Traces the communication between VS Code and the MAGES language server."
+        },
+        "mages.maxNumberOfProblems": {
+          "type": "number",
+          "default": 100,
+          "description": "Controls the maximum number of problems produced by the MAGES language server."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "build": "tsc -p ./",
+    "package": "vsce package --no-dependencies"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1",
+    "vscode-languageserver": "^9.0.1",
+    "vscode-languageserver-textdocument": "^1.0.12"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.2.1",
+    "typescript": "^5.4.5"
+  }
+}

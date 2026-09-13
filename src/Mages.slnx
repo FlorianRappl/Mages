@@ -1,0 +1,27 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="Mages.Compiler/Mages.Compiler.csproj" />
+  <Project Path="Mages.Core.Performance/Mages.Core.Performance.csproj" />
+  <Project Path="Mages.Core.Tests/Mages.Core.Tests.csproj">
+    <Platform Solution="*|Any CPU" Project="x64" />
+  </Project>
+  <Project Path="Mages.Core/Mages.Core.csproj" />
+  <Project Path="Mages.Plugins.Common/Mages.Plugins.Common.csproj" />
+  <Project Path="Mages.Plugins.Draw/Mages.Plugins.Draw.csproj" />
+  <Project Path="Mages.Plugins.FileSystem/Mages.Plugins.FileSystem.csproj" />
+  <Project Path="Mages.Plugins.LinearAlgebra/Mages.Plugins.LinearAlgebra.csproj" />
+  <Project Path="Mages.Plugins.Modules/Mages.Plugins.Modules.csproj" />
+  <Project Path="Mages.Plugins.Plots/Mages.Plugins.Plots.csproj" />
+  <Project Path="Mages.Plugins.Random/Mages.Plugins.Random.csproj" />
+  <Project Path="Mages.Plugins.Transpilers/Mages.Plugins.Transpilers.csproj" />
+  <Project Path="Mages.Repl.Base/Mages.Repl.Base.csproj" />
+  <Project Path="Mages.Repl.Installer/Mages.Repl.Installer.csproj" />
+  <Project Path="Mages.Repl.Tests/Mages.Repl.Tests.csproj">
+    <Platform Solution="*|Any CPU" Project="x64" />
+  </Project>
+  <Project Path="Mages.Repl/Mages.Repl.csproj" />
+</Solution>

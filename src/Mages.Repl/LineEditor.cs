@@ -6,7 +6,7 @@
     using System.Text;
     using System.Threading;
 
-    sealed class LineEditor
+    public sealed class LineEditor
     {
         #region Constants
 

@@ -3,7 +3,7 @@
     using System;
     using System.IO;
 
-    sealed class RealFileSystem : IFileSystem
+    public sealed class RealFileSystem : IFileSystem
     {
         public String[] GetAllFiles(String baseDir, String fileName)
         {

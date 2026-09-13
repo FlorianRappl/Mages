@@ -1,6 +1,7 @@
 # 4.0.0
 
-- (tbd)
+- Updated to .NET 10
+- Removed Chocolatey installer (use `dotnet tool install`)
 
 # 3.0.1
 
