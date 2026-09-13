@@ -1,3 +1,7 @@
+# 4.0.0
+
+- (tbd)
+
 # 3.0.1
 
 - Fixed documentation regarding `pow` arguments (#132)
