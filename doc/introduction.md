@@ -88,7 +88,13 @@ As already mentioned MAGES is a full library - not a language. Of course, MAGES 
 
 The default state of MAGES has been spiced up with some auxiliary functions that enable a lot of interesting scenarios, where otherwise PowerShell, Bash, or Node.js would be used (just to name a couple of command line / general-purpose scripting environments).
 
-On starting the REPL we see the following:
+The REPL and compiler can be installed globally using the .NET CLI:
+
+```sh
+dotnet tool install --global Mages.Compiler
+```
+
+Then run `mages` in your terminal. On starting the REPL we see the following:
 
 ```plain
 

@@ -1,10 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1</TargetFrameworks>
+    <PackageId>Mages</PackageId>
     <AssemblyName>Mages.Core</AssemblyName>
     <RootNamespace>Mages.Core</RootNamespace>
-    <Description>A lightweight parser / interpreter for mathematical expressions.</Description>
+    <Description>MAGES is a very simple, yet powerful, expression parser and interpreter.</Description>
+    <PackageTags>interpreter mages expression scripting language mathematics performance</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReleaseNotes>For all changes see: https://github.com/FlorianRappl/Mages/blob/main/CHANGELOG.md.</PackageReleaseNotes>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Mages.Core.xml</DocumentationFile>
     <LangVersion>13</LangVersion>
+    <PackageOutputPath>../../bin/$(Version)/nuget</PackageOutputPath>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 </Project>

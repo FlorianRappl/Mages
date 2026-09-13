@@ -68,9 +68,50 @@ The first stable version has been released. The current version 1.6.0 contains a
 
 ### Installation
 
-MAGES itself does not have any dependencies, however, the tests are dependent on NUnit and the benchmarks use BenchmarkDotNet. Usually, MAGES should be installed via the NuGet package source. If this does not work for you, then clone the source and build MAGES yourself. Make sure that all unit tests pass.
+#### As a Library (NuGet)
 
-The whole library was designed to be consumed from .NET Core 3.0 (or higher) / .NET 5.0 (or higher) applications. This means it is (amongst others) compatible with Unity 2021.2 or Mono 6.4. The NuGet package is available via [the official package feed](https://www.nuget.org/packages/MAGES).
+MAGES itself does not have any external runtime dependencies. It is available as a standard .NET library targeting `.NET Standard 2.1` and can be consumed from .NET applications, Unity, and other compatible platforms.
+
+Install via the .NET CLI:
+
+```sh
+dotnet add package Mages
+```
+
+Or via the NuGet Package Manager:
+
+```powershell
+Install-Package Mages
+```
+
+The NuGet package is available on [NuGet.org](https://www.nuget.org/packages/Mages/).
+
+#### As a Command-Line Application / REPL (`dotnet tool`)
+
+MAGES provides a global CLI compiler and interactive REPL via the `Mages.Compiler` .NET tool (targeting .NET 10).
+
+Install it globally using:
+
+```sh
+dotnet tool install --global Mages.Compiler
+```
+
+Once installed, you can launch the interactive REPL or execute script files with the `mages` command:
+
+```sh
+# Start interactive REPL
+mages
+
+# Run a MAGES script file
+mages path/to/script.mages
+
+# Update to the latest version
+dotnet tool update --global Mages.Compiler
+```
+
+#### VS Code Extension
+
+Rich editor support for MAGES with Language Server Protocol (LSP), syntax highlighting, diagnostics, hover documentation, signature help, and IntelliSense is available for Visual Studio Code via the `vscode-mages` extension in `src/vscode-mages`.
 
 ### Get Me Started!
 

@@ -133,7 +133,6 @@ Task("Copy-Files")
         CopyDirectory(compilerDir, squirrelBin);
         CopyDirectory(installerDir, squirrelBin);
         CopyFile("README.md", nugetRoot + File("README.md"));
-        CopyFile("src/Mages.Nuget.nuspec", nugetRoot + File("Mages.nuspec"));
         DeleteFiles(GetFiles(squirrelBin.Path.FullPath + "/*.pdb"));
         DeleteFiles(GetFiles(squirrelBin.Path.FullPath + "/*.vshost.*"));
     });
@@ -142,21 +141,11 @@ Task("Create-Nuget-Package")
     .IsDependentOn("Copy-Files")
     .Does(() =>
     {
-        var nugetExe = GetFiles("./tools/**/nuget.exe").FirstOrDefault();
-
-        if (nugetExe == null)
-        {            
-            throw new InvalidOperationException("Could not find nuget.exe.");
-        }
-        
-        var nuspec = nugetRoot + File("Mages.nuspec");
-        
-        NuGetPack(nuspec, new NuGetPackSettings
+        DotNetCorePack("./src/Mages.Core/Mages.Core.csproj", new DotNetCorePackSettings
         {
-            Version = version,
+            Configuration = configuration,
             OutputDirectory = nugetRoot,
-            Symbols = false,
-            Properties = new Dictionary<String, String> { { "Configuration", configuration } }
+            ArgumentCustomization = args => args.Append($"/p:Version={version}")
         });
 
         DotNetCorePack("./src/Mages.Compiler/Mages.Compiler.csproj", new DotNetCorePackSettings
