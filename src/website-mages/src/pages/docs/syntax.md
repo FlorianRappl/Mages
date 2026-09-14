@@ -176,11 +176,13 @@ Furthermore, two types of unary operations exist:
 
 ```
 left_unary_operator ::= '+' | '-' | '~' | '&' | '++' | '--'
-right_unary_operator ::= '!' | ''' | '++' | '--'
+right_unary_operator ::= '!' | ''' | '++' | '--' | '%'
 pre_unary ::= left_unary_operator space* expr
 post_unary ::= expr space* right_unary_operator
 unary ::= pre_unary | post_unary
 ```
+
+The `%` post-unary operator is a percentage modifier. If `%` is followed by a right-hand expression, it is instead parsed as the modulo binary operator. For example, `40%` is a fraction, `100 + 40%` is a percentage calculation, and `100 + 6 % 4` uses modulo.
 
 ## Expressions
 

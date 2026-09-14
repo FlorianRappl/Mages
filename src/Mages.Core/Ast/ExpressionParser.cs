@@ -588,7 +588,7 @@ sealed class ExpressionParser : IParser
             else
             {
                 var y = ParseMultiplicative(tokens);
-                x = ExpressionCreators.Binary[mode].Invoke(x, y);
+                x = CreateBinary(mode, x, y);
             }
         }
 
@@ -615,7 +615,7 @@ sealed class ExpressionParser : IParser
             else
             {
                 var y = ParsePower(tokens);
-                x = ExpressionCreators.Binary[mode].Invoke(x, y);
+                x = CreateBinary(mode, x, y);
             }
         }
 
@@ -690,6 +690,21 @@ sealed class ExpressionParser : IParser
                 tokens.NextNonIgnorable();
                 left = creator.Invoke(left, current.End);
             }
+            else if (mode == TokenType.Modulo)
+            {
+                var next = tokens.NextNonIgnorable().Current;
+
+                if (next.IsOneOf(TokenType.Number, TokenType.Identifier, TokenType.Keyword, TokenType.OpenList) ||
+                    next.IsEither(TokenType.OpenGroup, TokenType.String))
+                {
+                    var right = ParsePower(tokens);
+                    left = new BinaryExpression.Modulo(left, right);
+                }
+                else
+                {
+                    left = new PostUnaryExpression.Percent(left, current.End);
+                }
+            }
             else if (mode == TokenType.Dot)
             {
                 var identifier = ParseIdentifier(tokens.NextNonIgnorable());
@@ -706,6 +721,31 @@ sealed class ExpressionParser : IParser
             }
         }
         while (true);
+    }
+
+    private static IExpression CreateBinary(TokenType mode, IExpression left, IExpression right)
+    {
+        if (right is PostUnaryExpression.Percent percentage)
+        {
+            var value = percentage.Value;
+            var hundred = ConstantExpression.From(100.0, percentage);
+
+            if (mode == TokenType.Multiply)
+            {
+                right = new BinaryExpression.RightDivide(value, hundred);
+            }
+            else if (mode == TokenType.Add || mode == TokenType.Subtract)
+            {
+                var amount = new BinaryExpression.RightDivide(new BinaryExpression.Multiply(value, left), hundred);
+                right = amount;
+            }
+            else if (mode == TokenType.RightDivide || mode == TokenType.LeftDivide)
+            {
+                right = new BinaryExpression.RightDivide(value, hundred);
+            }
+        }
+
+        return ExpressionCreators.Binary[mode].Invoke(left, right);
     }
 
     private ArgumentsExpression ParseArguments(IEnumerator<IToken> tokens)

@@ -151,6 +151,24 @@ Another special operator in MAGES is the power operator `^`. The power operator 
 x = 2^3 // 8
 ```
 
+The percent operator `%` can be used as a percentage modifier when it appears after a value. On its own, it converts the value to a fraction, so `40%` evaluates to `0.4`. When it appears on the right-hand side of an arithmetic operator, it applies the percentage to the left-hand side:
+
+```C
+100 + 40% // 140
+60 - 50% // 30
+60 * 50% // 30
+-100 + 20% // -120
+```
+
+The modifier always uses the expression on its left as the base. Therefore, `20% + 100` evaluates to `100.2`, while `-100 + 10%` evaluates to `-110`. Multiple percentage modifiers are valid as well; `10% + 10%` evaluates to `0.11`.
+
+If a right-hand expression follows `%`, the operator is interpreted as modulo instead:
+
+```C
+100 + 6 % 4 // 102
+6 % (-4) // 2
+```
+
 The same operators also apply to matrices. Here, the function call operator `()` is also used to get or set single entries.
 
 ### Index Accessors

@@ -35,7 +35,8 @@ public sealed class OperationTreeWalker(List<IOperation> operations) : ITreeWalk
         { "!", (walker, expr) => walker.Handle(expr, StandardOperators.Factorial) },
         { "'", (walker, expr) => walker.Handle(expr, StandardOperators.Transpose) },
         { "++", (walker, expr) => walker.Place(IncOperation.Instance, expr.Value, true) },
-        { "--", (walker, expr) => walker.Place(DecOperation.Instance, expr.Value, true) }
+        { "--", (walker, expr) => walker.Place(DecOperation.Instance, expr.Value, true) },
+        { "%", (walker, expr) => walker.Handle(expr, StandardOperators.Percent) }
     };
 
     private static readonly Dictionary<String, Action<OperationTreeWalker, BinaryExpression>> BinaryOperatorMapping = new()

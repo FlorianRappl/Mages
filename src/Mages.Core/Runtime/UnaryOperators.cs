@@ -115,5 +115,7 @@ static class UnaryOperators
 
     public static Object Type(Object[] args) => args[0].ToType();
 
+    public static Object Percent(Object[] args) => args[0].ToNumber() / 100.0;
+
     #endregion
 }

@@ -90,6 +90,51 @@ public class OperationTests
         Assert.AreEqual(3.75, result);
     }
 
+    [TestCase("100 + 40%", 140.0)]
+    [TestCase("60 - 50%", 30.0)]
+    [TestCase("60 * 50%", 30.0)]
+    [TestCase("100 * 25%", 25.0)]
+    [TestCase("100 - 25%", 75.0)]
+    [TestCase("-100 + 20%", -120.0)]
+    [TestCase("-100 - 20%", -80.0)]
+    [TestCase("-100 * 20%", -20.0)]
+    public void PercentageModifierUsesLeftHandSide(String sourceCode, Double expected)
+    {
+        var result = sourceCode.Eval();
+        Assert.AreEqual(expected, result);
+    }
+
+    [Test]
+    public void PercentageModifierCanUseBinaryExpressionOnRightHandSide()
+    {
+        var result = "100 + 20 + 10%".Eval();
+        Assert.AreEqual(132.0, result);
+    }
+
+    [Test]
+    public void PercentageModifierWorksInIsolation()
+    {
+        var result = "40%".Eval();
+        Assert.AreEqual(0.4, result);
+    }
+
+    [TestCase("20% + 100", 100.2)]
+    [TestCase("10% - 100", -99.9)]
+    [TestCase("-100 + 10%", -110.0)]
+    [TestCase("10% + 10%", 0.11)]
+    public void PercentageModifierIsOnlyRelativeToItsLeftHandSide(String sourceCode, Double expected)
+    {
+        var result = sourceCode.Eval();
+        Assert.AreEqual(expected, result);
+    }
+
+    [TestCase("100 + 6 % 4", 102.0)]
+    public void ModuloWithRightHandSideRemainsModulo(String sourceCode, Double expected)
+    {
+        var result = sourceCode.Eval();
+        Assert.AreEqual(expected, result);
+    }
+
     [Test]
     public void BinaryDivideWithNumbersYieldsNumber()
     {

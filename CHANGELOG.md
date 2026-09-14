@@ -3,6 +3,7 @@
 - Updated to .NET 10
 - Removed Chocolatey installer (use `dotnet tool install`)
 - Added project website
+- Added percentage modifier (#139), including standalone percentages, right-hand-side percentage calculations (e.g., `100 + 40%`), and modulo disambiguation (e.g., `100 + 6 % 4`)
 
 # 3.0.1
 

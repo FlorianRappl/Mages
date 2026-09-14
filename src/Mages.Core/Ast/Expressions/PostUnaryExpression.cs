@@ -91,5 +91,9 @@ public abstract class PostUnaryExpression(IExpression value, TextPosition end, S
         }
     }
 
+    internal sealed class Percent(IExpression expression, TextPosition end) : PostUnaryExpression(expression, end, "%")
+    {
+    }
+
     #endregion
 }

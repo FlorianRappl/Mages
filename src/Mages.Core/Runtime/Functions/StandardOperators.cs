@@ -96,6 +96,11 @@ public static class StandardOperators
     public static readonly Function Transpose = Helpers.DeclareFunction(UnaryOperators.Transpose, ["mat"]);
 
     /// <summary>
+    /// Contains the percentage modifier.
+    /// </summary>
+    public static readonly Function Percent = Helpers.DeclareFunction(UnaryOperators.Percent, ["x"]);
+
+    /// <summary>
     /// Contains the negation operator.
     /// </summary>
     public static readonly Function Not = Helpers.DeclareFunction(UnaryOperators.Not, ["value"]);
