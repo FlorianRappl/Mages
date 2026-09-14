@@ -26,6 +26,7 @@ public static class ConverterExtensions
         Double[,] _ => MagesMatrix.Type,
         Complex[,] _ => MagesCMatrix.Type,
         Function fn => MagesFunction.GetFullType(fn),
+        Dictionary<String, Object> obj => MagesObject.GetFullType(obj),
         IDictionary<String, Object> obj => MagesObject.GetFullType(obj),
         _ => MagesUndefined.Type,
     };

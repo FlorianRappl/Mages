@@ -25,7 +25,7 @@
             sb.Append("Global Scope: ");
             Print(sb, _scope);
             sb.AppendLine();
-            sb.Append("Available API: ");
+            sb.Append("Available methods: ");
             Print(sb, _globals);
             return sb.ToString();
         }
@@ -51,7 +51,7 @@
                 var type = item.Value.ToType();
                 sb.AppendLine();
                 sb.Append("- [");
-                sb.Append(type);
+                sb.Append(type["name"]);
                 sb.Append("] ");
                 sb.Append(name);
             }

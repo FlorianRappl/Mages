@@ -24,6 +24,20 @@ public class FunctionsTests
     }
 
     [Test]
+    public void HelpListsObjectGlobalsUsingTheirMagesType()
+    {
+        var ia = new PseudoInteractivity();
+        var creator = new MagesCreator(Enumerable.Empty<IModuleFileReader>(), ia);
+        var engine = creator.CreateEngine();
+
+        var result = (String)engine.Interpret("help()");
+
+        Assert.IsTrue(result.Contains("- [Function] sin", StringComparison.Ordinal));
+        Assert.IsTrue(result.Contains("- [Object] plot", StringComparison.Ordinal));
+        Assert.IsFalse(result.Contains("System.Collections.Generic.Dictionary", StringComparison.Ordinal));
+    }
+
+    [Test]
     public void WorksWithBitmapConstructor_Issue118()
     {
         var eng = new Engine();
