@@ -49,8 +49,7 @@ jobs:
       run: |
         cd src/vscode-mages
         npm ci
-        npm run compile
-        npx @vscode/vsce package --no-dependencies
+        npm run package
 
     - name: Publish VS Code Extension
       if: github.ref == 'refs/heads/main' && env.VSCE_PAT != ''

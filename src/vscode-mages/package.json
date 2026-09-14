@@ -73,10 +73,11 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
+    "vscode:prepublish": "npm run compile && npm run publish-server",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "build": "tsc -p ./",
+    "publish-server": "dotnet publish ../Mages.LanguageServer/Mages.LanguageServer.csproj -c Release -o server",
     "package": "vsce package --no-dependencies"
   },
   "dependencies": {

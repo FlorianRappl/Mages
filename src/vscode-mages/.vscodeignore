@@ -3,4 +3,5 @@
 src/**
 tsconfig.json
 **/*.map
+out/server.js
 .gitignore

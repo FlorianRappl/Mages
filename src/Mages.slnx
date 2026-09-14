@@ -10,6 +10,7 @@
     <Platform Solution="*|Any CPU" Project="x64" />
   </Project>
   <Project Path="Mages.Core/Mages.Core.csproj" />
+  <Project Path="Mages.LanguageServer/Mages.LanguageServer.csproj" />
   <Project Path="Mages.Plugins.Common/Mages.Plugins.Common.csproj" />
   <Project Path="Mages.Plugins.Draw/Mages.Plugins.Draw.csproj" />
   <Project Path="Mages.Plugins.FileSystem/Mages.Plugins.FileSystem.csproj" />
