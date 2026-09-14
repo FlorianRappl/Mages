@@ -1,6 +1,6 @@
 # MAGES Documentation & Website
 
-Modern static landing page and interactive documentation for [MAGES](https://github.com/FlorianRappl/MAGES), built with [Astro](https://astro.build).
+Modern static landing page and interactive documentation for [MAGES](https://mages.anglevisions.com), built with [Astro](https://astro.build).
 
 ## Development
 

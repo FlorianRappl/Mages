@@ -189,6 +189,7 @@ Console.WriteLine(result); <span class="comment">// 17.0</span></code></pre>
     font-weight: 800;
     letter-spacing: -0.03em;
     margin-bottom: 1.5rem;
+    overflow-wrap: anywhere;
   }
 
   .gradient-text {
@@ -285,6 +286,9 @@ Console.WriteLine(result); <span class="comment">// 17.0</span></code></pre>
     padding: 1.25rem 1.5rem;
     font-size: 0.95rem;
     line-height: 1.6;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
   }
 
   .cmd-comment { color: #6b7280; }
@@ -314,7 +318,7 @@ Console.WriteLine(result); <span class="comment">// 17.0</span></code></pre>
 
   .grid-features {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
     gap: 1.8rem;
   }
 
@@ -357,7 +361,7 @@ Console.WriteLine(result); <span class="comment">// 17.0</span></code></pre>
 
   .preview-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(400px, 100%), 1fr));
     gap: 2rem;
   }
 
@@ -381,6 +385,9 @@ Console.WriteLine(result); <span class="comment">// 17.0</span></code></pre>
     border-radius: 8px;
     font-size: 0.88rem;
     overflow-x: auto;
+    max-width: 100%;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
   }
 
   .keyword { color: #c084fc; font-weight: 600; }
@@ -398,6 +405,8 @@ Console.WriteLine(result); <span class="comment">// 17.0</span></code></pre>
     border-radius: 16px;
     padding: 4rem 2rem;
     max-width: 900px;
+    width: calc(100% - 2rem);
+    margin: 0 auto;
   }
 
   .cta h2 {
@@ -420,7 +429,17 @@ Console.WriteLine(result); <span class="comment">// 17.0</span></code></pre>
   }
 
   @media (max-width: 768px) {
-    .hero-title { font-size: 2.4rem; }
+    .container { padding-left: 1rem; padding-right: 1rem; }
+    .hero { padding-top: 3.5rem; }
+    .hero-title { font-size: clamp(2rem, 10vw, 2.4rem); }
+    .hero-subtitle { font-size: 1rem; }
+    .hero-badge { max-width: 100%; text-align: left; }
+    .section-title, .cta h2 { font-size: 1.75rem; }
+    .grid-features { gap: 1rem; }
+    .card { padding: 1.25rem; }
+    .code-hero pre, .preview-card pre { font-size: 0.78rem; }
     .preview-grid { grid-template-columns: 1fr; }
+    .preview-card { padding: 1rem; }
+    .cta-container { width: calc(100% - 1rem); padding: 2.5rem 1rem; }
   }
 </style>

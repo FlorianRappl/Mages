@@ -6,7 +6,7 @@
     <Version>4.0.0</Version>
     <Copyright>Copyright (c) 2016-2026, Florian Rappl</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/FlorianRappl/MAGES/</PackageProjectUrl>
+    <PackageProjectUrl>https://mages.anglevisions.com</PackageProjectUrl>
     <RepositoryUrl>https://github.com/FlorianRappl/MAGES/</RepositoryUrl>
   </PropertyGroup>
 </Project>

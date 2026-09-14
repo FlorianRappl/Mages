@@ -4,6 +4,8 @@
 
 [![GitHub CI](https://github.com/FlorianRappl/Mages/actions/workflows/ci.yml/badge.svg)](https://github.com/FlorianRappl/Mages/actions/workflows/ci.yml) [![NuGet](https://img.shields.io/nuget/v/MAGES.svg?style=flat-square)](https://www.nuget.org/packages/Mages/) [![Issues](https://img.shields.io/github/issues/FlorianRappl/MAGES.svg?style=flat-square)](https://github.com/FlorianRappl/Mages/issues)
 
+Project homepage: [mages.anglevisions.com](https://mages.anglevisions.com)
+
 ## Mages: Another Generalized Expression Simplifier
 
 MAGES is the official successor to [YAMP](https://github.com/FlorianRappl/YAMP). It is a very simple, yet powerful, expression parser and interpreter. You can use MAGES to include a sophisticated, easy to customize, and lightweight scripting engine to your application.

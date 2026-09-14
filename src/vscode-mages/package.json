@@ -4,6 +4,7 @@
   "description": "Language support for MAGES with Language Server Protocol (LSP), syntax highlighting, and IntelliSense.",
   "version": "4.0.0",
   "publisher": "florianrappl",
+  "icon": "logo-96x96.png",
   "license": "MIT",
   "repository": {
     "type": "git",

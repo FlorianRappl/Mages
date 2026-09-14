@@ -8,6 +8,20 @@ interface Props {
 }
 
 const { title, description, currentSlug = '' } = Astro.props;
+const pageTitle = title || ({
+  introduction: 'Introduction',
+  installation: 'Installation',
+  'use-cases': 'Use Cases',
+  'first-steps': 'First Steps',
+  language: 'Language Features',
+  syntax: 'Syntax & Grammar',
+  types: 'Type System',
+  functions: 'Standard Functions',
+  plugins: 'Plugins',
+  performance: 'Performance',
+  advanced: 'Advanced Topics',
+  contributing: 'Contributing',
+} as Record<string, string>)[currentSlug] || 'Documentation';
 const baseUrl = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
 
 const navSections = [
@@ -41,10 +55,12 @@ const navSections = [
 ];
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={pageTitle} description={description}>
   <div class="container docs-wrapper">
-    <aside class="docs-sidebar">
-      <div class="sidebar-sticky">
+    <details class="docs-menu">
+      <summary>Browse documentation</summary>
+      <aside class="docs-sidebar">
+        <div class="sidebar-sticky">
         {navSections.map(section => (
           <div class="nav-section">
             <h3 class="section-title">{section.title}</h3>
@@ -57,6 +73,29 @@ const navSections = [
                       href={`${baseUrl}docs/${item.slug}`}
                       class:list={['nav-item', { active: isActive }]}
                     >
+                      {item.title}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))}
+        </div>
+      </aside>
+    </details>
+
+    <aside class="docs-sidebar docs-sidebar-desktop">
+      <div class="sidebar-sticky">
+        {navSections.map(section => (
+          <div class="nav-section">
+            <h3 class="section-title">{section.title}</h3>
+            <ul class="section-list">
+              {section.items.map(item => {
+                const isActive = currentSlug === item.slug;
+                return (
+                  <li>
+                    <a href={`${baseUrl}docs/${item.slug}`} class:list={['nav-item', { active: isActive }]}>
                       {item.title}
                     </a>
                   </li>
@@ -83,6 +122,10 @@ const navSections = [
     gap: 3rem;
     padding-top: 2.5rem;
     padding-bottom: 4rem;
+  }
+
+  .docs-menu {
+    display: none;
   }
 
   .docs-sidebar {
@@ -144,11 +187,50 @@ const navSections = [
   @media (max-width: 860px) {
     .docs-wrapper {
       grid-template-columns: 1fr;
+      gap: 1rem;
+      padding-top: 1rem;
     }
-    .docs-sidebar {
+    .docs-sidebar-desktop {
+      display: none;
+    }
+    .docs-menu {
+      display: block;
+      position: sticky;
+      top: 82px;
+      z-index: 90;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg-card);
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22);
+      margin-top: 0.5rem;
+    }
+    .docs-menu summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 0.85rem 1rem;
+      color: var(--text-main);
+      font-weight: 700;
+    }
+    .docs-menu summary::-webkit-details-marker {
+      display: none;
+    }
+    .docs-menu summary::after {
+      content: '+';
+      float: right;
+      color: var(--primary-light);
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+    .docs-menu[open] summary::after {
+      content: '-';
+    }
+    .docs-menu .docs-sidebar {
+      border-top: 1px solid var(--border);
       border-right: none;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 1.5rem;
+      border-bottom: none;
+      padding-right: 0;
+      padding: 0.75rem;
     }
   }
 
