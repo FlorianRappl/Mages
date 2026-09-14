@@ -5,7 +5,7 @@
     <Company>smapiot</Company>
     <Version>4.0.0</Version>
     <Copyright>Copyright (c) 2016-2026, Florian Rappl</Copyright>
-    <PackageLicenseUrl>https://github.com/FlorianRappl/MAGES/blob/main/LICENSE</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/FlorianRappl/MAGES/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/FlorianRappl/MAGES/</RepositoryUrl>
   </PropertyGroup>

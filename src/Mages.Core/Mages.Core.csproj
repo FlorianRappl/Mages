@@ -7,6 +7,7 @@
     <Description>MAGES is a very simple, yet powerful, expression parser and interpreter.</Description>
     <PackageTags>interpreter mages expression scripting language mathematics performance</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>logo-96x96.png</PackageIcon>
     <PackageReleaseNotes>For all changes see: https://github.com/FlorianRappl/Mages/blob/main/CHANGELOG.md.</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Mages.Core.xml</DocumentationFile>
@@ -15,6 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+    <None Include="README.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\assets\logo-96x96.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 </Project>

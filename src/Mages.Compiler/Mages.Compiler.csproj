@@ -8,9 +8,19 @@
     <AssemblyName>mages</AssemblyName>
     <RootNamespace>Mages.Compiler</RootNamespace>
     <Description>Command-line tool and compiler / REPL for the MAGES language.</Description>
+    <PackageTags>interpreter mages repl cli dotnet-tool scripting language mathematics</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>logo-96x96.png</PackageIcon>
+    <PackageReleaseNotes>For all changes see: https://github.com/FlorianRappl/Mages/blob/main/CHANGELOG.md.</PackageReleaseNotes>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <LangVersion>latest</LangVersion>
     <PackageOutputPath>../../bin/$(Version)/nuget</PackageOutputPath>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\assets\logo-96x96.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Mages.Repl\Mages.Repl.csproj" />
