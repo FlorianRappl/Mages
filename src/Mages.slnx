@@ -19,7 +19,6 @@
   <Project Path="Mages.Plugins.Random/Mages.Plugins.Random.csproj" />
   <Project Path="Mages.Plugins.Transpilers/Mages.Plugins.Transpilers.csproj" />
   <Project Path="Mages.Repl.Base/Mages.Repl.Base.csproj" />
-  <Project Path="Mages.Repl.Installer/Mages.Repl.Installer.csproj" />
   <Project Path="Mages.Repl.Tests/Mages.Repl.Tests.csproj">
     <Platform Solution="*|Any CPU" Project="x64" />
   </Project>

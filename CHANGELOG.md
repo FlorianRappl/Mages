@@ -2,6 +2,7 @@
 
 - Updated to .NET 10
 - Removed Chocolatey installer (use `dotnet tool install`)
+- Added project website
 
 # 3.0.1
 

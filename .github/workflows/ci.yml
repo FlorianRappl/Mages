@@ -3,7 +3,6 @@ name: CI
 on: [push, pull_request]
 
 env:
-  NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
   GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   VSCE_PAT: ${{ secrets.VSCE_PAT }}
 
@@ -30,6 +29,10 @@ jobs:
   windows:
     runs-on: windows-latest
 
+    permissions:
+      contents: write
+      id-token: write
+
     steps:
     - uses: actions/checkout@v4
 
@@ -55,7 +58,16 @@ jobs:
         cd src/vscode-mages
         npx @vscode/vsce publish -p ${{ secrets.VSCE_PAT }} --no-dependencies
 
+    - name: NuGet login
+      id: nuget-login
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/devel'
+      uses: NuGet/login@v1
+      with:
+        user: ${{ secrets.NUGET_USER }}
+
     - name: Build
+      env:
+        NUGET_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
       run: |
         if ($env:GITHUB_REF -eq "refs/heads/main") {
           .\build.ps1 -Target Publish

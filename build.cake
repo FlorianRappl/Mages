@@ -38,12 +38,7 @@ if (isRunningOnGitHubActions)
 
 var buildDir = Directory("./src/Mages.Core/bin") + Directory(configuration) + Directory("netstandard2.1");
 var compilerDir = Directory("./src/Mages.Compiler/bin") + Directory(configuration) + Directory("net10.0");
-var installerDir = Directory("./src/Mages.Repl.Installer/bin") + Directory(configuration) + Directory("net10.0");
 var buildResultDir = Directory("./bin") + Directory(version);
-var nugetRoot = buildResultDir + Directory("nuget");
-var squirrelRoot = buildResultDir + Directory("squirrel");
-var squirrelBin = squirrelRoot + Directory("source");
-var releaseDir = squirrelRoot + Directory("release");
 
 // Initialization
 // ----------------------------------------
@@ -52,7 +47,7 @@ Setup(context =>
 {
     Information("Building version {0} of MAGES.", version);
     Information("For the publish target the following environment variables need to be set:");
-    Information("* NUGET_API_KEY");
+    Information("* NUGET_API_KEY (short-lived key from NuGet trusted publishing)");
     Information("* GITHUB_API_TOKEN");
 });
 
@@ -62,7 +57,7 @@ Setup(context =>
 Task("Clean")
     .Does(() =>
     {
-        CleanDirectories(new DirectoryPath[] { buildDir, installerDir, buildResultDir, nugetRoot, squirrelRoot });
+        CleanDirectories(new DirectoryPath[] { buildDir, buildResultDir });
     });
 
 Task("Restore-Packages")
@@ -84,16 +79,6 @@ Task("Build")
     .Does(() =>
     {
         DotNetCoreBuild($"./src/Mages.slnx", new DotNetCoreBuildSettings
-        {
-           Configuration = configuration,
-        });
-        
-        DotNetCoreBuild($"./src/Mages.Repl/Mages.Repl.csproj", new DotNetCoreBuildSettings
-        {
-           Configuration = configuration,
-        });
-        
-        DotNetCoreBuild($"./src/Mages.Repl.Installer/Mages.Repl.Installer.csproj", new DotNetCoreBuildSettings
         {
            Configuration = configuration,
         });
@@ -121,20 +106,14 @@ Task("Copy-Files")
     .IsDependentOn("Build")
     .Does(() =>
     {
-        var nugetBin = nugetRoot + Directory("lib") + Directory("netstandard2.1");
+        var nugetBin = buildResultDir + Directory("lib") + Directory("netstandard2.1");
         CreateDirectory(nugetBin);
-        CreateDirectory(squirrelBin);
-        CreateDirectory(releaseDir);
         CopyFiles(new FilePath[]
         { 
             buildDir + File("Mages.Core.dll"),
             buildDir + File("Mages.Core.xml")
         }, nugetBin);
-        CopyDirectory(compilerDir, squirrelBin);
-        CopyDirectory(installerDir, squirrelBin);
-        CopyFile("README.md", nugetRoot + File("README.md"));
-        DeleteFiles(GetFiles(squirrelBin.Path.FullPath + "/*.pdb"));
-        DeleteFiles(GetFiles(squirrelBin.Path.FullPath + "/*.vshost.*"));
+        CopyFile("README.md", buildResultDir + File("README.md"));
     });
 
 Task("Create-Nuget-Package")
@@ -144,14 +123,14 @@ Task("Create-Nuget-Package")
         DotNetCorePack("./src/Mages.Core/Mages.Core.csproj", new DotNetCorePackSettings
         {
             Configuration = configuration,
-            OutputDirectory = nugetRoot,
+            OutputDirectory = buildResultDir,
             ArgumentCustomization = args => args.Append($"/p:Version={version}")
         });
 
         DotNetCorePack("./src/Mages.Compiler/Mages.Compiler.csproj", new DotNetCorePackSettings
         {
             Configuration = configuration,
-            OutputDirectory = nugetRoot,
+            OutputDirectory = buildResultDir,
             ArgumentCustomization = args => args.Append($"/p:Version={version}")
         });
     });
@@ -167,36 +146,16 @@ Task("Publish-Nuget-Package")
             throw new InvalidOperationException("Could not resolve the NuGet API key.");
         }
 
-        foreach (var nupkg in GetFiles(nugetRoot.Path.FullPath + "/*.nupkg"))
+        foreach (var nupkg in GetFiles(buildResultDir.Path.FullPath + "/*.nupkg"))
         {
-            NuGetPush(nupkg, new NuGetPushSettings
+            DotNetCoreNuGetPush(nupkg.FullPath, new DotNetCoreNuGetPushSettings
             { 
-                Source = "https://nuget.org/api/v2/package",
+                Source = "https://api.nuget.org/v3/index.json",
                 ApiKey = apiKey 
             });
         }
     });
 
-Task("Create-Squirrel-Package")
-    .IsDependentOn("Copy-Files")
-    .WithCriteria(() => isRunningOnWindows)
-    .Does(() => {
-        var squirrelExe = GetFiles("./tools/**/squirrel.exe").FirstOrDefault();
-
-        if (squirrelExe == null)
-        {            
-            throw new InvalidOperationException("Could not find squirrel.exe.");
-        }
-
-        var spec = squirrelRoot + File("Mages.nuspec");
-        
-        var setupIcon = GetFiles("./src/Mages.Repl.Installer/mages.ico").First().FullPath;
-        
-        StartProcess(squirrelExe, new ProcessSettings {
-            Arguments = $"pack --packId \"Mages\" --packVersion \"{version}\" --allowUnaware --no-msi --silent --setupIcon \"{setupIcon}\" --packDirectory \"{squirrelBin}\" --releaseDir \"{releaseDir}\""
-        });
-    });
-    
 Task("Publish-GitHub-Release")
     .IsDependentOn("Publish-Packages")
     .Does(() =>
@@ -222,23 +181,12 @@ Task("Publish-GitHub-Release")
             TargetCommitish = isPublish ? "main" : "devel"
         }).Result;
 
-        var target = nugetRoot + Directory("lib") + Directory("netstandard2.1");
+        var target = buildResultDir + Directory("lib") + Directory("netstandard2.1");
         var libPath = target + File("Mages.Core.dll");
-        var releaseFiles = GetFiles(releaseDir.Path.FullPath + "/*");
 
         using (var libStream = System.IO.File.OpenRead(libPath.Path.FullPath))
         {
             newRelease.UploadAsset(release, new ReleaseAssetUpload("Mages.Core.dll", "application/x-msdownload", libStream, null)).Wait();
-        }
-
-        foreach (var file in releaseFiles)
-        {
-            var name = System.IO.Path.GetFileName(file.FullPath);
-
-            using (var fileStream = System.IO.File.OpenRead(file.FullPath))
-            {
-                newRelease.UploadAsset(release, new ReleaseAssetUpload(name, "application/x-msdownload", fileStream, null)).Wait();
-            }
         }
     });
     
@@ -247,7 +195,6 @@ Task("Publish-GitHub-Release")
     
 Task("Package")
     .IsDependentOn("Run-Unit-Tests")
-    .IsDependentOn("Create-Squirrel-Package")
     .IsDependentOn("Create-Nuget-Package");
 
 Task("Default")
