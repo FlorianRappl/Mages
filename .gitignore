@@ -46,6 +46,10 @@ dlldata.c
 project.lock.json
 artifacts/
 
+# Published VS Code language server payload
+src/vscode-mages/server/
+*.vsix
+
 *_i.c
 *_p.c
 *_i.h
