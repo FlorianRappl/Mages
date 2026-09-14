@@ -167,6 +167,14 @@ M = gt([1, 2, 3], [2, 0, 3]) // [1, 0, 0]
 
 ## Trigonometric Functions
 
+Trigonometric functions use radians by default. Configure the engine with `AngleUnit.Degrees` to interpret arguments to direct trigonometric functions (`sin`, `cos`, `tan`, `cot`, `sec`, and `csc`) as degrees. In that mode, inverse functions such as `arcsin`, `arccos`, and `arctan`, as well as `arg`, return degrees. The setting is local to each `Engine` instance.
+
+```csharp
+var engine = new Engine(new Configuration { AngleUnit = AngleUnit.Degrees });
+engine.Interpret("sin(90)"); // 1.0
+engine.Interpret("arcsin(1)"); // 90.0
+```
+
 ### Sine
 
 Works with numbers and matrices (applied to each value).

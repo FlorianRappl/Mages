@@ -13,6 +13,7 @@ public class Configuration
     {
         Parser = new ExpressionParser(),
         Scope = null,
+        AngleUnit = AngleUnit.Radians,
         IsEvalForbidden = false,
         IsEngineExposed = false,
         IsThisAvailable = false,
@@ -31,6 +32,15 @@ public class Configuration
     /// Gets or sets the scope to use.
     /// </summary>
     public IDictionary<String, Object> Scope
+    {
+        get;
+        set;
+    }
+
+    /// <summary>
+    /// Gets or sets the angle unit used by trigonometric functions.
+    /// </summary>
+    public AngleUnit AngleUnit
     {
         get;
         set;

@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using Mages.Core.Runtime;
 using System;
 
 namespace Mages.Core.Tests;
@@ -821,6 +822,48 @@ public class OperationTests
     {
         var result = "sin() == sin".Eval();
         Assert.AreEqual(true, result);
+    }
+
+    [Test]
+    public void TrigonometricFunctionsUseRadiansByDefault()
+    {
+        var engine = new Engine();
+        var result = engine.Interpret("sin(pi / 2)");
+        Assert.AreEqual(1.0, result);
+    }
+
+    [Test]
+    public void TrigonometricFunctionsCanUseDegrees()
+    {
+        var engine = new Engine(new Configuration { AngleUnit = AngleUnit.Degrees });
+        var result = engine.Interpret("sin(90)");
+        Assert.AreEqual(1.0, (Double)result, 1e-12);
+    }
+
+    [Test]
+    public void InverseTrigonometricFunctionsReturnConfiguredAngleUnit()
+    {
+        var engine = new Engine(new Configuration { AngleUnit = AngleUnit.Degrees });
+        var result = engine.Interpret("arcsin(1)");
+        Assert.AreEqual(90.0, (Double)result, 1e-12);
+    }
+
+    [Test]
+    public void ComplexArgumentReturnsConfiguredAngleUnit()
+    {
+        var engine = new Engine(new Configuration { AngleUnit = AngleUnit.Degrees });
+        var result = engine.Interpret("arg(cmplx(0, 1))");
+        Assert.AreEqual(90.0, (Double)result, 1e-12);
+    }
+
+    [Test]
+    public void AngleUnitIsLocalToTheEngine()
+    {
+        var degrees = new Engine(new Configuration { AngleUnit = AngleUnit.Degrees });
+        var radians = new Engine();
+
+        Assert.AreEqual(1.0, (Double)degrees.Interpret("sin(90)"), 1e-12);
+        Assert.AreNotEqual(1.0, radians.Interpret("sin(90)"));
     }
 
     [Test]

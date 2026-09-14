@@ -23,6 +23,13 @@ var engine = new Engine();
 var result = engine.Interpret("sin(2) * cos(pi / 4)"); // 0.642970376623918
 ```
 
+Trigonometric functions use radians by default. To use degrees for direct trigonometric arguments and inverse-trigonometric results, configure the engine. The setting is local to that engine instance:
+
+```cs
+var engine = new Engine(new Configuration { AngleUnit = AngleUnit.Degrees });
+var result = engine.Interpret("sin(90) + arcsin(1)"); // 91.0
+```
+
 Compile once, run many times:
 
 ```cs

@@ -162,7 +162,7 @@ The percent operator `%` can be used as a percentage modifier when it appears af
 
 The modifier always uses the expression on its left as the base. Therefore, `20% + 100` evaluates to `100.2`, while `-100 + 10%` evaluates to `-110`. Multiple percentage modifiers are valid as well; `10% + 10%` evaluates to `0.11`.
 
-If a right-hand expression follows `%`, the operator is interpreted as modulo instead:
+If an operand immediately follows `%`, the operator is interpreted as modulo instead:
 
 ```C
 100 + 6 % 4 // 102

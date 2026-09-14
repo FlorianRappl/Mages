@@ -29,6 +29,21 @@ static class Program
 }
 ```
 
+The engine uses radians for trigonometric functions by default. To interpret trigonometric arguments as degrees and return inverse-trigonometric results in degrees, set the angle unit in the engine configuration:
+
+```csharp
+var engine = new Engine(new Configuration
+{
+	AngleUnit = AngleUnit.Degrees,
+});
+
+engine.Interpret("sin(90)"); // 1.0
+engine.Interpret("arcsin(1)"); // 90.0
+engine.Interpret("arg(cmplx(0, 1))"); // 90.0
+```
+
+The setting belongs to the engine, so separate engine instances can use different angle units.
+
 Of course from this point on MAGES is already nearly a REPL (Read-Evaluate-Print-Loop):
 
 ```cs

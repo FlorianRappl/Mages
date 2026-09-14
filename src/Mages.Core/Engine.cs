@@ -50,7 +50,7 @@ public class Engine
     {
         var cfg = configuration ?? Configuration.Default;
         _parser = cfg.Parser ?? Configuration.Default.Parser;
-        _scope = new GlobalScope(cfg.Scope);
+        _scope = new GlobalScope(cfg.Scope, cfg.AngleUnit);
         _plugins = [];
         this.Apply(cfg);
     }
