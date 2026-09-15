@@ -33,6 +33,22 @@ public class InterpretationTests
     }
 
     [Test]
+    public void ConditionalExpressionOnlyEvaluatesTheSelectedBranch()
+    {
+        var scope = Test("count = 0; mark = x => { count = count + 1; return x; }; true ? mark(1) : mark(2)", 1.0);
+        Assert.AreEqual(1.0, scope["count"]);
+    }
+
+    [TestCase(0.0, 0.0)]
+    [TestCase(1.0, 1.0)]
+    [TestCase(3.0, 2.0)]
+    [TestCase(10.0, 55.0)]
+    public void RecursiveFibonacciUsingConditionalExpressionYieldsRightResult(Double n, Double expected)
+    {
+        Test($"fib = n => n < 2 ? n : fib(n - 1) + fib(n - 2); fib({n})", expected);
+    }
+
+    [Test]
     public void CallFunctionCreatedFromFunction()
     {
         Test("(x => y => x + y)(2)(3)", 5.0);

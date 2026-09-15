@@ -320,11 +320,15 @@ public sealed class OperationTreeWalker(List<IOperation> operations) : ITreeWalk
     void ITreeWalker.Visit(ConditionalExpression expression)
     {
         expression.Validate(this);
-        expression.Secondary.Accept(this);
-        expression.Primary.Accept(this);
         expression.Condition.Accept(this);
-
-        _operations.Add(CondOperation.Instance);
+        _operations.Add(PopIfOperation.Instance);
+        var jumpToSecondary = InsertMarker();
+        expression.Primary.Accept(this);
+        var jumpToEnd = InsertMarker();
+        expression.Secondary.Accept(this);
+        var end = _operations.Count;
+        InsertJump(jumpToSecondary, jumpToEnd);
+        InsertJump(jumpToEnd, end - 1);
     }
 
     void ITreeWalker.Visit(CallExpression expression)
