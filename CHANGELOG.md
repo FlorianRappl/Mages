@@ -1,5 +1,6 @@
 # 4.0.0
 
+- Fixed evaluation of conditional operator
 - Updated to .NET 10
 - Removed Chocolatey installer (use `dotnet tool install`)
 - Added project website
